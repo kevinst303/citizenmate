@@ -1,0 +1,227 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ===== CitizenMate Design System — Australian Flag Theme ===== */
+/* Navy Blue #012169 · Red #E4002B · White #FFFFFF */
+/* Inspired by the Southern Cross & the spirit of being Australian */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-heading-family);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* CitizenMate Australian Flag-inspired palette */
+  /* Primary – Navy Blue (Australian flag backdrop) */
+  --color-cm-navy: #0C2340;
+  --color-cm-navy-light: #1A3A5C;
+  --color-cm-navy-lighter: #2D5280;
+  --color-cm-navy-50: #EBF0F7;
+  --color-cm-navy-100: #D2DDE9;
+
+  /* Accent – Federation Red (Union Jack heritage) */
+  --color-cm-red: #DC2626;
+  --color-cm-red-dark: #B91C1C;
+  --color-cm-red-light: #FEE2E2;
+
+  /* Supporting – Southern Cross Gold */
+  --color-cm-gold: #D97706;
+  --color-cm-gold-light: #FEF3C7;
+
+  /* Supporting – Eucalyptus Green (Australian landscape) */
+  --color-cm-eucalyptus: #059669;
+  --color-cm-eucalyptus-light: #D1FAE5;
+
+  /* Supporting – Sky Blue (Australian sky / day) */
+  --color-cm-sky: #0284C7;
+  --color-cm-sky-light: #E0F2FE;
+
+  /* Neutrals */
+  --color-cm-white: #FFFFFF;
+  --color-cm-ice: #F8FAFC;
+  --color-cm-slate-50: #F1F5F9;
+  --color-cm-slate-100: #E2E8F0;
+  --color-cm-slate-200: #CBD5E1;
+  --color-cm-slate-400: #94A3B8;
+  --color-cm-slate-500: #64748B;
+  --color-cm-slate-600: #475569;
+  --color-cm-slate-700: #334155;
+  --color-cm-slate-800: #1E293B;
+  --color-cm-slate-900: #0F172A;
+}
+
+:root {
+  /* CitizenMate Australian theme – Light mode */
+  --background: #F8FAFC;
+  --foreground: #0F172A;
+  --card: #FFFFFF;
+  --card-foreground: #0F172A;
+  --popover: #FFFFFF;
+  --popover-foreground: #0F172A;
+  --primary: #0C2340;
+  --primary-foreground: #FFFFFF;
+  --secondary: #DC2626;
+  --secondary-foreground: #FFFFFF;
+  --muted: #F1F5F9;
+  --muted-foreground: #475569;
+  --accent: #EBF0F7;
+  --accent-foreground: #0C2340;
+  --destructive: #DC2626;
+  --border: #E2E8F0;
+  --input: #E2E8F0;
+  --ring: #0C2340;
+  --chart-1: #0C2340;
+  --chart-2: #DC2626;
+  --chart-3: #059669;
+  --chart-4: #D97706;
+  --chart-5: #0284C7;
+  --radius: 0.75rem;
+  --sidebar: #F8FAFC;
+  --sidebar-foreground: #0F172A;
+  --sidebar-primary: #0C2340;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #EBF0F7;
+  --sidebar-accent-foreground: #0C2340;
+  --sidebar-border: #E2E8F0;
+  --sidebar-ring: #0C2340;
+}
+
+.dark {
+  --background: #0F172A;
+  --foreground: #F1F5F9;
+  --card: #1E293B;
+  --card-foreground: #F1F5F9;
+  --popover: #1E293B;
+  --popover-foreground: #F1F5F9;
+  --primary: #60A5FA;
+  --primary-foreground: #0F172A;
+  --secondary: #F87171;
+  --secondary-foreground: #0F172A;
+  --muted: #1E293B;
+  --muted-foreground: #94A3B8;
+  --accent: #1E293B;
+  --accent-foreground: #F1F5F9;
+  --destructive: #EF4444;
+  --border: #334155;
+  --input: #334155;
+  --ring: #60A5FA;
+  --chart-1: #60A5FA;
+  --chart-2: #F87171;
+  --chart-3: #34D399;
+  --chart-4: #FCD34D;
+  --chart-5: #38BDF8;
+  --sidebar: #1E293B;
+  --sidebar-foreground: #F1F5F9;
+  --sidebar-primary: #60A5FA;
+  --sidebar-primary-foreground: #0F172A;
+  --sidebar-accent: #334155;
+  --sidebar-accent-foreground: #F1F5F9;
+  --sidebar-border: #334155;
+  --sidebar-ring: #60A5FA;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans scroll-smooth;
+  }
+
+  /* Selection colors – navy brand */
+  ::selection {
+    background-color: #D2DDE9;
+    color: #0C2340;
+  }
+
+  /* Focus-visible ring */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Gradient text utilities – Australian flag inspired */
+.text-gradient-aussie {
+  background: linear-gradient(135deg, #0C2340 0%, #1A3A5C 40%, #DC2626 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-navy {
+  background: linear-gradient(135deg, #0C2340, #2D5280);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-red {
+  background: linear-gradient(135deg, #DC2626, #EF4444);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Southern Cross star shimmer */
+@keyframes star-twinkle {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.1); }
+}
+
+.animate-star {
+  animation: star-twinkle 3s ease-in-out infinite;
+}

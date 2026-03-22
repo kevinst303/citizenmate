@@ -1,0 +1,66 @@
+# ========================
+# CitizenMate — .gitignore
+# ========================
+
+# === Dependencies ===
+node_modules/
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# === Next.js ===
+.next/
+out/
+
+# === PWA — generated service worker ===
+citizenmate/public/sw.js
+citizenmate/public/sw.js.map
+citizenmate/public/swe-worker-*.js
+citizenmate/public/workbox-*.js
+citizenmate/public/workbox-*.js.map
+
+# === Build output ===
+build/
+dist/
+
+# === Environment variables ===
+.env
+.env.*
+!.env.example
+
+# === OS files ===
+.DS_Store
+Thumbs.db
+
+# === IDE / Editor ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# === Debug logs ===
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# === Vercel ===
+.vercel
+
+# === TypeScript ===
+*.tsbuildinfo
+next-env.d.ts
+
+# === Coverage ===
+coverage/
+
+# === PEM keys ===
+*.pem
+
+# === Misc ===
+.turbo
