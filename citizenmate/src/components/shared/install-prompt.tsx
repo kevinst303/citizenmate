@@ -68,15 +68,41 @@ export function InstallPrompt() {
   useEffect(() => {
     if (isStandalone() || isDismissed()) return;
 
-    const timer = setTimeout(() => {
+    let timer: NodeJS.Timeout;
+    let waitingForConsent = false;
+
+    const showAppropriatePrompt = () => {
       if (deferredPrompt) {
         setShowPrompt(true);
       } else if (isIOSSafari()) {
         setShowIOSInstructions(true);
       }
-    }, ENGAGEMENT_DELAY_MS);
+    };
 
-    return () => clearTimeout(timer);
+    const handleConsent = () => {
+      waitingForConsent = false;
+      // Add a small delay after dismissing cookie banner before showing install prompt
+      setTimeout(showAppropriatePrompt, 500);
+    };
+
+    const attemptShow = () => {
+      // Don't overlap with cookie consent
+      if (!localStorage.getItem("cm-cookie-consent")) {
+        waitingForConsent = true;
+        window.addEventListener("cm-consent-update", handleConsent, { once: true });
+        return;
+      }
+      showAppropriatePrompt();
+    };
+
+    timer = setTimeout(attemptShow, ENGAGEMENT_DELAY_MS);
+
+    return () => {
+      clearTimeout(timer);
+      if (waitingForConsent) {
+        window.removeEventListener("cm-consent-update", handleConsent);
+      }
+    };
   }, [deferredPrompt]);
 
   const handleInstall = useCallback(async () => {
