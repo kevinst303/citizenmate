@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { mockTests } from "@/data/tests";
 import { getAttemptHistory } from "@/lib/quiz-context";
@@ -55,25 +56,21 @@ export default function PracticePage() {
   return (
     <div className="min-h-screen bg-cm-ice">
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-cm-navy via-cm-navy-light to-cm-navy-lighter text-white overflow-hidden">
-        {/* Decorative orbs */}
-        <div className="absolute inset-0 overflow-hidden">
-          <motion.div
-            animate={{ y: [0, -15, 0], x: [0, 8, 0] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-16 left-12 w-32 h-32 rounded-full bg-cm-gold/10 blur-xl"
+      <section className="relative bg-cm-navy text-white overflow-hidden">
+        {/* Background image overlay */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/generated/test-start.webp"
+            alt="Concentrating before a test"
+            fill
+            className="object-cover opacity-35 mix-blend-screen"
+            sizes="100vw"
+            priority
           />
-          <motion.div
-            animate={{ y: [0, 10, 0], x: [0, -12, 0] }}
-            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            className="absolute top-28 right-16 w-20 h-20 rounded-full bg-cm-sky/10 blur-lg"
-          />
-          <motion.div
-            animate={{ y: [0, -8, 0] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-            className="absolute bottom-8 left-1/3 w-16 h-16 rounded-full bg-cm-eucalyptus/10 blur-lg"
-          />
+          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-cm-ice to-transparent opacity-90" />
         </div>
+
+        {/* Decorative orbs */}
 
         <div className="relative mx-auto max-w-5xl px-4 sm:px-6 py-16 sm:py-24 text-center">
           <motion.div
@@ -108,7 +105,7 @@ export default function PracticePage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25, duration: 0.5 }}
-          className="bg-white rounded-2xl shadow-lg border border-cm-slate-200 p-5 sm:p-6"
+          className="glass-card rounded-2xl shadow-card p-5 sm:p-6"
         >
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
@@ -148,9 +145,15 @@ export default function PracticePage() {
         >
           <Link
             href="/practice/smart"
-            className="group block bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 rounded-2xl p-6 shadow-lg shadow-purple-500/20 hover:shadow-xl hover:shadow-purple-500/30 transition-all duration-300 hover:-translate-y-0.5"
+            className="group relative block bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 rounded-2xl shadow-lg shadow-purple-500/20 overflow-hidden"
           >
-            <div className="flex items-center gap-4">
+            <div className="absolute inset-0 animate-shimmer" />
+            <motion.div
+              whileHover={{ y: -4, scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
+              transition={{ type: "spring" as const, stiffness: 300, damping: 20 }}
+              className="relative p-6 hover:shadow-xl hover:shadow-purple-500/30 transition-shadow duration-300"
+            >
               <div className="flex-shrink-0 inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-white/15 text-white">
                 <Brain className="w-7 h-7" />
               </div>
@@ -170,7 +173,7 @@ export default function PracticePage() {
                 </p>
               </div>
               <ArrowRight className="w-5 h-5 text-white/60 group-hover:text-white group-hover:translate-x-1 transition-all flex-shrink-0" />
-            </div>
+            </motion.div>
           </Link>
         </motion.div>
       </section>
@@ -198,67 +201,86 @@ export default function PracticePage() {
             const testNumber = index + 1;
 
             return (
-              <motion.div key={test.id} variants={item}>
-                <Link
-                  href={`/practice/${test.id}`}
-                  className="group block bg-white rounded-2xl border-2 border-cm-slate-200 p-6 shadow-sm hover:shadow-xl hover:border-cm-navy transition-all duration-300 cursor-pointer hover:-translate-y-1"
+              <div key={test.id} className="h-full">
+                <motion.div variants={item}
+                  whileHover={{ y: -6, transition: { type: "spring" as const, stiffness: 400, damping: 20 } }}
+                  whileTap={{ scale: 0.99 }}
+                  className="h-full"
                 >
-                  {/* Test number badge */}
-                  <div className="flex items-center justify-between mb-4">
-                    <motion.span
-                      whileHover={{ rotate: [0, -5, 5, 0] }}
-                      transition={{ duration: 0.4 }}
-                      className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-cm-navy text-white font-heading font-bold text-lg"
-                    >
-                      {testNumber}
-                    </motion.span>
-                    {bestScore !== null && (
-                      <span
-                        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${
-                          bestScore >= 15
-                            ? "bg-emerald-100 text-emerald-700"
-                            : "bg-amber-100 text-amber-700"
-                        }`}
+                  <Link
+                    href={`/practice/${test.id}`}
+                    className="group flex flex-col h-full rounded-2xl card-glass p-6 shadow-card hover:shadow-card-hover hover:border-cm-navy transition-all duration-300 cursor-pointer"
+                  >
+                    {/* Test number badge */}
+                    <div className="flex items-center justify-between mb-4">
+                      <motion.span
+                        whileHover={{ rotate: [0, -5, 5, 0] }}
+                        transition={{ duration: 0.4, ease: "easeInOut" }}
+                        className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-cm-navy text-white font-heading font-bold text-lg"
                       >
-                        <Award className="w-3 h-3" />
-                        Best: {bestScore}/20
-                      </span>
-                    )}
-                  </div>
+                        {testNumber}
+                      </motion.span>
+                      {bestScore !== null && (
+                        <span
+                          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${
+                            bestScore >= 15
+                              ? "bg-emerald-100 text-emerald-700"
+                              : "bg-amber-100 text-amber-700"
+                          }`}
+                        >
+                          <Award className="w-3 h-3" />
+                          Best: {bestScore}/20
+                        </span>
+                      )}
+                    </div>
 
-                  <h3 className="text-lg font-heading font-bold text-cm-slate-900 mb-2 group-hover:text-cm-navy transition-colors duration-200">
-                    {test.title}
-                  </h3>
-                  <p className="text-sm text-cm-slate-500 leading-relaxed mb-5">
-                    {test.description}
-                  </p>
+                    <h3 className="text-lg font-heading font-bold text-cm-slate-900 mb-2 group-hover:text-cm-navy transition-colors duration-200">
+                      {test.title}
+                    </h3>
+                    <p className="text-sm text-cm-slate-500 leading-relaxed mb-5">
+                      {test.description}
+                    </p>
 
-                  {/* Meta */}
-                  <div className="flex items-center gap-3 text-xs text-cm-slate-400 mb-5">
-                    <span className="flex items-center gap-1">
-                      <FileText className="w-3 h-3" />
-                      {test.totalQuestions} questions
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-3 h-3" />
-                      {test.timeLimit / 60} min
-                    </span>
-                    {attemptCount > 0 && (
+                    {/* Meta */}
+                    <div className="flex items-center gap-3 text-xs text-cm-slate-400 mb-5">
                       <span className="flex items-center gap-1">
-                        <RefreshCw className="w-3 h-3" />
-                        {attemptCount}{" "}
-                        {attemptCount === 1 ? "attempt" : "attempts"}
+                        <FileText className="w-3 h-3" />
+                        {test.totalQuestions} questions
                       </span>
-                    )}
-                  </div>
+                      <span className="flex items-center gap-1">
+                        <Clock className="w-3 h-3" />
+                        {test.timeLimit / 60} min
+                      </span>
+                      {attemptCount > 0 && (
+                        <span className="flex items-center gap-1">
+                          <RefreshCw className="w-3 h-3" />
+                          {attemptCount}{" "}
+                          {attemptCount === 1 ? "attempt" : "attempts"}
+                        </span>
+                      )}
+                    </div>
 
-                  {/* CTA */}
-                  <div className="flex items-center justify-center gap-2 w-full py-3 bg-cm-navy text-white font-heading font-semibold rounded-xl group-hover:bg-cm-navy-light transition-all duration-200 group-hover:gap-3">
-                    {attemptCount > 0 ? "Try Again" : "Start Test"}
-                    <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
-                  </div>
-                </Link>
-              </motion.div>
+                    {/* CTA — mt-auto pins it to bottom for equal-height alignment */}
+                    <div className={`mt-auto flex items-center justify-center gap-2 w-full py-3 font-heading font-semibold rounded-xl transition-all duration-200 group-hover:gap-3 ${
+                      attemptCount > 0
+                        ? "bg-gradient-to-r from-teal-500 to-emerald-500 text-white group-hover:from-teal-600 group-hover:to-emerald-600 shadow-sm"
+                        : "bg-cm-navy text-white group-hover:bg-cm-navy-light"
+                    }`}>
+                      {attemptCount > 0 ? (
+                        <>
+                          <RefreshCw className="w-4 h-4 transition-transform duration-200 group-hover:rotate-45" />
+                          Try Again
+                        </>
+                      ) : (
+                        <>
+                          Start Test
+                          <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+                        </>
+                      )}
+                    </div>
+                  </Link>
+                </motion.div>
+              </div>
             );
           })}
         </motion.div>

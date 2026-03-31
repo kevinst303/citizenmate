@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, X, Sparkles } from "lucide-react";
 import { useTestDate } from "@/lib/test-date-context";
+import { toast } from "@/lib/toast";
 
 export function TestDateModal() {
   const { testDate, setTestDate, clearTestDate, isModalOpen, closeModal } =
@@ -34,12 +36,27 @@ export function TestDateModal() {
 
     setTestDate(inputDate);
     closeModal();
+
+    const savedDate = new Date(inputDate);
+    const now2 = new Date();
+    now2.setHours(0, 0, 0, 0);
+    savedDate.setHours(0, 0, 0, 0);
+    const daysAway = Math.ceil(
+      (savedDate.getTime() - now2.getTime()) / (1000 * 60 * 60 * 24)
+    );
+    toast.success(
+      "Test date saved! 📅",
+      daysAway === 1
+        ? "1 day to go — you've got this, mate!"
+        : `${daysAway} days to go — let's make them count!`
+    );
   };
 
   const handleClear = () => {
     clearTestDate();
     setInputDate("");
     closeModal();
+    toast.info("Test date cleared", "You can set a new one anytime.");
   };
 
   // Get today's date in YYYY-MM-DD for min attribute
@@ -89,27 +106,40 @@ export function TestDateModal() {
           >
             <div className="bg-white rounded-2xl shadow-2xl border border-cm-slate-200 overflow-hidden">
               {/* Header */}
-              <div className="bg-gradient-to-br from-cm-navy to-cm-navy-light px-6 py-5 text-white">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-white/15">
-                      <Calendar className="w-5 h-5" />
+              <div className="relative bg-cm-navy text-white overflow-hidden">
+                <div className="absolute inset-0 z-0">
+                  <Image
+                    src="/generated/modal-test-date.webp"
+                    alt="A marked calendar"
+                    fill
+                    className="object-cover opacity-50 mix-blend-screen"
+                    sizes="(max-width: 768px) 100vw, 400px"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-cm-navy to-transparent opacity-90" />
+                </div>
+                
+                <div className="relative z-10 px-6 py-5">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-white/15 backdrop-blur-sm shadow-sm ring-1 ring-white/20">
+                        <Calendar className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h2 className="font-heading font-bold text-lg drop-shadow-sm">
+                          Set Your Test Date
+                        </h2>
+                        <p className="text-sm text-white/90 drop-shadow-sm font-medium">
+                          We&apos;ll build your study plan around it
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h2 className="font-heading font-bold text-lg">
-                        Set Your Test Date
-                      </h2>
-                      <p className="text-sm text-white/70">
-                        We&apos;ll build your study plan around it
-                      </p>
-                    </div>
+                    <button
+                      onClick={closeModal}
+                      className="p-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
                   </div>
-                  <button
-                    onClick={closeModal}
-                    className="p-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
                 </div>
               </div>
 

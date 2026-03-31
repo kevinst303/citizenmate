@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import {
   Accordion,
   AccordionContent,
@@ -40,34 +41,68 @@ const faqs = [
   },
 ];
 
+const faqItem = {
+  hidden: { opacity: 0, y: 20 },
+  show: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 0.08 * i,
+      type: "spring" as const,
+      stiffness: 120,
+      damping: 16,
+    },
+  }),
+};
+
 export function FAQ() {
   return (
-    <section id="faq" className="py-24 sm:py-32">
+    <section id="faq" className="py-24 sm:py-32 section-divider-top">
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-        {/* Section header */}
+        {/* Section header — spring entrance */}
         <div className="text-center mb-12">
-          <p className="text-cm-navy font-heading font-semibold text-sm uppercase tracking-wider mb-3">
+          <motion.p
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ type: "spring", stiffness: 150, damping: 20 }}
+            className="text-cm-navy font-heading font-semibold text-sm uppercase tracking-wider mb-3"
+          >
             Questions?
-          </p>
-          <h2 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight">
+          </motion.p>
+          <motion.h2
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ type: "spring", stiffness: 150, damping: 20, delay: 0.1 }}
+            className="font-heading text-3xl sm:text-4xl font-bold tracking-tight"
+          >
             Frequently asked questions
-          </h2>
+          </motion.h2>
         </div>
 
-        {/* FAQ items */}
+        {/* FAQ items — staggered entrance */}
         <Accordion className="w-full space-y-3">
           {faqs.map((faq, index) => (
-            <AccordionItem
+            <motion.div
               key={index}
-              className="border border-border rounded-xl px-6 data-open:border-cm-navy/25 data-open:shadow-sm transition-all duration-200"
+              custom={index}
+              variants={faqItem}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-50px" }}
             >
-              <AccordionTrigger className="text-left font-heading font-semibold text-base py-5 hover:no-underline hover:text-cm-navy transition-colors cursor-pointer aria-expanded:text-cm-navy">
-                {faq.question}
-              </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground leading-relaxed pb-5">
-                {faq.answer}
-              </AccordionContent>
-            </AccordionItem>
+              <AccordionItem
+                className="border border-border rounded-xl px-6 data-open:border-cm-navy/25 data-open:shadow-sm transition-all duration-200"
+              >
+                <AccordionTrigger className="text-left font-heading font-semibold text-base py-5 hover:no-underline hover:text-cm-navy transition-colors cursor-pointer aria-expanded:text-cm-navy">
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground leading-relaxed pb-5">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            </motion.div>
           ))}
         </Accordion>
       </div>

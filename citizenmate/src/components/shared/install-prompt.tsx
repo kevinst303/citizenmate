@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Download, X, Share, Plus } from "lucide-react";
+import { toast } from "@/lib/toast";
 
 // Extend the global window with the beforeinstallprompt event
 interface BeforeInstallPromptEvent extends Event {
@@ -84,6 +85,10 @@ export function InstallPrompt() {
     const { outcome } = await deferredPrompt.userChoice;
     if (outcome === "accepted") {
       setShowPrompt(false);
+      toast.success(
+        "CitizenMate installed! 🇦🇺",
+        "Launch from your home screen to study anytime."
+      );
     }
     setDeferredPrompt(null);
   }, [deferredPrompt]);

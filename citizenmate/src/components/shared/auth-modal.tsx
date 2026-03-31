@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Mail, Lock, Loader2, AlertCircle } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
+import { toast } from "@/lib/toast";
 
 // ===== Auth Modal =====
 // Sign in / Sign up modal with email+password and Google OAuth.
@@ -48,19 +49,25 @@ export function AuthModal() {
         const { error: authError } = await signIn(email, password);
         if (authError) {
           setError(authError.message);
+          toast.error("Sign-in failed", authError.message);
+        } else {
+          toast.success("Welcome back, mate! 🇦🇺", "Your progress is synced.");
         }
       } else {
         const { error: authError } = await signUp(email, password);
         if (authError) {
           setError(authError.message);
+          toast.error("Sign-up failed", authError.message);
         } else {
           setSuccessMessage(
             "Check your email to confirm your account, mate! 📧"
           );
+          toast.info("Check your email! 📧", "Confirm your account to get started.");
         }
       }
     } catch {
       setError("Something went wrong. Please try again.");
+      toast.error("Something went wrong", "Please try again, mate.");
     } finally {
       setLoading(false);
     }

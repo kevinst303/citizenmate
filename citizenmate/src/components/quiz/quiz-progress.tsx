@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { useQuiz } from "@/lib/quiz-context";
 
 export function QuizProgress() {
@@ -20,7 +21,7 @@ export function QuizProgress() {
         </span>
       </div>
 
-      {/* Question grid */}
+      {/* Question grid — animated cells */}
       <div className="grid grid-cols-10 gap-1.5 sm:gap-2">
         {state.test.questions.map((question, index) => {
           const isAnswered = question.id in state.answers;
@@ -42,24 +43,40 @@ export function QuizProgress() {
           }
 
           return (
-            <button
+            <motion.button
               key={question.id}
               onClick={() => navigateTo(index)}
+              initial={{ opacity: 0, scale: 0.7 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{
+                delay: index * 0.02,
+                type: "spring" as const,
+                stiffness: 300,
+                damping: 18,
+              }}
+              whileHover={{ scale: 1.15, y: -2 }}
+              whileTap={{ scale: 0.9 }}
+              layout
               className={`
                 relative flex items-center justify-center
                 w-full aspect-square rounded-lg text-xs sm:text-sm font-bold font-heading
-                transition-all duration-150 cursor-pointer
+                transition-colors duration-150 cursor-pointer
                 ${bgClass}
               `}
               title={`Question ${index + 1}${isFlagged ? " (flagged)" : ""}${isAnswered ? " (answered)" : ""}`}
             >
               {index + 1}
               {isFlagged && (
-                <span className="absolute -top-1 -right-1 text-[10px]">
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring" as const, stiffness: 400, damping: 10 }}
+                  className="absolute -top-1 -right-1 text-[10px]"
+                >
                   ⚑
-                </span>
+                </motion.span>
               )}
-            </button>
+            </motion.button>
           );
         })}
       </div>

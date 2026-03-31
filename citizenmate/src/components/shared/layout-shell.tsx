@@ -8,6 +8,9 @@ import { TestDateModal } from "@/components/shared/test-date-modal";
 import { InstallPrompt } from "@/components/shared/install-prompt";
 import { ChatWidget } from "@/components/shared/chat-widget";
 import { AuthModal } from "@/components/shared/auth-modal";
+import { GooeyToaster } from "@/components/ui/goey-toaster";
+import { CookieConsent } from "@/components/shared/cookie-consent";
+import { Analytics } from "@/components/shared/analytics";
 
 /**
  * Conditionally shows/hides the Navbar and Footer based on the current route.
@@ -35,14 +38,26 @@ export function LayoutShell({ children }: { children: React.ReactNode }) {
 
   return (
     <>
+      {/* Skip-to-content for keyboard / screen-reader accessibility */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:bg-cm-navy focus:text-white focus:rounded-lg focus:font-heading focus:font-semibold focus:text-sm focus:shadow-lg"
+      >
+        Skip to main content
+      </a>
       {!isActiveQuiz && <Navbar />}
+      {/* Spacer for fixed navbar height (landing page hero handles its own spacing) */}
+      {!isActiveQuiz && pathname !== "/" && <div className="pt-16" />}
       {showBanner && <TestDateBanner />}
-      <main className="flex-1">{children}</main>
+      <main id="main-content" className="flex-1">{children}</main>
       {!isActiveQuiz && <Footer />}
       <TestDateModal />
       <AuthModal />
+      <GooeyToaster />
       {!isActiveQuiz && <InstallPrompt />}
       {showChat && <ChatWidget />}
+      <CookieConsent />
+      <Analytics />
     </>
   );
 }

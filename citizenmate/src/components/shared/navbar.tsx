@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { Menu } from "lucide-react";
 import { UserMenu } from "@/components/shared/user-menu";
 import {
@@ -17,6 +18,7 @@ const navLinks = [
   { label: "Dashboard", href: "/dashboard" },
   { label: "Practice", href: "/practice" },
   { label: "Study", href: "/study" },
+  { label: "Blog", href: "/blog" },
   { label: "Features", href: "/#features" },
   { label: "How It Works", href: "/#how-it-works" },
   { label: "Pricing", href: "/#pricing" },
@@ -38,19 +40,24 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        "fixed z-50 transition-all duration-500 ease-out",
         scrolled
-          ? "bg-white/90 backdrop-blur-lg shadow-sm border-b border-cm-slate-200/50"
-          : "bg-transparent"
+          ? "top-3 left-4 right-4 navbar-glass rounded-2xl border border-cm-slate-200/60"
+          : "top-0 left-0 right-0 bg-transparent"
       )}
     >
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 cursor-pointer">
-            <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-cm-navy text-white font-heading font-bold text-lg">
+          {/* Logo with hover spring */}
+          <Link href="/" className="flex items-center gap-2 cursor-pointer group">
+            <motion.div
+              whileHover={{ scale: 1.08, rotate: -3 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 400, damping: 15 }}
+              className="flex items-center justify-center w-9 h-9 rounded-xl bg-cm-navy text-white font-heading font-bold text-lg"
+            >
               CM
-            </div>
+            </motion.div>
             <span className="font-heading text-xl font-bold text-foreground">
               Citizen
               <span className="text-cm-navy">Mate</span>
@@ -60,24 +67,32 @@ export function Navbar() {
           {/* Desktop Nav Links */}
           <div className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
-              <a
+              <motion.a
                 key={link.href}
                 href={link.href}
+                whileHover={{ y: -1 }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
                 className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-cm-navy transition-colors duration-200 rounded-lg hover:bg-cm-navy-50 cursor-pointer"
               >
                 {link.label}
-              </a>
+              </motion.a>
             ))}
           </div>
 
           {/* Desktop CTA + User Menu */}
           <div className="hidden md:flex items-center gap-3">
-            <Link
-              href="/practice"
-              className="inline-flex items-center justify-center bg-cm-red hover:bg-cm-red-dark text-white font-heading font-semibold px-5 h-10 rounded-xl cursor-pointer transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+            <motion.div
+              whileHover={{ scale: 1.04, y: -1 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
-              Start Free Practice
-            </Link>
+              <Link
+                href="/practice"
+                className="inline-flex items-center justify-center bg-cm-red hover:bg-cm-red-dark text-white font-heading font-semibold px-5 h-10 rounded-xl cursor-pointer transition-colors duration-200"
+              >
+                Start Free Practice
+              </Link>
+            </motion.div>
             <UserMenu />
           </div>
 
@@ -95,21 +110,33 @@ export function Navbar() {
                   Citizen<span className="text-cm-navy">Mate</span>
                 </SheetTitle>
                 <div className="flex flex-col gap-2 mt-8 px-2">
-                  {navLinks.map((link) => (
-                    <SheetClose
+                  {navLinks.map((link, idx) => (
+                    <motion.div
                       key={link.href}
-                      render={
-                        <a
-                          href={link.href}
-                          className="flex items-center px-4 py-3 text-base font-medium text-foreground hover:bg-cm-navy-50 rounded-xl transition-colors duration-200 cursor-pointer"
-                          onClick={() => setOpen(false)}
-                        />
-                      }
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.05 * idx, type: "spring" as const, stiffness: 200, damping: 18 }}
                     >
-                      {link.label}
-                    </SheetClose>
+                      <SheetClose
+                        nativeButton={false}
+                        render={
+                          <a
+                            href={link.href}
+                            className="flex items-center px-4 py-3 text-base font-medium text-foreground hover:bg-cm-navy-50 rounded-xl transition-colors duration-200 cursor-pointer"
+                            onClick={() => setOpen(false)}
+                          />
+                        }
+                      >
+                        {link.label}
+                      </SheetClose>
+                    </motion.div>
                   ))}
-                  <div className="mt-4 pt-4 border-t border-border">
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4, type: "spring" as const, stiffness: 150, damping: 16 }}
+                    className="mt-4 pt-4 border-t border-border"
+                  >
                     <SheetClose
                       render={
                         <button
@@ -123,7 +150,7 @@ export function Navbar() {
                     <div className="mt-3 flex justify-center">
                       <UserMenu />
                     </div>
-                  </div>
+                  </motion.div>
                 </div>
               </SheetContent>
             </Sheet>

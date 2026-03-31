@@ -225,3 +225,591 @@
 .animate-star {
   animation: star-twinkle 3s ease-in-out infinite;
 }
+
+/* ===== Premium UI Utilities ===== */
+
+/* Glass card — frosted glass effect */
+.glass-card {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+}
+
+.glass-card-dark {
+  background: rgba(30, 41, 59, 0.65);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Floating navbar glass effect */
+.navbar-glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px) saturate(200%);
+  -webkit-backdrop-filter: blur(20px) saturate(200%);
+  box-shadow:
+    0 1px 3px rgba(12, 35, 64, 0.04),
+    0 8px 24px rgba(12, 35, 64, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Mesh gradient animation — hero background */
+@keyframes mesh-gradient {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 100% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  75% {
+    background-position: 0% 100%;
+  }
+}
+
+.animate-mesh {
+  background-size: 400% 400%;
+  animation: mesh-gradient 20s ease-in-out infinite;
+}
+
+/* Shimmer sweep — for badges and highlights */
+@keyframes shimmer-sweep {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    110deg,
+    transparent 25%,
+    rgba(255, 255, 255, 0.15) 37%,
+    transparent 63%
+  );
+  background-size: 200% 100%;
+  animation: shimmer-sweep 3s ease-in-out infinite;
+}
+
+/* Premium card shadows */
+.shadow-card {
+  box-shadow:
+    0 1px 2px rgba(12, 35, 64, 0.04),
+    0 4px 12px rgba(12, 35, 64, 0.06);
+}
+
+.shadow-card-hover {
+  box-shadow:
+    0 4px 8px rgba(12, 35, 64, 0.06),
+    0 12px 32px rgba(12, 35, 64, 0.1);
+}
+
+/* Glow ring — for readiness score */
+@keyframes glow-pulse {
+  0%, 100% { filter: drop-shadow(0 0 6px rgba(5, 150, 105, 0.3)); }
+  50% { filter: drop-shadow(0 0 16px rgba(5, 150, 105, 0.5)); }
+}
+
+.animate-glow {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+/* Floating animation — for decorative elements */
+@keyframes gentle-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+.animate-float {
+  animation: gentle-float 6s ease-in-out infinite;
+}
+
+/* Subtle border gradient on hover */
+.border-gradient-hover {
+  position: relative;
+}
+
+.border-gradient-hover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(135deg, #0C2340, #2D5280, #DC2626);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.border-gradient-hover:hover::before {
+  opacity: 1;
+}
+
+/* Animated counter number */
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-count {
+  animation: count-up 0.6s ease-out forwards;
+}
+
+/* Urgency pulse — for test countdown */
+@keyframes urgency-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.animate-urgency {
+  animation: urgency-pulse 2s ease-in-out infinite;
+}
+
+/* ===== Premium Dashboard Utilities ===== */
+
+/* Glass card premium — elevated hover with gradient border glow */
+.glass-card-premium {
+  background: rgba(255, 255, 255, 0.84);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+
+.glass-card-premium:hover {
+  box-shadow:
+    0 4px 8px rgba(12, 35, 64, 0.05),
+    0 16px 40px rgba(12, 35, 64, 0.08);
+  border-color: rgba(12, 35, 64, 0.08);
+  transform: translateY(-2px);
+}
+
+/* Stat card — glassmorphic with colored top accent */
+.stat-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--stat-accent-color, #0C2340);
+  border-radius: 3px 3px 0 0;
+}
+
+.stat-card:hover {
+  box-shadow:
+    0 4px 8px rgba(12, 35, 64, 0.04),
+    0 12px 28px rgba(12, 35, 64, 0.07);
+  transform: translateY(-2px);
+}
+
+/* Topic row — colored left accent bar + hover lift */
+.topic-row {
+  position: relative;
+  border-left: 3px solid var(--topic-accent-color, #0C2340);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.topic-row:hover {
+  background-color: var(--topic-hover-bg, rgba(241, 245, 249, 0.8));
+  box-shadow: 0 2px 12px rgba(12, 35, 64, 0.06);
+  transform: translateX(2px);
+}
+
+/* Action card shine sweep overlay on hover */
+@keyframes shine-sweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+.action-card-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.action-card-shine::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.12) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  transition: none;
+  pointer-events: none;
+}
+
+.action-card-shine:hover::after {
+  animation: shine-sweep 0.6s ease-out;
+}
+
+/* Gradient glow backdrop for countdown number */
+.countdown-glow {
+  position: relative;
+}
+
+.countdown-glow::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background: var(--countdown-glow-color, rgba(5, 150, 105, 0.12));
+  filter: blur(16px);
+  z-index: -1;
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+/* Alert gradient left border */
+.alert-gradient {
+  border-left: 4px solid transparent;
+  border-image: linear-gradient(180deg, #DC2626, #EF4444) 1;
+}
+
+/* Icon pulse for warning */
+@keyframes icon-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.8; }
+}
+
+.animate-icon-pulse {
+  animation: icon-pulse 2s ease-in-out infinite;
+}
+
+/* Gradient shift for animated hero bg */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  25% { background-position: 50% 0%; }
+  50% { background-position: 100% 50%; }
+  75% { background-position: 50% 100%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient-shift {
+  background-size: 300% 300%;
+  animation: gradient-shift 12s ease-in-out infinite;
+}
+
+/* ===== AI Agent UX Utilities ===== */
+
+/* Typing dots bounce — chat thinking indicator */
+@keyframes ai-typing-dot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-6px); opacity: 1; }
+}
+
+.ai-typing-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: currentColor;
+  animation: ai-typing-dot 1.4s ease-in-out infinite;
+}
+
+.ai-typing-dot:nth-child(2) { animation-delay: 0.15s; }
+.ai-typing-dot:nth-child(3) { animation-delay: 0.3s; }
+
+/* AI Insight card — glassmorphic with solid left accent + proper border radius */
+.ai-insight-card {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(226, 232, 240, 0.6);
+  border-left: 4px solid var(--insight-accent, #0C2340);
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.ai-insight-card:hover {
+  box-shadow:
+    0 4px 8px rgba(12, 35, 64, 0.05),
+    0 12px 32px rgba(12, 35, 64, 0.08);
+  transform: translateY(-1px);
+}
+
+/* Dashboard section divider — soft gradient line between content blocks */
+.dashboard-section-divider {
+  position: relative;
+  padding-top: 0.5rem;
+}
+
+.dashboard-section-divider::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 5%;
+  right: 5%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(12, 35, 64, 0.06) 30%, rgba(12, 35, 64, 0.06) 70%, transparent);
+}
+
+/* Recommended badge pulse glow */
+@keyframes recommended-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(217, 119, 6, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(217, 119, 6, 0);
+  }
+}
+
+.recommended-pulse {
+  animation: recommended-pulse 2s ease-in-out infinite;
+}
+
+/* Answer selection shimmer — plays once on select */
+@keyframes answer-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.answer-selected-shimmer {
+  background-image: linear-gradient(
+    110deg,
+    transparent 30%,
+    rgba(12, 35, 64, 0.06) 45%,
+    transparent 65%
+  );
+  background-size: 200% 100%;
+  animation: answer-shimmer 0.8s ease-out;
+}
+
+/* Follow-up chip — subtle hover lift */
+.follow-up-chip {
+  transition: all 0.2s ease;
+}
+
+.follow-up-chip:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(12, 35, 64, 0.08);
+}
+
+/* Source label fade-in */
+@keyframes source-fade {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.source-label {
+  animation: source-fade 0.4s ease-out 0.6s both;
+}
+
+/* ===== Legal Page Typography ===== */
+.legal-content h2 {
+  font-family: var(--font-heading-family);
+  font-weight: 600;
+  font-size: 1.3rem;
+  color: var(--color-cm-navy);
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-cm-slate-100);
+  scroll-margin-top: 6rem;
+}
+
+.legal-content h2:first-child {
+  margin-top: 0;
+}
+
+.legal-content h3 {
+  font-family: var(--font-heading-family);
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--color-cm-navy-light);
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.legal-content p {
+  color: var(--color-cm-slate-600);
+  line-height: 1.75;
+  margin-bottom: 1rem;
+}
+
+.legal-content ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.legal-content ul li {
+  color: var(--color-cm-slate-600);
+  line-height: 1.75;
+  margin-bottom: 0.35rem;
+}
+
+.legal-content strong {
+  color: var(--color-cm-slate-700);
+  font-weight: 600;
+}
+
+.legal-content a {
+  color: var(--color-cm-sky);
+  text-decoration: none;
+  transition: text-decoration 0.2s;
+}
+
+.legal-content a:hover {
+  text-decoration: underline;
+}
+
+.legal-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0 1.5rem;
+  font-size: 0.875rem;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: 1px solid var(--color-cm-slate-100);
+}
+
+.legal-content thead th {
+  background-color: var(--color-cm-navy-50);
+  color: var(--color-cm-navy);
+  font-family: var(--font-heading-family);
+  font-weight: 600;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border-bottom: 2px solid var(--color-cm-slate-100);
+}
+
+.legal-content tbody td {
+  padding: 0.625rem 1rem;
+  color: var(--color-cm-slate-600);
+  border-bottom: 1px solid var(--color-cm-slate-50);
+}
+
+.legal-content tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.legal-content code {
+  background-color: var(--color-cm-navy-50);
+  color: var(--color-cm-navy);
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.85em;
+  font-family: var(--font-mono);
+}
+
+/* ===== Premium Design System Additions ===== */
+
+/* CTA button pulsing glow ring */
+@keyframes cta-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4);
+    opacity: 0.6;
+  }
+  50% {
+    box-shadow: 0 0 20px 8px rgba(220, 38, 38, 0);
+    opacity: 0;
+  }
+}
+
+.animate-cta-glow {
+  animation: cta-glow 2.5s ease-in-out infinite;
+}
+
+/* Noise texture overlay — adds film grain for visual depth */
+.noise-overlay {
+  position: relative;
+}
+
+.noise-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: overlay;
+  border-radius: inherit;
+}
+
+/* Section divider gradient */
+.section-divider-top {
+  position: relative;
+}
+
+.section-divider-top::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(12, 35, 64, 0.08) 30%, rgba(12, 35, 64, 0.08) 70%, transparent);
+}
+
+/* Text balance — better heading line breaks */
+.text-balance {
+  text-wrap: balance;
+}
+
+/* Glassmorphic pricing popular card */
+.glass-pricing-popular {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 2px solid rgba(220, 38, 38, 0.2);
+  box-shadow:
+    0 4px 12px rgba(220, 38, 38, 0.06),
+    0 16px 40px rgba(12, 35, 64, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Feature card glassmorphic hover glow */
+.feature-card-glass {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transition: all 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.feature-card-glass:hover {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(12, 35, 64, 0.1);
+  box-shadow:
+    0 4px 8px rgba(12, 35, 64, 0.04),
+    0 16px 40px rgba(12, 35, 64, 0.08);
+}
+
+/* Practice/Study card glassmorphic treatment */
+.card-glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.card-glass:hover {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(12, 35, 64, 0.12);
+  box-shadow:
+    0 4px 8px rgba(12, 35, 64, 0.04),
+    0 16px 40px rgba(12, 35, 64, 0.08);
+}

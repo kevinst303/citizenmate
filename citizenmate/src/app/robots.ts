@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/", "/admin/"],
     },
-    sitemap: "https://citizenmate.com/sitemap.xml",
+    sitemap: "https://citizenmate.com.au/sitemap.xml",
   };
 }

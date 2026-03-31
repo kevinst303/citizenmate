@@ -3,6 +3,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ClipboardCheck, Languages, BarChart3, ArrowRight } from "lucide-react";
 
 const features = [
@@ -17,6 +18,8 @@ const features = [
     shadowHover: "hover:shadow-cm-navy/5",
     cta: "Start Practising",
     href: "/practice",
+    image: "/generated/feature-tests.webp",
+    imageAlt: "Confident woman taking a practice citizenship test on a tablet",
   },
   {
     icon: Languages,
@@ -29,6 +32,8 @@ const features = [
     shadowHover: "hover:shadow-cm-red/5",
     cta: "Start Studying",
     href: "/study",
+    image: "/generated/feature-bilingual.webp",
+    imageAlt: "Man studying with bilingual books in multiple languages at an Australian cafe",
   },
   {
     icon: BarChart3,
@@ -41,8 +46,25 @@ const features = [
     shadowHover: "hover:shadow-cm-eucalyptus/5",
     cta: "Track Progress",
     href: "/study",
+    image: "/generated/feature-progress.webp",
+    imageAlt: "Woman celebrating progress on her dashboard with achievement badges",
   },
 ];
+
+const cardVariant = {
+  hidden: { opacity: 0, y: 40, scale: 0.92 },
+  show: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      delay: 0.15 * (i + 1),
+      type: "spring" as const,
+      stiffness: 100,
+      damping: 14,
+    },
+  }),
+};
 
 export function Features() {
   const ref = useRef(null);
@@ -85,16 +107,33 @@ export function Features() {
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.1 * (index + 1) }}
+              custom={index}
+              variants={cardVariant}
+              initial="hidden"
+              animate={isInView ? "show" : "hidden"}
+              whileHover={{ y: -8, transition: { type: "spring", stiffness: 300, damping: 20 } }}
             >
-              <div className={`group relative h-full p-8 rounded-2xl bg-card border border-border ${feature.borderHover} transition-all duration-300 hover:shadow-lg ${feature.shadowHover} hover:-translate-y-1 cursor-pointer`}>
-                <div
+              <div className={`group relative h-full p-8 rounded-2xl feature-card-glass border-gradient-hover ${feature.borderHover} shadow-card hover:shadow-card-hover cursor-pointer`}>
+                {/* Feature image */}
+                <div className="relative w-full h-40 rounded-xl overflow-hidden mb-6 -mt-2">
+                  <Image
+                    src={feature.image}
+                    alt={feature.imageAlt}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
+                </div>
+
+                {/* Icon with bounce on hover */}
+                <motion.div
+                  whileHover={{ scale: 1.15, rotate: [0, -5, 5, 0] }}
+                  transition={{ duration: 0.4, ease: "easeInOut" }}
                   className={`inline-flex items-center justify-center w-14 h-14 rounded-xl ${feature.bg} mb-6`}
                 >
                   <feature.icon className={`size-7 ${feature.color}`} />
-                </div>
+                </motion.div>
                 <h3 className="font-heading text-xl font-semibold mb-3">
                   {feature.title}
                 </h3>
@@ -103,10 +142,17 @@ export function Features() {
                 </p>
                 <Link
                   href={feature.href}
-                  className={`inline-flex items-center gap-1.5 mt-5 text-sm font-semibold ${feature.color} group-hover:gap-2.5 transition-all duration-200`}
+                  className={`inline-flex items-center gap-1.5 mt-5 text-sm font-semibold ${feature.color} transition-all duration-200`}
                 >
                   {feature.cta}
-                  <ArrowRight className="w-4 h-4" />
+                  <motion.span
+                    className="inline-block"
+                    initial={{ x: 0 }}
+                    whileHover={{ x: 4 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                  >
+                    <ArrowRight className="w-4 h-4" />
+                  </motion.span>
                 </Link>
               </div>
             </motion.div>

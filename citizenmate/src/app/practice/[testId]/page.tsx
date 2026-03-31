@@ -7,6 +7,7 @@ import { QuizHeader } from "@/components/quiz/quiz-header";
 import { QuizCard } from "@/components/quiz/quiz-card";
 import { QuizProgress } from "@/components/quiz/quiz-progress";
 import { getTestById } from "@/data/tests";
+import { motion } from "framer-motion";
 import { Flag, ChevronLeft, ChevronRight, Send } from "lucide-react";
 
 export default function QuizPage() {
@@ -44,9 +45,13 @@ export default function QuizPage() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-cm-ice">
         <div className="text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-cm-navy text-white font-heading font-bold text-2xl mb-4 animate-pulse">
+          <motion.div
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-cm-navy text-white font-heading font-bold text-2xl mb-4"
+          >
             CM
-          </div>
+          </motion.div>
           <p className="text-cm-slate-500 font-medium">
             Loading your practice test...
           </p>
@@ -76,55 +81,72 @@ export default function QuizPage() {
 
             {/* Navigation buttons */}
             <div className="flex items-center justify-between mt-8 pt-6 border-t border-cm-slate-200">
-              <button
+              <motion.button
                 onClick={prevQuestion}
                 disabled={isFirstQuestion}
+                whileHover={!isFirstQuestion ? { scale: 1.04, x: -2 } : {}}
+                whileTap={!isFirstQuestion ? { scale: 0.96 } : {}}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 className={`inline-flex items-center gap-2 px-5 py-3 rounded-xl font-heading font-semibold text-sm transition-all duration-200 cursor-pointer ${
                   isFirstQuestion
                     ? "text-cm-slate-300 cursor-not-allowed"
-                    : "text-cm-slate-700 hover:bg-cm-slate-100 hover:scale-[1.02] active:scale-[0.98]"
+                    : "text-cm-slate-700 hover:bg-cm-slate-100"
                 }`}
               >
                 <ChevronLeft className="w-4 h-4" />
                 Previous
-              </button>
+              </motion.button>
 
               <div className="flex items-center gap-2">
                 {/* Flag button */}
                 {currentQuestion && (
-                  <button
+                  <motion.button
                     onClick={() => toggleFlag(currentQuestion.id)}
-                    className={`inline-flex items-center gap-1.5 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 cursor-pointer ${
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.94 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                    className={`inline-flex items-center gap-1.5 px-4 py-3 rounded-xl text-sm font-medium transition-colors duration-200 cursor-pointer ${
                       isFlagged
                         ? "bg-amber-100 text-amber-700 border border-amber-300"
                         : "text-cm-slate-500 hover:bg-cm-slate-100"
                     }`}
                     title={isFlagged ? "Unflag question" : "Flag for review"}
                   >
-                    <Flag className="w-4 h-4" />
+                    <motion.span
+                      animate={isFlagged ? { rotate: [0, -15, 15, 0], scale: [1, 1.2, 1] } : {}}
+                      transition={{ duration: 0.4, ease: "easeInOut" }}
+                    >
+                      <Flag className="w-4 h-4" />
+                    </motion.span>
                     <span className="hidden sm:inline">
                       {isFlagged ? "Flagged" : "Flag"}
                     </span>
-                  </button>
+                  </motion.button>
                 )}
 
                 {/* Next / Submit */}
                 {isLastQuestion ? (
-                  <button
+                  <motion.button
                     onClick={submitQuiz}
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-cm-navy hover:bg-cm-navy-light text-white font-heading font-semibold text-sm rounded-xl transition-all duration-200 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.96 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-cm-navy hover:bg-cm-navy-light text-white font-heading font-semibold text-sm rounded-xl transition-colors duration-200 cursor-pointer"
                   >
                     <Send className="w-4 h-4" />
                     Submit Test
-                  </button>
+                  </motion.button>
                 ) : (
-                  <button
+                  <motion.button
                     onClick={nextQuestion}
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-cm-navy hover:bg-cm-navy-light text-white font-heading font-semibold text-sm rounded-xl transition-all duration-200 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+                    whileHover={{ scale: 1.04, x: 2 }}
+                    whileTap={{ scale: 0.96 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-cm-navy hover:bg-cm-navy-light text-white font-heading font-semibold text-sm rounded-xl transition-colors duration-200 cursor-pointer"
                   >
                     Next
                     <ChevronRight className="w-4 h-4" />
-                  </button>
+                  </motion.button>
                 )}
               </div>
             </div>

@@ -11,6 +11,7 @@ import {
   XCircle,
   AlertCircle,
 } from "lucide-react";
+import { toast } from "@/lib/toast";
 
 export function QuizHeader() {
   const { state, submitQuiz, answeredCount } = useQuiz();
@@ -140,6 +141,10 @@ export function QuizHeader() {
                   onClick={() => {
                     setShowConfirm(false);
                     submitQuiz();
+                    toast.default(
+                      "Test submitted! 📝",
+                      "Calculating your results…"
+                    );
                   }}
                   className="flex-1 px-4 py-3 bg-cm-navy hover:bg-cm-navy-light text-white font-heading font-semibold rounded-xl transition-colors duration-200 cursor-pointer"
                 >

@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import type { QuizResult } from "@/lib/types";
 import { TOPIC_LABELS } from "@/lib/types";
@@ -16,6 +18,9 @@ import {
   Globe,
   Scale,
   Landmark,
+  Sparkles,
+  ArrowRight,
+  Target,
 } from "lucide-react";
 
 const TOPIC_ICON_COMPONENTS: Record<TopicCategory, typeof Globe> = {
@@ -24,6 +29,66 @@ const TOPIC_ICON_COMPONENTS: Record<TopicCategory, typeof Globe> = {
   "government-law": Landmark,
   "australian-values": Heart,
 };
+
+// ─── AI Recommendation Logic ────────────────────────────────
+
+function getRecommendation(result: QuizResult): {
+  emoji: string;
+  title: string;
+  message: string;
+  actionLabel: string;
+  actionHref: string;
+  urgency: "critical" | "warning" | "positive";
+} {
+  // Critical: Values not passed
+  if (!result.valuesPassed) {
+    return {
+      emoji: "🎯",
+      title: "Focus Area: Australian Values",
+      message: `You scored ${result.valuesScore}/5 on Australian Values. All 5 must be correct to pass the real test. This is the fastest way to improve your result.`,
+      actionLabel: "Study Australian Values",
+      actionHref: "/study/australian-values",
+      urgency: "critical",
+    };
+  }
+
+  // Warning: Close to passing but not there yet
+  if (!result.passed && result.score >= 12) {
+    return {
+      emoji: "💪",
+      title: "Almost There!",
+      message: `You need ${15 - result.score} more correct answer${15 - result.score === 1 ? "" : "s"} to pass. One more focused practice session could push you over the line.`,
+      actionLabel: "Take Another Practice Test",
+      actionHref: "/practice",
+      urgency: "warning",
+    };
+  }
+
+  // Warning: Need significant improvement
+  if (!result.passed) {
+    const weakest = [...result.topicBreakdown].sort(
+      (a, b) => a.percentage - b.percentage
+    )[0];
+    return {
+      emoji: "📚",
+      title: `Strengthen: ${TOPIC_LABELS[weakest.topic]}`,
+      message: `You scored ${weakest.correct}/${weakest.total} (${weakest.percentage}%) in this area. Studying this topic will have the biggest impact on your overall score.`,
+      actionLabel: `Study ${TOPIC_LABELS[weakest.topic]}`,
+      actionHref: `/study/${weakest.topic}`,
+      urgency: "warning",
+    };
+  }
+
+  // Positive: Passed!
+  return {
+    emoji: "🎉",
+    title: "You're Test-Ready!",
+    message: `Great result! You passed with ${result.score}/${result.totalQuestions}. Keep this up and you'll ace the real test. Consider one more practice to lock in your confidence.`,
+    actionLabel: "Practice Again",
+    actionHref: "/practice",
+    urgency: "positive",
+  };
+}
 
 interface ResultsSummaryProps {
   result: QuizResult;
@@ -48,6 +113,7 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
   );
   const timeMinutes = Math.floor(result.timeUsed / 60);
   const timeSeconds = result.timeUsed % 60;
+  const recommendation = getRecommendation(result);
 
   return (
     <motion.div
@@ -60,7 +126,7 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
       <motion.div
         variants={item}
         className={`
-          relative text-center p-8 sm:p-12 rounded-2xl overflow-hidden
+          relative text-center rounded-2xl overflow-hidden shadow-card
           ${
             result.passed
               ? "bg-gradient-to-br from-emerald-50 via-cm-eucalyptus-light to-emerald-50"
@@ -68,12 +134,25 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
           }
         `}
       >
-        {/* Decorative background pattern */}
-        <div className="absolute inset-0 opacity-[0.04]">
-          <div className="absolute top-8 left-12 w-24 h-24 rounded-full border-4 border-current" />
-          <div className="absolute bottom-6 right-16 w-16 h-16 rounded-full border-4 border-current" />
-          <div className="absolute top-1/3 right-8 w-8 h-8 rounded-full bg-current" />
+        {/* Background Image Overlay */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={result.passed ? "/generated/result-pass.webp" : "/generated/result-tryagain.webp"}
+            alt={result.passed ? "Celebration for passing" : "Encouragement to try again"}
+            fill
+            className={`object-cover ${result.passed ? "mix-blend-overlay opacity-30" : "mix-blend-luminosity opacity-20"}`}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            priority
+          />
         </div>
+
+        <div className="relative z-10 p-8 sm:p-12">
+          {/* Decorative background pattern (kept for extra texture) */}
+          <div className="absolute inset-0 opacity-[0.04] pointer-events-none">
+            <div className="absolute top-8 left-12 w-24 h-24 rounded-full border-4 border-current" />
+            <div className="absolute bottom-6 right-16 w-16 h-16 rounded-full border-4 border-current" />
+            <div className="absolute top-1/3 right-8 w-8 h-8 rounded-full bg-current" />
+          </div>
 
         <motion.div
           initial={{ scale: 0, rotate: -30 }}
@@ -101,16 +180,17 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
           {result.passed ? "You passed, mate!" : "Almost there, mate!"}
         </motion.h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.65 }}
-          className={`text-lg sm:text-xl max-w-lg mx-auto ${result.passed ? "text-emerald-700" : "text-amber-700"}`}
-        >
-          {result.passed
-            ? `Brilliant work! You scored ${result.score}/${result.totalQuestions} — you're well on your way to becoming an Australian citizen.`
-            : `You've already mastered ${percentage}% of what you need. Focus on the areas below and you'll be ready in no time.`}
-        </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.65 }}
+            className={`text-lg sm:text-xl max-w-lg mx-auto ${result.passed ? "text-emerald-800" : "text-amber-800"} drop-shadow-sm font-medium`}
+          >
+            {result.passed
+              ? `Brilliant work! You scored ${result.score}/${result.totalQuestions} — you're well on your way to becoming an Australian citizen.`
+              : `You've already mastered ${percentage}% of what you need. Focus on the areas below and you'll be ready in no time.`}
+          </motion.p>
+        </div>
       </motion.div>
 
       {/* Score Cards */}
@@ -118,7 +198,8 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
         {/* Overall Score */}
         <motion.div
           variants={item}
-          className="bg-white rounded-xl border border-cm-slate-200 p-6 text-center shadow-sm hover:shadow-md transition-shadow duration-200"
+          whileHover={{ y: -4, scale: 1.02, transition: { type: "spring" as const, stiffness: 400, damping: 20 } }}
+          className="bg-white rounded-xl border border-cm-slate-200 p-6 text-center shadow-sm hover:shadow-md transition-shadow duration-200 cursor-default"
         >
           <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-cm-navy-50 text-cm-navy mb-3">
             <Trophy className="w-5 h-5" />
@@ -150,7 +231,8 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
         {/* Values Score */}
         <motion.div
           variants={item}
-          className="bg-white rounded-xl border border-cm-slate-200 p-6 text-center shadow-sm hover:shadow-md transition-shadow duration-200"
+          whileHover={{ y: -4, scale: 1.02, transition: { type: "spring" as const, stiffness: 400, damping: 20 } }}
+          className="bg-white rounded-xl border border-cm-slate-200 p-6 text-center shadow-sm hover:shadow-md transition-shadow duration-200 cursor-default"
         >
           <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-amber-50 text-amber-600 mb-3">
             <Heart className="w-5 h-5" />
@@ -180,7 +262,8 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
         {/* Time Used */}
         <motion.div
           variants={item}
-          className="bg-white rounded-xl border border-cm-slate-200 p-6 text-center shadow-sm hover:shadow-md transition-shadow duration-200"
+          whileHover={{ y: -4, scale: 1.02, transition: { type: "spring" as const, stiffness: 400, damping: 20 } }}
+          className="bg-white rounded-xl border border-cm-slate-200 p-6 text-center shadow-sm hover:shadow-md transition-shadow duration-200 cursor-default"
         >
           <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-sky-50 text-cm-sky mb-3">
             <Clock className="w-5 h-5" />
@@ -235,8 +318,10 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
                   animate={{ width: `${topic.percentage}%` }}
                   transition={{
                     delay: 1.0 + idx * 0.15,
-                    duration: 0.8,
-                    ease: "easeOut",
+                    duration: 0.9,
+                    type: "spring" as const,
+                    stiffness: 80,
+                    damping: 12,
                   }}
                   className={`h-full rounded-full ${
                     topic.percentage >= 80
@@ -249,6 +334,71 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
               </div>
             </div>
           ))}
+        </div>
+      </motion.div>
+
+      {/* AI Recommendation — Smart Next Step */}
+      <motion.div
+        variants={item}
+        className="ai-insight-card rounded-2xl p-6"
+        style={{
+          borderImage:
+            recommendation.urgency === "critical"
+              ? "linear-gradient(180deg, #DC2626, #EF4444) 1"
+              : recommendation.urgency === "warning"
+                ? "linear-gradient(180deg, #D97706, #F59E0B) 1"
+                : "linear-gradient(180deg, #059669, #34D399) 1",
+        }}
+      >
+        <div className="flex items-start gap-4">
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 1.5, type: "spring", stiffness: 300, damping: 15 }}
+            className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center ${
+              recommendation.urgency === "critical"
+                ? "bg-red-100 text-red-600"
+                : recommendation.urgency === "warning"
+                  ? "bg-amber-100 text-amber-600"
+                  : "bg-emerald-100 text-emerald-600"
+            }`}
+          >
+            <Target className="w-5 h-5" />
+          </motion.div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-cm-gold" />
+              <span className="text-[10px] font-bold text-cm-gold uppercase tracking-wider">
+                AI Recommendation
+              </span>
+            </div>
+            <h4 className="text-base font-heading font-bold text-cm-slate-900 mb-1">
+              {recommendation.emoji} {recommendation.title}
+            </h4>
+            <p className="text-sm text-cm-slate-600 leading-relaxed mb-4">
+              {recommendation.message}
+            </p>
+            <motion.div
+              whileHover={{ scale: 1.04, x: 2 }}
+              whileTap={{ scale: 0.96 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              className="inline-block"
+            >
+              <Link
+                href={recommendation.actionHref}
+                className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-heading font-semibold text-white transition-colors duration-200 hover:shadow-md cursor-pointer group ${
+                  recommendation.urgency === "critical"
+                    ? "bg-red-600 hover:bg-red-700"
+                    : recommendation.urgency === "warning"
+                      ? "bg-amber-600 hover:bg-amber-700"
+                      : "bg-emerald-600 hover:bg-emerald-700"
+                }`}
+              >
+                {recommendation.actionLabel}
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+            </motion.div>
+          </div>
         </div>
       </motion.div>
     </motion.div>

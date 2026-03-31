@@ -1,0 +1,3 @@
+# AI-generated images (re-generate with: npx tsx scripts/generate-images.ts)
+# These files are large and should not be committed to git
+*.png

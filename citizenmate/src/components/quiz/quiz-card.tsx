@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuiz } from "@/lib/quiz-context";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Heart } from "lucide-react";
 
 export function QuizCard() {
@@ -13,80 +13,114 @@ export function QuizCard() {
   const questionNumber = state.currentQuestionIndex + 1;
 
   return (
-    <motion.div
-      key={currentQuestion.id}
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      transition={{ duration: 0.2, ease: "easeOut" }}
-      className="w-full"
-    >
-      {/* Question */}
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-4">
-          <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-cm-navy text-white text-sm font-bold font-heading">
-            {questionNumber}
-          </span>
-          {currentQuestion.isValuesQuestion && (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cm-gold-light text-cm-gold text-xs font-semibold border border-amber-200/60">
-              <Heart className="w-3 h-3" />
-              Australian Values
-            </span>
-          )}
-        </div>
-        <h2 className="text-xl sm:text-2xl font-heading font-bold text-cm-slate-900 leading-snug">
-          {currentQuestion.text}
-        </h2>
-      </div>
-
-      {/* Options */}
-      <div className="space-y-3">
-        {currentQuestion.options.map((option, index) => {
-          const isSelected = selectedAnswer === index;
-          const letter = String.fromCharCode(65 + index); // A, B, C, D
-
-          return (
-            <button
-              key={index}
-              onClick={() => selectAnswer(currentQuestion.id, index)}
-              className={`
-                w-full flex items-start gap-4 p-4 sm:p-5 rounded-xl border-2 text-left
-                transition-all duration-200 cursor-pointer group
-                ${
-                  isSelected
-                    ? "border-cm-navy bg-cm-navy-50 shadow-md"
-                    : "border-cm-slate-200 bg-white hover:border-cm-navy-light hover:bg-cm-navy-50/30 hover:shadow-sm"
-                }
-              `}
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={currentQuestion.id}
+        initial={{ opacity: 0, x: 40, scale: 0.97 }}
+        animate={{ opacity: 1, x: 0, scale: 1 }}
+        exit={{ opacity: 0, x: -40, scale: 0.97 }}
+        transition={{ type: "spring", stiffness: 200, damping: 22 }}
+        className="w-full"
+      >
+        {/* Question */}
+        <div className="mb-8">
+          <div className="flex items-center gap-3 mb-4">
+            <motion.span
+              key={`num-${questionNumber}`}
+              initial={{ scale: 0, rotate: -20 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ type: "spring", stiffness: 400, damping: 12 }}
+              className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-cm-navy text-white text-sm font-bold font-heading"
             >
-              {/* Letter badge */}
-              <span
+              {questionNumber}
+            </motion.span>
+            {currentQuestion.isValuesQuestion && (
+              <motion.span
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ type: "spring", stiffness: 300, damping: 15, delay: 0.1 }}
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cm-gold-light text-cm-gold text-xs font-semibold border border-amber-200/60"
+              >
+                <Heart className="w-3 h-3" />
+                Australian Values
+              </motion.span>
+            )}
+          </div>
+          <motion.h2
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.3 }}
+            className="text-xl sm:text-2xl font-heading font-bold text-cm-slate-900 leading-snug"
+          >
+            {currentQuestion.text}
+          </motion.h2>
+        </div>
+
+        {/* Options */}
+        <div className="space-y-3">
+          {currentQuestion.options.map((option, index) => {
+            const isSelected = selectedAnswer === index;
+            const letter = String.fromCharCode(65 + index); // A, B, C, D
+
+            return (
+              <motion.button
+                key={index}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{
+                  delay: 0.15 + index * 0.06,
+                  type: "spring",
+                  stiffness: 200,
+                  damping: 18,
+                }}
+                whileHover={{
+                  scale: 1.01,
+                  x: 4,
+                  transition: { type: "spring", stiffness: 400, damping: 25 },
+                }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => selectAnswer(currentQuestion.id, index)}
                 className={`
-                  flex-shrink-0 inline-flex items-center justify-center w-9 h-9 rounded-lg text-sm font-bold font-heading
-                  transition-all duration-200
+                  w-full flex items-start gap-4 p-4 sm:p-5 rounded-xl border-2 text-left
+                  transition-colors duration-200 cursor-pointer group
                   ${
                     isSelected
-                      ? "bg-cm-navy text-white"
-                      : "bg-cm-slate-100 text-cm-slate-600 group-hover:bg-cm-navy-100 group-hover:text-cm-navy"
+                      ? "border-cm-navy bg-cm-navy-50 shadow-md answer-selected-shimmer"
+                      : "border-cm-slate-200 bg-white hover:border-cm-navy-light hover:bg-cm-navy-50/30 hover:shadow-sm"
                   }
                 `}
               >
-                {letter}
-              </span>
+                {/* Letter badge */}
+                <motion.span
+                  animate={isSelected ? { scale: [1, 1.2, 1] } : { scale: 1 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  className={`
+                    flex-shrink-0 inline-flex items-center justify-center w-9 h-9 rounded-lg text-sm font-bold font-heading
+                    transition-colors duration-200
+                    ${
+                      isSelected
+                        ? "bg-cm-navy text-white"
+                        : "bg-cm-slate-100 text-cm-slate-600 group-hover:bg-cm-navy-100 group-hover:text-cm-navy"
+                    }
+                  `}
+                >
+                  {letter}
+                </motion.span>
 
-              {/* Option text */}
-              <span
-                className={`
-                  text-base sm:text-lg leading-relaxed pt-1
-                  ${isSelected ? "text-cm-navy font-semibold" : "text-cm-slate-700"}
-                `}
-              >
-                {option}
-              </span>
-            </button>
-          );
-        })}
-      </div>
-    </motion.div>
+                {/* Option text */}
+                <span
+                  className={`
+                    text-base sm:text-lg leading-relaxed pt-1
+                    ${isSelected ? "text-cm-navy font-semibold" : "text-cm-slate-700"}
+                  `}
+                >
+                  {option}
+                </span>
+              </motion.button>
+            );
+          })}
+        </div>
+      </motion.div>
+    </AnimatePresence>
   );
 }

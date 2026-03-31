@@ -19,6 +19,7 @@ import { StudySectionCard } from "@/components/study/study-section-card";
 import { LanguageToggle } from "@/components/study/language-toggle";
 import { StudyProgressBar } from "@/components/study/study-progress-bar";
 import type { TopicCategory } from "@/lib/types";
+import { toast } from "@/lib/toast";
 
 const TOPIC_ICONS: Record<TopicCategory, typeof Globe> = {
   "australia-people": Globe,
@@ -129,7 +130,27 @@ export default function TopicStudyPage({
               section={section}
               language={language}
               isComplete={isSectionComplete(section.id)}
-              onToggleComplete={() => toggleSection(section.id)}
+              onToggleComplete={() => {
+                const wasComplete = isSectionComplete(section.id);
+                toggleSection(section.id);
+                if (!wasComplete) {
+                  // Check if this completes the topic
+                  const newCompleted = progress.completed + 1;
+                  if (newCompleted >= progress.total) {
+                    toast.achievement(
+                      `${topic.title} complete! 🌟`,
+                      "You’ve studied every section in this topic. Amazing work!"
+                    );
+                  } else {
+                    toast.success(
+                      "Section completed ✅",
+                      `${language === "zh" ? section.titleZh : section.title} — ${newCompleted}/${progress.total} done`
+                    );
+                  }
+                } else {
+                  toast.info("Section unmarked", "You can revisit it anytime.");
+                }
+              }}
               index={idx}
             />
           ))}

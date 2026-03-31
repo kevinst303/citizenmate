@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import Image from "next/image";
 import { useChat } from "@ai-sdk/react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -12,8 +13,11 @@ import {
   Scale,
   Landmark,
   Heart,
-  Loader2,
+  MessageCircle,
+  HelpCircle,
+  Lightbulb,
 } from "lucide-react";
+import { toast } from "@/lib/toast";
 
 // ─── Rate Limiting ───────────────────────────────────────────
 
@@ -68,6 +72,22 @@ const SUGGESTIONS = [
   },
 ];
 
+// ─── Follow-up Suggestions (shown after AI responds) ────────
+
+const FOLLOW_UP_SUGGESTIONS = [
+  { text: "Tell me more", icon: MessageCircle },
+  { text: "Quiz me on this", icon: HelpCircle },
+  { text: "Why is this important?", icon: Lightbulb },
+];
+
+// ─── Thinking stage labels ───────────────────────────────────
+
+const THINKING_STAGES = [
+  "Reading your question…",
+  "Searching my notes…",
+  "Composing answer…",
+];
+
 // ─── Chat Widget ─────────────────────────────────────────────
 
 export function ChatWidget() {
@@ -77,6 +97,7 @@ export function ChatWidget() {
     date: getTodayString(),
     count: 0,
   }));
+  const [thinkingStage, setThinkingStage] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -95,6 +116,22 @@ export function ChatWidget() {
   } = useChat();
 
   const isStreaming = status === "streaming" || status === "submitted";
+
+  // Cycle through thinking stages while streaming
+  useEffect(() => {
+    if (!isStreaming) {
+      setThinkingStage(0);
+      return;
+    }
+    const interval = setInterval(() => {
+      setThinkingStage((s) => (s + 1) % THINKING_STAGES.length);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [isStreaming]);
+
+  // Check if last message is from assistant (for follow-up chips)
+  const lastMessageIsAssistant =
+    messages.length > 0 && messages[messages.length - 1]?.role === "assistant" && !isStreaming;
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -117,6 +154,20 @@ export function ChatWidget() {
       setDailyUsage(newUsage);
       setInputValue("");
       sendMessage({ text: trimmed });
+
+      // Show warning when approaching or hitting limit
+      if (newUsage.count >= MAX_DAILY_QUESTIONS) {
+        toast.warning(
+          "Daily limit reached",
+          "Come back tomorrow, or explore the study guide!",
+          { timing: { displayDuration: 5000 } }
+        );
+      } else if (newUsage.count === MAX_DAILY_QUESTIONS - 1) {
+        toast.info(
+          "Last question for today",
+          "Make it a good one, mate!"
+        );
+      }
     },
     [isStreaming, isLimitReached, sendMessage]
   );
@@ -172,8 +223,14 @@ export function ChatWidget() {
             {/* Header */}
             <div className="bg-gradient-to-r from-cm-navy via-cm-navy-light to-cm-navy-lighter px-4 py-3.5 flex items-center justify-between shrink-0">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-white/15 flex items-center justify-center border border-white/20">
-                  <GraduationCap className="w-5 h-5 text-white" />
+                <div className="relative w-9 h-9 rounded-xl overflow-hidden border border-white/20 shrink-0 shadow-sm">
+                  <Image
+                    src="/generated/avatar-tutor.webp"
+                    alt="AI Tutor Avatar"
+                    fill
+                    className="object-cover"
+                    sizes="36px"
+                  />
                 </div>
                 <div>
                   <h3 className="text-white font-heading font-bold text-sm">
@@ -199,8 +256,14 @@ export function ChatWidget() {
               {messages.length === 0 && !isStreaming && (
                 <div className="space-y-4">
                   <div className="flex gap-2.5">
-                    <div className="w-8 h-8 rounded-full bg-cm-navy-50 flex items-center justify-center shrink-0">
-                      <Sparkles className="w-4 h-4 text-cm-navy" />
+                    <div className="relative w-8 h-8 rounded-full overflow-hidden shrink-0 shadow-sm ring-1 ring-cm-slate-200">
+                      <Image
+                        src="/generated/avatar-tutor.webp"
+                        alt="AI Tutor"
+                        fill
+                        className="object-cover"
+                        sizes="32px"
+                      />
                     </div>
                     <div className="bg-cm-slate-50 rounded-2xl rounded-tl-sm px-4 py-3 max-w-[85%]">
                       <p className="text-sm text-cm-slate-700 leading-relaxed">
@@ -237,43 +300,107 @@ export function ChatWidget() {
                   }`}
                 >
                   {message.role === "assistant" && (
-                    <div className="w-8 h-8 rounded-full bg-cm-navy-50 flex items-center justify-center shrink-0">
-                      <Sparkles className="w-4 h-4 text-cm-navy" />
+                    <div className="relative w-8 h-8 rounded-full overflow-hidden shrink-0 shadow-sm ring-1 ring-cm-slate-200">
+                      <Image
+                        src="/generated/avatar-tutor.webp"
+                        alt="AI Tutor"
+                        fill
+                        className="object-cover"
+                        sizes="32px"
+                      />
                     </div>
                   )}
-                  <div
-                    className={`rounded-2xl px-4 py-3 max-w-[85%] ${
-                      message.role === "user"
-                        ? "bg-cm-navy text-white rounded-tr-sm"
-                        : "bg-cm-slate-50 text-cm-slate-700 rounded-tl-sm"
-                    }`}
-                  >
-                    <div className="text-sm leading-relaxed whitespace-pre-wrap">
-                      {message.parts
-                        ?.filter((part): part is { type: "text"; text: string } => part.type === "text")
-                        .map((part, i) => (
-                          <span key={i}>{part.text}</span>
-                        ))}
+                  <div>
+                    <div
+                      className={`rounded-2xl px-4 py-3 max-w-[85%] ${
+                        message.role === "user"
+                          ? "bg-cm-navy text-white rounded-tr-sm"
+                          : "bg-cm-slate-50 text-cm-slate-700 rounded-tl-sm"
+                      }`}
+                    >
+                      <div className="text-sm leading-relaxed whitespace-pre-wrap">
+                        {message.parts
+                          ?.filter((part): part is { type: "text"; text: string } => part.type === "text")
+                          .map((part, i) => (
+                            <span key={i}>{part.text}</span>
+                          ))}
+                      </div>
                     </div>
+                    {/* Source label for AI messages — trust building */}
+                    {message.role === "assistant" && (
+                      <div className="source-label mt-1.5 ml-1 flex items-center gap-1">
+                        <BookOpen className="w-3 h-3 text-cm-slate-300" />
+                        <span className="text-[10px] text-cm-slate-400">
+                          Source: Our Aussie Citizenship Guide
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
 
-              {/* Loading indicator */}
+              {/* Multi-stage thinking indicator — Action Transparency */}
               {isStreaming && messages.length > 0 && messages[messages.length - 1]?.role === "user" && (
-                <div className="flex gap-2.5">
-                  <div className="w-8 h-8 rounded-full bg-cm-navy-50 flex items-center justify-center shrink-0">
-                    <Sparkles className="w-4 h-4 text-cm-navy" />
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex gap-2.5"
+                >
+                  <div className="relative w-8 h-8 rounded-full overflow-hidden shrink-0 shadow-sm ring-1 ring-cm-slate-200">
+                    <Image
+                      src="/generated/avatar-tutor.webp"
+                      alt="AI Tutor Thinking"
+                      fill
+                      className="object-cover"
+                      sizes="32px"
+                    />
                   </div>
                   <div className="bg-cm-slate-50 rounded-2xl rounded-tl-sm px-4 py-3">
-                    <div className="flex items-center gap-1.5">
-                      <Loader2 className="w-3.5 h-3.5 text-cm-slate-400 animate-spin" />
-                      <span className="text-xs text-cm-slate-400">
-                        Thinking...
+                    <div className="flex items-center gap-2">
+                      <span className="flex items-center gap-1 text-cm-slate-400">
+                        <span className="ai-typing-dot" />
+                        <span className="ai-typing-dot" />
+                        <span className="ai-typing-dot" />
                       </span>
+                      <AnimatePresence mode="wait">
+                        <motion.span
+                          key={thinkingStage}
+                          initial={{ opacity: 0, y: 4 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -4 }}
+                          transition={{ duration: 0.25 }}
+                          className="text-xs text-cm-slate-400 font-medium"
+                        >
+                          {THINKING_STAGES[thinkingStage]}
+                        </motion.span>
+                      </AnimatePresence>
                     </div>
                   </div>
-                </div>
+                </motion.div>
+              )}
+
+              {/* Follow-up suggestion chips after AI responds */}
+              {lastMessageIsAssistant && !isLimitReached && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3, duration: 0.4 }}
+                  className="pl-10 flex flex-wrap gap-2"
+                >
+                  {FOLLOW_UP_SUGGESTIONS.map((s, i) => (
+                    <motion.button
+                      key={s.text}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.4 + i * 0.1 }}
+                      onClick={() => handleSend(s.text)}
+                      className="follow-up-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cm-navy-50 border border-cm-navy-100 text-xs text-cm-navy font-medium hover:bg-cm-navy-100 cursor-pointer"
+                    >
+                      <s.icon className="w-3 h-3" />
+                      {s.text}
+                    </motion.button>
+                  ))}
+                </motion.div>
               )}
 
               <div ref={messagesEndRef} />

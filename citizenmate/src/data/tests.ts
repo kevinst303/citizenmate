@@ -109,6 +109,60 @@ export const mockTests: QuizTest[] = [
     "The ultimate practice test — comprehensive coverage across all topics. Ace this and you're ready for the real thing!",
     1024
   ),
+  buildTest(
+    "mock-test-7",
+    "Practice Test 7",
+    "Focus on government structures, the court system, and how laws are made. Perfect for strengthening your knowledge of Australian governance.",
+    1337
+  ),
+  buildTest(
+    "mock-test-8",
+    "Practice Test 8",
+    "Explore questions on multiculturalism, community values, and what it means to be a good Australian citizen. A deep dive into values.",
+    2048
+  ),
+  buildTest(
+    "mock-test-9",
+    "Practice Test 9",
+    "A well-rounded mix covering Indigenous heritage, democratic rights, and modern Australian society. Great for final revision.",
+    3141
+  ),
+  buildTest(
+    "mock-test-10",
+    "Practice Test 10",
+    "The final challenge — your most comprehensive test yet. If you can pass this one, you're absolutely ready for the real citizenship test!",
+    4096
+  ),
+  buildTest(
+    "mock-test-11",
+    "Practice Test 11",
+    "Test your knowledge of Australia's unique inventions, sporting legends, and cultural milestones in this specially curated test.",
+    5555
+  ),
+  buildTest(
+    "mock-test-12",
+    "Practice Test 12",
+    "Focus on government agencies, the tax system, superannuation, and How laws protect Australian workers and consumers.",
+    6174
+  ),
+  buildTest(
+    "mock-test-13",
+    "Practice Test 13",
+    "Dive deep into Australian values like reconciliation, environmental stewardship, and community resilience.",
+    7071
+  ),
+  buildTest(
+    "mock-test-14",
+    "Practice Test 14",
+    "A balanced mix of history, governance, and values from across the entire 500-question bank. Great all-round revision.",
+    8192
+  ),
+  buildTest(
+    "mock-test-15",
+    "Practice Test 15",
+    "The ultimate final test — covering the broadest range of questions. Pass this and the real test will feel easy!",
+    9999
+  ),
 ];
 
 export function getTestById(id: string): QuizTest | undefined {

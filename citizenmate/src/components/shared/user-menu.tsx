@@ -99,6 +99,21 @@ export function UserMenu() {
                 <LayoutDashboard className="w-4 h-4 text-cm-slate-400" />
                 Dashboard
               </Link>
+              <button
+                onClick={async () => {
+                  setIsOpen(false);
+                  try {
+                    const res = await fetch('/api/checkout', { method: 'POST', body: JSON.stringify({ userId: user?.id, email: user?.email }) });
+                    const data = await res.json();
+                    if (data.url) window.location.href = data.url;
+                  } catch (e) {
+                    console.error(e);
+                  }
+                }}
+                className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-cm-blue hover:bg-cm-blue-50 transition-colors cursor-pointer text-left"
+              >
+                Upgrade to Premium
+              </button>
               <Link
                 href="/dashboard"
                 onClick={() => setIsOpen(false)}
