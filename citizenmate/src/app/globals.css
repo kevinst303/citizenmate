@@ -5,7 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ===== CitizenMate Design System — Conseil/Pixfort Inspired ===== */
-/* Teal #00727a · Dark #1a1a1a · Light #f4f6f9 */
+/* Teal #006d77 · Purple #3d348b · Dark #1a1a1a · Alt bg #F4F4F5 */
 /* Premium consulting aesthetic with Australian content spirit */
 
 @theme inline {
@@ -52,7 +52,7 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 
   /* Conseil-inspired Teal Palette */
-  --color-cm-teal: #00727a;
+  --color-cm-teal: #006d77;
   --color-cm-teal-dark: #005a61;
   --color-cm-teal-darker: #004a50;
   --color-cm-teal-light: #e0f5f6;
@@ -60,11 +60,15 @@
   --color-cm-teal-100: #cceded;
 
   /* Legacy navy aliases — preserved for dashboard/quiz backward compat */
-  --color-cm-navy: #00727a;
+  --color-cm-navy: #006d77;
   --color-cm-navy-light: #008a93;
   --color-cm-navy-lighter: #33959c;
   --color-cm-navy-50: #f0fafa;
   --color-cm-navy-100: #cceded;
+
+  /* Purple — Conseil secondary accent */
+  --color-cm-purple: #3d348b;
+  --color-cm-purple-bg: rgba(107, 97, 196, 0.15);
 
   /* Accent — Dark (headings, dark-bg CTAs) */
   --color-cm-dark: #1a1a1a;
@@ -83,8 +87,8 @@
 
   /* Neutrals — Conseil-aligned */
   --color-cm-white: #FFFFFF;
-  --color-cm-ice: #f4f6f9;
-  --color-cm-slate-50: #f4f6f9;
+  --color-cm-ice: #F4F4F5;
+  --color-cm-slate-50: #F4F4F5;
   --color-cm-slate-100: #e8eaef;
   --color-cm-slate-200: #d0d4dd;
   --color-cm-slate-400: #8b92a0;
@@ -98,37 +102,37 @@
 :root {
   /* Conseil-inspired theme — Light mode */
   --background: #FFFFFF;
-  --foreground: #1a1a1a;
+  --foreground: #3F3F46;
   --card: #FFFFFF;
-  --card-foreground: #1a1a1a;
+  --card-foreground: #3F3F46;
   --popover: #FFFFFF;
-  --popover-foreground: #1a1a1a;
-  --primary: #00727a;
+  --popover-foreground: #3F3F46;
+  --primary: #006d77;
   --primary-foreground: #FFFFFF;
-  --secondary: #dde1f1;
-  --secondary-foreground: #1a1a1a;
-  --muted: #f4f6f9;
-  --muted-foreground: #4a4a4a;
+  --secondary: rgba(107, 97, 196, 0.15);
+  --secondary-foreground: #3d348b;
+  --muted: #F4F4F5;
+  --muted-foreground: #52525B;
   --accent: #f0fafa;
-  --accent-foreground: #00727a;
+  --accent-foreground: #006d77;
   --destructive: #DC2626;
   --border: #e8eaef;
   --input: #e8eaef;
-  --ring: #00727a;
-  --chart-1: #00727a;
+  --ring: #006d77;
+  --chart-1: #006d77;
   --chart-2: #1a1a1a;
   --chart-3: #059669;
   --chart-4: #D97706;
   --chart-5: #0284C7;
-  --radius: 1rem;
+  --radius: 10px;
   --sidebar: #FFFFFF;
   --sidebar-foreground: #1a1a1a;
-  --sidebar-primary: #00727a;
+  --sidebar-primary: #006d77;
   --sidebar-primary-foreground: #FFFFFF;
   --sidebar-accent: #f0fafa;
-  --sidebar-accent-foreground: #00727a;
+  --sidebar-accent-foreground: #006d77;
   --sidebar-border: #e8eaef;
-  --sidebar-ring: #00727a;
+  --sidebar-ring: #006d77;
 }
 
 .dark {
@@ -179,7 +183,7 @@
   /* Selection colors — teal brand */
   ::selection {
     background-color: #cceded;
-    color: #00727a;
+    color: #006d77;
   }
 
   /* Focus-visible ring */
@@ -202,7 +206,7 @@
 /* ===== Conseil-Inspired Gradient Utilities ===== */
 
 .text-gradient-teal {
-  background: linear-gradient(135deg, #00727a 0%, #008a93 50%, #2dd4bf 100%);
+  background: linear-gradient(135deg, #006d77 0%, #008a93 50%, #2dd4bf 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -217,14 +221,14 @@
 
 /* Legacy gradient aliases */
 .text-gradient-aussie {
-  background: linear-gradient(135deg, #00727a 0%, #005a61 40%, #1a1a1a 100%);
+  background: linear-gradient(135deg, #006d77 0%, #005a61 40%, #1a1a1a 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .text-gradient-navy {
-  background: linear-gradient(135deg, #00727a, #005a61);
+  background: linear-gradient(135deg, #006d77, #005a61);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -256,7 +260,7 @@
 
 .badge-pill-teal {
   background: #e0f5f6;
-  color: #00727a;
+  color: #006d77;
   border-color: #cceded;
 }
 
@@ -266,26 +270,27 @@
   border: none;
 }
 
-/* Conseil card style — softer radius, subtle border, hover lift */
+/* Conseil card style — exact Conseil tokens */
 .card-conseil {
   background: #FFFFFF;
-  border: 1px solid #e8eaef;
-  border-radius: 15px;
-  padding: 2rem;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
   transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
 }
 
 .card-conseil:hover {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  transform: translateY(-2px);
-  border-color: #d0d4dd;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  transform: translateY(-3px);
+  border-color: rgba(0,0,0,0.12);
 }
 
 /* Conseil card — popular/highlighted variant */
 .card-conseil-popular {
-  background: linear-gradient(135deg, #00727a 0%, #005a61 100%);
+  background: linear-gradient(135deg, #006d77 0%, #005a61 100%);
   border: none;
-  border-radius: 15px;
+  border-radius: 10px;
   padding: 2rem;
   color: #FFFFFF;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
@@ -311,7 +316,7 @@
 }
 
 .btn-rounded-teal {
-  background: #00727a;
+  background: #006d77;
   color: #FFFFFF;
 }
 
@@ -327,8 +332,8 @@
 }
 
 .btn-rounded-outline:hover {
-  border-color: #00727a;
-  color: #00727a;
+  border-color: #006d77;
+  color: #006d77;
   background: #f0fafa;
 }
 
@@ -342,9 +347,9 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
-/* Section alternate background */
+/* Section alternate background — Conseil zinc-100 */
 .section-alt-bg {
-  background-color: #f4f6f9;
+  background-color: #F4F4F5;
 }
 
 /* ===== Conseil Animations ===== */
@@ -402,14 +407,9 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Floating navbar glass effect */
+/* Navbar — solid white fixed (Conseil style, no glassmorphism) */
 .navbar-glass {
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(20px) saturate(200%);
-  -webkit-backdrop-filter: blur(20px) saturate(200%);
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.04),
-    0 4px 16px rgba(0, 0, 0, 0.06);
+  background: #FFFFFF;
 }
 
 /* Conseil shadow system — softer */
@@ -496,7 +496,7 @@
   inset: 0;
   border-radius: inherit;
   padding: 2px;
-  background: linear-gradient(135deg, #00727a, #2dd4bf, #005a61);
+  background: linear-gradient(135deg, #006d77, #2dd4bf, #005a61);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
   -webkit-mask-composite: xor;
@@ -566,7 +566,7 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: var(--stat-accent-color, #00727a);
+  background: var(--stat-accent-color, #006d77);
   border-radius: 3px 3px 0 0;
 }
 
@@ -580,7 +580,7 @@
 /* Topic row */
 .topic-row {
   position: relative;
-  border-left: 3px solid var(--topic-accent-color, #00727a);
+  border-left: 3px solid var(--topic-accent-color, #006d77);
   transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
@@ -694,7 +694,7 @@
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid rgba(232, 234, 239, 0.6);
-  border-left: 4px solid var(--insight-accent, #00727a);
+  border-left: 4px solid var(--insight-accent, #006d77);
   position: relative;
   overflow: hidden;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
@@ -929,7 +929,7 @@
 
 /* Glassmorphic pricing popular card */
 .glass-pricing-popular {
-  background: linear-gradient(135deg, #00727a 0%, #005a61 100%);
+  background: linear-gradient(135deg, #006d77 0%, #005a61 100%);
   border: none;
   border-radius: 15px;
   box-shadow:
@@ -1008,5 +1008,5 @@
 }
 
 .wave-divider-alt::after {
-  background: #f4f6f9;
+  background: #F4F4F5;
 }

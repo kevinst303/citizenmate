@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Manrope, DM_Sans } from "next/font/google";
+import { Poppins, Inter } from "next/font/google";
 import { LayoutShell } from "@/components/shared/layout-shell";
 import { StudyProvider } from "@/lib/study-context";
 import { TestDateProvider } from "@/lib/test-date-context";
@@ -16,14 +16,14 @@ const jsonLd = {
   "description": "Your mate for the citizenship test. Free practice tests, bilingual study, AI-powered learning."
 };
 
-const manropeHeading = Manrope({
+const poppinsHeading = Poppins({
   variable: "--font-heading-family",
   subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700", "800"],
   display: "swap",
 });
 
-const dmSansBody = DM_Sans({
+const interBody = Inter({
   variable: "--font-body",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600"],
@@ -94,10 +94,10 @@ export default function RootLayout({
       lang="en"
       suppressHydrationWarning
       data-scroll-behavior="smooth"
-      className={`${manropeHeading.variable} ${dmSansBody.variable} h-full antialiased`}
+      className={`${poppinsHeading.variable} ${interBody.variable} h-full antialiased`}
     >
       <head>
-        <meta name="theme-color" content="#00727a" />
+        <meta name="theme-color" content="#006d77" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

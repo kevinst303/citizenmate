@@ -58,7 +58,7 @@ const faqItem = {
 
 export function FAQ() {
   return (
-    <section id="faq" className="py-24 sm:py-32">
+    <section id="faq" className="py-20 sm:py-28">
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         {/* Section header — Conseil style */}
         <div className="text-center mb-14">
@@ -97,7 +97,7 @@ export function FAQ() {
               viewport={{ once: true, margin: "-50px" }}
             >
               <AccordionItem
-                className="border border-cm-slate-100 rounded-[15px] px-6 data-open:border-cm-teal/20 data-open:shadow-sm transition-all duration-200 bg-white"
+                className="border border-cm-slate-100 rounded-[10px] px-6 data-open:border-cm-teal/20 data-open:shadow-sm transition-all duration-200 bg-white"
               >
                 <AccordionTrigger className="text-left font-heading font-semibold text-base py-5 hover:no-underline hover:text-cm-teal transition-colors cursor-pointer aria-expanded:text-cm-teal">
                   {faq.question}

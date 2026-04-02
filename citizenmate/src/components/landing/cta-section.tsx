@@ -9,7 +9,7 @@ export function CTASection() {
   const isInView = useInView(ref, { once: true, margin: "-50px" });
 
   return (
-    <section className="py-24 sm:py-32 relative overflow-hidden bg-gradient-to-br from-cm-teal-dark via-cm-teal to-[#008a93]">
+    <section className="py-20 sm:py-28 relative overflow-hidden bg-gradient-to-br from-cm-teal-dark via-cm-teal to-[#008a93]">
       {/* Subtle decorative circles */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/3" />
       <div className="absolute bottom-0 left-0 w-72 h-72 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/3" />

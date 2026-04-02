@@ -49,7 +49,7 @@ const cardVariant = {
 
 export function SocialProof() {
   return (
-    <section className="py-24 sm:py-32">
+    <section className="py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
@@ -136,13 +136,13 @@ export function SocialProof() {
           ))}
         </div>
 
-        {/* Summary stat row */}
+        {/* Summary stat row — elevated card style */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.5 }}
-          className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-16"
+          className="mt-14 p-6 sm:p-8 rounded-2xl bg-cm-teal-50 border border-cm-teal-100/50 flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-16"
         >
           {[
             { value: "4.9/5", label: "Average rating" },
@@ -153,7 +153,7 @@ export function SocialProof() {
               <span className="font-heading text-3xl font-extrabold text-cm-teal">
                 {stat.value}
               </span>
-              <p className="text-sm text-muted-foreground mt-1">{stat.label}</p>
+              <p className="text-sm text-muted-foreground mt-1 font-medium">{stat.label}</p>
             </div>
           ))}
         </motion.div>

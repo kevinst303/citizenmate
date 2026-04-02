@@ -52,7 +52,7 @@ export function HowItWorks() {
   const isInView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
-    <section id="how-it-works" className="py-24 sm:py-32 section-alt-bg">
+    <section id="how-it-works" className="py-20 sm:py-28 section-alt-bg">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section header — Conseil style */}
         <div className="text-center max-w-2xl mx-auto mb-20">
@@ -73,9 +73,9 @@ export function HowItWorks() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.1 }}
-            className="font-heading text-3xl sm:text-4xl md:text-[2.65rem] font-extrabold tracking-tight text-balance"
+            className="font-heading text-3xl sm:text-4xl md:text-[2.65rem] font-extrabold tracking-tight text-balance leading-tight"
           >
-            Four steps to citizenship
+            Three steps to citizenship
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 10 }}
@@ -157,24 +157,6 @@ export function HowItWorks() {
             </motion.div>
           ))}
         </div>
-
-        {/* Bottom stat — Conseil large number */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-24 text-center"
-        >
-          <div className="inline-flex flex-col items-center px-12 py-8 rounded-2xl bg-white border border-cm-slate-100">
-            <span className="font-heading text-5xl sm:text-6xl font-extrabold text-cm-teal">
-              97%
-            </span>
-            <span className="mt-2 text-muted-foreground font-medium text-sm">
-              of our users pass their citizenship test on the first attempt
-            </span>
-          </div>
-        </motion.div>
       </div>
     </section>
   );

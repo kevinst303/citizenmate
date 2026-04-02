@@ -60,7 +60,7 @@ export function Features() {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section id="features" className="py-24 sm:py-32">
+    <section id="features" className="py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section header — Conseil style with badge pill */}
         <div className="text-center max-w-2xl mx-auto mb-16">
@@ -110,7 +110,7 @@ export function Features() {
             >
               <div className="group relative h-full card-conseil cursor-pointer">
                 {/* Feature image */}
-                <div className="relative w-full h-44 rounded-xl overflow-hidden mb-6 -mt-0.5">
+                <div className="relative w-full h-44 rounded-[10px] overflow-hidden mb-6 -mt-0.5">
                   <Image
                     src={feature.image}
                     alt={feature.imageAlt}
