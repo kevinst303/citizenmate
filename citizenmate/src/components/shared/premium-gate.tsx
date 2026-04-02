@@ -75,7 +75,7 @@ export function PremiumGate({
           className="bg-cm-red hover:bg-cm-red-dark text-white font-heading font-semibold px-6 py-3 rounded-xl shadow-lg shadow-cm-red/20 cursor-pointer"
         >
           <Sparkles className="w-4 h-4 mr-2" />
-          Get Sprint Pass — A$19.99
+          Get Sprint Pass — A$29.99
           <ArrowRight className="w-4 h-4 ml-2" />
         </Button>
         <p className="text-xs text-cm-slate-400 mt-3">
@@ -112,7 +112,7 @@ export function PremiumGate({
             className="w-full bg-cm-red hover:bg-cm-red-dark text-white font-heading font-semibold py-3 rounded-xl shadow-lg shadow-cm-red/20 cursor-pointer"
           >
             <Sparkles className="w-4 h-4 mr-2" />
-            Get Sprint Pass — A$19.99
+            Get Sprint Pass — A$29.99
           </Button>
         </motion.div>
       </div>

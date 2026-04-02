@@ -1,8 +1,17 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
+import { createSupabaseServerClient } from '@/lib/supabase-server';
 
-export async function POST(req: Request) {
+export async function POST() {
   try {
+    // ── Verify authenticated user server-side ──
+    const supabase = await createSupabaseServerClient();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const stripeKey = process.env.STRIPE_SECRET_KEY;
     if (!stripeKey) {
       return NextResponse.json({ error: 'Stripe not configured' }, { status: 500 });
@@ -16,12 +25,6 @@ export async function POST(req: Request) {
       }
     });
 
-    const { userId, email } = await req.json();
-
-    if (!userId || !email) {
-      return NextResponse.json({ error: 'Missing userId or email' }, { status: 400 });
-    }
-
     const priceId = process.env.NEXT_PUBLIC_STRIPE_PRICE_ID;
     if (!priceId) {
       return NextResponse.json({ error: 'Price ID not configured' }, { status: 500 });
@@ -29,6 +32,7 @@ export async function POST(req: Request) {
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://citizenmate.com.au';
 
+    // Use verified user identity — never trust client-provided userId/email
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
@@ -40,10 +44,10 @@ export async function POST(req: Request) {
       mode: 'payment', // One-time payment for Sprint Pass
       success_url: `${siteUrl}/dashboard?checkout=success`,
       cancel_url: `${siteUrl}/#pricing`,
-      client_reference_id: userId,
-      customer_email: email,
+      client_reference_id: user.id,
+      customer_email: user.email,
       metadata: {
-        userId,
+        userId: user.id,
         product: 'sprint_pass',
       },
     });

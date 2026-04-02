@@ -27,7 +27,7 @@ const plans = [
   },
   {
     name: "Exam Sprint Pass",
-    price: "A$19.99",
+    price: "A$29.99",
     period: "90 days",
     description: "Everything you need to pass — designed for your study window.",
     cta: "Get Sprint Pass",

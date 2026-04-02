@@ -18,6 +18,7 @@ import {
   Lightbulb,
 } from "lucide-react";
 import { toast } from "@/lib/toast";
+import { usePremium } from "@/lib/auth-context";
 
 // ─── Rate Limiting ───────────────────────────────────────────
 
@@ -91,6 +92,7 @@ const THINKING_STAGES = [
 // ─── Chat Widget ─────────────────────────────────────────────
 
 export function ChatWidget() {
+  const { isPremium, upgrade } = usePremium();
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [dailyUsage, setDailyUsage] = useState<DailyUsage>(() => ({
@@ -106,7 +108,7 @@ export function ChatWidget() {
     setDailyUsage(getDailyUsage());
   }, []);
 
-  const isLimitReached = dailyUsage.count >= MAX_DAILY_QUESTIONS;
+  const isLimitReached = !isPremium && dailyUsage.count >= MAX_DAILY_QUESTIONS;
 
   const {
     messages,
@@ -140,10 +142,10 @@ export function ChatWidget() {
 
   // Focus input when panel opens
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && !isLimitReached) {
       setTimeout(() => inputRef.current?.focus(), 300);
     }
-  }, [isOpen]);
+  }, [isOpen, isLimitReached]);
 
   const handleSend = useCallback(
     (text: string) => {
@@ -408,13 +410,22 @@ export function ChatWidget() {
 
             {/* Rate limit banner */}
             {isLimitReached && (
-              <div className="mx-4 mb-2 px-3 py-2 bg-cm-gold-light rounded-xl text-center">
-                <p className="text-xs text-cm-gold font-semibold">
-                  Daily limit reached (3/3 questions)
-                </p>
-                <p className="text-xs text-cm-slate-500 mt-0.5">
-                  Come back tomorrow, or explore the study guide!
-                </p>
+              <div className="mx-4 mb-2 px-3 py-3 bg-cm-gold-light/40 border border-cm-gold rounded-xl flex flex-col items-center text-center gap-2">
+                <div>
+                  <p className="text-sm text-cm-navy font-bold">
+                    Daily limit reached
+                  </p>
+                  <p className="text-xs text-cm-slate-600 mt-0.5 max-w-[250px] mx-auto">
+                    You've reached your free 3 questions for today.
+                  </p>
+                </div>
+                <button
+                  onClick={upgrade}
+                  className="w-full mt-1 bg-cm-red hover:bg-cm-red-dark text-white text-xs font-semibold py-2 rounded-lg flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  Unlock Unlimited Tutor Access
+                </button>
               </div>
             )}
 
@@ -447,7 +458,7 @@ export function ChatWidget() {
             </form>
 
             {/* Usage counter */}
-            {!isLimitReached && dailyUsage.count > 0 && (
+            {!isPremium && !isLimitReached && dailyUsage.count > 0 && (
               <div className="px-4 pb-2">
                 <p className="text-[11px] text-cm-slate-400 text-center">
                   {remaining} question{remaining !== 1 ? "s" : ""} remaining

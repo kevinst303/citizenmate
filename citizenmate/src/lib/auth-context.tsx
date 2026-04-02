@@ -228,11 +228,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const response = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId: user.id,
-          email: user.email,
-        }),
       });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        console.error("[Checkout] Server error:", errorData.error || response.statusText);
+        return;
+      }
 
       const data = await response.json();
 

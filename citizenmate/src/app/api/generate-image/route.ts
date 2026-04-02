@@ -95,6 +95,36 @@ async function pollTask(taskId: string, maxWaitMs: number = 120_000): Promise<st
 
 export async function POST(request: NextRequest) {
   try {
+    // ── Auth check ──
+    const { createSupabaseServerClient } = await import('@/lib/supabase-server');
+    const supabase = await createSupabaseServerClient();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // ── Rate limiting (5 images per hour per IP) ──
+    const { rateLimit, getClientIP } = await import('@/lib/rate-limit');
+    const ip = getClientIP(request);
+    const limiter = rateLimit(`image:${ip}`, {
+      maxRequests: 5,
+      windowMs: 60 * 60 * 1000, // 1 hour
+    });
+
+    if (!limiter.success) {
+      const retryAfter = Math.ceil(limiter.resetIn / 1000);
+      return NextResponse.json(
+        { error: 'Rate limit exceeded. Please try again later.' },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': String(retryAfter),
+          },
+        }
+      );
+    }
+
     const body = (await request.json()) as GenerateImageRequest;
 
     if (!body.prompt) {

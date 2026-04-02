@@ -121,19 +121,27 @@ export function Hero() {
           >
             <div className="flex -space-x-2.5">
               {[
-                "from-teal-400 to-teal-600",
-                "from-emerald-400 to-emerald-600",
-                "from-sky-400 to-sky-600",
-                "from-violet-400 to-violet-600",
-                "from-orange-400 to-orange-600",
-              ].map((gradient, i) => (
+                "/generated/avatars/avatar_new_1_1775103892672.png",
+                "/generated/avatars/avatar_new_2_1775103906195.png",
+                "/generated/avatars/avatar_new_3_1775103920848.png",
+                "/generated/avatars/avatar_new_4_1775103934205.png",
+                "/generated/avatars/avatar_new_5_1775103948242.png",
+              ].map((src, i) => (
                 <motion.div
                   key={i}
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ delay: 1.0 + i * 0.08, type: "spring", stiffness: 300, damping: 12 }}
-                  className={`w-9 h-9 rounded-full bg-gradient-to-br ${gradient} border-[2.5px] border-white/40`}
-                />
+                  className="w-9 h-9 rounded-full border-[2.5px] border-[#004a50]/80 overflow-hidden relative shrink-0"
+                >
+                  <Image
+                    src={src}
+                    alt={`Student ${i + 1}`}
+                    fill
+                    className="object-cover"
+                    sizes="36px"
+                  />
+                </motion.div>
               ))}
             </div>
             <div className="text-sm text-white/80">

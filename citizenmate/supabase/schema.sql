@@ -9,9 +9,14 @@
 -- User profiles (extends Supabase auth.users)
 CREATE TABLE IF NOT EXISTS profiles (
   id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  email TEXT,
   display_name TEXT,
+  avatar_url TEXT,
+  is_premium BOOLEAN DEFAULT FALSE,
+  premium_expires_at TIMESTAMPTZ,
+  stripe_customer_id TEXT,
+  study_language TEXT DEFAULT 'en',
   test_date DATE,
-  preferred_language TEXT DEFAULT 'en',
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
