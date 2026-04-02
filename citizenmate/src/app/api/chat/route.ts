@@ -122,14 +122,11 @@ export async function POST(req: Request) {
   }
 
   const result = streamText({
-    model: google("gemini-2.0-flash"),
+    model: google("gemini-2.5-flash"),
     system: getChatSystemPrompt(),
-    messages: await convertToModelMessages(sanitizedMessages),
+    messages: sanitizedMessages,
   });
-
-  return createUIMessageStreamResponse({
-    status: 200,
-    stream: result.toUIMessageStream(),
+  return result.toUIMessageStreamResponse({
     headers: {
       "X-RateLimit-Remaining": String(limiter.remaining),
     },

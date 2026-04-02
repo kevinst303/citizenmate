@@ -321,11 +321,11 @@ export function ChatWidget() {
                       }`}
                     >
                       <div className="text-sm leading-relaxed whitespace-pre-wrap">
-                        {message.parts
-                          ?.filter((part): part is { type: "text"; text: string } => part.type === "text")
-                          .map((part, i) => (
-                            <span key={i}>{part.text}</span>
-                          ))}
+                        {message.parts && message.parts.length > 0
+                          ? message.parts
+                              .filter((part): part is { type: "text"; text: string } => part.type === "text")
+                              .map((part, i) => <span key={i}>{part.text}</span>)
+                          : (message as any).content}
                       </div>
                     </div>
                     {/* Source label for AI messages — trust building */}
