@@ -188,6 +188,7 @@ Builder agents must verify `npx tsc --noEmit` before finishing.
 | Quiz results | `src/app/practice/[testId]/results/page.tsx` | Token-level only; regression check in Phase 5 |
 | Smart practice | `src/app/practice/smart/page.tsx` | Apply Conseil interior page patterns |
 | Smart practice session | `src/app/practice/smart/session/page.tsx` | Token-level only; regression check in Phase 5 |
+| Smart practice layout | `src/app/practice/smart/layout.tsx` | Token-level only; regression check in Phase 5 |
 | Quiz header | `src/components/quiz/quiz-header.tsx` | Full restyle |
 | Quiz progress | `src/components/quiz/quiz-progress.tsx` | Apply Conseil token |
 | Quiz timer | `src/components/quiz/quiz-timer.tsx` | Apply Conseil token |
@@ -224,11 +225,20 @@ These pages are **in scope for token-level restyling only** (colors, typography,
 
 | Page | Disposition |
 |---|---|
-| `src/app/blog/page.tsx` + `[slug]/` | Token-level; regression check in Phase 5 |
+| `src/app/blog/layout.tsx` | Token-level only; regression check in Phase 5 |
+| `src/app/blog/page.tsx` + `[slug]/page.tsx` + `[slug]/blog-client.tsx` | Token-level; regression check in Phase 5 |
 | `src/app/terms/page.tsx` | Token-level; regression check in Phase 5 |
 | `src/app/privacy/page.tsx` | Token-level; regression check in Phase 5 |
 | `src/app/cookies/page.tsx` | Token-level; regression check in Phase 5 |
 | `src/app/offline/page.tsx` | Token-level; regression check in Phase 5 |
+
+### Phase 3 → Phase 4 Gate
+
+Before Phase 4 begins, create `citizenmate/docs/research/conseil/COMPONENT_GATE.md` listing every component from Phase 3 with:
+- `tsc --noEmit` pass: YES/NO
+- Merged to main: YES/NO
+
+All entries must be YES before Phase 4 assembly starts.
 
 ### Phase 4: Page Assembly
 
