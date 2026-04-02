@@ -1,8 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { SubpageHero } from "@/components/shared/subpage-hero";
 
 interface LegalSection {
   id: string;
@@ -23,35 +22,22 @@ export function LegalLayout({
   children,
 }: LegalLayoutProps) {
   return (
-    <div className="min-h-screen bg-cm-ice">
+    <div className="min-h-screen bg-slate-50 pb-24">
       {/* Hero header */}
-      <div className="bg-cm-navy text-white">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ type: "spring", stiffness: 120, damping: 18 }}
-          >
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 text-sm text-white/60 hover:text-white transition-colors mb-6"
-            >
-              <ArrowLeft className="size-4" />
-              Back to home
-            </Link>
-            <h1 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight">
-              {title}
-            </h1>
-            <p className="mt-3 text-sm text-white/60">
-              Last updated: {lastUpdated}
-            </p>
-          </motion.div>
-        </div>
-      </div>
+      <SubpageHero
+        title={title}
+        breadcrumbs={[
+          { label: "Home", href: "/" },
+          { label: "Legal" },
+          { label: title },
+        ]}
+        description={`Last updated: ${lastUpdated}`}
+        bgImage=""
+      />
 
       {/* Content body */}
-      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-10">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-12">
           {/* Table of contents — sticky sidebar */}
           <motion.aside
             initial={{ opacity: 0, x: -20 }}
@@ -59,15 +45,15 @@ export function LegalLayout({
             transition={{ delay: 0.2, type: "spring", stiffness: 120, damping: 18 }}
             className="hidden lg:block"
           >
-            <nav className="sticky top-24 space-y-1">
-              <p className="text-xs font-heading font-semibold uppercase tracking-wider text-cm-slate-400 mb-3">
+            <nav className="sticky top-24 space-y-1 bg-white p-6 rounded-[10px] shadow-[0_1px_3px_0_rgba(0,0,0,0.1),0_1px_2px_-1px_rgba(0,0,0,0.1)]">
+              <p className="text-xs font-semibold uppercase tracking-wider text-conseil-teal mb-4">
                 On this page
               </p>
               {sections.map((section) => (
                 <a
                   key={section.id}
                   href={`#${section.id}`}
-                  className="block text-sm text-cm-slate-500 hover:text-cm-navy transition-colors py-1.5 pl-3 border-l-2 border-transparent hover:border-cm-navy"
+                  className="block text-sm text-gray-500 hover:text-conseil-teal transition-colors py-2 pl-3 border-l-2 border-transparent hover:border-conseil-teal"
                 >
                   {section.title}
                 </a>
@@ -80,7 +66,7 @@ export function LegalLayout({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15, type: "spring", stiffness: 120, damping: 18 }}
-            className="legal-content"
+            className="prose prose-lg max-w-none bg-white p-8 md:p-12 rounded-[10px] shadow-[0_1px_3px_0_rgba(0,0,0,0.1),0_1px_2px_-1px_rgba(0,0,0,0.1)] prose-headings:font-bold prose-headings:text-gray-900 prose-p:text-gray-600 prose-p:leading-relaxed prose-a:text-conseil-teal hover:prose-a:text-conseil-teal/80 prose-li:text-gray-600"
           >
             {children}
           </motion.article>

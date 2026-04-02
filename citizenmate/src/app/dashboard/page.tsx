@@ -38,6 +38,7 @@ import { StudyProgressBar } from "@/components/study/study-progress-bar";
 import { AbsInsightsWidget } from "@/components/dashboard/abs-insights-widget";
 import { LifeInAustraliaSection } from "@/components/dashboard/life-in-australia-section";
 import type { TopicCategory } from "@/lib/types";
+import { SubpageHero } from "@/components/shared/subpage-hero";
 
 // ===== Topic visuals =====
 
@@ -298,88 +299,16 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-cm-ice">
       {/* ===== Hero ===== */}
-      <section className="relative overflow-hidden bg-cm-navy">
-        {/* Generated background subtle image overlay */}
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/generated/dash-welcome.webp"
-            alt="Welcome back to studying"
-            fill
-            className="object-cover opacity-35 mix-blend-screen"
-            sizes="100vw"
-            priority
-          />
-          {/* Gradient to smooth out the bottom edge into the text/cards */}
-          <div className="absolute inset-0 bg-gradient-to-t from-cm-navy via-cm-navy/60 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-cm-ice to-transparent opacity-90" />
-        </div>
-
-        {/* Floating orbs */}
-        <div className="absolute inset-0 overflow-hidden">
-          <motion.div
-            animate={{ y: [0, -16, 0], x: [0, 8, 0] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-10 right-[15%] w-32 h-32 rounded-full bg-cm-gold/10 blur-2xl"
-          />
-          <motion.div
-            animate={{ y: [0, 12, 0], x: [0, -6, 0] }}
-            transition={{
-              duration: 7,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 1.5,
-            }}
-            className="absolute bottom-6 left-[10%] w-24 h-24 rounded-full bg-cm-eucalyptus/10 blur-xl"
-          />
-          <motion.div
-            animate={{ y: [0, -8, 0], x: [0, 10, 0] }}
-            transition={{
-              duration: 9,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 3,
-            }}
-            className="absolute top-[40%] left-[60%] w-20 h-20 rounded-full bg-cm-sky/8 blur-xl"
-          />
-        </div>
-
-        {/* Hero content */}
-        <div className="relative mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-16 text-center text-white">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            {/* Badge with shimmer */}
-            <motion.span
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-sm font-medium mb-6 animate-shimmer"
-            >
-              <Gauge className="w-4 h-4" />
-              Your Dashboard
-            </motion.span>
-
-            <h1 className="text-3xl sm:text-5xl font-heading font-extrabold leading-tight mb-3">
-              Your{" "}
-              <span className="text-cm-gold drop-shadow-[0_0_12px_rgba(217,119,6,0.4)]">
-                Readiness
-              </span>{" "}
-              Score
-            </h1>
-
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              className="text-lg text-white/75 max-w-xl mx-auto"
-            >
-              {readiness.message}
-            </motion.p>
-          </motion.div>
-        </div>
-      </section>
+      <SubpageHero
+        title="Your Readiness Score"
+        breadcrumbs={[
+          { label: "Home", href: "/" },
+          { label: "Dashboard" },
+        ]}
+        description={readiness.message}
+        bgImage="/generated/dash-welcome.webp"
+        badge="Your Dashboard"
+      />
 
       {/* ===== Main content ===== */}
       <section className="mx-auto max-w-6xl px-4 sm:px-6 -mt-8 relative z-10 pb-20">

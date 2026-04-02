@@ -11,6 +11,7 @@ export interface BlogPostFrontmatter {
   date: string;
   description: string;
   image?: string;
+  category?: string;
 }
 
 export interface BlogPost {

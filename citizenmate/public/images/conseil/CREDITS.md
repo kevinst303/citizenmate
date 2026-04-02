@@ -17,4 +17,26 @@ Date: 2026-04-02
 
 ## cta-bg.jpg
 **Aspect ratio:** 16:9
-**Prompt:** Professional editorial photograph, DSLR quality. Clean modern composition. Warm, neutral-toned corporate aesthetic — whites, light grays, teal accents. Soft diffused lighting, shallow depth of field, subtle film grain. Premium consulting website stock photography quality. No text overlays. Full-width CTA section background for an Australian-themed service. Sydney Harbour Bridge or Opera House at golden hour, dramatic sky, soft teal/dark overlay applied. Clean, professional travel photography quality. The image should support a dark teal colour overlay (rgba 0,90,97,0.7) with white text on top. Mood: aspiration, opportunity, new beginning in Australia.
+**Prompt:** Professional editorial photograph, DSLR quality. Clean modern composition. Warm, neutral-toned corporate aesthetic — whites, light grays, teal accents. Soft diffused lighting, shallow depth of field, subtle film grain. Premium consulting website stock photography quality. No text overlays. Full-width CTA section background for an Australian-themed service. Sydney Harbour Bridge or Opera House at golden hour, dramatic sky, soft teal/dark overlay applied. Clean, professional travel photography quality. The image should support a dark overlay with white text. Mood: aspiration, opportunity, new beginning.
+
+## subpage-hero-bg.jpg
+**Aspect ratio:** 16:9
+**Prompt:** Professional editorial photograph, DSLR quality. Clean modern composition. Warm, neutral-toned corporate aesthetic — whites, light grays, teal accents. Soft diffused lighting, shallow depth of field, subtle film grain. Premium consulting website stock photography quality. No text overlays. Minimalist background for a premium web app subpage. Very soft, out-of-focus abstract shapes in a bright, modern office setting. Focus on architecture, glass, and light. Subtle teal hues. Highly defocused to allow dark teal overlays and white text to be perfectly legible. Mood: premium, focused, calm.
+
+## blog-post-1.jpg
+**Aspect ratio:** 4:3
+**Prompt:** Professional editorial photograph, DSLR quality. Clean modern composition. Warm, neutral-toned corporate aesthetic — whites, light grays, teal accents. Soft diffused lighting, shallow depth of field, subtle film grain. Premium consulting website stock photography quality. No text overlays. Blog post thumbnail for an article titled 'Understanding Australian Values'. A diverse group of laughing people enjoying a casual outdoor BBQ in a sunny Australian park. Natural light, candid feel, editorial style. Shallow depth of field.
+
+## blog-post-2.jpg
+**Status:** FAILED — Imagen 2 API error for blog-post-2.jpg: {
+  "error": {
+    "code": 503,
+    "message": "Image generation failed with the following error: Fail to execute model for flow_id: flow-juno-prompt-rewriter-vertex-imagen-jpe-v1-8\nError: decode timeout, from active slot 11; Failed to close the streaming context; status = CANCELLED: ;  Failed to run inference for model: go/debugonly  \nname: \"prod-common-global__/vertex/vertex-imagen-jpe-v1-8__main__/vertex/vertex-imagen-jpe-v1-8__3__model__variant__053db936-0dc1-48e6-bd3d-84cfac22a5fc\"\nversion {\n  value: 1\n}\nsignature_name: \"serving_default\"\n; [model=/vertex/vertex-imagen-jpe-v1-8,target=anonymous_server];  for endpoint: /vertex/vertex-imagen-jpe-v1-8",
+    "status": "UNAVAILABLE"
+  }
+}
+
+
+## app-grid-1.jpg
+**Aspect ratio:** 4:3
+**Prompt:** Professional editorial photograph, DSLR quality. Clean modern composition. Warm, neutral-toned corporate aesthetic — whites, light grays, teal accents. Soft diffused lighting, shallow depth of field, subtle film grain. Premium consulting website stock photography quality. No text overlays. Service card image for a 'Full Mock Test' premium feature. An intense but confident young man looking at a laptop screen. Soft modern lighting. Teal corporate accents in the room. High-end stock photo.

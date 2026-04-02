@@ -20,6 +20,8 @@ import { PremiumBadge } from "@/components/shared/premium-gate";
 import { StudyProgressBar } from "@/components/study/study-progress-bar";
 import type { TopicCategory } from "@/lib/types";
 
+import { SubpageHero } from "@/components/shared/subpage-hero";
+
 const TOPIC_ICONS: Record<TopicCategory, typeof Globe> = {
   "australia-people": Globe,
   "democratic-beliefs": Scale,
@@ -82,75 +84,16 @@ export default function StudyPage() {
   return (
     <div className="min-h-screen bg-cm-ice">
       {/* Hero */}
-      <section className="relative bg-cm-navy text-white overflow-hidden">
-        {/* Background image */}
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/generated/study-header.webp"
-            alt="People studying together in an Australian park"
-            fill
-            className="object-cover opacity-40 mix-blend-screen"
-            priority
-            sizes="100vw"
-          />
-          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-cm-ice to-transparent opacity-90" />
-        </div>
-
-        {/* Decorative orbs */}
-        <div className="absolute inset-0 overflow-hidden">
-          <motion.div
-            animate={{ y: [0, -15, 0], x: [0, 8, 0] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-16 left-12 w-32 h-32 rounded-full bg-cm-gold/10 blur-xl"
-          />
-          <motion.div
-            animate={{ y: [0, 10, 0], x: [0, -12, 0] }}
-            transition={{
-              duration: 10,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 1,
-            }}
-            className="absolute top-28 right-16 w-20 h-20 rounded-full bg-cm-sky/10 blur-lg"
-          />
-          <motion.div
-            animate={{ y: [0, -8, 0] }}
-            transition={{
-              duration: 6,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 2,
-            }}
-            className="absolute bottom-8 left-1/3 w-16 h-16 rounded-full bg-cm-eucalyptus/10 blur-lg"
-          />
-        </div>
-
-        <div className="relative mx-auto max-w-5xl px-4 sm:px-6 py-16 sm:py-24 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <motion.span
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-sm font-medium mb-6"
-            >
-              <BookOpen className="w-4 h-4" />
-              Study Guide
-            </motion.span>
-            <h1 className="text-4xl sm:text-5xl font-heading font-extrabold leading-tight mb-4">
-              Study{" "}
-              <span className="text-cm-gold">Our Common Bond</span>
-            </h1>
-            <p className="text-lg sm:text-xl text-white/80 max-w-xl mx-auto">
-              Browse the official study content in English and Chinese.
-              Track your progress topic by topic, mate.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <SubpageHero
+        title="Study Our Common Bond"
+        breadcrumbs={[
+          { label: "Home", href: "/" },
+          { label: "Study Guide" },
+        ]}
+        description="Browse the official study content in English and Chinese. Track your progress topic by topic, mate."
+        bgImage="/generated/study-header.webp"
+        badge="Study Guide"
+      />
 
       {/* Overall progress card */}
       <section className="mx-auto max-w-5xl px-4 sm:px-6 -mt-8 relative z-10">

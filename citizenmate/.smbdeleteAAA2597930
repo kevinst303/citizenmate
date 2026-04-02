@@ -1,0 +1,1686 @@
+
+> citizenmate@0.1.0 dev
+> next dev --port ${PORT:-4000}
+
+▲ Next.js 16.2.0 (Turbopack)
+- Local:         http://localhost:4000
+- Network:       http://192.168.15.212:4000
+- Environments: .env.local
+✓ Ready in 4.9s
+⚠ Slow filesystem detected. The benchmark took 1186ms. If /Volumes/home/Documents/App/AuTest/citizenmate/.next/dev is a network drive, consider moving it to a local folder.
+See more: https://nextjs.org/docs/app/guides/local-development
+○ Compiling proxy ...
+
+⚠ Blocked cross-origin request to Next.js dev resource /_next/webpack-hmr from "127.0.0.1".
+Cross-origin access to Next.js dev resources is blocked by default for safety.
+
+To allow this host in development, add it to "allowedDevOrigins" in next.config.js and restart the dev server:
+
+// next.config.js
+module.exports = {
+  allowedDevOrigins: ['127.0.0.1'],
+}
+
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+⨯ TypeError: Cannot read properties of undefined (reading 'map')
+    at POST (src/app/api/chat/route.ts:127:43)
+  125 |     model: google("gemini-2.0-flash"),
+  126 |     system: getChatSystemPrompt(),
+> 127 |     messages: await convertToModelMessages(sanitizedMessages),
+      |                                           ^
+  128 |   });
+  129 |
+  130 |   return createUIMessageStreamResponse({
+ POST /api/chat 500 in 5.1s (next.js: 1785ms, proxy.ts: 3.0s, application-code: 241ms)
+ GET / 200 in 6.9s (next.js: 2.7s, proxy.ts: 3.0s, application-code: 1096ms)
+ GET / 200 in 160ms (next.js: 31ms, proxy.ts: 8ms, application-code: 121ms)
+ GET / 200 in 164ms (next.js: 30ms, proxy.ts: 7ms, application-code: 127ms)
+ GET / 200 in 173ms (next.js: 50ms, proxy.ts: 5ms, application-code: 118ms)
+ GET / 200 in 196ms (next.js: 29ms, proxy.ts: 6ms, application-code: 161ms)
+ GET / 200 in 180ms (next.js: 39ms, proxy.ts: 6ms, application-code: 134ms)
+Error [AI_APICallError]: This model models/gemini-2.0-flash is no longer available to new users. Please update your code to use a newer model for the latest features and improvements.
+    at ignore-listed frames {
+  cause: undefined,
+  url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:streamGenerateContent?alt=sse',
+  requestBodyValues: {
+    generationConfig: {
+      maxOutputTokens: undefined,
+      temperature: undefined,
+      topK: undefined,
+      topP: undefined,
+      frequencyPenalty: undefined,
+      presencePenalty: undefined,
+      stopSequences: undefined,
+      seed: undefined,
+      responseMimeType: undefined,
+      responseSchema: undefined,
+      responseModalities: undefined,
+      thinkingConfig: undefined
+    },
+    contents: [ [Object] ],
+    systemInstruction: { parts: [Array] },
+    safetySettings: undefined,
+    tools: undefined,
+    toolConfig: undefined,
+    cachedContent: undefined,
+    labels: undefined
+  },
+  statusCode: 404,
+  responseHeaders: {
+    'alt-svc': 'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000',
+    'content-length': '241',
+    'content-type': 'text/event-stream',
+    date: 'Thu, 02 Apr 2026 06:19:36 GMT',
+    server: 'scaffolding on HTTPServer2',
+    'server-timing': 'gfet4t7; dur=197',
+    vary: 'Origin, X-Origin, Referer',
+    'x-content-type-options': 'nosniff',
+    'x-frame-options': 'SAMEORIGIN',
+    'x-xss-protection': '0'
+  },
+  responseBody: '{\n' +
+    '  "error": {\n' +
+    '    "code": 404,\n' +
+    '    "message": "This model models/gemini-2.0-flash is no longer available to new users. Please update your code to use a newer model for the latest features and improvements.",\n' +
+    '    "status": "NOT_FOUND"\n' +
+    '  }\n' +
+    '}\n',
+  isRetryable: false,
+  data: {
+    error: {
+      code: 404,
+      message: 'This model models/gemini-2.0-flash is no longer available to new users. Please update your code to use a newer model for the latest features and improvements.',
+      status: 'NOT_FOUND'
+    }
+  }
+}
+ POST /api/chat 200 in 2.2s (next.js: 1133ms, proxy.ts: 492ms, application-code: 550ms)
+ GET / 200 in 155ms (next.js: 33ms, proxy.ts: 12ms, application-code: 111ms)
+Error [AI_APICallError]: models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at ignore-listed frames {
+  cause: undefined,
+  url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:streamGenerateContent?alt=sse',
+  requestBodyValues: {
+    generationConfig: {
+      maxOutputTokens: undefined,
+      temperature: undefined,
+      topK: undefined,
+      topP: undefined,
+      frequencyPenalty: undefined,
+      presencePenalty: undefined,
+      stopSequences: undefined,
+      seed: undefined,
+      responseMimeType: undefined,
+      responseSchema: undefined,
+      responseModalities: undefined,
+      thinkingConfig: undefined
+    },
+    contents: [ [Object] ],
+    systemInstruction: { parts: [Array] },
+    safetySettings: undefined,
+    tools: undefined,
+    toolConfig: undefined,
+    cachedContent: undefined,
+    labels: undefined
+  },
+  statusCode: 404,
+  responseHeaders: {
+    'alt-svc': 'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000',
+    'content-length': '265',
+    'content-type': 'text/event-stream',
+    date: 'Thu, 02 Apr 2026 06:20:22 GMT',
+    server: 'scaffolding on HTTPServer2',
+    'server-timing': 'gfet4t7; dur=140',
+    vary: 'Origin, X-Origin, Referer',
+    'x-content-type-options': 'nosniff',
+    'x-frame-options': 'SAMEORIGIN',
+    'x-xss-protection': '0'
+  },
+  responseBody: '{\n' +
+    '  "error": {\n' +
+    '    "code": 404,\n' +
+    '    "message": "models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",\n' +
+    '    "status": "NOT_FOUND"\n' +
+    '  }\n' +
+    '}\n',
+  isRetryable: false,
+  data: {
+    error: {
+      code: 404,
+      message: 'models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.',
+      status: 'NOT_FOUND'
+    }
+  }
+}
+ POST /api/chat 200 in 995ms (next.js: 550ms, proxy.ts: 5ms, application-code: 440ms)
+ GET / 200 in 173ms (next.js: 39ms, proxy.ts: 8ms, application-code: 125ms)
+ GET / 200 in 214ms (next.js: 59ms, proxy.ts: 10ms, application-code: 146ms)
+Error [AI_APICallError]: models/gemini-1.5-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+    at ignore-listed frames {
+  cause: undefined,
+  url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:streamGenerateContent?alt=sse',
+  requestBodyValues: {
+    generationConfig: {
+      maxOutputTokens: undefined,
+      temperature: undefined,
+      topK: undefined,
+      topP: undefined,
+      frequencyPenalty: undefined,
+      presencePenalty: undefined,
+      stopSequences: undefined,
+      seed: undefined,
+      responseMimeType: undefined,
+      responseSchema: undefined,
+      responseModalities: undefined,
+      thinkingConfig: undefined
+    },
+    contents: [ [Object] ],
+    systemInstruction: { parts: [Array] },
+    safetySettings: undefined,
+    tools: undefined,
+    toolConfig: undefined,
+    cachedContent: undefined,
+    labels: undefined
+  },
+  statusCode: 404,
+  responseHeaders: {
+    'alt-svc': 'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000',
+    'content-length': '263',
+    'content-type': 'text/event-stream',
+    date: 'Thu, 02 Apr 2026 06:22:40 GMT',
+    server: 'scaffolding on HTTPServer2',
+    'server-timing': 'gfet4t7; dur=151',
+    vary: 'Origin, X-Origin, Referer',
+    'x-content-type-options': 'nosniff',
+    'x-frame-options': 'SAMEORIGIN',
+    'x-xss-protection': '0'
+  },
+  responseBody: '{\n' +
+    '  "error": {\n' +
+    '    "code": 404,\n' +
+    '    "message": "models/gemini-1.5-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",\n' +
+    '    "status": "NOT_FOUND"\n' +
+    '  }\n' +
+    '}\n',
+  isRetryable: false,
+  data: {
+    error: {
+      code: 404,
+      message: 'models/gemini-1.5-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.',
+      status: 'NOT_FOUND'
+    }
+  }
+}
+ POST /api/chat 200 in 1030ms (next.js: 599ms, proxy.ts: 4ms, application-code: 427ms)
+ GET / 200 in 176ms (next.js: 46ms, proxy.ts: 5ms, application-code: 125ms)
+ GET / 200 in 193ms (next.js: 53ms, proxy.ts: 8ms, application-code: 132ms)
+ POST /api/chat 200 in 4.0s (next.js: 938ms, proxy.ts: 5ms, application-code: 3.1s)
+ GET / 200 in 163ms (next.js: 32ms, proxy.ts: 9ms, application-code: 122ms)
+ GET / 200 in 158ms (next.js: 39ms, proxy.ts: 6ms, application-code: 114ms)
+ GET / 200 in 108ms (next.js: 15ms, proxy.ts: 6ms, application-code: 86ms)
+ GET / 200 in 138ms (next.js: 29ms, proxy.ts: 8ms, application-code: 101ms)
+ GET / 200 in 151ms (next.js: 31ms, proxy.ts: 10ms, application-code: 110ms)
+ GET / 200 in 175ms (next.js: 35ms, proxy.ts: 14ms, application-code: 126ms)
+ GET / 200 in 124ms (next.js: 21ms, proxy.ts: 8ms, application-code: 96ms)
+ GET / 200 in 140ms (next.js: 28ms, proxy.ts: 7ms, application-code: 104ms)
+✓ Compiled in 4.3s
+ GET / 200 in 185ms (next.js: 73ms, proxy.ts: 6ms, application-code: 106ms)
+ GET / 200 in 162ms (next.js: 49ms, proxy.ts: 5ms, application-code: 108ms)
+⨯ TypeError: result.toDataStreamResponse is not a function
+    at POST (src/app/api/chat/route.ts:130:17)
+  128 |   });
+  129 |
+> 130 |   return result.toDataStreamResponse({
+      |                 ^
+  131 |     headers: {
+  132 |       "X-RateLimit-Remaining": String(limiter.remaining),
+  133 |     },
+ POST /api/chat 500 in 643ms (next.js: 472ms, proxy.ts: 5ms, application-code: 166ms)
+ GET / 200 in 101ms (next.js: 23ms, proxy.ts: 5ms, application-code: 73ms)
+⨯ TypeError: result.toDataStreamResponse is not a function
+    at POST (src/app/api/chat/route.ts:130:17)
+  128 |   });
+  129 |
+> 130 |   return result.toDataStreamResponse({
+      |                 ^
+  131 |     headers: {
+  132 |       "X-RateLimit-Remaining": String(limiter.remaining),
+  133 |     },
+ POST /api/chat 500 in 103ms (next.js: 8ms, proxy.ts: 5ms, application-code: 90ms)
+ GET / 200 in 118ms (next.js: 26ms, proxy.ts: 4ms, application-code: 88ms)
+ GET / 200 in 130ms (next.js: 29ms, proxy.ts: 8ms, application-code: 93ms)
+ POST /api/chat 200 in 3.4s (next.js: 216ms, proxy.ts: 4ms, application-code: 3.2s)
+ GET / 200 in 86ms (next.js: 18ms, proxy.ts: 4ms, application-code: 64ms)
+ POST /api/chat 200 in 14ms (next.js: 2ms, proxy.ts: 3ms, application-code: 9ms)
+ POST /api/chat 200 in 2.2s (next.js: 14ms, proxy.ts: 5ms, application-code: 2.2s)
+ GET / 200 in 125ms (next.js: 26ms, proxy.ts: 6ms, application-code: 94ms)
+ GET / 200 in 102ms (next.js: 19ms, proxy.ts: 6ms, application-code: 77ms)
+ POST /api/chat 200 in 26ms (next.js: 10ms, proxy.ts: 3ms, application-code: 13ms)
+ GET / 200 in 114ms (next.js: 27ms, proxy.ts: 3ms, application-code: 83ms)
+ GET / 200 in 136ms (next.js: 26ms, proxy.ts: 6ms, application-code: 104ms)
+ GET / 200 in 119ms (next.js: 26ms, proxy.ts: 6ms, application-code: 87ms)
+ GET / 200 in 129ms (next.js: 26ms, proxy.ts: 5ms, application-code: 98ms)
+ GET / 200 in 140ms (next.js: 29ms, proxy.ts: 8ms, application-code: 104ms)
+ GET / 200 in 137ms (next.js: 29ms, proxy.ts: 6ms, application-code: 103ms)
+ GET / 200 in 138ms (next.js: 29ms, proxy.ts: 7ms, application-code: 102ms)
+ GET / 200 in 144ms (next.js: 33ms, proxy.ts: 5ms, application-code: 105ms)
+ GET / 200 in 141ms (next.js: 34ms, proxy.ts: 5ms, application-code: 102ms)
+ GET / 200 in 133ms (next.js: 26ms, proxy.ts: 6ms, application-code: 101ms)
+ GET / 200 in 146ms (next.js: 28ms, proxy.ts: 7ms, application-code: 111ms)
+ GET / 200 in 129ms (next.js: 33ms, proxy.ts: 6ms, application-code: 91ms)
+ GET / 200 in 137ms (next.js: 27ms, proxy.ts: 7ms, application-code: 104ms)
+ GET / 200 in 129ms (next.js: 27ms, proxy.ts: 7ms, application-code: 96ms)
+ GET / 200 in 133ms (next.js: 32ms, proxy.ts: 7ms, application-code: 95ms)
+ GET / 200 in 114ms (next.js: 21ms, proxy.ts: 7ms, application-code: 86ms)
+ GET / 200 in 137ms (next.js: 32ms, proxy.ts: 8ms, application-code: 96ms)
+ GET / 200 in 125ms (next.js: 32ms, proxy.ts: 3ms, application-code: 90ms)
+ GET / 200 in 138ms (next.js: 27ms, proxy.ts: 7ms, application-code: 105ms)
+ GET / 200 in 145ms (next.js: 33ms, proxy.ts: 8ms, application-code: 104ms)
+ GET / 200 in 126ms (next.js: 27ms, proxy.ts: 4ms, application-code: 96ms)
+ GET / 200 in 112ms (next.js: 26ms, proxy.ts: 4ms, application-code: 83ms)
+ GET / 200 in 116ms (next.js: 24ms, proxy.ts: 4ms, application-code: 87ms)
+ GET / 200 in 136ms (next.js: 27ms, proxy.ts: 5ms, application-code: 104ms)
+ GET / 200 in 128ms (next.js: 30ms, proxy.ts: 8ms, application-code: 90ms)
+ GET / 200 in 129ms (next.js: 26ms, proxy.ts: 5ms, application-code: 98ms)
+ GET / 200 in 136ms (next.js: 28ms, proxy.ts: 6ms, application-code: 102ms)
+ GET / 200 in 134ms (next.js: 30ms, proxy.ts: 8ms, application-code: 96ms)
+ GET / 200 in 139ms (next.js: 28ms, proxy.ts: 5ms, application-code: 107ms)
+ GET / 200 in 118ms (next.js: 24ms, proxy.ts: 6ms, application-code: 88ms)
+ GET / 200 in 124ms (next.js: 27ms, proxy.ts: 5ms, application-code: 93ms)
+ GET / 200 in 118ms (next.js: 25ms, proxy.ts: 3ms, application-code: 90ms)
+ GET / 200 in 130ms (next.js: 28ms, proxy.ts: 5ms, application-code: 96ms)
+ GET / 200 in 127ms (next.js: 28ms, proxy.ts: 4ms, application-code: 95ms)
+ GET / 200 in 116ms (next.js: 22ms, proxy.ts: 8ms, application-code: 86ms)
+ GET / 200 in 111ms (next.js: 26ms, proxy.ts: 4ms, application-code: 82ms)
+ GET / 200 in 119ms (next.js: 27ms, proxy.ts: 6ms, application-code: 86ms)
+ GET / 200 in 134ms (next.js: 27ms, proxy.ts: 7ms, application-code: 100ms)
+ GET / 200 in 130ms (next.js: 29ms, proxy.ts: 6ms, application-code: 96ms)
+✓ Compiled in 4.7s
+✓ Compiled in 125ms
+ GET / 200 in 1164ms (next.js: 30ms, proxy.ts: 1036ms, application-code: 98ms)
+○ Compiling /dashboard ...
+ GET /dashboard 200 in 13.2s (next.js: 13.2s, proxy.ts: 8ms, application-code: 38ms)
+ GET /dashboard 200 in 57ms (next.js: 14ms, proxy.ts: 7ms, application-code: 35ms)
+ GET /dashboard 200 in 54ms (next.js: 15ms, proxy.ts: 7ms, application-code: 32ms)
+ABS API returned 404. Using fallback data.
+ GET /api/abs-population 200 in 30ms (next.js: 8ms, proxy.ts: 5ms, application-code: 18ms)
+ GET /api/abs-population 200 in 1950ms (next.js: 1698ms, proxy.ts: 5ms, application-code: 247ms)
+[browser] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[browser] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+ GET /api/australia-insights 200 in 2.8s (next.js: 1473ms, proxy.ts: 6ms, application-code: 1274ms)
+ GET /api/australia-insights 200 in 35ms (next.js: 9ms, proxy.ts: 3ms, application-code: 23ms)
+Error [AI_InvalidPromptError]: Invalid prompt: The messages do not match the ModelMessage[] schema.
+    at ignore-listed frames {
+  prompt: {
+    system: 'You are CitizenMate Tutor — a friendly, encouraging AI study buddy helping migrants prepare for the Australian citizenship test.\n' +
+      '\n' +
+      '## Your personality\n' +
+      '- Warm, supportive, and patient — like a knowledgeable Australian friend\n' +
+      '- Use plain, simple English so non-native speakers can understand easily\n' +
+      '- Sprinkle in light Australian slang when natural (e.g. "No worries!", "Good on you, mate!")\n' +
+      '- Keep responses concise — aim for 2-4 short paragraphs max\n' +
+      '- Use bullet points and bold text to highlight key facts\n' +
+      '\n' +
+      '## Your knowledge base\n' +
+      'You MUST ground all your answers in the following official study content from "Our Common Bond":\n' +
+      '\n' +
+      '## Australia and Its People\n' +
+      "Learn about Australia's geography, Indigenous heritage, national symbols, immigration history, and key dates.\n" +
+      '\n' +
+      '### Indigenous Heritage\n' +
+      'Aboriginal and Torres Strait Islander peoples are the original inhabitants of Australia. They have lived on this continent for over 65,000 years, making their cultures among the oldest continuous cultures in the world.\n' +
+      '\n' +
+      'Aboriginal peoples have a deep spiritual connection to the land through the Dreamtime (or Dreaming), which describes the creation period when ancestral spirits formed the natural world. These stories are passed down through generations via oral traditions, art, song, and dance.\n' +
+      '\n' +
+      'Torres Strait Islander peoples come from the islands between the northern tip of Queensland and Papua New Guinea. They have their own distinct cultures, languages, and traditions.\n' +
+      '\n' +
+      'NAIDOC Week, held in the first week of July each year, celebrates the history, culture, and achievements of Aboriginal and Torres Strait Islander peoples. It is an important time for all Australians to recognise and celebrate Indigenous cultures.\n' +
+      '\n' +
+      'Key Facts:\n' +
+      '  • Aboriginal and Torres Strait Islander peoples have lived in Australia for over 65,000 years\n' +
+      '  • The Dreamtime describes the creation of the natural world by ancestral spirits\n' +
+      '  • Torres Strait Islander peoples are from the islands between Queensland and Papua New Guinea\n' +
+      '  • NAIDOC Week is held in the first week of July each year\n' +
+      '\n' +
+      '### National Symbols & Identity\n' +
+      'Australia has many national symbols that represent its identity and heritage.\n' +
+      '\n' +
+      'The Australian flag features three elements: the Union Jack (representing historical links to Britain), the Commonwealth Star (a seven-pointed star where six points represent the six states and the seventh represents the territories), and the Southern Cross constellation (visible from the Southern Hemisphere).\n' +
+      '\n' +
+      `Australia's national colours are green and gold, inspired by the golden wattle (Acacia pycnantha), the national flower. The national anthem is "Advance Australia Fair," officially adopted in 1984.\n` +
+      '\n' +
+      'The coat of arms features a kangaroo and an emu — two animals that cannot easily walk backwards, symbolising a nation always moving forward.\n' +
+      '\n' +
+      'Key Facts:\n' +
+      '  • The Commonwealth Star has 7 points: 6 for the states, 1 for the territories\n' +
+      '  • National colours are green and gold\n' +
+      '  • The golden wattle is the national flower\n' +
+      '  • "Advance Australia Fair" became the national anthem in 1984\n' +
+      '\n' +
+      '### Key Historical Events\n' +
+      'Several key events have shaped modern Australia.\n' +
+      '\n' +
+      'On 1 January 1901, the six British colonies federated to form the Commonwealth of Australia. Sir Edmund Barton became the first Prime Minister.\n' +
+      '\n' +
+      'In 1915, Australian and New Zealand Army Corps (ANZAC) soldiers landed at Gallipoli in Turkey during World War I. Their bravery and sacrifice are commemorated each year on Anzac Day (25 April).\n' +
+      '\n' +
+      'Australia Day is celebrated on 26 January, marking the arrival of the First Fleet at Sydney Cove in 1788.\n' +
+      '\n' +
+      'Remembrance Day (11 November) marks the end of World War I in 1918, and Australians observe a minute of silence at 11 am.\n' +
+      '\n' +
+      'Key Facts:\n' +
+      '  • Federation occurred on 1 January 1901\n' +
+      '  • Sir Edmund Barton was the first Prime Minister\n' +
+      '  • Anzac Day (25 April) commemorates the Gallipoli landing in 1915\n' +
+      '  • Australia Day is celebrated on 26 January\n' +
+      '  • Remembrance Day is observed on 11 November\n' +
+      '\n' +
+      '### Geography & States\n' +
+      "Australia is the world's sixth largest country and the only country that is also a continent. The capital city is Canberra, chosen as a compromise between the rival cities of Sydney and Melbourne.\n" +
+      '\n' +
+      'Australia has six states: New South Wales, Victoria, Queensland, South Australia, Western Australia, and Tasmania. It also has two mainland territories: the Australian Capital Territory (ACT) and the Northern Territory.\n' +
+      '\n' +
+      "Western Australia is the largest state by area, covering about one-third of the continent. Australia's population is approximately 26 million people, with most living along the eastern and southeastern coasts.\n" +
+      '\n' +
+      'Australia is one of the most multicultural nations in the world, with people from over 200 countries calling it home.\n' +
+      '\n' +
+      'Key Facts:\n' +
+      '  • Canberra is the capital city of Australia\n' +
+      '  • Australia has 6 states and 2 mainland territories\n' +
+      '  • Western Australia is the largest state by area\n' +
+      '  • Population is approximately 26 million\n' +
+      '\n' +
+      '---\n' +
+      '\n' +
+      '## Democratic Beliefs, Rights & Liberties\n' +
+      "Understand Australia's democratic system, fundamental freedoms, the rule of law, and citizens' rights and responsibilities.\n" +
+      '\n' +
+      '### Parliamentary Democracy\n' +
+      'Australia is a parliamentary democracy. This means the power of the government comes from the Australian people, who elect representatives to make decisions on their behalf.\n' +
+      '\n' +
+      'Voting in federal and state elections is compulsory for Australian citizens aged 18 years and over. This ensures that all citizens have a say in how their country is governed.\n' +
+      '\n' +
+      'Australia uses a system called preferential voting, where voters number candidates in order of preference. This helps ensure that the elected representative is supported by a majority of voters.\n' +
+      '\n' +
+      'The separation of powers divides government into three branches: legislative (Parliament makes laws), executive (government ministers and departments implement laws), and judicial (courts interpret and apply laws). This prevents any one group from having all the power.\n' +
+      '\n' +
+      'Key Facts:\n' +
+      '  • Australia is a parliamentary democracy\n' +
+      '  • Voting is compulsory for citizens aged 18 and over\n' +
+      '  • Australia uses preferential voting\n' +
+      '  • Three branches: legislative, executive, judicial\n' +
+      '\n' +
+      '### Fundamental Freedoms\n' +
+      'Australians enjoy several fundamental freedoms protected by law.\n' +
+      '\n' +
+      'Freedom of speech means Australians are free to say and write what they think, and to discuss ideas with others. However, there are laws against defamation, racial vilification, and inciting violence.\n' +
+      '\n' +
+      'Freedom of religion means people are free to follow any religion or no religion at all. Australian law separates religious practices from the laws of the country.\n' +
+      '\n' +
+      'Freedom of association means people can join or leave any lawful organisation, club, or group. Nobody can be forced to belong to an organisation.\n' +
+      '\n' +
+      'Freedom of movement means Australians are free to travel within Australia and to leave and re-enter the country. There are no internal border restrictions between states.\n' +
+      '\n' +
+      'Key Facts:\n' +
+      '  • Freedom of speech — but laws exist against defamation and racial vilification\n' +
+      '  • Freedom of religion — any religion or no religion\n' +
+      '  • Freedom of association — join or leave any lawful group\n' +
+      '  • Freedom of movement — travel freely within Australia\n' +
+      '\n' +
+      '### Rule of Law & Equality\n' +
+      'The rule of law is a fundamental principle in Australia. It means that all people are subject to the law, and nobody is above it — including politicians and law enforcement.\n' +
+      '\n' +
+      'Equality before the law means all people are treated equally regardless of their position, wealth, or background. Men and women have equal rights under Australian law, enshrined in legislation such as the Sex Discrimination Act 1984.\n' +
+      '\n' +
+      'A fair trial means a person is presumed innocent until proven guilty. Trials are usually held in open court, and the accused has the right to legal representation.\n' +
+      '\n' +
+      'Peacefulness means Australians resolve differences through discussion, debate, and the democratic process — not through violence or intimidation.\n' +
+      '\n' +
+      'Key Facts:\n' +
+      '  • The rule of law means nobody is above the law\n' +
+      '  • Men and women have equal rights under Australian law\n' +
+      '  • A person is presumed innocent until proven guilty\n' +
+      '  • Differences should be resolved peacefully, not through violence\n' +
+      '\n' +
+      '### Rights & Responsibilities\n' +
+      'Australian citizens have both rights and responsibilities.\n' +
+      '\n' +
+      'Rights include the right to vote, freedom of speech, freedom of religion, protection under the law, and access to government services.\n' +
+      '\n' +
+      'Responsibilities include obeying the law, voting in elections, serving on a jury if called, and defending Australia should the need arise.\n' +
+      '\n' +
+      'The government can limit some rights, but only through laws passed by Parliament that are consistent with the Australian Constitution. The courts protect individuals from unjust laws.\n' +
+      '\n' +
+      'Equality of opportunity means that what someone achieves in life should be a result of their talents, work, and effort — rather than their birth or background.\n' +
+      '\n' +
+      'Key Facts:\n' +
+      '  • Citizens must vote, obey the law, and serve on a jury if called\n' +
+      '  • Rights include voting, freedom of speech, and freedom of religion\n' +
+      '  • The government can only limit rights through laws consistent with the Constitution\n' +
+      '  • Equality of opportunity — success based on effort, not background\n' +
+      '\n' +
+      '---\n' +
+      '\n' +
+      '## Government and the Law\n' +
+      "Learn about Australia's three levels of government, the Constitution, Parliament, and the court system.\n" +
+      '\n' +
+      '### Three Levels of Government\n' +
+      'Australia has three levels of government, each with different responsibilities.\n' +
+      '\n' +
+      'The federal (national) government is responsible for matters that affect the whole country, including defence, immigration, trade, foreign affairs, currency, and telecommunications.\n' +
+      '\n' +
+      'State and territory governments manage services within their jurisdiction, such as schools, hospitals, public transport, police, and roads.\n' +
+      '\n' +
+      'Local governments (councils) handle services within their local area, including waste collection, local roads, libraries, parks, and town planning.\n' +
+      '\n' +
+      'The Australian Capital Territory (ACT) is wher'... 8645 more characters,
+    prompt: undefined,
+    messages: [ [Object] ]
+  },
+  [cause]: Error [AI_TypeValidationError]: Type validation failed: Value: [{"parts":[{"type":"text","text":"Explain the three levels of government"}],"id":"ejob0A1oaSfdX4BC","role":"user"}].
+  Error message: [
+    {
+      "code": "invalid_union",
+      "errors": [
+        [
+          {
+            "code": "invalid_value",
+            "values": [
+              "system"
+            ],
+            "path": [
+              "role"
+            ],
+            "message": "Invalid input: expected \"system\""
+          },
+          {
+            "expected": "string",
+            "code": "invalid_type",
+            "path": [
+              "content"
+            ],
+            "message": "Invalid input: expected string, received undefined"
+          }
+        ],
+        [
+          {
+            "code": "invalid_union",
+            "errors": [
+              [
+                {
+                  "expected": "string",
+                  "code": "invalid_type",
+                  "path": [],
+                  "message": "Invalid input: expected string, received undefined"
+                }
+              ],
+              [
+                {
+                  "expected": "array",
+                  "code": "invalid_type",
+                  "path": [],
+                  "message": "Invalid input: expected array, received undefined"
+                }
+              ]
+            ],
+            "path": [
+              "content"
+            ],
+            "message": "Invalid input"
+          }
+        ],
+        [
+          {
+            "code": "invalid_value",
+            "values": [
+              "assistant"
+            ],
+            "path": [
+              "role"
+            ],
+            "message": "Invalid input: expected \"assistant\""
+          },
+          {
+            "code": "invalid_union",
+            "errors": [
+              [
+                {
+                  "expected": "string",
+                  "code": "invalid_type",
+                  "path": [],
+                  "message": "Invalid input: expected string, received undefined"
+                }
+              ],
+              [
+                {
+                  "expected": "array",
+                  "code": "invalid_type",
+                  "path": [],
+                  "message": "Invalid input: expected array, received undefined"
+                }
+              ]
+            ],
+            "path": [
+              "content"
+            ],
+            "message": "Invalid input"
+          }
+        ],
+        [
+          {
+            "code": "invalid_value",
+            "values": [
+              "tool"
+            ],
+            "path": [
+              "role"
+            ],
+            "message": "Invalid input: expected \"tool\""
+          },
+          {
+            "expected": "array",
+            "code": "invalid_type",
+            "path": [
+              "content"
+            ],
+            "message": "Invalid input: expected array, received undefined"
+          }
+        ]
+      ],
+      "path": [
+        0
+      ],
+      "message": "Invalid input"
+    }
+  ]
+      at ignore-listed frames {
+    value: [ [Object] ],
+    context: undefined,
+    [cause]: Error [ZodError]: [
+      {
+        "code": "invalid_union",
+        "errors": [
+          [
+            {
+              "code": "invalid_value",
+              "values": [
+                "system"
+              ],
+              "path": [
+                "role"
+              ],
+              "message": "Invalid input: expected \"system\""
+            },
+            {
+              "expected": "string",
+              "code": "invalid_type",
+              "path": [
+                "content"
+              ],
+              "message": "Invalid input: expected string, received undefined"
+            }
+          ],
+          [
+            {
+              "code": "invalid_union",
+              "errors": [
+                [
+                  {
+                    "expected": "string",
+                    "code": "invalid_type",
+                    "path": [],
+                    "message": "Invalid input: expected string, received undefined"
+                  }
+                ],
+                [
+                  {
+                    "expected": "array",
+                    "code": "invalid_type",
+                    "path": [],
+                    "message": "Invalid input: expected array, received undefined"
+                  }
+                ]
+              ],
+              "path": [
+                "content"
+              ],
+              "message": "Invalid input"
+            }
+          ],
+          [
+            {
+              "code": "invalid_value",
+              "values": [
+                "assistant"
+              ],
+              "path": [
+                "role"
+              ],
+              "message": "Invalid input: expected \"assistant\""
+            },
+            {
+              "code": "invalid_union",
+              "errors": [
+                [
+                  {
+                    "expected": "string",
+                    "code": "invalid_type",
+                    "path": [],
+                    "message": "Invalid input: expected string, received undefined"
+                  }
+                ],
+                [
+                  {
+                    "expected": "array",
+                    "code": "invalid_type",
+                    "path": [],
+                    "message": "Invalid input: expected array, received undefined"
+                  }
+                ]
+              ],
+              "path": [
+                "content"
+              ],
+              "message": "Invalid input"
+            }
+          ],
+          [
+            {
+              "code": "invalid_value",
+              "values": [
+                "tool"
+              ],
+              "path": [
+                "role"
+              ],
+              "message": "Invalid input: expected \"tool\""
+            },
+            {
+              "expected": "array",
+              "code": "invalid_type",
+              "path": [
+                "content"
+              ],
+              "message": "Invalid input: expected array, received undefined"
+            }
+          ]
+        ],
+        "path": [
+          0
+        ],
+        "message": "Invalid input"
+      }
+    ]
+        at ignore-listed frames
+  }
+}
+ POST /api/chat 200 in 221ms (next.js: 16ms, proxy.ts: 6ms, application-code: 199ms)
+ GET /dashboard 200 in 339ms (next.js: 25ms, proxy.ts: 7ms, application-code: 307ms)
+ GET / 200 in 281ms (next.js: 149ms, proxy.ts: 3ms, application-code: 129ms)
+ GET /api/abs-population 200 in 919ms (next.js: 483ms, proxy.ts: 6ms, application-code: 430ms)
+[browser] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[browser] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+ GET /api/australia-insights 200 in 1693ms (next.js: 333ms, proxy.ts: 1225ms, application-code: 135ms)
+✓ Finished filesystem cache database compaction in 14.5s
+ GET /dashboard 200 in 122ms (next.js: 26ms, proxy.ts: 7ms, application-code: 89ms)
+ GET /dashboard 200 in 102ms (next.js: 5ms, proxy.ts: 10ms, application-code: 87ms)
+ GET /api/australia-insights 200 in 30ms (next.js: 11ms, proxy.ts: 7ms, application-code: 12ms)
+ GET /api/abs-population 200 in 51ms (next.js: 30ms, proxy.ts: 7ms, application-code: 14ms)
+[browser] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[browser] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+ GET / 200 in 135ms (next.js: 22ms, proxy.ts: 5ms, application-code: 108ms)
+ GET / 200 in 139ms (next.js: 27ms, proxy.ts: 4ms, application-code: 108ms)
+ GET / 200 in 113ms (next.js: 20ms, proxy.ts: 5ms, application-code: 88ms)
+ GET / 200 in 129ms (next.js: 28ms, proxy.ts: 4ms, application-code: 97ms)
+ GET / 200 in 132ms (next.js: 22ms, proxy.ts: 5ms, application-code: 105ms)
+ GET / 200 in 126ms (next.js: 27ms, proxy.ts: 6ms, application-code: 94ms)
+ GET / 200 in 113ms (next.js: 21ms, proxy.ts: 5ms, application-code: 88ms)
+ GET / 200 in 134ms (next.js: 29ms, proxy.ts: 4ms, application-code: 100ms)
+ GET / 200 in 99ms (next.js: 19ms, proxy.ts: 5ms, application-code: 75ms)
+ GET / 200 in 131ms (next.js: 26ms, proxy.ts: 4ms, application-code: 101ms)
+ GET / 200 in 135ms (next.js: 29ms, proxy.ts: 4ms, application-code: 103ms)
+ GET / 200 in 123ms (next.js: 25ms, proxy.ts: 5ms, application-code: 93ms)
+ GET / 200 in 123ms (next.js: 26ms, proxy.ts: 4ms, application-code: 93ms)
+ GET / 200 in 118ms (next.js: 25ms, proxy.ts: 5ms, application-code: 88ms)
+ GET / 200 in 118ms (next.js: 23ms, proxy.ts: 4ms, application-code: 91ms)
+ GET / 200 in 133ms (next.js: 26ms, proxy.ts: 7ms, application-code: 100ms)
+ GET / 200 in 144ms (next.js: 28ms, proxy.ts: 6ms, application-code: 110ms)
+ GET / 200 in 130ms (next.js: 25ms, proxy.ts: 4ms, application-code: 101ms)
+ GET / 200 in 123ms (next.js: 24ms, proxy.ts: 5ms, application-code: 95ms)
+ GET / 200 in 133ms (next.js: 31ms, proxy.ts: 5ms, application-code: 97ms)
+ GET / 200 in 122ms (next.js: 24ms, proxy.ts: 4ms, application-code: 94ms)
+ GET / 200 in 119ms (next.js: 27ms, proxy.ts: 6ms, application-code: 85ms)
+ GET / 200 in 117ms (next.js: 24ms, proxy.ts: 6ms, application-code: 87ms)
+ GET / 200 in 118ms (next.js: 25ms, proxy.ts: 3ms, application-code: 90ms)
+ GET / 200 in 133ms (next.js: 26ms, proxy.ts: 4ms, application-code: 103ms)
+ GET / 200 in 122ms (next.js: 24ms, proxy.ts: 5ms, application-code: 93ms)
+ GET / 200 in 130ms (next.js: 25ms, proxy.ts: 4ms, application-code: 101ms)
+ GET / 200 in 105ms (next.js: 18ms, proxy.ts: 5ms, application-code: 83ms)
+ GET / 200 in 154ms (next.js: 26ms, proxy.ts: 5ms, application-code: 122ms)
+ GET / 200 in 128ms (next.js: 25ms, proxy.ts: 4ms, application-code: 100ms)
+ GET / 200 in 126ms (next.js: 27ms, proxy.ts: 4ms, application-code: 96ms)
+ GET / 200 in 119ms (next.js: 29ms, proxy.ts: 5ms, application-code: 85ms)
+ GET / 200 in 111ms (next.js: 19ms, proxy.ts: 4ms, application-code: 88ms)
+ GET / 200 in 122ms (next.js: 27ms, proxy.ts: 4ms, application-code: 90ms)
+ GET / 200 in 118ms (next.js: 21ms, proxy.ts: 4ms, application-code: 93ms)
+ GET / 200 in 119ms (next.js: 27ms, proxy.ts: 5ms, application-code: 87ms)
+ GET / 200 in 134ms (next.js: 25ms, proxy.ts: 7ms, application-code: 102ms)
+ GET / 200 in 132ms (next.js: 27ms, proxy.ts: 4ms, application-code: 102ms)
+ GET / 200 in 115ms (next.js: 27ms, proxy.ts: 4ms, application-code: 84ms)
+ GET / 200 in 124ms (next.js: 24ms, proxy.ts: 5ms, application-code: 96ms)
+ GET / 200 in 129ms (next.js: 29ms, proxy.ts: 4ms, application-code: 96ms)
+ GET / 200 in 149ms (next.js: 27ms, proxy.ts: 6ms, application-code: 117ms)
+ GET / 200 in 151ms (next.js: 25ms, proxy.ts: 4ms, application-code: 122ms)
+ GET / 200 in 110ms (next.js: 19ms, proxy.ts: 6ms, application-code: 85ms)
+ GET / 200 in 129ms (next.js: 26ms, proxy.ts: 4ms, application-code: 99ms)
+ GET / 200 in 108ms (next.js: 20ms, proxy.ts: 3ms, application-code: 86ms)
+ GET / 200 in 131ms (next.js: 26ms, proxy.ts: 4ms, application-code: 101ms)
+ GET / 200 in 112ms (next.js: 21ms, proxy.ts: 5ms, application-code: 86ms)
+ GET / 200 in 127ms (next.js: 25ms, proxy.ts: 5ms, application-code: 97ms)
+ GET / 200 in 131ms (next.js: 30ms, proxy.ts: 4ms, application-code: 97ms)
+ GET / 200 in 130ms (next.js: 27ms, proxy.ts: 5ms, application-code: 98ms)
+ GET / 200 in 131ms (next.js: 28ms, proxy.ts: 4ms, application-code: 98ms)
+ GET / 200 in 127ms (next.js: 26ms, proxy.ts: 5ms, application-code: 96ms)
+ GET / 200 in 126ms (next.js: 24ms, proxy.ts: 4ms, application-code: 99ms)
+ GET / 200 in 150ms (next.js: 27ms, proxy.ts: 4ms, application-code: 119ms)
+ GET / 200 in 129ms (next.js: 26ms, proxy.ts: 6ms, application-code: 97ms)
+ GET / 200 in 124ms (next.js: 25ms, proxy.ts: 4ms, application-code: 94ms)
+ GET / 200 in 125ms (next.js: 24ms, proxy.ts: 5ms, application-code: 96ms)
+ GET / 200 in 105ms (next.js: 18ms, proxy.ts: 4ms, application-code: 82ms)
+ GET / 200 in 128ms (next.js: 26ms, proxy.ts: 4ms, application-code: 98ms)
+ GET / 200 in 111ms (next.js: 20ms, proxy.ts: 6ms, application-code: 85ms)
+ GET / 200 in 125ms (next.js: 26ms, proxy.ts: 5ms, application-code: 94ms)
+ GET / 200 in 112ms (next.js: 18ms, proxy.ts: 4ms, application-code: 90ms)
+ GET / 200 in 124ms (next.js: 23ms, proxy.ts: 4ms, application-code: 97ms)
+ GET / 200 in 110ms (next.js: 16ms, proxy.ts: 4ms, application-code: 89ms)
+ GET / 200 in 120ms (next.js: 27ms, proxy.ts: 6ms, application-code: 87ms)
+ GET / 200 in 126ms (next.js: 19ms, proxy.ts: 5ms, application-code: 103ms)
+ GET / 200 in 118ms (next.js: 26ms, proxy.ts: 5ms, application-code: 86ms)
+ GET / 200 in 122ms (next.js: 25ms, proxy.ts: 5ms, application-code: 93ms)
+ GET / 200 in 128ms (next.js: 26ms, proxy.ts: 4ms, application-code: 97ms)
+ GET / 200 in 137ms (next.js: 29ms, proxy.ts: 4ms, application-code: 104ms)
+ GET / 200 in 124ms (next.js: 24ms, proxy.ts: 4ms, application-code: 95ms)
+ GET / 200 in 132ms (next.js: 25ms, proxy.ts: 6ms, application-code: 101ms)
+ GET / 200 in 137ms (next.js: 26ms, proxy.ts: 4ms, application-code: 107ms)
+ GET / 200 in 125ms (next.js: 25ms, proxy.ts: 4ms, application-code: 95ms)
+ GET / 200 in 130ms (next.js: 26ms, proxy.ts: 3ms, application-code: 101ms)
+ GET / 200 in 124ms (next.js: 25ms, proxy.ts: 8ms, application-code: 92ms)
+ GET / 200 in 118ms (next.js: 26ms, proxy.ts: 8ms, application-code: 84ms)
+ GET / 200 in 131ms (next.js: 27ms, proxy.ts: 9ms, application-code: 96ms)
+ GET / 200 in 121ms (next.js: 24ms, proxy.ts: 4ms, application-code: 93ms)
+ GET / 200 in 144ms (next.js: 26ms, proxy.ts: 6ms, application-code: 111ms)
+ GET / 200 in 132ms (next.js: 27ms, proxy.ts: 3ms, application-code: 102ms)
+ GET / 200 in 130ms (next.js: 26ms, proxy.ts: 5ms, application-code: 99ms)
+ GET / 200 in 131ms (next.js: 25ms, proxy.ts: 4ms, application-code: 102ms)
+ GET / 200 in 118ms (next.js: 25ms, proxy.ts: 6ms, application-code: 87ms)
+ GET / 200 in 131ms (next.js: 25ms, proxy.ts: 4ms, application-code: 101ms)
+ GET / 200 in 139ms (next.js: 27ms, proxy.ts: 7ms, application-code: 105ms)
+ GET / 200 in 134ms (next.js: 28ms, proxy.ts: 4ms, application-code: 102ms)
+ GET / 200 in 123ms (next.js: 23ms, proxy.ts: 4ms, application-code: 96ms)
+ GET / 200 in 125ms (next.js: 24ms, proxy.ts: 3ms, application-code: 98ms)
+ GET / 200 in 133ms (next.js: 26ms, proxy.ts: 4ms, application-code: 103ms)
+ GET / 200 in 110ms (next.js: 20ms, proxy.ts: 5ms, application-code: 86ms)
+ GET / 200 in 134ms (next.js: 25ms, proxy.ts: 7ms, application-code: 103ms)
+ GET / 200 in 138ms (next.js: 26ms, proxy.ts: 5ms, application-code: 107ms)
+ GET / 200 in 134ms (next.js: 25ms, proxy.ts: 5ms, application-code: 103ms)
+ GET / 200 in 153ms (next.js: 28ms, proxy.ts: 6ms, application-code: 119ms)
+ GET / 200 in 143ms (next.js: 27ms, proxy.ts: 6ms, application-code: 109ms)
+ GET / 200 in 134ms (next.js: 26ms, proxy.ts: 4ms, application-code: 103ms)
+ GET / 200 in 127ms (next.js: 27ms, proxy.ts: 4ms, application-code: 96ms)
+ GET / 200 in 133ms (next.js: 27ms, proxy.ts: 3ms, application-code: 102ms)
+ GET / 200 in 128ms (next.js: 24ms, proxy.ts: 3ms, application-code: 101ms)
+ GET / 200 in 122ms (next.js: 26ms, proxy.ts: 4ms, application-code: 93ms)
+ GET / 200 in 128ms (next.js: 24ms, proxy.ts: 5ms, application-code: 99ms)
+ GET / 200 in 136ms (next.js: 30ms, proxy.ts: 6ms, application-code: 100ms)
+ GET / 200 in 120ms (next.js: 26ms, proxy.ts: 3ms, application-code: 90ms)
+ GET / 200 in 133ms (next.js: 27ms, proxy.ts: 5ms, application-code: 101ms)
+ GET / 200 in 125ms (next.js: 28ms, proxy.ts: 10ms, application-code: 87ms)
+ GET / 200 in 126ms (next.js: 25ms, proxy.ts: 3ms, application-code: 98ms)
+ GET / 200 in 130ms (next.js: 28ms, proxy.ts: 6ms, application-code: 96ms)
+ GET / 200 in 138ms (next.js: 25ms, proxy.ts: 6ms, application-code: 107ms)
+ GET / 200 in 147ms (next.js: 27ms, proxy.ts: 5ms, application-code: 115ms)
+ GET / 200 in 126ms (next.js: 26ms, proxy.ts: 4ms, application-code: 97ms)
+ GET / 200 in 126ms (next.js: 26ms, proxy.ts: 4ms, application-code: 96ms)
+ GET / 200 in 126ms (next.js: 25ms, proxy.ts: 4ms, application-code: 97ms)
+ GET / 200 in 135ms (next.js: 24ms, proxy.ts: 9ms, application-code: 102ms)
+ GET / 200 in 131ms (next.js: 27ms, proxy.ts: 7ms, application-code: 97ms)
+ GET / 200 in 135ms (next.js: 24ms, proxy.ts: 4ms, application-code: 106ms)
+ GET / 200 in 119ms (next.js: 19ms, proxy.ts: 5ms, application-code: 94ms)
+ GET / 200 in 138ms (next.js: 27ms, proxy.ts: 3ms, application-code: 108ms)
+ GET / 200 in 111ms (next.js: 19ms, proxy.ts: 5ms, application-code: 87ms)
+ GET / 200 in 117ms (next.js: 26ms, proxy.ts: 6ms, application-code: 84ms)
+ GET / 200 in 100ms (next.js: 17ms, proxy.ts: 3ms, application-code: 80ms)
+ GET / 200 in 133ms (next.js: 26ms, proxy.ts: 5ms, application-code: 102ms)
+ GET / 200 in 135ms (next.js: 29ms, proxy.ts: 4ms, application-code: 102ms)
+ GET / 200 in 125ms (next.js: 24ms, proxy.ts: 3ms, application-code: 98ms)
+ GET / 200 in 145ms (next.js: 28ms, proxy.ts: 5ms, application-code: 113ms)
+ GET / 200 in 122ms (next.js: 27ms, proxy.ts: 6ms, application-code: 89ms)
+ GET / 200 in 121ms (next.js: 23ms, proxy.ts: 3ms, application-code: 94ms)
+ GET / 200 in 120ms (next.js: 27ms, proxy.ts: 4ms, application-code: 89ms)
+ GET / 200 in 128ms (next.js: 25ms, proxy.ts: 4ms, application-code: 99ms)
+ GET / 200 in 110ms (next.js: 21ms, proxy.ts: 3ms, application-code: 86ms)
+ GET / 200 in 123ms (next.js: 25ms, proxy.ts: 6ms, application-code: 93ms)
+ GET / 200 in 144ms (next.js: 25ms, proxy.ts: 6ms, application-code: 114ms)
+ GET / 200 in 118ms (next.js: 25ms, proxy.ts: 4ms, application-code: 89ms)
+ GET / 200 in 137ms (next.js: 27ms, proxy.ts: 5ms, application-code: 104ms)
+ GET / 200 in 117ms (next.js: 25ms, proxy.ts: 5ms, application-code: 87ms)
+ GET / 200 in 125ms (next.js: 24ms, proxy.ts: 4ms, application-code: 96ms)
+ GET / 200 in 101ms (next.js: 20ms, proxy.ts: 4ms, application-code: 77ms)
+ GET / 200 in 125ms (next.js: 27ms, proxy.ts: 4ms, application-code: 93ms)
+ GET / 200 in 123ms (next.js: 27ms, proxy.ts: 5ms, application-code: 91ms)
+ GET / 200 in 110ms (next.js: 19ms, proxy.ts: 4ms, application-code: 87ms)
+ GET / 200 in 151ms (next.js: 29ms, proxy.ts: 4ms, application-code: 117ms)
+ GET / 200 in 132ms (next.js: 26ms, proxy.ts: 4ms, application-code: 103ms)
+ GET / 200 in 124ms (next.js: 26ms, proxy.ts: 3ms, application-code: 94ms)
+ GET / 200 in 114ms (next.js: 19ms, proxy.ts: 5ms, application-code: 90ms)
+ GET / 200 in 116ms (next.js: 24ms, proxy.ts: 3ms, application-code: 89ms)
+ GET / 200 in 109ms (next.js: 19ms, proxy.ts: 6ms, application-code: 85ms)
+ GET / 200 in 128ms (next.js: 25ms, proxy.ts: 7ms, application-code: 96ms)
+ GET / 200 in 137ms (next.js: 26ms, proxy.ts: 5ms, application-code: 106ms)
+ GET / 200 in 134ms (next.js: 25ms, proxy.ts: 6ms, application-code: 103ms)
+ GET / 200 in 134ms (next.js: 27ms, proxy.ts: 6ms, application-code: 101ms)
+ GET / 200 in 129ms (next.js: 29ms, proxy.ts: 6ms, application-code: 94ms)
+ GET / 200 in 131ms (next.js: 26ms, proxy.ts: 5ms, application-code: 101ms)
+ GET / 200 in 132ms (next.js: 27ms, proxy.ts: 4ms, application-code: 101ms)
+ GET / 200 in 124ms (next.js: 25ms, proxy.ts: 4ms, application-code: 95ms)
+ GET / 200 in 124ms (next.js: 25ms, proxy.ts: 5ms, application-code: 94ms)
+ GET / 200 in 129ms (next.js: 26ms, proxy.ts: 7ms, application-code: 96ms)
+ GET / 200 in 134ms (next.js: 20ms, proxy.ts: 4ms, application-code: 110ms)
+ GET / 200 in 120ms (next.js: 24ms, proxy.ts: 5ms, application-code: 91ms)
+ GET / 200 in 125ms (next.js: 26ms, proxy.ts: 4ms, application-code: 94ms)
+ GET / 200 in 133ms (next.js: 27ms, proxy.ts: 4ms, application-code: 102ms)
+ GET / 200 in 118ms (next.js: 26ms, proxy.ts: 5ms, application-code: 88ms)
+ GET / 200 in 131ms (next.js: 27ms, proxy.ts: 3ms, application-code: 100ms)
+ GET / 200 in 119ms (next.js: 25ms, proxy.ts: 5ms, application-code: 89ms)
+ GET / 200 in 137ms (next.js: 29ms, proxy.ts: 5ms, application-code: 103ms)
+ GET / 200 in 132ms (next.js: 26ms, proxy.ts: 4ms, application-code: 101ms)
+ GET / 200 in 118ms (next.js: 20ms, proxy.ts: 6ms, application-code: 93ms)
+ GET / 200 in 131ms (next.js: 25ms, proxy.ts: 6ms, application-code: 99ms)
+ GET / 200 in 124ms (next.js: 25ms, proxy.ts: 7ms, application-code: 92ms)
+ GET / 200 in 127ms (next.js: 26ms, proxy.ts: 3ms, application-code: 98ms)
+ GET / 200 in 127ms (next.js: 28ms, proxy.ts: 3ms, application-code: 95ms)
+ GET / 200 in 134ms (next.js: 31ms, proxy.ts: 7ms, application-code: 96ms)
+ GET / 200 in 122ms (next.js: 26ms, proxy.ts: 8ms, application-code: 89ms)
+ GET / 200 in 136ms (next.js: 26ms, proxy.ts: 4ms, application-code: 106ms)
+ GET / 200 in 149ms (next.js: 25ms, proxy.ts: 7ms, application-code: 117ms)
+ GET / 200 in 132ms (next.js: 25ms, proxy.ts: 4ms, application-code: 103ms)
+ GET / 200 in 128ms (next.js: 26ms, proxy.ts: 4ms, application-code: 97ms)
+ GET / 200 in 124ms (next.js: 27ms, proxy.ts: 3ms, application-code: 95ms)
+ GET / 200 in 125ms (next.js: 27ms, proxy.ts: 4ms, application-code: 95ms)
+ GET / 200 in 129ms (next.js: 29ms, proxy.ts: 3ms, application-code: 97ms)
+ GET / 200 in 139ms (next.js: 30ms, proxy.ts: 4ms, application-code: 104ms)
+ GET / 200 in 138ms (next.js: 25ms, proxy.ts: 4ms, application-code: 109ms)
+ GET / 200 in 139ms (next.js: 24ms, proxy.ts: 8ms, application-code: 107ms)
+ GET / 200 in 121ms (next.js: 24ms, proxy.ts: 3ms, application-code: 95ms)
+ GET / 200 in 123ms (next.js: 26ms, proxy.ts: 5ms, application-code: 93ms)
+ GET / 200 in 135ms (next.js: 26ms, proxy.ts: 7ms, application-code: 102ms)
+ GET / 200 in 130ms (next.js: 26ms, proxy.ts: 5ms, application-code: 99ms)
+ GET / 200 in 112ms (next.js: 24ms, proxy.ts: 5ms, application-code: 84ms)
+ GET / 200 in 133ms (next.js: 26ms, proxy.ts: 4ms, application-code: 104ms)
+ GET / 200 in 106ms (next.js: 18ms, proxy.ts: 4ms, application-code: 84ms)
+ GET / 200 in 129ms (next.js: 27ms, proxy.ts: 4ms, application-code: 97ms)
+ GET / 200 in 144ms (next.js: 26ms, proxy.ts: 5ms, application-code: 113ms)
+ GET / 200 in 138ms (next.js: 27ms, proxy.ts: 3ms, application-code: 107ms)
+ GET / 200 in 111ms (next.js: 19ms, proxy.ts: 5ms, application-code: 87ms)
+⨯ ReferenceError: Manrope is not defined
+    at module evaluation (src/app/layout.tsx:19:24)
+    at module evaluation (.next/dev/server/chunks/ssr/_0wulnl1._.js:454:47)
+  17 | };
+  18 |
+> 19 | const manropeHeading = Manrope({
+     |                        ^
+  20 |   variable: "--font-heading-family",
+  21 |   subsets: ["latin"],
+  22 |   weight: ["500", "600", "700", "800"],
+⨯ ReferenceError: Manrope is not defined
+    at module evaluation (src/app/layout.tsx:19:24)
+    at module evaluation (.next/dev/server/chunks/ssr/_0wulnl1._.js:454:47)
+  17 | };
+  18 |
+> 19 | const manropeHeading = Manrope({
+     |                        ^
+  20 |   variable: "--font-heading-family",
+  21 |   subsets: ["latin"],
+  22 |   weight: ["500", "600", "700", "800"], {
+  page: '/dashboard'
+}
+⨯ ReferenceError: Manrope is not defined
+    at module evaluation (src/app/layout.tsx:19:24)
+    at module evaluation (.next/dev/server/chunks/ssr/_0wulnl1._.js:454:47)
+  17 | };
+  18 |
+> 19 | const manropeHeading = Manrope({
+     |                        ^
+  20 |   variable: "--font-heading-family",
+  21 |   subsets: ["latin"],
+  22 |   weight: ["500", "600", "700", "800"], {
+  page: '/dashboard'
+}
+⨯ ReferenceError: Manrope is not defined
+    at module evaluation (src/app/layout.tsx:19:24)
+    at module evaluation (.next/dev/server/chunks/ssr/_0wulnl1._.js:454:47)
+  17 | };
+  18 |
+> 19 | const manropeHeading = Manrope({
+     |                        ^
+  20 |   variable: "--font-heading-family",
+  21 |   subsets: ["latin"],
+  22 |   weight: ["500", "600", "700", "800"], {
+  page: '/dashboard'
+}
+⨯ ReferenceError: Manrope is not defined
+    at module evaluation (src/app/layout.tsx:19:24)
+    at module evaluation (.next/dev/server/chunks/ssr/_0wulnl1._.js:454:47)
+  17 | };
+  18 |
+> 19 | const manropeHeading = Manrope({
+     |                        ^
+  20 |   variable: "--font-heading-family",
+  21 |   subsets: ["latin"],
+  22 |   weight: ["500", "600", "700", "800"], {
+  page: '/dashboard'
+}
+⨯ ReferenceError: Manrope is not defined
+    at module evaluation (src/app/layout.tsx:19:24)
+    at module evaluation (.next/dev/server/chunks/ssr/_0wulnl1._.js:454:47)
+  17 | };
+  18 |
+> 19 | const manropeHeading = Manrope({
+     |                        ^
+  20 |   variable: "--font-heading-family",
+  21 |   subsets: ["latin"],
+  22 |   weight: ["500", "600", "700", "800"], {
+  page: '/dashboard'
+}
+⨯ ReferenceError: Manrope is not defined
+    at module evaluation (src/app/layout.tsx:19:24)
+    at module evaluation (.next/dev/server/chunks/ssr/_0wulnl1._.js:454:47)
+  17 | };
+  18 |
+> 19 | const manropeHeading = Manrope({
+     |                        ^
+  20 |   variable: "--font-heading-family",
+  21 |   subsets: ["latin"],
+  22 |   weight: ["500", "600", "700", "800"], {
+  page: '/dashboard'
+}
+⨯ ReferenceError: Manrope is not defined
+    at module evaluation (src/app/layout.tsx:19:24)
+    at module evaluation (.next/dev/server/chunks/ssr/_0wulnl1._.js:454:47)
+  17 | };
+  18 |
+> 19 | const manropeHeading = Manrope({
+     |                        ^
+  20 |   variable: "--font-heading-family",
+  21 |   subsets: ["latin"],
+  22 |   weight: ["500", "600", "700", "800"], {
+  page: '/dashboard'
+}
+✓ Compiled in 4.7s
+✓ Compiled in 8ms
+ GET /dashboard 500 in 3.3s (next.js: 731ms, proxy.ts: 23ms, application-code: 2.6s)
+ GET /dashboard 500 in 3.4s (next.js: 1339ms, proxy.ts: 12ms, application-code: 2.0s)
+⨯ ReferenceError: Manrope is not defined
+    at module evaluation (src/app/layout.tsx:19:24)
+    at module evaluation (.next/dev/server/chunks/ssr/_0wulnl1._.js:454:47)
+  17 | };
+  18 |
+> 19 | const manropeHeading = Manrope({
+     |                        ^
+  20 |   variable: "--font-heading-family",
+  21 |   subsets: ["latin"],
+  22 |   weight: ["500", "600", "700", "800"],
+⨯ ReferenceError: Manrope is not defined
+    at module evaluation (src/app/layout.tsx:19:24)
+    at module evaluation (.next/dev/server/chunks/ssr/_0wulnl1._.js:454:47)
+  17 | };
+  18 |
+> 19 | const manropeHeading = Manrope({
+     |                        ^
+  20 |   variable: "--font-heading-family",
+  21 |   subsets: ["latin"],
+  22 |   weight: ["500", "600", "700", "800"], {
+  page: '/dashboard'
+}
+✓ Compiled in 1ms
+✓ Compiled in 19ms
+ GET /dashboard 500 in 7.0s (next.js: 6.8s, proxy.ts: 5ms, application-code: 151ms)
+ GET /dashboard 500 in 7.0s (next.js: 6.8s, proxy.ts: 6ms, application-code: 122ms)
+ GET /dashboard 500 in 3.7s (next.js: 660ms, proxy.ts: 470ms, application-code: 2.5s)
+⨯ ReferenceError: manropeHeading is not defined
+    at RootLayout (src/app/layout.tsx:97:21)
+   95 |       suppressHydrationWarning
+   96 |       data-scroll-behavior="smooth"
+>  97 |       className={`${manropeHeading.variable} ${dmSansBody.variable} h-full antialiased`}
+      |                     ^
+   98 |     >
+   99 |       <head>
+  100 |         <meta name="theme-color" content="#00727a" /> {
+  digest: '1031712967'
+}
+⨯ ReferenceError: manropeHeading is not defined
+    at RootLayout (src/app/layout.tsx:97:21)
+   95 |       suppressHydrationWarning
+   96 |       data-scroll-behavior="smooth"
+>  97 |       className={`${manropeHeading.variable} ${dmSansBody.variable} h-full antialiased`}
+      |                     ^
+   98 |     >
+   99 |       <head>
+  100 |         <meta name="theme-color" content="#00727a" /> {
+  digest: '1031712967'
+}
+⨯ ReferenceError: manropeHeading is not defined
+    at RootLayout (src/app/layout.tsx:97:21)
+   95 |       suppressHydrationWarning
+   96 |       data-scroll-behavior="smooth"
+>  97 |       className={`${manropeHeading.variable} ${dmSansBody.variable} h-full antialiased`}
+      |                     ^
+   98 |     >
+   99 |       <head>
+  100 |         <meta name="theme-color" content="#00727a" /> {
+  digest: '1031712967'
+}
+⨯ ReferenceError: manropeHeading is not defined
+    at RootLayout (src/app/layout.tsx:97:21)
+   95 |       suppressHydrationWarning
+   96 |       data-scroll-behavior="smooth"
+>  97 |       className={`${manropeHeading.variable} ${dmSansBody.variable} h-full antialiased`}
+      |                     ^
+   98 |     >
+   99 |       <head>
+  100 |         <meta name="theme-color" content="#00727a" /> {
+  digest: '1031712967'
+}
+⨯ ReferenceError: manropeHeading is not defined
+    at RootLayout (src/app/layout.tsx:97:21)
+   95 |       suppressHydrationWarning
+   96 |       data-scroll-behavior="smooth"
+>  97 |       className={`${manropeHeading.variable} ${dmSansBody.variable} h-full antialiased`}
+      |                     ^
+   98 |     >
+   99 |       <head>
+  100 |         <meta name="theme-color" content="#00727a" /> {
+  digest: '1031712967'
+}
+ GET /dashboard 200 in 686ms (next.js: 560ms, proxy.ts: 15ms, application-code: 112ms)
+ GET /dashboard 200 in 1686ms (next.js: 124ms, proxy.ts: 1003ms, application-code: 559ms)
+ GET / 500 in 5.0s (next.js: 424ms, proxy.ts: 3.2s, application-code: 1397ms)
+ GET /dashboard 500 in 1711ms (next.js: 178ms, proxy.ts: 1003ms, application-code: 531ms)
+ GET /dashboard 500 in 719ms (next.js: 598ms, proxy.ts: 14ms, application-code: 107ms)
+[browser] Uncaught ReferenceError: manropeHeading is not defined
+    at RootLayout (src/app/layout.tsx:97:21)
+   95 |       suppressHydrationWarning
+   96 |       data-scroll-behavior="smooth"
+>  97 |       className={`${manropeHeading.variable} ${dmSansBody.variable} h-full antialiased`}
+      |                     ^
+   98 |     >
+   99 |       <head>
+  100 |         <meta name="theme-color" content="#00727a" />
+⨯ ReferenceError: manropeHeading is not defined
+    at RootLayout (src/app/layout.tsx:97:21)
+   95 |       suppressHydrationWarning
+   96 |       data-scroll-behavior="smooth"
+>  97 |       className={`${manropeHeading.variable} ${dmSansBody.variable} h-full antialiased`}
+      |                     ^
+   98 |     >
+   99 |       <head>
+  100 |         <meta name="theme-color" content="#00727a" /> {
+  digest: '1031712967'
+}
+ GET /dashboard 500 in 112ms (next.js: 36ms, proxy.ts: 10ms, application-code: 67ms)
+[browser] Uncaught ReferenceError: manropeHeading is not defined
+    at RootLayout (src/app/layout.tsx:97:21)
+   95 |       suppressHydrationWarning
+   96 |       data-scroll-behavior="smooth"
+>  97 |       className={`${manropeHeading.variable} ${dmSansBody.variable} h-full antialiased`}
+      |                     ^
+   98 |     >
+   99 |       <head>
+  100 |         <meta name="theme-color" content="#00727a" />
+⨯ ReferenceError: manropeHeading is not defined
+    at RootLayout (src/app/layout.tsx:97:21)
+   95 |       suppressHydrationWarning
+   96 |       data-scroll-behavior="smooth"
+>  97 |       className={`${manropeHeading.variable} ${dmSansBody.variable} h-full antialiased`}
+      |                     ^
+   98 |     >
+   99 |       <head>
+  100 |         <meta name="theme-color" content="#006d77" /> {
+  digest: '1609786828'
+}
+⨯ ReferenceError: manropeHeading is not defined
+    at RootLayout (src/app/layout.tsx:97:21)
+   95 |       suppressHydrationWarning
+   96 |       data-scroll-behavior="smooth"
+>  97 |       className={`${manropeHeading.variable} ${dmSansBody.variable} h-full antialiased`}
+      |                     ^
+   98 |     >
+   99 |       <head>
+  100 |         <meta name="theme-color" content="#006d77" /> {
+  digest: '1609786828'
+}
+ GET /dashboard 500 in 227ms (next.js: 108ms, proxy.ts: 10ms, application-code: 110ms)
+ GET /dashboard 500 in 230ms (next.js: 157ms, proxy.ts: 6ms, application-code: 67ms)
+⨯ ReferenceError: manropeHeading is not defined
+    at RootLayout (src/app/layout.tsx:97:21)
+   95 |       suppressHydrationWarning
+   96 |       data-scroll-behavior="smooth"
+>  97 |       className={`${manropeHeading.variable} ${dmSansBody.variable} h-full antialiased`}
+      |                     ^
+   98 |     >
+   99 |       <head>
+  100 |         <meta name="theme-color" content="#006d77" /> {
+  digest: '1609786828'
+}
+ GET /dashboard 500 in 165ms (next.js: 26ms, proxy.ts: 11ms, application-code: 128ms)
+[browser] Uncaught ReferenceError: manropeHeading is not defined
+    at RootLayout (src/app/layout.tsx:97:21)
+   95 |       suppressHydrationWarning
+   96 |       data-scroll-behavior="smooth"
+>  97 |       className={`${manropeHeading.variable} ${dmSansBody.variable} h-full antialiased`}
+      |                     ^
+   98 |     >
+   99 |       <head>
+  100 |         <meta name="theme-color" content="#006d77" />
+[browser] Uncaught ReferenceError: manropeHeading is not defined
+    at RootLayout (src/app/layout.tsx:97:21)
+   95 |       suppressHydrationWarning
+   96 |       data-scroll-behavior="smooth"
+>  97 |       className={`${manropeHeading.variable} ${dmSansBody.variable} h-full antialiased`}
+      |                     ^
+   98 |     >
+   99 |       <head>
+  100 |         <meta name="theme-color" content="#006d77" />
+✓ Compiled in 15ms
+ GET /dashboard 200 in 496ms (next.js: 221ms, proxy.ts: 11ms, application-code: 264ms)
+ GET /dashboard 200 in 514ms (next.js: 304ms, proxy.ts: 9ms, application-code: 201ms)
+ GET /api/abs-population 200 in 163ms (next.js: 132ms, proxy.ts: 18ms, application-code: 13ms)
+[browser] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[browser] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+ GET /dashboard 200 in 514ms (next.js: 8ms, proxy.ts: 23ms, application-code: 482ms)
+ GET /api/abs-population 200 in 19ms (next.js: 3ms, proxy.ts: 6ms, application-code: 10ms)
+[browser] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[browser] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+ GET /api/australia-insights 200 in 1506ms (next.js: 248ms, proxy.ts: 21ms, application-code: 1238ms)
+ GET /api/australia-insights 200 in 1191ms (next.js: 1406µs, proxy.ts: 21ms, application-code: 1168ms)
+✓ Finished filesystem cache database compaction in 16.3s
+✓ Compiled in 4s
+✓ Compiled in 301ms
+✓ Compiled in 341ms
+✓ Compiled in 352ms
+ GET / 200 in 188ms (next.js: 79ms, proxy.ts: 3ms, application-code: 107ms)
+✓ Compiled in 560ms
+✓ Compiled in 639ms
+ GET / 200 in 155ms (next.js: 28ms, proxy.ts: 7ms, application-code: 119ms)
+✓ Compiled in 305ms
+ GET / 200 in 128ms (next.js: 27ms, proxy.ts: 7ms, application-code: 94ms)
+ GET / 200 in 135ms (next.js: 25ms, proxy.ts: 3ms, application-code: 106ms)
+ GET / 200 in 125ms (next.js: 18ms, proxy.ts: 4ms, application-code: 103ms)
+ GET / 200 in 124ms (next.js: 25ms, proxy.ts: 4ms, application-code: 96ms)
+ GET / 200 in 146ms (next.js: 26ms, proxy.ts: 4ms, application-code: 116ms)
+ GET / 200 in 187ms (next.js: 47ms, proxy.ts: 6ms, application-code: 135ms)
+ GET / 200 in 169ms (next.js: 43ms, proxy.ts: 3ms, application-code: 122ms)
+ GET / 200 in 144ms (next.js: 34ms, proxy.ts: 6ms, application-code: 104ms)
+ GET / 200 in 116ms (next.js: 19ms, proxy.ts: 3ms, application-code: 94ms)
+ GET / 200 in 136ms (next.js: 31ms, proxy.ts: 4ms, application-code: 101ms)
+ GET / 200 in 124ms (next.js: 20ms, proxy.ts: 5ms, application-code: 99ms)
+ GET / 200 in 130ms (next.js: 26ms, proxy.ts: 4ms, application-code: 99ms)
+ GET / 200 in 145ms (next.js: 20ms, proxy.ts: 5ms, application-code: 119ms)
+ GET / 200 in 133ms (next.js: 25ms, proxy.ts: 5ms, application-code: 102ms)
+ GET / 200 in 133ms (next.js: 27ms, proxy.ts: 5ms, application-code: 101ms)
+ GET / 200 in 122ms (next.js: 26ms, proxy.ts: 3ms, application-code: 93ms)
+ GET / 200 in 234ms (next.js: 51ms, proxy.ts: 5ms, application-code: 178ms)
+ GET / 200 in 133ms (next.js: 26ms, proxy.ts: 6ms, application-code: 101ms)
+ GET / 200 in 147ms (next.js: 28ms, proxy.ts: 8ms, application-code: 111ms)
+ GET / 200 in 139ms (next.js: 28ms, proxy.ts: 5ms, application-code: 107ms)
+ GET / 200 in 135ms (next.js: 25ms, proxy.ts: 4ms, application-code: 106ms)
+ GET / 200 in 152ms (next.js: 27ms, proxy.ts: 4ms, application-code: 120ms)
+ GET / 200 in 173ms (next.js: 30ms, proxy.ts: 8ms, application-code: 135ms)
+ GET / 200 in 145ms (next.js: 31ms, proxy.ts: 4ms, application-code: 110ms)
+ GET / 200 in 115ms (next.js: 19ms, proxy.ts: 5ms, application-code: 92ms)
+ GET / 200 in 130ms (next.js: 27ms, proxy.ts: 4ms, application-code: 99ms)
+ GET / 200 in 117ms (next.js: 20ms, proxy.ts: 4ms, application-code: 92ms)
+ GET / 200 in 131ms (next.js: 27ms, proxy.ts: 6ms, application-code: 98ms)
+ GET / 200 in 136ms (next.js: 28ms, proxy.ts: 6ms, application-code: 103ms)
+ GET / 200 in 138ms (next.js: 27ms, proxy.ts: 5ms, application-code: 106ms)
+ GET / 200 in 132ms (next.js: 28ms, proxy.ts: 7ms, application-code: 97ms)
+ GET / 200 in 131ms (next.js: 27ms, proxy.ts: 4ms, application-code: 100ms)
+ GET / 200 in 139ms (next.js: 27ms, proxy.ts: 7ms, application-code: 105ms)
+ GET / 200 in 164ms (next.js: 28ms, proxy.ts: 7ms, application-code: 130ms)
+ GET / 200 in 138ms (next.js: 27ms, proxy.ts: 3ms, application-code: 107ms)
+ GET / 200 in 140ms (next.js: 29ms, proxy.ts: 6ms, application-code: 106ms)
+ GET / 200 in 137ms (next.js: 26ms, proxy.ts: 6ms, application-code: 104ms)
+ GET / 200 in 148ms (next.js: 30ms, proxy.ts: 6ms, application-code: 112ms)
+ GET / 200 in 143ms (next.js: 26ms, proxy.ts: 7ms, application-code: 110ms)
+ GET / 200 in 116ms (next.js: 19ms, proxy.ts: 3ms, application-code: 93ms)
+ GET / 200 in 129ms (next.js: 25ms, proxy.ts: 6ms, application-code: 98ms)
+ GET / 200 in 148ms (next.js: 32ms, proxy.ts: 3ms, application-code: 112ms)
+ GET / 200 in 139ms (next.js: 29ms, proxy.ts: 4ms, application-code: 107ms)
+ GET / 200 in 130ms (next.js: 26ms, proxy.ts: 8ms, application-code: 96ms)
+ GET / 200 in 138ms (next.js: 26ms, proxy.ts: 5ms, application-code: 107ms)
+ GET / 200 in 123ms (next.js: 22ms, proxy.ts: 6ms, application-code: 95ms)
+ GET / 200 in 133ms (next.js: 26ms, proxy.ts: 5ms, application-code: 102ms)
+ GET / 200 in 132ms (next.js: 26ms, proxy.ts: 4ms, application-code: 101ms)
+ GET / 200 in 132ms (next.js: 27ms, proxy.ts: 4ms, application-code: 100ms)
+ GET / 200 in 128ms (next.js: 25ms, proxy.ts: 5ms, application-code: 97ms)
+ GET / 200 in 115ms (next.js: 17ms, proxy.ts: 6ms, application-code: 92ms)
+ GET / 200 in 124ms (next.js: 28ms, proxy.ts: 5ms, application-code: 92ms)
+ GET / 200 in 114ms (next.js: 22ms, proxy.ts: 5ms, application-code: 87ms)
+ GET / 200 in 138ms (next.js: 27ms, proxy.ts: 3ms, application-code: 108ms)
+ GET / 200 in 125ms (next.js: 25ms, proxy.ts: 6ms, application-code: 95ms)
+ GET / 200 in 136ms (next.js: 26ms, proxy.ts: 4ms, application-code: 107ms)
+ GET / 200 in 153ms (next.js: 30ms, proxy.ts: 4ms, application-code: 119ms)
+ GET / 200 in 135ms (next.js: 20ms, proxy.ts: 5ms, application-code: 110ms)
+ GET / 200 in 131ms (next.js: 27ms, proxy.ts: 4ms, application-code: 99ms)
+ GET / 200 in 118ms (next.js: 19ms, proxy.ts: 3ms, application-code: 97ms)
+ GET / 200 in 140ms (next.js: 30ms, proxy.ts: 3ms, application-code: 107ms)
+ GET / 200 in 136ms (next.js: 27ms, proxy.ts: 6ms, application-code: 104ms)
+ GET / 200 in 127ms (next.js: 27ms, proxy.ts: 3ms, application-code: 97ms)
+ GET / 200 in 143ms (next.js: 30ms, proxy.ts: 4ms, application-code: 110ms)
+ GET / 200 in 136ms (next.js: 28ms, proxy.ts: 4ms, application-code: 104ms)
+ GET / 200 in 140ms (next.js: 27ms, proxy.ts: 4ms, application-code: 109ms)
+ GET / 200 in 142ms (next.js: 25ms, proxy.ts: 6ms, application-code: 110ms)
+ GET / 200 in 133ms (next.js: 24ms, proxy.ts: 4ms, application-code: 105ms)
+ GET / 200 in 136ms (next.js: 24ms, proxy.ts: 6ms, application-code: 106ms)
+ GET / 200 in 141ms (next.js: 25ms, proxy.ts: 6ms, application-code: 109ms)
+ GET / 200 in 122ms (next.js: 26ms, proxy.ts: 4ms, application-code: 92ms)
+ GET / 200 in 141ms (next.js: 29ms, proxy.ts: 4ms, application-code: 108ms)
+ GET / 200 in 139ms (next.js: 26ms, proxy.ts: 4ms, application-code: 108ms)
+ GET / 200 in 111ms (next.js: 19ms, proxy.ts: 4ms, application-code: 88ms)
+ GET / 200 in 125ms (next.js: 23ms, proxy.ts: 4ms, application-code: 98ms)
+ GET / 200 in 131ms (next.js: 27ms, proxy.ts: 6ms, application-code: 99ms)
+ GET / 200 in 166ms (next.js: 30ms, proxy.ts: 10ms, application-code: 126ms)
+ GET / 200 in 146ms (next.js: 27ms, proxy.ts: 2ms, application-code: 116ms)
+ GET / 200 in 125ms (next.js: 25ms, proxy.ts: 4ms, application-code: 95ms)
+ GET / 200 in 121ms (next.js: 25ms, proxy.ts: 6ms, application-code: 90ms)
+ GET / 200 in 129ms (next.js: 27ms, proxy.ts: 4ms, application-code: 99ms)
+ GET / 200 in 141ms (next.js: 28ms, proxy.ts: 7ms, application-code: 106ms)
+ GET / 200 in 131ms (next.js: 25ms, proxy.ts: 5ms, application-code: 102ms)
+ GET / 200 in 136ms (next.js: 26ms, proxy.ts: 5ms, application-code: 105ms)
+ GET / 200 in 138ms (next.js: 27ms, proxy.ts: 7ms, application-code: 105ms)
+ GET / 200 in 148ms (next.js: 29ms, proxy.ts: 7ms, application-code: 112ms)
+ GET / 200 in 134ms (next.js: 28ms, proxy.ts: 3ms, application-code: 102ms)
+ GET / 200 in 135ms (next.js: 27ms, proxy.ts: 4ms, application-code: 104ms)
+ GET / 200 in 142ms (next.js: 30ms, proxy.ts: 4ms, application-code: 108ms)
+ GET / 200 in 142ms (next.js: 31ms, proxy.ts: 4ms, application-code: 107ms)
+ GET / 200 in 141ms (next.js: 31ms, proxy.ts: 4ms, application-code: 106ms)
+ GET / 200 in 132ms (next.js: 30ms, proxy.ts: 4ms, application-code: 97ms)
+ GET / 200 in 152ms (next.js: 29ms, proxy.ts: 4ms, application-code: 120ms)
+ GET / 200 in 145ms (next.js: 30ms, proxy.ts: 4ms, application-code: 111ms)
+ GET / 200 in 136ms (next.js: 29ms, proxy.ts: 4ms, application-code: 103ms)
+ GET / 200 in 161ms (next.js: 32ms, proxy.ts: 4ms, application-code: 125ms)
+ GET / 200 in 140ms (next.js: 29ms, proxy.ts: 5ms, application-code: 106ms)
+ GET / 200 in 121ms (next.js: 26ms, proxy.ts: 3ms, application-code: 92ms)
+ GET / 200 in 161ms (next.js: 29ms, proxy.ts: 5ms, application-code: 127ms)
+ GET / 200 in 165ms (next.js: 29ms, proxy.ts: 11ms, application-code: 125ms)
+ GET / 200 in 138ms (next.js: 27ms, proxy.ts: 4ms, application-code: 108ms)
+ GET / 200 in 129ms (next.js: 26ms, proxy.ts: 4ms, application-code: 99ms)
+ GET / 200 in 151ms (next.js: 31ms, proxy.ts: 4ms, application-code: 117ms)
+ GET / 200 in 138ms (next.js: 23ms, proxy.ts: 6ms, application-code: 108ms)
+ GET / 200 in 120ms (next.js: 25ms, proxy.ts: 4ms, application-code: 91ms)
+ GET / 200 in 107ms (next.js: 19ms, proxy.ts: 4ms, application-code: 84ms)
+ GET / 200 in 128ms (next.js: 27ms, proxy.ts: 4ms, application-code: 97ms)
+ GET / 200 in 109ms (next.js: 20ms, proxy.ts: 4ms, application-code: 84ms)
+ GET / 200 in 119ms (next.js: 24ms, proxy.ts: 4ms, application-code: 90ms)
+ GET / 200 in 106ms (next.js: 19ms, proxy.ts: 4ms, application-code: 84ms)
+ GET / 200 in 156ms (next.js: 29ms, proxy.ts: 8ms, application-code: 119ms)
+ GET / 200 in 122ms (next.js: 19ms, proxy.ts: 3ms, application-code: 100ms)
+ GET / 200 in 132ms (next.js: 30ms, proxy.ts: 3ms, application-code: 100ms)
+✓ Compiled in 191ms
+ GET / 200 in 145ms (next.js: 31ms, proxy.ts: 7ms, application-code: 106ms)
+ GET / 200 in 134ms (next.js: 30ms, proxy.ts: 10ms, application-code: 93ms)
+ GET / 200 in 123ms (next.js: 26ms, proxy.ts: 4ms, application-code: 92ms)
+✓ Compiled in 428ms
+ GET / 200 in 159ms (next.js: 50ms, proxy.ts: 4ms, application-code: 105ms)
+✓ Compiled in 1714ms
+ GET / 200 in 134ms (next.js: 29ms, proxy.ts: 5ms, application-code: 99ms)
+✓ Compiled in 393ms
+ GET /dashboard 200 in 1081ms (next.js: 1037ms, proxy.ts: 8ms, application-code: 35ms)
+ GET /dashboard 200 in 1083ms (next.js: 437ms, proxy.ts: 9ms, application-code: 638ms)
+✓ Compiled in 19.8s
+ GET /dashboard 200 in 1034ms (next.js: 581ms, proxy.ts: 290ms, application-code: 163ms)
+ GET /dashboard 200 in 1038ms (next.js: 622ms, proxy.ts: 304ms, application-code: 111ms)
+ GET /dashboard 200 in 183ms (next.js: 7ms, proxy.ts: 7ms, application-code: 169ms)
+ GET /dashboard 200 in 185ms (next.js: 31ms, proxy.ts: 8ms, application-code: 146ms)
+ GET /dashboard 200 in 162ms (next.js: 65ms, proxy.ts: 11ms, application-code: 85ms)
+ GET /dashboard 200 in 164ms (next.js: 7ms, proxy.ts: 10ms, application-code: 146ms)
+ GET /dashboard 200 in 118ms (next.js: 6ms, proxy.ts: 10ms, application-code: 102ms)
+ GET /dashboard 200 in 116ms (next.js: 22ms, proxy.ts: 10ms, application-code: 85ms)
+ GET /dashboard 200 in 61ms (next.js: 4ms, proxy.ts: 10ms, application-code: 46ms)
+ GET /dashboard 200 in 61ms (next.js: 25ms, proxy.ts: 11ms, application-code: 25ms)
+ GET / 200 in 1678ms (next.js: 237ms, proxy.ts: 64ms, application-code: 1377ms)
+ GET / 200 in 185ms (next.js: 30ms, proxy.ts: 6ms, application-code: 149ms)
+ GET / 200 in 146ms (next.js: 18ms, proxy.ts: 8ms, application-code: 119ms)
+ GET / 200 in 148ms (next.js: 29ms, proxy.ts: 4ms, application-code: 114ms)
+ GET / 200 in 146ms (next.js: 27ms, proxy.ts: 3ms, application-code: 116ms)
+ GET / 200 in 144ms (next.js: 29ms, proxy.ts: 5ms, application-code: 110ms)
+[browser] Image with src "/generated/hero-study.webp" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+ GET / 200 in 95ms (next.js: 5ms, proxy.ts: 3ms, application-code: 87ms)
+ GET / 200 in 137ms (next.js: 26ms, proxy.ts: 7ms, application-code: 104ms)
+ GET / 200 in 135ms (next.js: 25ms, proxy.ts: 3ms, application-code: 107ms)
+ GET / 200 in 138ms (next.js: 22ms, proxy.ts: 6ms, application-code: 111ms)
+ GET / 200 in 143ms (next.js: 27ms, proxy.ts: 5ms, application-code: 110ms)
+ GET / 200 in 129ms (next.js: 26ms, proxy.ts: 6ms, application-code: 97ms)
+ GET / 200 in 154ms (next.js: 26ms, proxy.ts: 6ms, application-code: 121ms)
+ GET / 200 in 137ms (next.js: 26ms, proxy.ts: 4ms, application-code: 107ms)
+ GET / 200 in 141ms (next.js: 24ms, proxy.ts: 5ms, application-code: 112ms)
+ GET / 200 in 144ms (next.js: 30ms, proxy.ts: 4ms, application-code: 109ms)
+ GET / 200 in 143ms (next.js: 29ms, proxy.ts: 6ms, application-code: 109ms)
+ GET / 200 in 138ms (next.js: 26ms, proxy.ts: 7ms, application-code: 106ms)
+ GET / 200 in 135ms (next.js: 26ms, proxy.ts: 5ms, application-code: 104ms)
+ GET / 200 in 145ms (next.js: 25ms, proxy.ts: 5ms, application-code: 115ms)
+ GET /dashboard 200 in 56ms (next.js: 21ms, proxy.ts: 7ms, application-code: 28ms)
+ GET /api/abs-population 200 in 273ms (next.js: 249ms, proxy.ts: 8ms, application-code: 17ms)
+[browser] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[browser] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+ GET /api/abs-population 200 in 16ms (next.js: 1570µs, proxy.ts: 6ms, application-code: 9ms)
+ GET /api/australia-insights 200 in 1622ms (next.js: 422ms, proxy.ts: 8ms, application-code: 1192ms)
+ GET /api/australia-insights 200 in 19ms (next.js: 1755µs, proxy.ts: 3ms, application-code: 14ms)
+ GET / 200 in 64ms (next.js: 25ms, proxy.ts: 8ms, application-code: 32ms)
+ GET / 200 in 127ms (next.js: 23ms, proxy.ts: 4ms, application-code: 99ms)
+ GET / 200 in 97ms (next.js: 7ms, proxy.ts: 4ms, application-code: 87ms)
+ GET / 200 in 166ms (next.js: 26ms, proxy.ts: 5ms, application-code: 135ms)
+ GET / 200 in 148ms (next.js: 31ms, proxy.ts: 5ms, application-code: 113ms)
+ GET / 200 in 164ms (next.js: 27ms, proxy.ts: 5ms, application-code: 131ms)
+ GET / 200 in 140ms (next.js: 27ms, proxy.ts: 5ms, application-code: 108ms)
+ GET / 200 in 154ms (next.js: 32ms, proxy.ts: 6ms, application-code: 117ms)
+ GET / 200 in 137ms (next.js: 25ms, proxy.ts: 4ms, application-code: 108ms)
+ GET / 200 in 146ms (next.js: 30ms, proxy.ts: 5ms, application-code: 112ms)
+ GET / 200 in 150ms (next.js: 30ms, proxy.ts: 4ms, application-code: 116ms)
+✓ Compiled in 1344ms
+✓ Compiled in 703ms
+✓ Compiled in 657ms
+✓ Compiled in 447ms
+ GET / 200 in 246ms (next.js: 113ms, proxy.ts: 3ms, application-code: 130ms)
+✓ Finished filesystem cache database compaction in 16.6s
+✓ Compiled in 493ms
+ GET / 200 in 165ms (next.js: 65ms, proxy.ts: 3ms, application-code: 97ms)
+✓ Compiled in 385ms
+✓ Compiled in 717ms
+✓ Compiled in 124ms
+ GET / 200 in 172ms (next.js: 67ms, proxy.ts: 4ms, application-code: 101ms)
+ GET / 200 in 138ms (next.js: 25ms, proxy.ts: 4ms, application-code: 108ms)
+ GET / 200 in 141ms (next.js: 28ms, proxy.ts: 5ms, application-code: 108ms)
+ GET / 200 in 140ms (next.js: 33ms, proxy.ts: 5ms, application-code: 103ms)
+ GET / 200 in 148ms (next.js: 29ms, proxy.ts: 5ms, application-code: 114ms)
+ GET / 200 in 138ms (next.js: 28ms, proxy.ts: 4ms, application-code: 106ms)
+ GET / 200 in 142ms (next.js: 25ms, proxy.ts: 4ms, application-code: 113ms)
+ GET / 200 in 134ms (next.js: 24ms, proxy.ts: 4ms, application-code: 106ms)
+ GET / 200 in 129ms (next.js: 25ms, proxy.ts: 3ms, application-code: 101ms)
+ GET / 200 in 131ms (next.js: 27ms, proxy.ts: 4ms, application-code: 100ms)
+ GET / 200 in 141ms (next.js: 31ms, proxy.ts: 4ms, application-code: 106ms)
+ GET / 200 in 137ms (next.js: 27ms, proxy.ts: 3ms, application-code: 106ms)
+ GET / 200 in 134ms (next.js: 27ms, proxy.ts: 4ms, application-code: 103ms)
+ GET / 200 in 169ms (next.js: 28ms, proxy.ts: 8ms, application-code: 134ms)
+ GET / 200 in 144ms (next.js: 31ms, proxy.ts: 3ms, application-code: 109ms)
+ GET / 200 in 138ms (next.js: 25ms, proxy.ts: 5ms, application-code: 108ms)
+ GET / 200 in 87ms (next.js: 3ms, proxy.ts: 4ms, application-code: 81ms)
+ GET / 200 in 135ms (next.js: 22ms, proxy.ts: 5ms, application-code: 108ms)
+ GET / 200 in 142ms (next.js: 31ms, proxy.ts: 4ms, application-code: 106ms)
+ GET / 200 in 179ms (next.js: 28ms, proxy.ts: 4ms, application-code: 147ms)
+ GET / 200 in 139ms (next.js: 28ms, proxy.ts: 5ms, application-code: 107ms)
+ GET / 200 in 149ms (next.js: 30ms, proxy.ts: 3ms, application-code: 117ms)
+ GET / 200 in 199ms (next.js: 49ms, proxy.ts: 3ms, application-code: 147ms)
+ GET / 200 in 141ms (next.js: 29ms, proxy.ts: 4ms, application-code: 108ms)
+ GET / 200 in 149ms (next.js: 30ms, proxy.ts: 4ms, application-code: 115ms)
+ GET / 200 in 146ms (next.js: 36ms, proxy.ts: 3ms, application-code: 107ms)
+ GET / 200 in 296ms (next.js: 78ms, proxy.ts: 4ms, application-code: 213ms)
+ GET / 200 in 145ms (next.js: 26ms, proxy.ts: 3ms, application-code: 115ms)
+ GET / 200 in 147ms (next.js: 28ms, proxy.ts: 7ms, application-code: 112ms)
+ GET / 200 in 147ms (next.js: 29ms, proxy.ts: 6ms, application-code: 112ms)
+ GET / 200 in 134ms (next.js: 25ms, proxy.ts: 3ms, application-code: 105ms)
+ GET / 200 in 336ms (next.js: 103ms, proxy.ts: 5ms, application-code: 227ms)
+ GET / 200 in 298ms (next.js: 87ms, proxy.ts: 4ms, application-code: 207ms)
+ GET / 200 in 417ms (next.js: 178ms, proxy.ts: 6ms, application-code: 234ms)
+ GET / 200 in 201ms (next.js: 26ms, proxy.ts: 4ms, application-code: 172ms)
+ GET / 200 in 246ms (next.js: 113ms, proxy.ts: 7ms, application-code: 127ms)
+ GET / 200 in 474ms (next.js: 194ms, proxy.ts: 6ms, application-code: 274ms)
+ GET / 200 in 376ms (next.js: 172ms, proxy.ts: 4ms, application-code: 200ms)
+ GET / 200 in 169ms (next.js: 28ms, proxy.ts: 9ms, application-code: 131ms)
+ GET / 200 in 158ms (next.js: 49ms, proxy.ts: 4ms, application-code: 105ms)
+ GET / 200 in 500ms (next.js: 151ms, proxy.ts: 7ms, application-code: 341ms)
+ GET / 200 in 447ms (next.js: 158ms, proxy.ts: 4ms, application-code: 284ms)
+✓ Finished writing to filesystem cache in 17.7s
+ GET / 200 in 237ms (next.js: 4ms, proxy.ts: 3ms, application-code: 230ms)
+ GET / 200 in 714ms (next.js: 461ms, proxy.ts: 5ms, application-code: 248ms)
+ GET / 200 in 548ms (next.js: 190ms, proxy.ts: 4ms, application-code: 354ms)
+ GET / 200 in 332ms (next.js: 74ms, proxy.ts: 4ms, application-code: 254ms)
+ GET / 200 in 602ms (next.js: 241ms, proxy.ts: 38ms, application-code: 323ms)
+ GET / 200 in 136ms (next.js: 30ms, proxy.ts: 4ms, application-code: 102ms)
+ GET / 200 in 214ms (next.js: 26ms, proxy.ts: 3ms, application-code: 185ms)
+ GET / 200 in 155ms (next.js: 54ms, proxy.ts: 3ms, application-code: 98ms)
+ GET / 200 in 141ms (next.js: 25ms, proxy.ts: 5ms, application-code: 112ms)
+ GET / 200 in 152ms (next.js: 24ms, proxy.ts: 4ms, application-code: 124ms)
+ GET / 200 in 161ms (next.js: 27ms, proxy.ts: 3ms, application-code: 131ms)
+ GET / 200 in 134ms (next.js: 26ms, proxy.ts: 3ms, application-code: 105ms)
+○ Compiling /dashboard ...
+✓ Finished writing to filesystem cache in 18.9s
+ GET / 200 in 29.5s (next.js: 25.7s, proxy.ts: 6ms, application-code: 3.7s)
+✓ Compiled in 1056ms
+ GET /dashboard 200 in 34.3s (next.js: 25.7s, proxy.ts: 5ms, application-code: 8.6s)
+ GET / 200 in 34.3s (next.js: 6.5s, proxy.ts: 3ms, application-code: 27.8s)
+ GET / 200 in 7.3s (next.js: 292ms, proxy.ts: 50ms, application-code: 7.0s)
+ GET / 200 in 10.2s (next.js: 2.6s, proxy.ts: 2.9s, application-code: 4.7s)
+ GET /dashboard 200 in 8.6s (next.js: 527ms, proxy.ts: 71ms, application-code: 8.0s)
+ GET / 200 in 12.1s (next.js: 59ms, proxy.ts: 674ms, application-code: 11.4s)
+ GET / 200 in 11.4s (next.js: 1430ms, proxy.ts: 72ms, application-code: 9.9s)
+ GET / 200 in 14.3s (next.js: 2.2s, proxy.ts: 2.9s, application-code: 9.1s)
+ GET / 200 in 11.4s (next.js: 788ms, proxy.ts: 69ms, application-code: 10.6s)
+ GET / 200 in 15.0s (next.js: 3.5s, proxy.ts: 3.6s, application-code: 8.0s)
+ GET / 200 in 18.0s (next.js: 6.6s, proxy.ts: 706ms, application-code: 10.7s)
+✓ Compiled in 73.2s
+✓ Finished writing to filesystem cache in 13.9s
+ GET /dashboard 200 in 92s (next.js: 55s, proxy.ts: 4.7s, application-code: 32.3s)
+ GET /dashboard 200 in 92s (next.js: 55s, proxy.ts: 4.7s, application-code: 32.7s)
+ GET /dashboard 200 in 92s (next.js: 60s, proxy.ts: 92ms, application-code: 31.6s)
+ GET /dashboard 200 in 92s (next.js: 54s, proxy.ts: 4.8s, application-code: 33.1s)
+ GET /dashboard 200 in 77s (next.js: 39.0s, proxy.ts: 1695ms, application-code: 36.2s)
+ GET / 200 in 85s (next.js: 68s, proxy.ts: 27ms, application-code: 16.8s)
+ GET / 200 in 92s (next.js: 72s, proxy.ts: 4.8s, application-code: 15.5s)
+ GET / 200 in 92s (next.js: 72s, proxy.ts: 4.7s, application-code: 15.4s)
+ GET / 200 in 85s (next.js: 68s, proxy.ts: 19ms, application-code: 16.4s)
+ GET / 200 in 92s (next.js: 72s, proxy.ts: 4.8s, application-code: 15.5s)
+ GET / 200 in 85s (next.js: 67s, proxy.ts: 784ms, application-code: 16.8s)
+ GET / 200 in 87s (next.js: 69s, proxy.ts: 2.4s, application-code: 15.8s)
+ GET / 200 in 85s (next.js: 68s, proxy.ts: 17ms, application-code: 16.6s)
+ GET / 200 in 85s (next.js: 69s, proxy.ts: 20ms, application-code: 16.3s)
+ GET / 200 in 85s (next.js: 68s, proxy.ts: 15ms, application-code: 16.5s)
+ GET / 200 in 92s (next.js: 72s, proxy.ts: 4.8s, application-code: 15.6s)
+ GET / 200 in 85s (next.js: 68s, proxy.ts: 21ms, application-code: 16.7s)
+ GET / 200 in 85s (next.js: 68s, proxy.ts: 16ms, application-code: 16.5s)
+ GET / 200 in 92s (next.js: 72s, proxy.ts: 4.8s, application-code: 15.6s)
+ GET / 200 in 45s (next.js: 27.8s, proxy.ts: 8ms, application-code: 17.2s)
+ GET / 200 in 92s (next.js: 72s, proxy.ts: 4.8s, application-code: 15.3s)
+ GET / 200 in 85s (next.js: 67s, proxy.ts: 775ms, application-code: 16.9s)
+ GET / 200 in 92s (next.js: 72s, proxy.ts: 4.7s, application-code: 15.5s)
+ GET / 200 in 92s (next.js: 72s, proxy.ts: 4.8s, application-code: 15.7s)
+ GET / 200 in 85s (next.js: 68s, proxy.ts: 15ms, application-code: 16.5s)
+ GET / 200 in 85s (next.js: 67s, proxy.ts: 778ms, application-code: 16.9s)
+ GET / 200 in 92s (next.js: 72s, proxy.ts: 4.8s, application-code: 15.6s)
+ GET / 200 in 87s (next.js: 69s, proxy.ts: 2.4s, application-code: 15.7s)
+ GET / 200 in 85s (next.js: 68s, proxy.ts: 16ms, application-code: 16.6s)
+ GET / 200 in 92s (next.js: 77s, proxy.ts: 114ms, application-code: 15.3s)
+ GET / 200 in 85s (next.js: 68s, proxy.ts: 15ms, application-code: 16.7s)
+ GET / 200 in 47s (next.js: 27.7s, proxy.ts: 12ms, application-code: 19.2s)
+ GET /dashboard 200 in 89s (next.js: 51s, proxy.ts: 2.5s, application-code: 36.2s)
+ GET / 200 in 78s (next.js: 58s, proxy.ts: 369ms, application-code: 19.1s)
+ GET / 200 in 86s (next.js: 63s, proxy.ts: 4.0s, application-code: 19.1s)
+ GET / 200 in 86s (next.js: 67s, proxy.ts: 323ms, application-code: 19.0s)
+ GET / 200 in 86s (next.js: 64s, proxy.ts: 2.9s, application-code: 19.0s)
+ GET / 200 in 87s (next.js: 68s, proxy.ts: 18ms, application-code: 18.5s)
+ GET / 200 in 2.2s (next.js: 597ms, proxy.ts: 946ms, application-code: 627ms)
+ GET / 200 in 1234ms (next.js: 710ms, proxy.ts: 15ms, application-code: 509ms)
+ GET / 200 in 1265ms (next.js: 81ms, proxy.ts: 697ms, application-code: 487ms)
+ GET / 200 in 696ms (next.js: 32ms, proxy.ts: 76ms, application-code: 588ms)
+ GET / 200 in 664ms (next.js: 79ms, proxy.ts: 17ms, application-code: 567ms)
+ GET / 200 in 767ms (next.js: 88ms, proxy.ts: 71ms, application-code: 607ms)
+ GET / 200 in 850ms (next.js: 81ms, proxy.ts: 127ms, application-code: 642ms)
+ GET / 200 in 1320ms (next.js: 55ms, proxy.ts: 70ms, application-code: 1194ms)
+ GET / 200 in 1352ms (next.js: 89ms, proxy.ts: 119ms, application-code: 1145ms)
+ GET / 200 in 1346ms (next.js: 148ms, proxy.ts: 124ms, application-code: 1074ms)
+[browser] Image with src "/generated/hero-study.webp" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+ GET / 200 in 1217ms (next.js: 225ms, proxy.ts: 236ms, application-code: 757ms)
+ GET / 200 in 1064ms (next.js: 218ms, proxy.ts: 187ms, application-code: 660ms)
+ GET / 200 in 730ms (next.js: 45ms, proxy.ts: 50ms, application-code: 635ms)
+ GET / 200 in 708ms (next.js: 216ms, proxy.ts: 43ms, application-code: 450ms)
+ GET / 200 in 370ms (next.js: 46ms, proxy.ts: 10ms, application-code: 314ms)
+ GET / 200 in 439ms (next.js: 142ms, proxy.ts: 31ms, application-code: 266ms)
+ GET / 200 in 216ms (next.js: 20ms, proxy.ts: 17ms, application-code: 179ms)
+ GET / 200 in 215ms (next.js: 66ms, proxy.ts: 17ms, application-code: 132ms)
+ GET / 200 in 82ms (next.js: 17ms, proxy.ts: 22ms, application-code: 44ms)
+[browser] Image with src "/generated/feature-tests.webp" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[browser] Image with src "/generated/hero-study.webp" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+ GET /api/abs-population 200 in 1051ms (next.js: 1013ms, proxy.ts: 9ms, application-code: 29ms)
+[browser] Image with src "/generated/hero-study.webp" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[browser] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[browser] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[browser] Image with src "/generated/hero-study.webp" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+ GET /api/australia-insights 200 in 2.2s (next.js: 800ms, proxy.ts: 6ms, application-code: 1439ms)
+✓ Finished filesystem cache database compaction in 26.3s
+ GET / 200 in 186ms (next.js: 25ms, proxy.ts: 4ms, application-code: 157ms)
+ GET / 200 in 137ms (next.js: 26ms, proxy.ts: 3ms, application-code: 108ms)
+ GET / 200 in 141ms (next.js: 26ms, proxy.ts: 6ms, application-code: 110ms)
+ GET / 200 in 167ms (next.js: 56ms, proxy.ts: 3ms, application-code: 108ms)
+ GET / 200 in 142ms (next.js: 26ms, proxy.ts: 3ms, application-code: 112ms)
+ GET / 200 in 136ms (next.js: 26ms, proxy.ts: 3ms, application-code: 107ms)
+ GET / 200 in 133ms (next.js: 26ms, proxy.ts: 4ms, application-code: 103ms)
+ GET / 200 in 342ms (next.js: 43ms, proxy.ts: 8ms, application-code: 291ms)
+ GET / 200 in 142ms (next.js: 33ms, proxy.ts: 3ms, application-code: 105ms)
+ GET / 200 in 214ms (next.js: 30ms, proxy.ts: 6ms, application-code: 178ms)
+ GET / 200 in 356ms (next.js: 129ms, proxy.ts: 4ms, application-code: 223ms)
+ GET / 200 in 1489ms (next.js: 1216ms, proxy.ts: 12ms, application-code: 261ms)
+✓ Finished writing to filesystem cache in 10.5s
+✓ Compiled in 0ms
+ GET / 200 in 394ms (next.js: 40ms, proxy.ts: 3ms, application-code: 351ms)
+✓ Compiled in 962ms
+ GET / 200 in 218ms (next.js: 78ms, proxy.ts: 7ms, application-code: 133ms)
+ GET / 200 in 1550ms (next.js: 1327ms, proxy.ts: 4ms, application-code: 218ms)
+[browser] Image with src "/generated/feature-tests.webp" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative.
+✓ Compiled in 1175ms
+ GET / 200 in 223ms (next.js: 31ms, proxy.ts: 4ms, application-code: 189ms)
+✓ Compiled in 1267ms
+ GET / 200 in 946ms (next.js: 827ms, proxy.ts: 3ms, application-code: 116ms)
+[browser] Image with src "/generated/feature-tests.webp" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative.
+[browser] Image with src "/generated/feature-bilingual.webp" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative.
+[browser] Image with src "/generated/feature-progress.webp" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative.
+[browser] Image with src "/generated/feature-tests.webp" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+✓ Compiled in 612ms
+✓ Compiled in 965ms
+ GET / 200 in 171ms (next.js: 34ms, proxy.ts: 5ms, application-code: 132ms)
+ GET / 200 in 127ms (next.js: 23ms, proxy.ts: 4ms, application-code: 100ms)
+✓ Compiled in 670ms
+ GET / 200 in 139ms (next.js: 30ms, proxy.ts: 4ms, application-code: 105ms)
+ GET / 200 in 188ms (next.js: 46ms, proxy.ts: 6ms, application-code: 135ms)
+✓ Finished filesystem cache database compaction in 13.6s
+✓ Compiled in 549ms
+[browser] [CitizenMate] Unhandled error: ReferenceError: SubpageHero is not defined
+    at DashboardPage (src/app/dashboard/page.tsx:301:8)
+    at Set.forEach (<anonymous>)
+  299 |     <div className="min-h-screen bg-cm-ice">
+  300 |       {/* ===== Hero ===== */}
+> 301 |       <SubpageHero
+      |        ^
+  302 |         title={
+  303 |           <>
+  304 |             Your <span className="text-conseil-teal drop-shadow-sm">Readiness</span> Score (src/app/error.tsx:16:13)
+[browser] [CitizenMate] Unhandled error: ReferenceError: SubpageHero is not defined
+    at DashboardPage (src/app/dashboard/page.tsx:301:8)
+    at Set.forEach (<anonymous>)
+  299 |     <div className="min-h-screen bg-cm-ice">
+  300 |       {/* ===== Hero ===== */}
+> 301 |       <SubpageHero
+      |        ^
+  302 |         title={
+  303 |           <>
+  304 |             Your <span className="text-conseil-teal drop-shadow-sm">Readiness</span> Score (src/app/error.tsx:16:13)
+✓ Compiled in 3.9s
+ GET /api/abs-population 200 in 581ms (next.js: 239ms, proxy.ts: 319ms, application-code: 23ms)
+[browser] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[browser] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+ GET /dashboard 200 in 2.7s (next.js: 1265ms, proxy.ts: 650ms, application-code: 796ms)
+ GET / 200 in 2.7s (next.js: 1528ms, proxy.ts: 657ms, application-code: 526ms)
+ GET / 200 in 2.7s (next.js: 1578ms, proxy.ts: 655ms, application-code: 476ms)
+ GET /dashboard 200 in 426ms (next.js: 268ms, proxy.ts: 11ms, application-code: 147ms)
+ GET / 200 in 435ms (next.js: 310ms, proxy.ts: 12ms, application-code: 113ms)
+ GET / 200 in 499ms (next.js: 358ms, proxy.ts: 13ms, application-code: 127ms)
+ GET / 200 in 204ms (next.js: 17ms, proxy.ts: 16ms, application-code: 170ms)
+ GET / 200 in 195ms (next.js: 14ms, proxy.ts: 9ms, application-code: 171ms)
+ GET / 200 in 114ms (next.js: 27ms, proxy.ts: 35ms, application-code: 52ms)
+ GET / 200 in 226ms (next.js: 17ms, proxy.ts: 10ms, application-code: 200ms)
+ GET / 200 in 63ms (next.js: 15ms, proxy.ts: 7ms, application-code: 40ms)
+ GET / 200 in 69ms (next.js: 15ms, proxy.ts: 8ms, application-code: 46ms)
+✓ Finished writing to filesystem cache in 10.9s
+ GET / 200 in 8.4s (next.js: 903ms, proxy.ts: 20ms, application-code: 7.4s)
+ GET /dashboard 200 in 1619ms (next.js: 47ms, proxy.ts: 7ms, application-code: 1565ms)
+ GET /api/australia-insights 200 in 434ms (next.js: 387ms, proxy.ts: 6ms, application-code: 41ms)
+ GET /api/abs-population 200 in 460ms (next.js: 445ms, proxy.ts: 6ms, application-code: 9ms)
+✓ Finished filesystem cache database compaction in 28.2s
+○ Compiling /practice ...
+✓ Finished writing to filesystem cache in 11.9s
+ GET /practice 200 in 32.2s (next.js: 32.1s, proxy.ts: 3ms, application-code: 117ms)
+✓ Finished writing to filesystem cache in 30.8s
+ GET / 200 in 13.3s (next.js: 10.4s, proxy.ts: 1277ms, application-code: 1615ms)
+○ Compiling /study ...
+✓ Finished writing to filesystem cache in 16.5s
+ GET /study 200 in 13.0s (next.js: 12.9s, proxy.ts: 8ms, application-code: 93ms)
+✓ Finished writing to filesystem cache in 30.7s
+ GET / 200 in 6.6s (next.js: 5.6s, proxy.ts: 812ms, application-code: 157ms)
+✓ Finished filesystem cache database compaction in 17.6s
+✓ Finished filesystem cache database compaction in 31.4s
+ GET / 200 in 217ms (next.js: 34ms, proxy.ts: 7ms, application-code: 176ms)
+ GET / 200 in 882ms (next.js: 674ms, proxy.ts: 7ms, application-code: 201ms)

@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import type { QuizResult } from "@/lib/types";
 import { usePremium } from "@/lib/auth-context";
 import { PremiumBadge } from "@/components/shared/premium-gate";
+import { SubpageHero } from "@/components/shared/subpage-hero";
 import {
   FileText,
   Clock,
@@ -63,48 +64,16 @@ export default function PracticePage() {
   return (
     <div className="min-h-screen bg-cm-ice">
       {/* Hero */}
-      <section className="relative bg-cm-navy text-white overflow-hidden">
-        {/* Background image overlay */}
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/generated/test-start.webp"
-            alt="Concentrating before a test"
-            fill
-            className="object-cover opacity-35 mix-blend-screen"
-            sizes="100vw"
-            priority
-          />
-          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-cm-ice to-transparent opacity-90" />
-        </div>
-
-        {/* Decorative orbs */}
-
-        <div className="relative mx-auto max-w-5xl px-4 sm:px-6 py-16 sm:py-24 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <motion.span
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-sm font-medium mb-6"
-            >
-              <FileText className="w-4 h-4" />
-              Practice Tests
-            </motion.span>
-            <h1 className="text-4xl sm:text-5xl font-heading font-extrabold leading-tight mb-4">
-              Practice for the{" "}
-              <span className="text-cm-gold">Real Test</span>
-            </h1>
-            <p className="text-lg sm:text-xl text-white/80 max-w-xl mx-auto">
-              20 questions. 45 minutes. Just like the real Australian citizenship
-              test. See where you stand, mate.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <SubpageHero
+        title="Practice for the Real Test"
+        breadcrumbs={[
+          { label: "Home", href: "/" },
+          { label: "Practice" },
+        ]}
+        description="20 questions. 45 minutes. Just like the real Australian citizenship test. See where you stand, mate."
+        bgImage="/generated/test-start.webp"
+        badge="Practice Tests"
+      />
 
       {/* Test format info */}
       <section className="mx-auto max-w-5xl px-4 sm:px-6 -mt-8 relative z-10">

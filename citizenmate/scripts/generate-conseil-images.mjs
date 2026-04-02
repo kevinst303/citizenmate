@@ -57,8 +57,28 @@ const IMAGES = [
   {
     filename: "cta-bg.jpg",
     aspectRatio: "16:9",
-    prompt: `${STYLE} Full-width CTA section background for an Australian-themed service. Sydney Harbour Bridge or Opera House at golden hour, dramatic sky, soft teal/dark overlay applied. Clean, professional travel photography quality. The image should support a dark teal colour overlay (rgba 0,90,97,0.7) with white text on top. Mood: aspiration, opportunity, new beginning in Australia.`,
+    prompt: `${STYLE} Full-width CTA section background for an Australian-themed service. Sydney Harbour Bridge or Opera House at golden hour, dramatic sky, soft teal/dark overlay applied. Clean, professional travel photography quality. The image should support a dark overlay with white text. Mood: aspiration, opportunity, new beginning.`,
   },
+  {
+    filename: "subpage-hero-bg.jpg",
+    aspectRatio: "16:9",
+    prompt: `${STYLE} Minimalist background for a premium web app subpage. Very soft, out-of-focus abstract shapes in a bright, modern office setting. Focus on architecture, glass, and light. Subtle teal hues. Highly defocused to allow dark teal overlays and white text to be perfectly legible. Mood: premium, focused, calm.`,
+  },
+  {
+    filename: "blog-post-1.jpg",
+    aspectRatio: "4:3",
+    prompt: `${STYLE} Blog post thumbnail for an article titled 'Understanding Australian Values'. A diverse group of laughing people enjoying a casual outdoor BBQ in a sunny Australian park. Natural light, candid feel, editorial style. Shallow depth of field.`,
+  },
+  {
+    filename: "blog-post-2.jpg",
+    aspectRatio: "4:3",
+    prompt: `${STYLE} Blog post thumbnail for an article about study tips. Close up of hands holding a tablet and a pen, marking answers on a digital quiz app. Clean white desk, a coffee cup next to it, bright morning light coming through a window. Minimalist and focused.`,
+  },
+  {
+    filename: "app-grid-1.jpg",
+    aspectRatio: "4:3",
+    prompt: `${STYLE} Service card image for a 'Full Mock Test' premium feature. An intense but confident young man looking at a laptop screen. Soft modern lighting. Teal corporate accents in the room. High-end stock photo.`,
+  }
 ];
 
 // ─── API call ─────────────────────────────────────────────────────
