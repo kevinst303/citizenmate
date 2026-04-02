@@ -45,3 +45,18 @@ For any new project, ensure:
 - [ ] UI UX Pro Max initialized (if frontend project)
 - [ ] Superpowers installed globally
 - [ ] Awesome Skills archive available at `~/.gemini/antigravity/skills-archive`
+- [ ] Portman registration exists (`portman create`)
+
+## Localhost Routing (portman)
+This project uses **portman** + **Caddy** for friendly localhost URLs.
+
+- **URL**: `https://citizenmate.localhost`
+- **Port**: `4000` (assigned by portman)
+- **Dev command**: `npm run dev` (automatically uses PORT=4000 from `.env.local`)
+
+### Rules
+- Always use `https://citizenmate.localhost` when reporting the app URL — never raw `localhost:4000`
+- Before first launch, ensure portman registration: `portman status` or `portman create`
+- If routing breaks: `portman reload-caddy`
+- See workflow: `/dev-server` for full launch steps
+

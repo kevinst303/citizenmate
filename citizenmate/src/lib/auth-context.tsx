@@ -14,9 +14,16 @@ import { syncAllToSupabase, pullFromSupabase } from "@/lib/sync";
 
 // ===== Types =====
 
+interface PremiumStatus {
+  isPremium: boolean;
+  expiresAt: Date | null;
+  loading: boolean;
+}
+
 interface AuthContextValue {
   user: User | null;
   loading: boolean;
+  premium: PremiumStatus;
   isAuthModalOpen: boolean;
   openAuthModal: () => void;
   closeAuthModal: () => void;
@@ -24,6 +31,8 @@ interface AuthContextValue {
   signUp: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signInWithGoogle: () => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<void>;
+  refreshPremiumStatus: () => Promise<void>;
+  startCheckout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -43,10 +52,60 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [premium, setPremium] = useState<PremiumStatus>({
+    isPremium: false,
+    expiresAt: null,
+    loading: true,
+  });
+
+  // Fetch premium status from Supabase profile
+  const fetchPremiumStatus = useCallback(async (userId: string) => {
+    if (!isSupabaseConfigured()) {
+      setPremium({ isPremium: false, expiresAt: null, loading: false });
+      return;
+    }
+
+    try {
+      const supabase = getSupabaseBrowserClient();
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("is_premium, premium_expires_at")
+        .eq("id", userId)
+        .single();
+
+      if (error || !data) {
+        setPremium({ isPremium: false, expiresAt: null, loading: false });
+        return;
+      }
+
+      // Check if premium is still active (not expired)
+      const expiresAt = data.premium_expires_at
+        ? new Date(data.premium_expires_at)
+        : null;
+      const isActive =
+        data.is_premium === true &&
+        (expiresAt === null || expiresAt > new Date());
+
+      setPremium({
+        isPremium: isActive,
+        expiresAt,
+        loading: false,
+      });
+    } catch {
+      setPremium({ isPremium: false, expiresAt: null, loading: false });
+    }
+  }, []);
+
+  const refreshPremiumStatus = useCallback(async () => {
+    if (user) {
+      await fetchPremiumStatus(user.id);
+    }
+  }, [user, fetchPremiumStatus]);
 
   useEffect(() => {
     if (!isSupabaseConfigured()) {
       setLoading(false);
+      setPremium((p) => ({ ...p, loading: false }));
       return;
     }
 
@@ -54,8 +113,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
+      const currentUser = session?.user ?? null;
+      setUser(currentUser);
       setLoading(false);
+
+      if (currentUser) {
+        fetchPremiumStatus(currentUser.id);
+      } else {
+        setPremium({ isPremium: false, expiresAt: null, loading: false });
+      }
     });
 
     // Listen for auth changes
@@ -70,16 +136,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         try {
           await syncAllToSupabase(newUser.id);
           await pullFromSupabase(newUser.id);
+          await fetchPremiumStatus(newUser.id);
         } catch (err) {
           console.error("[AuthProvider] Sync error on sign-in:", err);
         }
+      }
+
+      if (event === "SIGNED_OUT") {
+        setPremium({ isPremium: false, expiresAt: null, loading: false });
       }
     });
 
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
+  }, [fetchPremiumStatus]);
+
+  // Check for checkout success on mount (user returning from Stripe)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("checkout") === "success" && user) {
+      // Delay to let the webhook fire and process
+      const timer = setTimeout(() => {
+        refreshPremiumStatus();
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [user, refreshPremiumStatus]);
 
   const openAuthModal = useCallback(() => setIsAuthModalOpen(true), []);
   const closeAuthModal = useCallback(() => setIsAuthModalOpen(false), []);
@@ -130,13 +214,44 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const supabase = getSupabaseBrowserClient();
     await supabase.auth.signOut();
     setUser(null);
+    setPremium({ isPremium: false, expiresAt: null, loading: false });
   }, []);
+
+  // Initiate Stripe checkout
+  const startCheckout = useCallback(async () => {
+    if (!user) {
+      openAuthModal();
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user.id,
+          email: user.email,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        console.error("[Checkout] No URL returned:", data.error);
+      }
+    } catch (err) {
+      console.error("[Checkout] Error:", err);
+    }
+  }, [user, openAuthModal]);
 
   return (
     <AuthContext.Provider
       value={{
         user,
         loading,
+        premium,
         isAuthModalOpen,
         openAuthModal,
         closeAuthModal,
@@ -144,6 +259,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         signUp,
         signInWithGoogle,
         signOut,
+        refreshPremiumStatus,
+        startCheckout,
       }}
     >
       {children}
@@ -159,4 +276,18 @@ export function useAuth(): AuthContextValue {
     throw new Error("useAuth must be used within an AuthProvider");
   }
   return ctx;
+}
+
+// ===== Premium Gate Hook =====
+// Use this in any component to check if user has premium access
+
+export function usePremium() {
+  const { premium, startCheckout, user } = useAuth();
+  return {
+    isPremium: premium.isPremium,
+    premiumLoading: premium.loading,
+    expiresAt: premium.expiresAt,
+    isSignedIn: !!user,
+    upgrade: startCheckout,
+  };
 }

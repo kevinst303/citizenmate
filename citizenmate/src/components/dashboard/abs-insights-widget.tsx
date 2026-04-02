@@ -42,7 +42,14 @@ export function AbsInsightsWidget() {
   useEffect(() => {
     setIsClient(true);
     fetch("/api/abs-population")
-      .then((res) => res.json())
+      .then(async (res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const contentType = res.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          throw new Error("Received non-JSON response from API");
+        }
+        return res.json();
+      })
       .then((fetchedData) => {
         setData(fetchedData);
         setIsLoading(false);

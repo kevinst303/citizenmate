@@ -3,37 +3,58 @@ import Stripe from 'stripe';
 
 export async function POST(req: Request) {
   try {
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'dummy_key_for_build', {
-      apiVersion: '2025-02-24.acacia' as any,
+    const stripeKey = process.env.STRIPE_SECRET_KEY;
+    if (!stripeKey) {
+      return NextResponse.json({ error: 'Stripe not configured' }, { status: 500 });
+    }
+
+    const stripe = new Stripe(stripeKey, {
+      apiVersion: '2025-02-24.acacia' as Stripe.LatestApiVersion,
       appInfo: {
         name: 'CitizenMate',
-        version: '0.1.0'
+        version: '1.0.0'
       }
     });
 
-    const { priceId, userId, email } = await req.json();
+    const { userId, email } = await req.json();
+
+    if (!userId || !email) {
+      return NextResponse.json({ error: 'Missing userId or email' }, { status: 400 });
+    }
+
+    const priceId = process.env.NEXT_PUBLIC_STRIPE_PRICE_ID;
+    if (!priceId) {
+      return NextResponse.json({ error: 'Price ID not configured' }, { status: 500 });
+    }
+
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://citizenmate.com.au';
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
         {
-          price: priceId || process.env.NEXT_PUBLIC_STRIPE_PRICE_ID,
+          price: priceId,
           quantity: 1,
         },
       ],
-      mode: 'subscription', // Adjust to 'payment' if using one-off purchases
-      success_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://citizenmate.com.au'}/dashboard?success=true`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://citizenmate.com.au'}/dashboard?canceled=true`,
+      mode: 'payment', // One-time payment for Sprint Pass
+      success_url: `${siteUrl}/dashboard?checkout=success`,
+      cancel_url: `${siteUrl}/#pricing`,
       client_reference_id: userId,
       customer_email: email,
+      metadata: {
+        userId,
+        product: 'sprint_pass',
+      },
     });
 
     return NextResponse.json({ 
       id: session.id,
       url: session.url 
     });
-  } catch (error: any) {
-    console.error('Stripe Checkout Error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    console.error('Stripe Checkout Error:', message);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

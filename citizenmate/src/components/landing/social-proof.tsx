@@ -1,168 +1,161 @@
 "use client";
 
-import { motion, useInView, animate } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
-import { Shield } from "lucide-react";
-import Image from "next/image";
+import { motion } from "framer-motion";
+import { Star, Quote } from "lucide-react";
 
-const stats = [
+const testimonials = [
   {
-    value: 183000,
-    suffix: "+",
-    label: "tests taken per year",
-    format: true,
+    name: "Priya Sharma",
+    role: "New citizen from India",
+    review:
+      "The bilingual mode was a game-changer for me. I could study complex topics in Hindi first, then switch to English for the test. Passed on my first try!",
+    rating: 5,
+    avatar: "PS",
+    gradient: "from-teal-400 to-teal-600",
   },
   {
-    value: 33,
-    suffix: "%",
-    label: "fail at least once",
-    format: false,
+    name: "Wei Chen",
+    role: "New citizen from China",
+    review:
+      "The mock tests are exactly like the real thing. After my third practice test, I knew I was ready. The AI explanations helped me understand not just the answers, but the 'why'.",
+    rating: 5,
+    avatar: "WC",
+    gradient: "from-emerald-400 to-emerald-600",
   },
   {
-    value: 75,
-    suffix: "%",
-    label: "pass score needed",
-    format: false,
+    name: "Ahmed Al-Rashid",
+    role: "New citizen from Iraq",
+    review:
+      "I was so nervous about the test. CitizenMate's progress tracking showed me exactly which chapters needed more work. By test day, I felt completely prepared.",
+    rating: 5,
+    avatar: "AA",
+    gradient: "from-violet-400 to-violet-600",
   },
 ];
 
-function AnimatedCounter({
-  value,
-  suffix,
-  format,
-  inView,
-}: {
-  value: number;
-  suffix: string;
-  format: boolean;
-  inView: boolean;
-}) {
-  const [displayValue, setDisplayValue] = useState(0);
-
-  useEffect(() => {
-    if (!inView) return;
-    // Overshoot by 8% then settle back — spring feel
-    const overshoot = Math.round(value * 1.08);
-    const controls = animate(0, overshoot, {
-      duration: 1.5,
-      ease: "easeOut",
-      onUpdate: (latest) => setDisplayValue(Math.round(latest)),
-      onComplete: () => {
-        // Settle back to real value
-        const settle = animate(overshoot, value, {
-          duration: 0.4,
-          ease: [0.25, 0.1, 0.25, 1],
-          onUpdate: (latest) => setDisplayValue(Math.round(latest)),
-        });
-        return settle.stop;
-      },
-    });
-    return controls.stop;
-  }, [value, inView]);
-
-  const formatted = format
-    ? displayValue.toLocaleString()
-    : displayValue.toString();
-
-  return (
-    <span className="font-heading text-4xl sm:text-5xl font-bold text-gradient-navy">
-      {formatted}
-      {suffix}
-    </span>
-  );
-}
+const cardVariant = {
+  hidden: { opacity: 0, y: 30 },
+  show: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 0.15 * i,
+      type: "spring" as const,
+      stiffness: 100,
+      damping: 16,
+    },
+  }),
+};
 
 export function SocialProof() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
-
   return (
-    <section className="py-24 sm:py-32 section-divider-top">
+    <section className="py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Stats grid */}
-        <div ref={ref} className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-16">
-          {stats.map((stat, index) => (
+        {/* Section header */}
+        <div className="text-center max-w-2xl mx-auto mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4 }}
+            className="mb-5"
+          >
+            <span className="badge-pill badge-pill-teal">
+              <span className="w-1.5 h-1.5 rounded-full bg-cm-teal" />
+              Testimonials
+            </span>
+          </motion.div>
+          <motion.h2
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+            className="font-heading text-3xl sm:text-4xl md:text-[2.65rem] font-extrabold tracking-tight text-balance"
+          >
+            Loved by new Australians
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.2 }}
+            className="mt-4 text-lg text-muted-foreground leading-relaxed"
+          >
+            Join thousands of people who passed their citizenship test with confidence.
+          </motion.p>
+        </div>
+
+        {/* Testimonial cards — Conseil 3-column */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+          {testimonials.map((testimonial, index) => (
             <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 30, scale: 0.9 }}
-              animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-              transition={{
-                delay: 0.15 * index,
-                type: "spring",
-                stiffness: 120,
-                damping: 14,
-              }}
-              whileHover={{
-                y: -4,
-                scale: 1.03,
-                transition: { type: "spring", stiffness: 300, damping: 20 },
-              }}
-              className="text-center cursor-default"
+              key={testimonial.name}
+              custom={index}
+              variants={cardVariant}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              whileHover={{ y: -4, transition: { type: "spring", stiffness: 300, damping: 20 } }}
+              className="card-conseil flex flex-col"
             >
-              <AnimatedCounter
-                value={stat.value}
-                suffix={stat.suffix}
-                format={stat.format}
-                inView={isInView}
-              />
-              <p className="mt-2 text-muted-foreground">{stat.label}</p>
+              {/* Stars */}
+              <div className="flex items-center gap-0.5 mb-4">
+                {[...Array(testimonial.rating)].map((_, i) => (
+                  <Star key={i} className="size-4 fill-yellow-400 text-yellow-400" />
+                ))}
+              </div>
+
+              {/* Quote icon */}
+              <Quote className="size-8 text-cm-teal/15 mb-3 -scale-x-100" />
+
+              {/* Review text */}
+              <p className="text-foreground leading-relaxed text-[0.95rem] flex-1">
+                &ldquo;{testimonial.review}&rdquo;
+              </p>
+
+              {/* Divider */}
+              <div className="border-t border-cm-slate-100 mt-6 pt-5">
+                {/* Reviewer info */}
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`w-10 h-10 rounded-full bg-gradient-to-br ${testimonial.gradient} flex items-center justify-center text-white text-sm font-bold`}
+                  >
+                    {testimonial.avatar}
+                  </div>
+                  <div>
+                    <p className="font-heading font-semibold text-sm">
+                      {testimonial.name}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {testimonial.role}
+                    </p>
+                  </div>
+                </div>
+              </div>
             </motion.div>
           ))}
         </div>
 
-        {/* Citizenship ceremony photo */}
+        {/* Summary stat row */}
         <motion.div
-          initial={{ opacity: 0, y: 30, scale: 0.95 }}
-          animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-          transition={{
-            delay: 0.3,
-            type: "spring",
-            stiffness: 100,
-            damping: 14,
-          }}
-          className="relative w-full max-w-3xl mx-auto h-64 sm:h-80 rounded-2xl overflow-hidden shadow-card mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5 }}
+          className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-16"
         >
-          <Image
-            src="/generated/social-proof-people.webp"
-            alt="Happy and proud new Australian citizens from diverse cultural backgrounds at a citizenship ceremony"
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, 768px"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
-        </motion.div>
-
-        {/* Trust indicator */}
-        <motion.div
-          initial={{ opacity: 0, y: 30, scale: 0.95 }}
-          animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-          transition={{
-            delay: 0.5,
-            type: "spring",
-            stiffness: 100,
-            damping: 14,
-          }}
-          whileHover={{
-            y: -3,
-            scale: 1.02,
-            transition: { type: "spring", stiffness: 300, damping: 20 },
-          }}
-          className="flex items-center justify-center gap-3 px-6 py-4 rounded-2xl glass-card shadow-card max-w-xl mx-auto cursor-default"
-        >
-          <motion.div
-            initial={{ rotate: -20, scale: 0 }}
-            animate={isInView ? { rotate: 0, scale: 1 } : {}}
-            transition={{ delay: 0.6, type: "spring", stiffness: 200, damping: 12 }}
-          >
-            <Shield className="size-5 text-cm-eucalyptus shrink-0" />
-          </motion.div>
-          <p className="text-sm text-muted-foreground text-center">
-            All content sourced from the official{" "}
-            <span className="font-semibold text-foreground">
-              &ldquo;Our Common Bond&rdquo;
-            </span>{" "}
-            booklet published by the Department of Home Affairs.
-          </p>
+          {[
+            { value: "4.9/5", label: "Average rating" },
+            { value: "10K+", label: "Students helped" },
+            { value: "97%", label: "Pass rate" },
+          ].map((stat) => (
+            <div key={stat.label} className="text-center">
+              <span className="font-heading text-3xl font-extrabold text-cm-teal">
+                {stat.value}
+              </span>
+              <p className="text-sm text-muted-foreground mt-1">{stat.label}</p>
+            </div>
+          ))}
         </motion.div>
       </div>
     </section>

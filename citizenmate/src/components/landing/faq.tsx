@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -57,31 +58,34 @@ const faqItem = {
 
 export function FAQ() {
   return (
-    <section id="faq" className="py-24 sm:py-32 section-divider-top">
+    <section id="faq" className="py-24 sm:py-32">
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-        {/* Section header — spring entrance */}
-        <div className="text-center mb-12">
-          <motion.p
-            initial={{ opacity: 0, y: 15 }}
+        {/* Section header — Conseil style */}
+        <div className="text-center mb-14">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ type: "spring", stiffness: 150, damping: 20 }}
-            className="text-cm-navy font-heading font-semibold text-sm uppercase tracking-wider mb-3"
+            transition={{ duration: 0.4 }}
+            className="mb-5"
           >
-            Questions?
-          </motion.p>
+            <span className="badge-pill">
+              <span className="w-1.5 h-1.5 rounded-full bg-cm-teal" />
+              FAQ
+            </span>
+          </motion.div>
           <motion.h2
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ type: "spring", stiffness: 150, damping: 20, delay: 0.1 }}
-            className="font-heading text-3xl sm:text-4xl font-bold tracking-tight"
+            transition={{ duration: 0.4, delay: 0.1 }}
+            className="font-heading text-3xl sm:text-4xl md:text-[2.65rem] font-extrabold tracking-tight text-balance"
           >
             Frequently asked questions
           </motion.h2>
         </div>
 
-        {/* FAQ items — staggered entrance */}
+        {/* FAQ items — Conseil clean accordion */}
         <Accordion className="w-full space-y-3">
           {faqs.map((faq, index) => (
             <motion.div
@@ -93,9 +97,9 @@ export function FAQ() {
               viewport={{ once: true, margin: "-50px" }}
             >
               <AccordionItem
-                className="border border-border rounded-xl px-6 data-open:border-cm-navy/25 data-open:shadow-sm transition-all duration-200"
+                className="border border-cm-slate-100 rounded-[15px] px-6 data-open:border-cm-teal/20 data-open:shadow-sm transition-all duration-200 bg-white"
               >
-                <AccordionTrigger className="text-left font-heading font-semibold text-base py-5 hover:no-underline hover:text-cm-navy transition-colors cursor-pointer aria-expanded:text-cm-navy">
+                <AccordionTrigger className="text-left font-heading font-semibold text-base py-5 hover:no-underline hover:text-cm-teal transition-colors cursor-pointer aria-expanded:text-cm-teal">
                   {faq.question}
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground leading-relaxed pb-5">
@@ -105,6 +109,29 @@ export function FAQ() {
             </motion.div>
           ))}
         </Accordion>
+
+        {/* CTA bar — "Still have questions?" */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5 }}
+          className="mt-12 p-6 rounded-2xl bg-cm-teal-50 border border-cm-teal-100 flex flex-col sm:flex-row items-center justify-between gap-4"
+        >
+          <div>
+            <h3 className="font-heading font-bold text-lg">Still have questions?</h3>
+            <p className="text-sm text-muted-foreground mt-1">
+              We&apos;re here to help you on your citizenship journey.
+            </p>
+          </div>
+          <a
+            href="mailto:hello@citizenmate.com.au"
+            className="btn-rounded btn-rounded-teal text-sm shrink-0"
+          >
+            Contact Us
+            <ArrowRight className="size-4 ml-1" />
+          </a>
+        </motion.div>
       </div>
     </section>
   );

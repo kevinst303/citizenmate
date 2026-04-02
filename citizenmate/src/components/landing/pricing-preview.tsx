@@ -1,104 +1,101 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
-import { Check, X, Zap } from "lucide-react";
+import { useRef, useState } from "react";
+import { Check, X, Zap, Loader2, ArrowRight, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/lib/auth-context";
 
 const plans = [
   {
     name: "Free",
-    price: "$0",
+    price: "A$0",
     period: "forever",
     description: "Try CitizenMate and see where you stand.",
     cta: "Start Free",
-    ctaStyle:
-      "border-cm-slate-200 hover:bg-muted text-foreground cursor-pointer",
+    popular: false,
     features: [
       { text: "1 full mock test + results", included: true },
-      { text: "Basic Australian Values content", included: true },
+      { text: "Basic study content (1 chapter)", included: true },
       { text: "3 AI tutor questions per day", included: true },
-      { text: "Topic mastery overview", included: true },
-      { text: "Full question bank (500+)", included: false },
-      { text: "Bilingual study mode", included: false },
+      { text: "20 practice questions", included: true },
+      { text: "All 15 mock tests", included: false },
+      { text: "Full bilingual study mode", included: false },
       { text: "Unlimited AI tutor", included: false },
-      { text: "Test-date study plan", included: false },
+      { text: "Readiness score & analytics", included: false },
     ],
-    popular: false,
   },
   {
     name: "Exam Sprint Pass",
-    price: "$29.99",
-    period: "60 days",
+    price: "A$19.99",
+    period: "90 days",
     description: "Everything you need to pass — designed for your study window.",
     cta: "Get Sprint Pass",
-    ctaStyle:
-      "bg-cm-red hover:bg-cm-red-dark text-white shadow-lg shadow-cm-red/20 cursor-pointer",
+    popular: true,
+    badge: "Most Popular",
     features: [
-      { text: "All 500+ practice questions", included: true },
+      { text: "All 15 mock tests + unlimited retakes", included: true },
       { text: "Complete bilingual study mode", included: true },
       { text: "Unlimited AI tutor explanations", included: true },
+      { text: "500+ practice questions", included: true },
       { text: "Readiness score & analytics", included: true },
       { text: "Spaced repetition system", included: true },
-      { text: "Ad-free experience", included: true },
       { text: "Test-date study plan", included: true },
-      { text: "Topic-by-topic mastery tracking", included: true },
+      { text: "Ad-free experience", included: true },
     ],
-    popular: true,
   },
 ];
-
-const featureItem = {
-  hidden: { opacity: 0, x: -10 },
-  show: (i: number) => ({
-    opacity: 1,
-    x: 0,
-    transition: {
-      delay: 0.05 * i,
-      type: "spring" as const,
-      stiffness: 200,
-      damping: 20,
-    },
-  }),
-};
 
 export function PricingPreview() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { startCheckout, premium } = useAuth();
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+
+  const handleGetSprintPass = async () => {
+    setCheckoutLoading(true);
+    try {
+      await startCheckout();
+    } finally {
+      setTimeout(() => setCheckoutLoading(false), 3000);
+    }
+  };
 
   return (
-    <section id="pricing" className="py-24 sm:py-32 bg-cm-navy-50/50">
+    <section id="pricing" className="py-24 sm:py-32 section-alt-bg">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Section header */}
+        {/* Section header — Conseil style */}
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <motion.p
-            initial={{ opacity: 0, y: 15 }}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ type: "spring", stiffness: 150, damping: 20 }}
-            className="text-cm-navy font-heading font-semibold text-sm uppercase tracking-wider mb-3"
+            transition={{ duration: 0.4 }}
+            className="mb-5"
           >
-            Simple pricing
-          </motion.p>
+            <span className="badge-pill badge-pill-teal">
+              <span className="w-1.5 h-1.5 rounded-full bg-cm-teal" />
+              Simple Pricing
+            </span>
+          </motion.div>
           <motion.h2
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ type: "spring", stiffness: 150, damping: 20, delay: 0.1 }}
-            className="font-heading text-3xl sm:text-4xl font-bold tracking-tight"
+            transition={{ duration: 0.4, delay: 0.1 }}
+            className="font-heading text-3xl sm:text-4xl md:text-[2.65rem] font-extrabold tracking-tight text-balance"
           >
             Start free, upgrade when you&apos;re ready
           </motion.h2>
           <motion.p
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ type: "spring", stiffness: 150, damping: 20, delay: 0.2 }}
-            className="mt-4 text-lg text-muted-foreground"
+            transition={{ duration: 0.4, delay: 0.2 }}
+            className="mt-4 text-lg text-muted-foreground leading-relaxed"
           >
-            Most users pass with the 60-day Sprint Pass. No long-term
-            commitments needed.
+            Most users pass within 90 days. One payment, no subscriptions, no
+            surprises.
           </motion.p>
         </div>
 
@@ -110,13 +107,13 @@ export function PricingPreview() {
           {plans.map((plan, index) => (
             <motion.div
               key={plan.name}
-              initial={{ opacity: 0, y: 40, scale: 0.92 }}
-              animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+              initial={{ opacity: 0, y: 40 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{
                 delay: 0.2 * index,
                 type: "spring",
                 stiffness: 100,
-                damping: 14,
+                damping: 16,
               }}
               whileHover={{
                 y: -6,
@@ -124,7 +121,8 @@ export function PricingPreview() {
               }}
               className="relative"
             >
-              {plan.popular && (
+              {/* Popular badge */}
+              {plan.popular && plan.badge && (
                 <motion.div
                   className="absolute -top-4 left-1/2 -translate-x-1/2 z-10"
                   initial={{ scale: 0, opacity: 0 }}
@@ -136,25 +134,27 @@ export function PricingPreview() {
                     damping: 12,
                   }}
                 >
-                  <Badge className="bg-cm-red text-white border-0 px-4 py-1 font-heading text-xs animate-cta-glow">
-                    <Zap className="size-3 mr-1" />
-                    Most Popular
-                  </Badge>
+                  <span className="badge-pill-dark text-white text-xs px-4 py-1.5 rounded-full font-semibold inline-flex items-center gap-1.5"
+                    style={{ background: '#00727a' }}
+                  >
+                    <Zap className="size-3" />
+                    {plan.badge}
+                  </span>
                 </motion.div>
               )}
+
               <div
-                className={`h-full p-8 rounded-2xl transition-all duration-300 ${
+                className={`h-full p-8 rounded-[15px] transition-all duration-300 ${
                   plan.popular
-                    ? "glass-pricing-popular action-card-shine shadow-xl shadow-cm-red/8"
-                    : "card-glass hover:border-cm-slate-200"
+                    ? "card-conseil-popular"
+                    : "card-conseil"
                 }`}
               >
                 <div className="mb-6">
-                  <h3 className="font-heading text-xl font-semibold">
+                  <h3 className={`font-heading text-xl font-bold ${plan.popular ? 'text-white' : ''}`}>
                     {plan.name}
                   </h3>
                   <div className="mt-3 flex items-baseline gap-1">
-                    {/* Price spring pop */}
                     <motion.span
                       initial={{ opacity: 0, scale: 0.5, y: 10 }}
                       animate={isInView ? { opacity: 1, scale: 1, y: 0 } : {}}
@@ -164,64 +164,88 @@ export function PricingPreview() {
                         stiffness: 200,
                         damping: 12,
                       }}
-                      className="font-heading text-4xl font-bold"
+                      className={`font-heading text-4xl font-extrabold ${plan.popular ? 'text-white' : ''}`}
                     >
                       {plan.price}
                     </motion.span>
-                    <span className="text-muted-foreground text-sm">
+                    <span className={`text-sm ${plan.popular ? 'text-white/70' : 'text-muted-foreground'}`}>
                       / {plan.period}
                     </span>
                   </div>
-                  <p className="mt-3 text-sm text-muted-foreground">
+                  <p className={`mt-3 text-sm ${plan.popular ? 'text-white/80' : 'text-muted-foreground'}`}>
                     {plan.description}
                   </p>
                 </div>
 
+                {/* CTA button — fully rounded */}
                 <motion.div
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 >
-                  <Button
-                    variant={plan.popular ? "default" : "outline"}
-                    className={`w-full h-12 rounded-xl font-heading font-semibold transition-colors duration-200 ${plan.ctaStyle}`}
-                  >
-                    {plan.cta}
-                  </Button>
+                  {plan.popular ? (
+                    <Button
+                      variant="default"
+                      disabled={checkoutLoading || premium.isPremium}
+                      onClick={handleGetSprintPass}
+                      className={`w-full h-12 rounded-full font-heading font-bold transition-all duration-200 ${
+                        premium.isPremium
+                          ? "bg-cm-eucalyptus hover:bg-cm-eucalyptus text-white cursor-default"
+                          : "bg-white text-cm-teal hover:bg-white/95 shadow-lg shadow-black/10 cursor-pointer"
+                      }`}
+                    >
+                      {premium.isPremium ? (
+                        <>
+                          <Check className="w-4 h-4 mr-2" />
+                          You have Sprint Pass ✅
+                        </>
+                      ) : checkoutLoading ? (
+                        <>
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          Redirecting to checkout...
+                        </>
+                      ) : (
+                        <>
+                          {plan.cta}
+                          <ArrowRight className="w-4 h-4 ml-2" />
+                        </>
+                      )}
+                    </Button>
+                  ) : (
+                    <a
+                      href="/practice"
+                      className="btn-rounded btn-rounded-outline w-full h-12 text-sm font-bold"
+                    >
+                      {plan.cta}
+                    </a>
+                  )}
                 </motion.div>
 
-                {/* Staggered feature list */}
+                {/* Feature list */}
                 <div className="mt-8 space-y-3">
                   {plan.features.map((feature, fIdx) => (
                     <motion.div
                       key={feature.text}
-                      custom={fIdx}
-                      variants={featureItem}
-                      initial="hidden"
-                      animate={isInView ? "show" : "hidden"}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={isInView ? { opacity: 1, x: 0 } : {}}
+                      transition={{
+                        delay: 0.4 + 0.05 * fIdx + 0.2 * index,
+                        type: "spring",
+                        stiffness: 200,
+                        damping: 20,
+                      }}
                       className="flex items-start gap-3"
                     >
                       {feature.included ? (
-                        <motion.div
-                          initial={{ scale: 0 }}
-                          animate={isInView ? { scale: 1 } : {}}
-                          transition={{
-                            delay: 0.4 + 0.05 * fIdx + 0.2 * index,
-                            type: "spring",
-                            stiffness: 400,
-                            damping: 12,
-                          }}
-                        >
-                          <Check className="size-5 text-cm-eucalyptus shrink-0 mt-0.5" />
-                        </motion.div>
+                        <Check className={`size-5 shrink-0 mt-0.5 ${plan.popular ? 'text-white/90' : 'text-cm-teal'}`} />
                       ) : (
-                        <X className="size-5 text-cm-slate-200 shrink-0 mt-0.5" />
+                        <X className={`size-5 shrink-0 mt-0.5 ${plan.popular ? 'text-white/30' : 'text-cm-slate-200'}`} />
                       )}
                       <span
                         className={`text-sm ${
-                          feature.included
-                            ? "text-foreground"
-                            : "text-muted-foreground"
+                          plan.popular
+                            ? feature.included ? 'text-white/90' : 'text-white/40'
+                            : feature.included ? 'text-foreground' : 'text-muted-foreground'
                         }`}
                       >
                         {feature.text}
@@ -234,19 +258,19 @@ export function PricingPreview() {
           ))}
         </div>
 
-        {/* Sub note */}
-        <motion.p
+        {/* Trust bar */}
+        <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.8 }}
-          className="text-center text-sm text-muted-foreground mt-8"
+          className="mt-10 flex flex-col items-center gap-3"
         >
-          Also available: $9.99/month or $49.99/year subscription.{" "}
-          <span className="text-cm-navy font-medium cursor-pointer hover:underline">
-            Compare all plans
-          </span>
-        </motion.p>
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Shield className="size-4 text-cm-teal" />
+            <span>One-time payment · No recurring charges · 90 days of full access</span>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

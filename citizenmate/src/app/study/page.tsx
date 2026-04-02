@@ -11,9 +11,12 @@ import {
   Heart,
   ArrowRight,
   Sparkles,
+  Lock,
 } from "lucide-react";
 import { studyTopics } from "@/data/study-content";
 import { useStudy } from "@/lib/study-context";
+import { usePremium } from "@/lib/auth-context";
+import { PremiumBadge } from "@/components/shared/premium-gate";
 import { StudyProgressBar } from "@/components/study/study-progress-bar";
 import type { TopicCategory } from "@/lib/types";
 
@@ -68,8 +71,12 @@ const item = {
   },
 };
 
+// First topic is free, rest require premium
+const FREE_TOPIC_COUNT = 1;
+
 export default function StudyPage() {
   const { getTopicProgress, getOverallProgress } = useStudy();
+  const { isPremium, upgrade } = usePremium();
   const overall = getOverallProgress();
 
   return (
@@ -197,16 +204,57 @@ export default function StudyPage() {
           animate="show"
           className="grid gap-6 sm:grid-cols-2"
         >
-          {studyTopics.map((topic) => {
+          {studyTopics.map((topic, index) => {
             const Icon = TOPIC_ICONS[topic.id];
             const colors = TOPIC_COLORS[topic.id];
             const progress = getTopicProgress(topic.id);
+            const isLocked = !isPremium && index >= FREE_TOPIC_COUNT;
 
             return (
               <motion.div key={topic.id} variants={item}
                 whileHover={{ y: -6, transition: { type: "spring" as const, stiffness: 400, damping: 20 } }}
                 whileTap={{ scale: 0.99 }}
               >
+                {isLocked ? (
+                  <button
+                    onClick={upgrade}
+                    className="group flex flex-col h-full w-full text-left rounded-2xl card-glass shadow-card hover:shadow-card-hover transition-all duration-300 cursor-pointer overflow-hidden"
+                  >
+                    {/* Topic Image Header */}
+                    <div className="relative h-40 w-full bg-cm-navy-50 overflow-hidden">
+                      <Image
+                        src={`/generated/${colors.image}`}
+                        alt={topic.title}
+                        fill
+                        className="object-cover opacity-50 grayscale"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
+                      <div className="absolute top-4 right-4 z-10">
+                        <PremiumBadge />
+                      </div>
+                    </div>
+                    <div className="flex-1 flex flex-col p-6">
+                      <div className="mb-4 -mt-10 relative z-10">
+                        <div
+                          className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-cm-slate-100 text-cm-slate-400 shadow-md border-2 border-white`}
+                        >
+                          <Icon className="w-6 h-6" />
+                        </div>
+                      </div>
+                      <h3 className="text-lg font-heading font-bold text-cm-slate-400 mb-1.5">
+                        {topic.title}
+                      </h3>
+                      <p className="text-sm text-cm-slate-300 leading-relaxed mb-5">
+                        {topic.description}
+                      </p>
+                      <div className="mt-auto flex items-center justify-center gap-2 w-full py-3 font-heading font-semibold rounded-xl bg-cm-red/10 text-cm-red transition-all duration-200">
+                        <Lock className="w-4 h-4" />
+                        Unlock with Sprint Pass
+                      </div>
+                    </div>
+                  </button>
+                ) : (
                 <Link
                   href={`/study/${topic.id}`}
                   className="group flex flex-col h-full rounded-2xl card-glass shadow-card hover:shadow-card-hover hover:border-cm-navy transition-all duration-300 cursor-pointer overflow-hidden"
@@ -267,6 +315,7 @@ export default function StudyPage() {
                   </div>
                   </div>
                 </Link>
+                )}
               </motion.div>
             );
           })}

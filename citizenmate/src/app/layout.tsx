@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
+import { Manrope, DM_Sans } from "next/font/google";
 import { LayoutShell } from "@/components/shared/layout-shell";
 import { StudyProvider } from "@/lib/study-context";
 import { TestDateProvider } from "@/lib/test-date-context";
@@ -16,7 +16,7 @@ const jsonLd = {
   "description": "Your mate for the citizenship test. Free practice tests, bilingual study, AI-powered learning."
 };
 
-const dmSansHeading = DM_Sans({
+const manropeHeading = Manrope({
   variable: "--font-heading-family",
   subsets: ["latin"],
   weight: ["500", "600", "700", "800"],
@@ -94,10 +94,10 @@ export default function RootLayout({
       lang="en"
       suppressHydrationWarning
       data-scroll-behavior="smooth"
-      className={`${dmSansHeading.variable} ${dmSansBody.variable} h-full antialiased`}
+      className={`${manropeHeading.variable} ${dmSansBody.variable} h-full antialiased`}
     >
       <head>
-        <meta name="theme-color" content="#0C2340" />
+        <meta name="theme-color" content="#00727a" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

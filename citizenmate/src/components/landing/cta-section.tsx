@@ -2,69 +2,19 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import Image from "next/image";
-
-// Star particle data
-const stars = [
-  { top: "15%", left: "12%", size: 1.5, delay: 0, duration: 4 },
-  { top: "25%", right: "18%", size: 2, delay: 1.2, duration: 5 },
-  { top: "60%", left: "8%", size: 1, delay: 2.5, duration: 3.5 },
-  { top: "45%", right: "10%", size: 2.5, delay: 0.8, duration: 6 },
-  { top: "75%", left: "20%", size: 1, delay: 3, duration: 4.5 },
-  { top: "35%", right: "25%", size: 1.5, delay: 1.8, duration: 5.5 },
-  { top: "80%", right: "15%", size: 1, delay: 0.5, duration: 3.8 },
-  { top: "10%", left: "35%", size: 1, delay: 2, duration: 4.2 },
-];
 
 export function CTASection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
 
   return (
-    <section className="py-24 sm:py-32 relative overflow-hidden">
-      {/* Background gradient — Australian navy to deep blue */}
-      <div className="absolute inset-0 -z-10">
-        <Image
-          src="/generated/cta-australia.webp"
-          alt="Sydney Harbour at golden hour with family silhouette"
-          fill
-          className="object-cover"
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-cm-navy/75" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.08),transparent_60%)]" />
-      </div>
+    <section className="py-24 sm:py-32 relative overflow-hidden bg-gradient-to-br from-cm-teal-dark via-cm-teal to-[#008a93]">
+      {/* Subtle decorative circles */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/3" />
+      <div className="absolute bottom-0 left-0 w-72 h-72 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/3" />
 
-      {/* Animated star particles with Framer Motion */}
-      {stars.map((star, i) => (
-        <motion.div
-          key={i}
-          className="absolute rounded-full bg-white/25"
-          style={{
-            top: star.top,
-            left: star.left,
-            right: star.right,
-            width: `${star.size * 4}px`,
-            height: `${star.size * 4}px`,
-          }}
-          animate={{
-            y: [0, -15, 5, -10, 0],
-            x: [0, 8, -5, 3, 0],
-            opacity: [0.15, 0.5, 0.2, 0.6, 0.15],
-            scale: [1, 1.3, 0.9, 1.15, 1],
-          }}
-          transition={{
-            duration: star.duration,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: star.delay,
-          }}
-        />
-      ))}
-
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
         <motion.div
           ref={ref}
           initial={{ opacity: 0 }}
@@ -72,7 +22,7 @@ export function CTASection() {
           transition={{ duration: 0.3 }}
           className="text-center"
         >
-          {/* Text reveal with clip mask */}
+          {/* Heading */}
           <div className="overflow-hidden">
             <motion.h2
               initial={{ y: "100%" }}
@@ -81,7 +31,7 @@ export function CTASection() {
                 duration: 0.8,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight max-w-3xl mx-auto leading-tight"
+              className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight max-w-3xl mx-auto leading-tight text-balance"
             >
               Ready to become an Australian citizen, mate?
             </motion.h2>
@@ -91,7 +41,7 @@ export function CTASection() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.4, type: "spring", stiffness: 100, damping: 20 }}
-            className="mt-6 text-lg text-white/80 max-w-xl mx-auto"
+            className="mt-6 text-lg text-white/80 max-w-xl mx-auto leading-relaxed"
           >
             Start your free practice test now — no signup needed. See where you
             stand in 10 minutes.
@@ -103,20 +53,25 @@ export function CTASection() {
             transition={{ delay: 0.6, type: "spring", stiffness: 100, damping: 20 }}
             className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            {/* CTA with pulsing glow */}
-            <motion.div
-              className="relative"
-              whileHover={{ scale: 1.05, y: -2 }}
+            <motion.a
+              href="/practice"
+              whileHover={{ scale: 1.04, y: -2 }}
               whileTap={{ scale: 0.97 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              className="btn-rounded bg-white text-cm-teal font-heading font-bold text-base px-10 py-4 shadow-lg shadow-black/10 hover:bg-white/95"
             >
-              {/* Pulsing glow ring behind button */}
-              <div className="absolute -inset-1 rounded-xl bg-cm-red/40 blur-lg animate-cta-glow" />
-              <Button className="relative bg-cm-red hover:bg-cm-red-dark text-white font-heading font-semibold text-base px-8 h-13 rounded-xl cursor-pointer transition-colors duration-200 shadow-lg shadow-cm-red/30">
-                Start Free Practice
-                <ArrowRight className="size-5 ml-2" />
-              </Button>
-            </motion.div>
+              Start Free Practice
+              <ArrowRight className="size-5 ml-2" />
+            </motion.a>
+            <motion.a
+              href="/#pricing"
+              whileHover={{ scale: 1.03, y: -1 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              className="btn-rounded bg-transparent text-white border-2 border-white/30 font-heading font-semibold text-base px-10 py-4 hover:bg-white/10 hover:border-white/50"
+            >
+              View Pricing
+            </motion.a>
           </motion.div>
 
           <motion.p

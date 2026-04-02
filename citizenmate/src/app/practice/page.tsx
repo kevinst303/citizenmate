@@ -7,6 +7,8 @@ import { mockTests } from "@/data/tests";
 import { getAttemptHistory } from "@/lib/quiz-context";
 import { useEffect, useState } from "react";
 import type { QuizResult } from "@/lib/types";
+import { usePremium } from "@/lib/auth-context";
+import { PremiumBadge } from "@/components/shared/premium-gate";
 import {
   FileText,
   Clock,
@@ -20,6 +22,7 @@ import {
   BookOpen,
   Brain,
   Sparkles,
+  Lock,
 } from "lucide-react";
 
 const container = {
@@ -35,7 +38,11 @@ const item = {
   show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" as const } },
 };
 
+// First test is free, rest require premium
+const FREE_TEST_COUNT = 1;
+
 export default function PracticePage() {
+  const { isPremium, upgrade } = usePremium();
   const [attempts, setAttempts] = useState<
     Array<{ testId: string; result: QuizResult; completedAt: string }>
   >([]);
@@ -143,38 +150,68 @@ export default function PracticePage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.5 }}
         >
-          <Link
-            href="/practice/smart"
-            className="group relative block bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 rounded-2xl shadow-lg shadow-purple-500/20 overflow-hidden"
-          >
-            <div className="absolute inset-0 animate-shimmer" />
-            <motion.div
-              whileHover={{ y: -4, scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
-              transition={{ type: "spring" as const, stiffness: 300, damping: 20 }}
-              className="relative p-6 hover:shadow-xl hover:shadow-purple-500/30 transition-shadow duration-300"
+          {isPremium ? (
+            <Link
+              href="/practice/smart"
+              className="group relative block bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 rounded-2xl shadow-lg shadow-purple-500/20 overflow-hidden"
             >
-              <div className="flex-shrink-0 inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-white/15 text-white">
-                <Brain className="w-7 h-7" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
-                  <h3 className="text-lg font-heading font-bold text-white">
-                    Smart Practice
-                  </h3>
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/20 text-white/90 text-xs font-medium">
-                    <Sparkles className="w-3 h-3" />
-                    AI-Powered
-                  </span>
+              <div className="absolute inset-0 animate-shimmer" />
+              <motion.div
+                whileHover={{ y: -4, scale: 1.01 }}
+                whileTap={{ scale: 0.99 }}
+                transition={{ type: "spring" as const, stiffness: 300, damping: 20 }}
+                className="relative p-6 hover:shadow-xl hover:shadow-purple-500/30 transition-shadow duration-300"
+              >
+                <div className="flex-shrink-0 inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-white/15 text-white">
+                  <Brain className="w-7 h-7" />
                 </div>
-                <p className="text-sm text-white/75">
-                  Questions ordered by your weak areas — powered by spaced
-                  repetition. Instant feedback, no timer.
-                </p>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="text-lg font-heading font-bold text-white">
+                      Smart Practice
+                    </h3>
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/20 text-white/90 text-xs font-medium">
+                      <Sparkles className="w-3 h-3" />
+                      AI-Powered
+                    </span>
+                  </div>
+                  <p className="text-sm text-white/75">
+                    Questions ordered by your weak areas — powered by spaced
+                    repetition. Instant feedback, no timer.
+                  </p>
+                </div>
+                <ArrowRight className="w-5 h-5 text-white/60 group-hover:text-white group-hover:translate-x-1 transition-all flex-shrink-0" />
+              </motion.div>
+            </Link>
+          ) : (
+            <button
+              onClick={upgrade}
+              className="group relative block w-full text-left bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 rounded-2xl shadow-lg shadow-purple-500/20 overflow-hidden cursor-pointer"
+            >
+              <div className="absolute inset-0 animate-shimmer" />
+              <div className="relative p-6">
+                <div className="flex-shrink-0 inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-white/15 text-white">
+                  <Brain className="w-7 h-7" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="text-lg font-heading font-bold text-white">
+                      Smart Practice
+                    </h3>
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/20 text-white/90 text-xs font-medium">
+                      <Lock className="w-3 h-3" />
+                      Premium
+                    </span>
+                  </div>
+                  <p className="text-sm text-white/75">
+                    Upgrade to Sprint Pass to unlock AI-powered spaced repetition
+                    practice.
+                  </p>
+                </div>
+                <ArrowRight className="w-5 h-5 text-white/60 flex-shrink-0" />
               </div>
-              <ArrowRight className="w-5 h-5 text-white/60 group-hover:text-white group-hover:translate-x-1 transition-all flex-shrink-0" />
-            </motion.div>
-          </Link>
+            </button>
+          )}
         </motion.div>
       </section>
 
@@ -199,6 +236,7 @@ export default function PracticePage() {
             const bestScore = getBestScore(test.id);
             const attemptCount = getTestAttempts(test.id).length;
             const testNumber = index + 1;
+            const isLocked = !isPremium && index >= FREE_TEST_COUNT;
 
             return (
               <div key={test.id} className="h-full">
@@ -207,6 +245,32 @@ export default function PracticePage() {
                   whileTap={{ scale: 0.99 }}
                   className="h-full"
                 >
+                  {isLocked ? (
+                    <button
+                      onClick={upgrade}
+                      className="group flex flex-col h-full w-full text-left rounded-2xl card-glass p-6 shadow-card hover:shadow-card-hover transition-all duration-300 cursor-pointer relative overflow-hidden"
+                    >
+                      {/* Lock overlay */}
+                      <div className="absolute top-4 right-4 z-10">
+                        <PremiumBadge />
+                      </div>
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-cm-slate-100 text-cm-slate-400 font-heading font-bold text-lg">
+                          {testNumber}
+                        </span>
+                      </div>
+                      <h3 className="text-lg font-heading font-bold text-cm-slate-400 mb-2">
+                        {test.title}
+                      </h3>
+                      <p className="text-sm text-cm-slate-300 leading-relaxed mb-5">
+                        {test.description}
+                      </p>
+                      <div className="mt-auto flex items-center justify-center gap-2 w-full py-3 font-heading font-semibold rounded-xl bg-cm-red/10 text-cm-red transition-all duration-200">
+                        <Lock className="w-4 h-4" />
+                        Unlock with Sprint Pass
+                      </div>
+                    </button>
+                  ) : (
                   <Link
                     href={`/practice/${test.id}`}
                     className="group flex flex-col h-full rounded-2xl card-glass p-6 shadow-card hover:shadow-card-hover hover:border-cm-navy transition-all duration-300 cursor-pointer"
@@ -279,6 +343,7 @@ export default function PracticePage() {
                       )}
                     </div>
                   </Link>
+                  )}
                 </motion.div>
               </div>
             );

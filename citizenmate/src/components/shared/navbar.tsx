@@ -2,8 +2,11 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { Menu } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { 
+  Menu, ChevronRight, LayoutDashboard, PenTool, 
+  BookOpen, Sparkles, Zap, HelpCircle, FileText
+} from "lucide-react";
 import { UserMenu } from "@/components/shared/user-menu";
 import {
   Sheet,
@@ -14,16 +17,65 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
-const navLinks = [
-  { label: "Dashboard", href: "/dashboard" },
-  { label: "Practice", href: "/practice" },
-  { label: "Study", href: "/study" },
-  { label: "Blog", href: "/blog" },
-  { label: "Features", href: "/#features" },
-  { label: "How It Works", href: "/#how-it-works" },
-  { label: "Pricing", href: "/#pricing" },
-  { label: "FAQ", href: "/#faq" },
-];
+const DesktopMenuItem = ({ label, children }: { label: string; children: React.ReactNode }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  
+  return (
+    <div
+      className="relative group"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <button className="flex items-center gap-1 px-3 py-2 text-[0.95rem] font-medium text-muted-foreground hover:text-cm-teal transition-colors">
+        {label}
+        <ChevronRight className={cn("size-3.5 transition-transform duration-200", isHovered ? "rotate-90 text-cm-teal" : "")} />
+      </button>
+      
+      <AnimatePresence>
+        {isHovered && (
+          <motion.div
+            initial={{ opacity: 0, y: 15, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="absolute top-full left-0 pt-3"
+          >
+            <div className="w-[300px] p-2.5 bg-white/95 backdrop-blur-xl border border-cm-slate-100 shadow-[0_16px_40px_rgba(0,0,0,0.08)] rounded-2xl flex flex-col gap-1">
+              {children}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+const MegaMenuLink = ({ href, icon: Icon, title, desc }: any) => (
+  <Link href={href} className="flex items-start gap-3 p-3 rounded-xl hover:bg-cm-teal-50 group/link transition-colors cursor-pointer">
+    <div className="mt-0.5 flex shrink-0 items-center justify-center size-9 rounded-lg bg-cm-teal/10 text-cm-teal group-hover/link:bg-cm-teal group-hover/link:text-white transition-colors shadow-sm">
+      <Icon className="size-4" />
+    </div>
+    <div>
+      <div className="text-[0.95rem] font-semibold text-foreground group-hover/link:text-cm-teal transition-colors leading-none mb-1">{title}</div>
+      <div className="text-[0.8rem] text-muted-foreground leading-snug">{desc}</div>
+    </div>
+  </Link>
+);
+
+const MobileMenuLink = ({ href, label, setOpen }: { href: string, label: string, setOpen: (open: boolean) => void }) => (
+  <SheetClose
+    nativeButton={false}
+    render={
+      <a
+        href={href}
+        className="flex items-center px-4 py-2.5 text-[0.95rem] font-medium text-foreground hover:bg-cm-teal-50 hover:text-cm-teal rounded-xl transition-colors duration-200 cursor-pointer"
+        onClick={() => setOpen(false)}
+      />
+    }
+  >
+    {label}
+  </SheetClose>
+);
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -38,125 +90,200 @@ export function Navbar() {
   }, []);
 
   return (
-    <header
-      className={cn(
-        "fixed z-50 transition-all duration-500 ease-out",
-        scrolled
-          ? "top-3 left-4 right-4 navbar-glass rounded-2xl border border-cm-slate-200/60"
-          : "top-0 left-0 right-0 bg-transparent"
-      )}
-    >
-      <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
-          {/* Logo with hover spring */}
-          <Link href="/" className="flex items-center gap-2 cursor-pointer group">
+    <>
+      {/* Top utility bar — Australian branding message */}
+      <div 
+        className={cn(
+          "hidden md:block bg-cm-dark text-white/80 text-xs fixed top-0 inset-x-0 z-[60] transition-transform duration-500 ease-in-out",
+          scrolled ? "-translate-y-full" : "translate-y-0"
+        )}
+      >
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between h-9">
+          <span className="flex items-center gap-1.5 font-medium tracking-wide">
+            🇦🇺 Australia&apos;s #1 AI-Powered Citizenship Test Prep
+          </span>
+          <div className="flex items-center gap-4 font-medium tracking-wide">
+            <a href="mailto:hello@citizenmate.com.au" className="hover:text-white transition-colors text-white/80">
+              hello@citizenmate.com.au
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Main navigation */}
+      <header
+        className={cn(
+          "fixed inset-x-0 z-50 flex justify-center transition-all duration-500 ease-in-out",
+          scrolled ? "top-4 px-4 sm:px-6" : "top-0 md:top-9 px-0"
+        )}
+      >
+        <nav
+          className={cn(
+            "w-full flex h-[4.25rem] items-center justify-between transition-all duration-500",
+            scrolled
+              ? "max-w-6xl rounded-2xl bg-white/85 backdrop-blur-xl border border-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.06)] px-4 sm:px-6 lg:px-8"
+              : "max-w-full bg-white/95 backdrop-blur-sm border-b border-border shadow-sm px-4 sm:px-6 lg:px-8"
+          )}
+        >
+          {/* Inner container to constrain content while background bleeds */}
+          <div className={cn("mx-auto w-full flex items-center justify-between", scrolled ? "" : "max-w-7xl")}>
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2.5 cursor-pointer group shrink-0">
             <motion.div
-              whileHover={{ scale: 1.08, rotate: -3 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.06 }}
+              whileTap={{ scale: 0.96 }}
               transition={{ type: "spring", stiffness: 400, damping: 15 }}
-              className="flex items-center justify-center w-9 h-9 rounded-xl bg-cm-navy text-white font-heading font-bold text-lg"
+              className="flex items-center justify-center w-9 h-9 rounded-xl bg-cm-teal text-white font-heading font-bold text-lg shadow-sm"
             >
               CM
             </motion.div>
-            <span className="font-heading text-xl font-bold text-foreground">
-              Citizen
-              <span className="text-cm-navy">Mate</span>
+            <span className="font-heading text-xl font-bold text-foreground tracking-tight">
+              Citizen<span className="text-cm-teal">Mate</span>
             </span>
           </Link>
 
           {/* Desktop Nav Links */}
-          <div className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) => (
-              <motion.a
-                key={link.href}
-                href={link.href}
-                whileHover={{ y: -1 }}
-                transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-cm-navy transition-colors duration-200 rounded-lg hover:bg-cm-navy-50 cursor-pointer"
-              >
-                {link.label}
-              </motion.a>
-            ))}
+          <div className="hidden lg:flex items-center gap-2">
+            <DesktopMenuItem label="Study Tools">
+              <MegaMenuLink 
+                href="/dashboard" icon={LayoutDashboard} 
+                title="Dashboard" desc="Track your progress and stats" 
+              />
+              <MegaMenuLink 
+                href="/practice" icon={PenTool} 
+                title="Practice Tests" desc="Real exam format simulations" 
+              />
+              <MegaMenuLink 
+                href="/study" icon={BookOpen} 
+                title="Study Material" desc="Our Common Bond in 5 languages" 
+              />
+            </DesktopMenuItem>
+
+            <DesktopMenuItem label="Platform">
+              <MegaMenuLink 
+                href="/#features" icon={Sparkles} 
+                title="Features" desc="AI analytics and smart reviews" 
+              />
+              <MegaMenuLink 
+                href="/#how-it-works" icon={Zap} 
+                title="How It Works" desc="The proven 3-step learning path" 
+              />
+              <MegaMenuLink 
+                href="/#faq" icon={HelpCircle} 
+                title="FAQ" desc="Common questions answered" 
+              />
+            </DesktopMenuItem>
+
+            <Link href="/#pricing" className="px-3 py-2 text-[0.95rem] font-medium text-muted-foreground hover:text-cm-teal transition-colors">
+              Pricing
+            </Link>
+            <Link href="/blog" className="px-3 py-2 text-[0.95rem] font-medium text-muted-foreground hover:text-cm-teal transition-colors">
+              Blog
+            </Link>
           </div>
 
-          {/* Desktop CTA + User Menu */}
-          <div className="hidden md:flex items-center gap-3">
+          {/* Desktop CTAs + User Menu */}
+          <div className="hidden lg:flex items-center gap-2 shrink-0">
             <motion.div
-              whileHover={{ scale: 1.04, y: -1 }}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              className="hidden xl:block"
+            >
+              <Link
+                href="/practice"
+                className="btn-rounded btn-rounded-outline text-sm h-9 px-5 font-semibold"
+              >
+                Start Free
+              </Link>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
               <Link
-                href="/practice"
-                className="inline-flex items-center justify-center bg-cm-red hover:bg-cm-red-dark text-white font-heading font-semibold px-5 h-10 rounded-xl cursor-pointer transition-colors duration-200"
+                href="/#pricing"
+                className="btn-rounded btn-rounded-teal text-sm h-9 px-5 shadow-md shadow-cm-teal/20 font-semibold"
               >
-                Start Free Practice
+                Get Sprint Pass
+                <ChevronRight className="size-3.5 ml-1" />
               </Link>
             </motion.div>
-            <UserMenu />
+            <div className="ml-2 pl-3 border-l border-border h-6 flex items-center">
+              <UserMenu />
+            </div>
           </div>
 
           {/* Mobile Menu */}
-          <div className="md:hidden">
+          <div className="lg:hidden flex items-center gap-2 shrink-0">
+            <UserMenu />
             <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger
-                className="inline-flex items-center justify-center size-10 rounded-lg hover:bg-muted transition-colors cursor-pointer"
+                className="inline-flex items-center justify-center size-10 rounded-xl hover:bg-muted transition-colors cursor-pointer"
                 aria-label="Open menu"
               >
-                <Menu className="size-5" />
+                <Menu className="size-5 text-foreground" />
               </SheetTrigger>
-              <SheetContent side="right" className="w-80 bg-cm-ice">
-                <SheetTitle className="font-heading text-lg font-bold px-2">
-                  Citizen<span className="text-cm-navy">Mate</span>
-                </SheetTitle>
-                <div className="flex flex-col gap-2 mt-8 px-2">
-                  {navLinks.map((link, idx) => (
-                    <motion.div
-                      key={link.href}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.05 * idx, type: "spring" as const, stiffness: 200, damping: 18 }}
-                    >
-                      <SheetClose
-                        nativeButton={false}
-                        render={
-                          <a
-                            href={link.href}
-                            className="flex items-center px-4 py-3 text-base font-medium text-foreground hover:bg-cm-navy-50 rounded-xl transition-colors duration-200 cursor-pointer"
-                            onClick={() => setOpen(false)}
-                          />
-                        }
-                      >
-                        {link.label}
-                      </SheetClose>
-                    </motion.div>
-                  ))}
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4, type: "spring" as const, stiffness: 150, damping: 16 }}
-                    className="mt-4 pt-4 border-t border-border"
-                  >
-                    <SheetClose
-                      render={
-                        <button
-                          className="w-full inline-flex items-center justify-center bg-cm-red hover:bg-cm-red-dark text-white font-heading font-semibold h-12 rounded-xl cursor-pointer transition-all duration-200"
-                          onClick={() => setOpen(false)}
-                        />
-                      }
-                    >
-                      Start Free Practice
-                    </SheetClose>
-                    <div className="mt-3 flex justify-center">
-                      <UserMenu />
+              <SheetContent side="right" className="w-[85vw] max-w-[320px] bg-white flex flex-col p-0">
+                <div className="p-4 border-b border-border shadow-sm">
+                  <SheetTitle className="font-heading text-xl font-bold flex items-center gap-2">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-cm-teal text-white font-heading font-bold text-sm">
+                      CM
                     </div>
-                  </motion.div>
+                    <span>Citizen<span className="text-cm-teal">Mate</span></span>
+                  </SheetTitle>
+                </div>
+                
+                <div className="flex-1 overflow-y-auto px-2 py-4">
+                  <div className="text-[0.7rem] font-bold text-muted-foreground/70 uppercase tracking-widest px-4 mb-1">Study Tools</div>
+                  <MobileMenuLink href="/dashboard" label="Dashboard" setOpen={setOpen} />
+                  <MobileMenuLink href="/practice" label="Practice" setOpen={setOpen} />
+                  <MobileMenuLink href="/study" label="Study" setOpen={setOpen} />
+                  
+                  <div className="text-[0.7rem] font-bold text-muted-foreground/70 uppercase tracking-widest px-4 mt-5 mb-1">Platform</div>
+                  <MobileMenuLink href="/#features" label="Features" setOpen={setOpen} />
+                  <MobileMenuLink href="/#how-it-works" label="How It Works" setOpen={setOpen} />
+                  <MobileMenuLink href="/#faq" label="FAQ" setOpen={setOpen} />
+
+                  <div className="text-[0.7rem] font-bold text-muted-foreground/70 uppercase tracking-widest px-4 mt-5 mb-1">Resources</div>
+                  <MobileMenuLink href="/#pricing" label="Pricing" setOpen={setOpen} />
+                  <MobileMenuLink href="/blog" label="Blog" setOpen={setOpen} />
+                </div>
+
+                <div className="mt-auto p-4 border-t border-border bg-cm-slate-50">
+                  <SheetClose
+                    nativeButton={false}
+                    render={
+                      <Link
+                        href="/#pricing"
+                        className="flex items-center justify-center w-full btn-rounded btn-rounded-teal h-12 text-[0.95rem] font-semibold shadow-md shadow-cm-teal/20"
+                        onClick={() => setOpen(false)}
+                      />
+                    }
+                  >
+                    Get Sprint Pass
+                  </SheetClose>
+                  <SheetClose
+                    nativeButton={false}
+                    render={
+                      <Link
+                        href="/practice"
+                        className="flex items-center justify-center w-full btn-rounded btn-rounded-outline bg-white h-12 text-[0.95rem] font-semibold mt-2.5"
+                        onClick={() => setOpen(false)}
+                      />
+                    }
+                  >
+                    Start Free Practice
+                  </SheetClose>
                 </div>
               </SheetContent>
             </Sheet>
           </div>
-        </div>
-      </nav>
-    </header>
+          </div>
+        </nav>
+      </header>
+    </>
   );
 }
+

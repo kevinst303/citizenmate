@@ -23,7 +23,14 @@ export function LifeInAustraliaSection() {
 
   useEffect(() => {
     fetch("/api/australia-insights")
-      .then((res) => res.json())
+      .then(async (res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const contentType = res.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          throw new Error("Received non-JSON response from API");
+        }
+        return res.json();
+      })
       .then((json: AustraliaInsightsData) => {
         setData(json);
         setIsLoading(false);
