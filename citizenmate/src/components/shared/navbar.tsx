@@ -40,7 +40,7 @@ const DesktopMenuItem = ({ label, children }: { label: string; children: React.R
             transition={{ duration: 0.2, ease: "easeOut" }}
             className="absolute top-full left-0 pt-3"
           >
-            <div className="w-[300px] p-2.5 bg-white/95 backdrop-blur-xl border border-cm-slate-100 shadow-[0_16px_40px_rgba(0,0,0,0.08)] rounded-2xl flex flex-col gap-1">
+            <div className="w-[300px] p-2.5 bg-white border border-cm-slate-100 shadow-[0_16px_40px_rgba(0,0,0,0.08)] rounded-2xl flex flex-col gap-1">
               {children}
             </div>
           </motion.div>
