@@ -127,7 +127,7 @@ export function Footer() {
               2026 edition.
             </p>
           </div>
-          <p className="text-xs text-white/35 shrink-0">
+          <p className="text-xs text-zinc-400 shrink-0">
             © {new Date().getFullYear()} CitizenMate. All rights reserved.
           </p>
         </motion.div>
