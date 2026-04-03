@@ -61,7 +61,7 @@ export function Features() {
 
   return (
     <section id="features" className="py-20 sm:py-28">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1140px] px-4 sm:px-6 lg:px-8">
         {/* Section header — Conseil style with badge pill */}
         <div className="text-center max-w-2xl mx-auto mb-16">
           <motion.div

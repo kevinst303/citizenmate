@@ -49,8 +49,8 @@ const cardVariant = {
 
 export function SocialProof() {
   return (
-    <section className="py-20 sm:py-28">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section className="py-20 sm:py-28 section-alt-bg">
+      <div className="mx-auto max-w-[1140px] px-4 sm:px-6 lg:px-8">
         {/* Section header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
           <motion.div
@@ -156,6 +156,22 @@ export function SocialProof() {
               <p className="text-sm text-muted-foreground mt-1 font-medium">{stat.label}</p>
             </div>
           ))}
+        </motion.div>
+
+        {/* Dual CTA — Conseil pattern */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.7 }}
+          className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4"
+        >
+          <a href="/practice" className="btn-rounded btn-rounded-teal">
+            Start Free Practice
+          </a>
+          <a href="/#pricing" className="btn-rounded btn-rounded-outline">
+            View Pricing
+          </a>
         </motion.div>
       </div>
     </section>

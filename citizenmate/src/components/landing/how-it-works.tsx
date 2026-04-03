@@ -53,7 +53,7 @@ export function HowItWorks() {
 
   return (
     <section id="how-it-works" className="py-20 sm:py-28 section-alt-bg">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1140px] px-4 sm:px-6 lg:px-8">
         {/* Section header — Conseil style */}
         <div className="text-center max-w-2xl mx-auto mb-20">
           <motion.div
