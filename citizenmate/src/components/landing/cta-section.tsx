@@ -3,18 +3,24 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 
 export function CTASection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
 
   return (
-    <section className="py-20 sm:py-28 relative overflow-hidden bg-gradient-to-br from-cm-teal-dark via-cm-teal to-[#008a93]">
-      {/* Subtle decorative circles */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/3" />
-      <div className="absolute bottom-0 left-0 w-72 h-72 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/3" />
+    <section className="py-20 sm:py-28 relative overflow-hidden">
+      <Image
+        src="/images/conseil/cta-bg.jpg"
+        alt=""
+        fill
+        className="object-cover"
+        aria-hidden
+      />
+      <div className="absolute inset-0 bg-black/60" />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
+      <div className="mx-auto max-w-[1140px] px-4 sm:px-6 lg:px-8 relative">
         <motion.div
           ref={ref}
           initial={{ opacity: 0 }}

@@ -31,19 +31,17 @@ export function Hero() {
       {/* Background image with Conseil-style overlay */}
       <div className="absolute inset-0 -z-10">
         <Image
-          src="/generated/hero-study.webp"
+          src="/images/conseil/hero-bg.jpg"
           alt="Diverse group of people studying together for the Australian citizenship test"
           fill
           priority
           className="object-cover"
         />
-        {/* Teal gradient overlay like Conseil hero */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#004a50]/80 via-[#00727a]/70 to-[#008a93]/60" />
-        {/* Bottom fade for clean transition to next section */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent" />
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black/50" />
       </div>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 sm:py-32 w-full">
+      <div className="mx-auto max-w-[1140px] px-4 sm:px-6 lg:px-8 py-24 sm:py-32 w-full">
         <motion.div
           variants={container}
           initial="hidden"
@@ -152,32 +150,15 @@ export function Hero() {
         </motion.div>
       </div>
 
-      {/* Trusted by bar — logos/features strip at bottom */}
-      <div className="absolute bottom-0 left-0 right-0 z-10">
-        <div className="bg-white/95 backdrop-blur-sm border-t border-cm-slate-100/50">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between py-4 overflow-x-auto gap-8">
-              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider shrink-0">
-                Trusted by students across Australia
-              </span>
-              <div className="flex items-center gap-8">
-                {trustedLogos.map((label, i) => (
-                  <motion.div
-                    key={label}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.2 + i * 0.1, duration: 0.4 }}
-                    className="flex items-center gap-2 shrink-0"
-                  >
-                    <div className="w-2 h-2 rounded-full bg-cm-teal/60" />
-                    <span className="text-sm font-medium text-muted-foreground whitespace-nowrap">
-                      {label}
-                    </span>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </div>
+      {/* Marquee strip — Conseil logo/feature strip */}
+      <div className="absolute bottom-0 left-0 right-0 z-10 bg-white/10 backdrop-blur-sm border-t border-white/10 py-3 overflow-hidden">
+        <div className="flex gap-16 animate-[marquee_25s_linear_infinite] whitespace-nowrap">
+          {[...trustedLogos, ...trustedLogos].map((label, i) => (
+            <span key={i} className="inline-flex items-center gap-2 text-sm font-medium text-white/80 shrink-0">
+              <span className="w-1.5 h-1.5 rounded-full bg-cm-teal/80" />
+              {label}
+            </span>
+          ))}
         </div>
       </div>
     </section>

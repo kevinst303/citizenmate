@@ -38,7 +38,7 @@ const columnVariant = {
 
 export function Footer() {
   return (
-    <footer className="bg-[#1a2d35] text-white">
+    <footer className="bg-white border-t border-border">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand column */}
@@ -53,11 +53,11 @@ export function Footer() {
               <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-cm-teal text-white font-heading font-bold text-lg">
                 CM
               </div>
-              <span className="font-heading text-xl font-bold">
+              <span className="font-heading text-xl font-bold text-foreground">
                 Citizen<span className="text-cm-teal">Mate</span>
               </span>
             </Link>
-            <p className="mt-4 text-sm text-white/50 leading-relaxed">
+            <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
               Your mate for the citizenship test. Study in your language,
               practice with AI, and pass with confidence.
             </p>
@@ -68,7 +68,7 @@ export function Footer() {
                 <a
                   key={social}
                   href="#"
-                  className="w-9 h-9 rounded-full bg-white/8 hover:bg-cm-teal/40 flex items-center justify-center text-white/50 hover:text-white transition-all duration-200 text-xs font-bold"
+                  className="w-9 h-9 rounded-full bg-zinc-100 hover:bg-cm-teal flex items-center justify-center text-zinc-500 hover:text-white transition-all duration-200 text-xs font-bold"
                   aria-label={social}
                 >
                   {social.charAt(0)}
@@ -87,7 +87,7 @@ export function Footer() {
               whileInView="show"
               viewport={{ once: true }}
             >
-              <h3 className="font-heading font-semibold text-sm uppercase tracking-wider text-white/35 mb-5">
+              <h3 className="font-heading font-semibold text-sm uppercase tracking-wider text-zinc-400 mb-5">
                 {title}
               </h3>
               <ul className="space-y-3">
@@ -95,7 +95,7 @@ export function Footer() {
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="text-sm text-white/55 hover:text-white transition-colors duration-200 cursor-pointer"
+                      className="text-sm text-zinc-500 hover:text-foreground transition-colors duration-200 cursor-pointer"
                     >
                       {link.label}
                     </a>
@@ -107,7 +107,7 @@ export function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-white/8 my-10" />
+        <div className="border-t border-border my-10" />
 
         {/* Copyright bar */}
         <motion.div
@@ -118,11 +118,11 @@ export function Footer() {
           className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4"
         >
           <div className="space-y-2">
-            <p className="text-xs text-white/35">
+            <p className="text-xs text-zinc-400">
               CitizenMate is independent from the Australian Government. Not
               affiliated with or endorsed by the Department of Home Affairs.
             </p>
-            <p className="text-xs text-white/35">
+            <p className="text-xs text-zinc-400">
               Content based on &ldquo;Our Common Bond&rdquo; booklet — March
               2026 edition.
             </p>
