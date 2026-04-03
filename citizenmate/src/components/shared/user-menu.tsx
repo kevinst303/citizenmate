@@ -37,7 +37,7 @@ export function UserMenu() {
     return (
       <button
         onClick={openAuthModal}
-        className="px-4 py-2 bg-cm-navy text-white font-heading font-semibold text-sm rounded-xl hover:bg-cm-navy-light transition-colors cursor-pointer"
+        className="px-4 py-2 bg-cm-teal text-white font-heading font-semibold text-sm rounded-xl hover:bg-cm-teal-dark transition-colors cursor-pointer"
       >
         Sign In
       </button>
@@ -60,7 +60,7 @@ export function UserMenu() {
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 cursor-pointer group"
       >
-        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-cm-navy to-cm-navy-light flex items-center justify-center text-white text-xs font-bold shadow-md group-hover:shadow-lg transition-shadow">
+        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-cm-teal to-cm-teal-dark flex items-center justify-center text-white text-xs font-bold shadow-md group-hover:shadow-lg transition-shadow">
           {initials}
         </div>
         <ChevronDown
@@ -110,7 +110,7 @@ export function UserMenu() {
                     console.error(e);
                   }
                 }}
-                className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-cm-blue hover:bg-cm-blue-50 transition-colors cursor-pointer text-left"
+                className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-cm-teal hover:bg-cm-teal-50 transition-colors cursor-pointer text-left"
               >
                 Upgrade to Premium
               </button>

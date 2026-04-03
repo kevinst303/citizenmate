@@ -113,20 +113,15 @@ export function Navbar() {
       {/* Main navigation */}
       <header
         className={cn(
-          "fixed inset-x-0 z-50 flex justify-center transition-all duration-500 ease-in-out",
-          scrolled ? "top-4 px-4 sm:px-6" : "top-0 md:top-9 px-0"
+          "fixed inset-x-0 z-[6050] bg-white border-b border-border transition-[top] duration-500 ease-in-out",
+          scrolled ? "top-0" : "top-0 md:top-9"
         )}
       >
         <nav
-          className={cn(
-            "w-full flex h-[4.25rem] items-center justify-between transition-all duration-500",
-            scrolled
-              ? "max-w-6xl rounded-2xl bg-white/85 backdrop-blur-xl border border-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.06)] px-4 sm:px-6 lg:px-8"
-              : "max-w-full bg-white/95 backdrop-blur-sm border-b border-border shadow-sm px-4 sm:px-6 lg:px-8"
-          )}
+          className="w-full flex h-[66px] items-center px-4 sm:px-6 lg:px-8"
         >
-          {/* Inner container to constrain content while background bleeds */}
-          <div className={cn("mx-auto w-full flex items-center justify-between", scrolled ? "" : "max-w-7xl")}>
+          {/* Inner container to constrain content to 1140px */}
+          <div className="mx-auto w-full max-w-[1140px] flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 cursor-pointer group shrink-0">
             <motion.div
@@ -192,7 +187,7 @@ export function Navbar() {
             >
               <Link
                 href="/practice"
-                className="btn-rounded btn-rounded-outline text-sm h-9 px-5 font-semibold"
+                className="btn-rounded btn-rounded-outline !rounded-[10px] text-sm h-9 px-5 font-semibold"
               >
                 Start Free
               </Link>
@@ -204,7 +199,7 @@ export function Navbar() {
             >
               <Link
                 href="/#pricing"
-                className="btn-rounded btn-rounded-teal text-sm h-9 px-5 shadow-md shadow-cm-teal/20 font-semibold"
+                className="btn-rounded btn-rounded-teal !rounded-[10px] text-sm h-9 px-5 shadow-md shadow-cm-teal/20 font-semibold"
               >
                 Get Sprint Pass
                 <ChevronRight className="size-3.5 ml-1" />
