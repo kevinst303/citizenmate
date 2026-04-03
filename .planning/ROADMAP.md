@@ -52,16 +52,16 @@ Plans:
   5. Pricing and FAQ use Conseil card design
   6. Quiz, Study, and Dashboard flows use Conseil design tokens throughout
   7. `npx tsc --noEmit` + `npm run build` pass with zero errors after all tracks merge
-**Plans**: TBD (7 parallel plans — one per track)
+**Plans**: 7 plans (all Wave 1 — parallel execution)
 
 Plans:
-- [ ] 03-A: Navbar + Layout Shell + User Menu
-- [ ] 03-B: Hero + CTA sections + Footer
-- [ ] 03-C: Features + How It Works + Social Proof
-- [ ] 03-D: Pricing + FAQ + Shared Modals
-- [ ] 03-E: Quiz components
-- [ ] 03-F: Study components
-- [ ] 03-G: Dashboard components
+- [ ] 03-A-PLAN.md — Navbar + Layout Shell + User Menu (NAV-01, NAV-02, NAV-03, NAV-04)
+- [ ] 03-B-PLAN.md — Hero + CTA sections + Footer (HERO-01–03, CTA-01–02, FOOT-01–02)
+- [ ] 03-C-PLAN.md — Features + How It Works + Social Proof (FEAT-01–02, HIOW-01–02, SOCP-01–03)
+- [ ] 03-D-PLAN.md — Pricing + FAQ + Shared Modals (PRIC-01–02, FAQ-01, MODL-01)
+- [ ] 03-E-PLAN.md — Quiz components (QUIZ-01–03)
+- [ ] 03-F-PLAN.md — Study components (STUD-01–03)
+- [ ] 03-G-PLAN.md — Dashboard components (DASH-01–03)
 
 ## Progress
 
@@ -69,4 +69,4 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Reconnaissance | ✓ | Complete | 2026-04-02 |
 | 2. Foundation | ✓ | Complete | 2026-04-02 |
-| 3. Component Implementation | 0/7 | Not started | - |
+| 3. Component Implementation | 0/7 | Planned | - |
