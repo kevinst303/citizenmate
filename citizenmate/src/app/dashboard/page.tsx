@@ -373,7 +373,8 @@ export default function DashboardPage() {
             {/* Readiness card */}
             <motion.div
               variants={item}
-              className="glass-card-premium rounded-2xl shadow-card p-6 flex flex-col items-center text-center"
+              className="bg-white border border-[#E9ECEF] p-6 flex flex-col items-center text-center"
+              style={{ borderRadius: '15px', boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}
             >
               <ReadinessRing score={readiness.score} />
 
@@ -417,7 +418,8 @@ export default function DashboardPage() {
             {/* Test date card */}
             <motion.div
               variants={item}
-              className="relative glass-card-premium rounded-2xl shadow-card p-6 flex flex-col overflow-hidden"
+              className="relative bg-white border border-[#E9ECEF] p-6 flex flex-col overflow-hidden"
+              style={{ borderRadius: '15px', boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}
             >
               {/* Subtle visual goal setting background */}
               <div className="absolute inset-0 z-0 opacity-[0.08] pointer-events-none mix-blend-luminosity">
@@ -540,7 +542,8 @@ export default function DashboardPage() {
           {/* Topic mastery */}
           <motion.div
             variants={item}
-            className="glass-card-premium rounded-2xl shadow-card p-6"
+            className="bg-white border border-[#E9ECEF] p-6"
+              style={{ borderRadius: '15px', boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}
           >
             <div className="flex items-center gap-2.5 mb-5">
               <div className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-cm-gold-light text-cm-gold">

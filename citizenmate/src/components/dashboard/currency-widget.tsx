@@ -10,7 +10,7 @@ interface CurrencyWidgetProps {
 
 export function CurrencyWidget({ data }: CurrencyWidgetProps) {
   return (
-    <div className="glass-card-premium rounded-2xl shadow-card overflow-hidden h-full flex flex-col">
+    <div className="bg-white border border-[#E9ECEF] overflow-hidden h-full flex flex-col" style={{ borderRadius: '15px', boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}>
       {/* Header */}
       <div className="p-5 pb-3 border-b border-cm-slate-100">
         <div className="flex items-center gap-2">

@@ -11,7 +11,7 @@ import type { AustraliaInsightsData } from "@/app/api/australia-insights/route";
 
 function WidgetSkeleton() {
   return (
-    <div className="glass-card-premium rounded-2xl p-6 h-[320px] flex items-center justify-center animate-pulse">
+    <div className="bg-white border border-[#E9ECEF] p-6 h-[320px] flex items-center justify-center animate-pulse" style={{ borderRadius: '15px', boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}>
       <div className="w-8 h-8 rounded-full border-4 border-cm-navy/20 border-t-cm-navy animate-spin" />
     </div>
   );
