@@ -110,12 +110,13 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Main navigation */}
+      {/* Main navigation — NAV-01, NAV-02: solid white fixed 66px bar; scroll transition cubic-bezier(0.165,0.84,0.44,1) 0.2s, no shadow on scroll */}
       <header
         className={cn(
-          "fixed inset-x-0 z-[6050] bg-white border-b border-border transition-[top] duration-500 ease-in-out",
+          "fixed inset-x-0 z-[6050] bg-white border-b border-border",
           scrolled ? "top-0" : "top-0 md:top-9"
         )}
+        style={{ transition: 'top 0.2s cubic-bezier(0.165,0.84,0.44,1)' }}
       >
         <nav
           className="w-full flex h-[66px] items-center px-4 sm:px-6 lg:px-8"
