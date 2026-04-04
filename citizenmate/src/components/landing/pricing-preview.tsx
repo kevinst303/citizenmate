@@ -63,7 +63,7 @@ export function PricingPreview() {
 
   return (
     <section id="pricing" className="py-20 sm:py-28 section-alt-bg">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1140px] px-4 sm:px-6 lg:px-8">
         {/* Section header — Conseil style */}
         <div className="text-center max-w-2xl mx-auto mb-16">
           <motion.div
@@ -144,7 +144,7 @@ export function PricingPreview() {
               )}
 
               <div
-                className={`h-full p-8 rounded-[10px] transition-all duration-300 ${
+                className={`h-full p-8 transition-all duration-300 ${
                   plan.popular
                     ? "card-conseil-popular"
                     : "card-conseil"

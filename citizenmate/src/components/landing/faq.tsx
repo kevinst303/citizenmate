@@ -97,7 +97,7 @@ export function FAQ() {
               viewport={{ once: true, margin: "-50px" }}
             >
               <AccordionItem
-                className="border border-cm-slate-100 rounded-[10px] px-6 data-open:border-cm-teal/20 data-open:shadow-sm transition-all duration-200 bg-white"
+                className="border border-[#E9ECEF] rounded-[15px] px-6 data-open:border-cm-teal/20 data-open:shadow-sm transition-all duration-200 bg-white"
               >
                 <AccordionTrigger className="text-left font-heading font-semibold text-base py-5 hover:no-underline hover:text-cm-teal transition-colors cursor-pointer aria-expanded:text-cm-teal">
                   {faq.question}
