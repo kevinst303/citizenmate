@@ -46,7 +46,7 @@ export function LayoutShell({ children }: { children: React.ReactNode }) {
         Skip to main content
       </a>
       {!isActiveQuiz && <Navbar />}
-      {/* Spacer for fixed navbar height (landing page hero handles its own spacing) */}
+      {/* Spacer for fixed navbar height (landing page hero handles its own spacing) — NAV-03: verified pt-[66px] */}
       {!isActiveQuiz && pathname !== "/" && <div className="pt-[66px]" />}
       {showBanner && <TestDateBanner />}
       <main id="main-content" className="flex-1">{children}</main>
