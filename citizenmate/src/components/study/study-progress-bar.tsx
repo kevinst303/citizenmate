@@ -14,7 +14,7 @@ export function StudyProgressBar({
   completed,
   total,
   label,
-  colorClass = "bg-cm-eucalyptus",
+  colorClass = "bg-cm-teal",
   size = "md",
 }: StudyProgressBarProps) {
   const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;

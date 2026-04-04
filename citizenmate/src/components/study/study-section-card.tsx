@@ -36,11 +36,12 @@ export function StudySectionCard({
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.4, delay: index * 0.08, type: "spring" as const, stiffness: 120, damping: 16 }}
       whileHover={{ y: -2, transition: { type: "spring" as const, stiffness: 400, damping: 25 } }}
-      className={`bg-white rounded-2xl border-2 transition-colors duration-200 overflow-hidden ${
+      className={`bg-white rounded-[15px] border transition-colors duration-200 overflow-hidden ${
         isComplete
-          ? "border-cm-eucalyptus/30"
-          : "border-cm-slate-200 hover:border-cm-navy/30"
+          ? "border-[#E9ECEF]"
+          : "border-[#E9ECEF] hover:border-cm-teal/30"
       }`}
+      style={{ boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}
     >
       {/* Header — always visible */}
       <div className="flex items-center gap-3 p-5 cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>
@@ -65,7 +66,7 @@ export function StudySectionCard({
                 exit={{ scale: 0, rotate: 90 }}
                 transition={{ type: "spring", stiffness: 400, damping: 12 }}
               >
-                <CheckCircle2 className="w-6 h-6 text-cm-eucalyptus" />
+                <CheckCircle2 className="w-6 h-6 text-cm-teal" />
               </motion.div>
             ) : (
               <motion.div
@@ -75,7 +76,7 @@ export function StudySectionCard({
                 exit={{ scale: 0 }}
                 transition={{ type: "spring", stiffness: 400, damping: 12 }}
               >
-                <Circle className="w-6 h-6 text-cm-slate-300 hover:text-cm-navy" />
+                <Circle className="w-6 h-6 text-cm-slate-300 hover:text-cm-teal" />
               </motion.div>
             )}
           </AnimatePresence>
@@ -85,7 +86,7 @@ export function StudySectionCard({
         <div className="flex-1 min-w-0">
           <h3
             className={`font-heading font-semibold text-base transition-colors duration-200 ${
-              isComplete ? "text-cm-eucalyptus" : "text-cm-slate-900"
+              isComplete ? "text-cm-teal" : "text-cm-slate-900"
             }`}
           >
             {title}
@@ -126,7 +127,7 @@ export function StudySectionCard({
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.1, type: "spring" as const, stiffness: 150, damping: 18 }}
                     >
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-cm-navy-50 text-cm-navy text-xs font-semibold mb-3">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-cm-teal/10 text-cm-teal text-xs font-semibold mb-3">
                         <BookOpen className="w-3 h-3" />
                         English
                       </span>
