@@ -111,7 +111,8 @@ export function AuthModal() {
             className="fixed inset-0 z-50 flex items-center justify-center p-4"
           >
             <div
-              className="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden"
+              className="w-full max-w-md bg-white rounded-[15px] overflow-hidden border border-[#E9ECEF]"
+              style={{ boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header */}

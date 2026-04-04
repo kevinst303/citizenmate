@@ -63,7 +63,7 @@ export function QuizHeader() {
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
                 onClick={() => setShowConfirm(true)}
-                className="hidden sm:inline-flex items-center px-4 py-2 bg-cm-navy hover:bg-cm-navy-light text-white text-sm font-heading font-semibold rounded-lg transition-colors duration-200 cursor-pointer"
+                className="hidden sm:inline-flex items-center px-4 py-2 bg-cm-teal hover:bg-cm-teal/90 text-white text-sm font-heading font-semibold rounded-[10px] transition-colors duration-200 cursor-pointer"
               >
                 Submit Test
               </motion.button>
@@ -87,7 +87,8 @@ export function QuizHeader() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
               transition={{ type: "spring", stiffness: 300, damping: 25 }}
-              className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8"
+              className="bg-white rounded-[15px] max-w-md w-full p-6 sm:p-8 border border-[#E9ECEF]"
+              style={{ boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}
             >
               <h3 className="text-xl font-heading font-bold text-cm-slate-900 mb-2">
                 Submit your test?

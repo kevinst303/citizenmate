@@ -95,7 +95,8 @@ export function PremiumGate({
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-6 sm:p-8 text-center max-w-sm mx-4"
+          className="bg-white/95 backdrop-blur-sm rounded-[15px] p-6 sm:p-8 text-center max-w-sm mx-4 border border-[#E9ECEF]"
+          style={{ boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}
         >
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-cm-red/10 text-cm-red mb-4">
             <Lock className="w-6 h-6" />
