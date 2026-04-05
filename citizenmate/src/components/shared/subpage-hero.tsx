@@ -48,7 +48,7 @@ export function SubpageHero({ title, breadcrumbs, description, badge, bgImage = 
         )}
 
         {/* Title */}
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-6">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white tracking-tight mb-6">
           {title}
         </h1>
 

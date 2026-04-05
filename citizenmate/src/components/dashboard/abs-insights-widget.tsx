@@ -24,14 +24,14 @@ interface AbsInsightsWidgetProps {
 }
 
 const COLORS = [
-  "#0C2340", // Navy
-  "#0284C7", // Sky
-  "#059669", // Eucalyptus
-  "#D97706", // Gold
-  "#DC2626", // Red
-  "#4F46E5", // Indigo
-  "#0EA5E9", // Light blue
-  "#10B981", // Emerald
+  "#006d77", // cm-teal (Conseil primary)
+  "#3d348b", // cm-secondary (Conseil purple)
+  "#00a3ad", // lighter teal
+  "#6b61c4", // lighter purple
+  "#005a61", // dark teal
+  "#2a2366", // dark purple
+  "#00c4d0", // accent teal
+  "#8f86d4", // soft purple
 ];
 
 export function AbsInsightsWidget() {
@@ -73,16 +73,16 @@ export function AbsInsightsWidget() {
 
   if (!isClient || isLoading) {
     return (
-      <div className="glass-card-premium rounded-2xl p-6 h-[400px] flex items-center justify-center animate-pulse">
+      <div className="bg-white border border-[#E9ECEF] p-6 h-[400px] flex items-center justify-center animate-pulse" style={{ borderRadius: '15px', boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}>
         <div className="w-8 h-8 rounded-full border-4 border-cm-navy/20 border-t-cm-navy animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="glass-card-premium rounded-2xl shadow-card overflow-hidden">
+    <div className="bg-white border border-[#E9ECEF] overflow-hidden" style={{ borderRadius: '15px', boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}>
       {/* Header */}
-      <div className="p-6 pb-4 border-b border-cm-slate-100 flex items-center justify-between bg-white/40">
+      <div className="p-6 pb-4 border-b border-cm-slate-100 flex items-center justify-between bg-white">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <h2 className="font-heading font-bold text-lg text-cm-slate-900">
