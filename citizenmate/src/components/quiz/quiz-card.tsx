@@ -20,7 +20,8 @@ export function QuizCard() {
         animate={{ opacity: 1, x: 0, scale: 1 }}
         exit={{ opacity: 0, x: -40, scale: 0.97 }}
         transition={{ type: "spring", stiffness: 200, damping: 22 }}
-        className="w-full"
+        className="w-full bg-white border border-[#E9ECEF] rounded-[15px] p-6 sm:p-8"
+        style={{ boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}
       >
         {/* Question */}
         <div className="mb-8">
@@ -30,7 +31,7 @@ export function QuizCard() {
               initial={{ scale: 0, rotate: -20 }}
               animate={{ scale: 1, rotate: 0 }}
               transition={{ type: "spring", stiffness: 400, damping: 12 }}
-              className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-cm-navy text-white text-sm font-bold font-heading"
+              className="inline-flex items-center justify-center w-8 h-8 rounded-[10px] bg-cm-teal text-white text-sm font-bold font-heading"
             >
               {questionNumber}
             </motion.span>
@@ -81,12 +82,12 @@ export function QuizCard() {
                 whileTap={{ scale: 0.98 }}
                 onClick={() => selectAnswer(currentQuestion.id, index)}
                 className={`
-                  w-full flex items-start gap-4 p-4 sm:p-5 rounded-xl border-2 text-left
+                  w-full flex items-start gap-4 p-4 sm:p-5 rounded-[10px] border-2 text-left
                   transition-colors duration-200 cursor-pointer group
                   ${
                     isSelected
-                      ? "border-cm-navy bg-cm-navy-50 shadow-md answer-selected-shimmer"
-                      : "border-cm-slate-200 bg-white hover:border-cm-navy-light hover:bg-cm-navy-50/30 hover:shadow-sm"
+                      ? "border-cm-teal bg-cm-teal/5 shadow-md answer-selected-shimmer"
+                      : "border-[#E9ECEF] bg-white hover:border-cm-teal/50 hover:bg-cm-teal/[0.03] hover:shadow-sm"
                   }
                 `}
               >
@@ -95,12 +96,12 @@ export function QuizCard() {
                   animate={isSelected ? { scale: [1, 1.2, 1] } : { scale: 1 }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
                   className={`
-                    flex-shrink-0 inline-flex items-center justify-center w-9 h-9 rounded-lg text-sm font-bold font-heading
+                    flex-shrink-0 inline-flex items-center justify-center w-9 h-9 rounded-[10px] text-sm font-bold font-heading
                     transition-colors duration-200
                     ${
                       isSelected
-                        ? "bg-cm-navy text-white"
-                        : "bg-cm-slate-100 text-cm-slate-600 group-hover:bg-cm-navy-100 group-hover:text-cm-navy"
+                        ? "bg-cm-teal text-white"
+                        : "bg-cm-slate-100 text-cm-slate-600 group-hover:bg-cm-teal/10 group-hover:text-cm-teal"
                     }
                   `}
                 >
@@ -111,7 +112,7 @@ export function QuizCard() {
                 <span
                   className={`
                     text-base sm:text-lg leading-relaxed pt-1
-                    ${isSelected ? "text-cm-navy font-semibold" : "text-cm-slate-700"}
+                    ${isSelected ? "text-cm-teal font-semibold" : "text-cm-slate-700"}
                   `}
                 >
                   {option}
