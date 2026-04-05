@@ -199,15 +199,16 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
         <motion.div
           variants={item}
           whileHover={{ y: -4, scale: 1.02, transition: { type: "spring" as const, stiffness: 400, damping: 20 } }}
-          className="bg-white rounded-xl border border-cm-slate-200 p-6 text-center shadow-sm hover:shadow-md transition-shadow duration-200 cursor-default"
+          className="bg-white border border-[#E9ECEF] p-6 text-center hover:shadow-md transition-shadow duration-200 cursor-default"
+          style={{ borderRadius: '15px', boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}
         >
-          <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-cm-navy-50 text-cm-navy mb-3">
+          <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-cm-teal/10 text-cm-teal mb-3">
             <Trophy className="w-5 h-5" />
           </div>
           <div className="text-sm font-medium text-cm-slate-500 mb-2">
             Overall Score
           </div>
-          <div className="text-4xl font-heading font-extrabold text-cm-navy">
+          <div className="text-4xl font-heading font-extrabold text-cm-teal">
             {result.score}
             <span className="text-xl text-cm-slate-400">
               /{result.totalQuestions}
@@ -232,7 +233,8 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
         <motion.div
           variants={item}
           whileHover={{ y: -4, scale: 1.02, transition: { type: "spring" as const, stiffness: 400, damping: 20 } }}
-          className="bg-white rounded-xl border border-cm-slate-200 p-6 text-center shadow-sm hover:shadow-md transition-shadow duration-200 cursor-default"
+          className="bg-white border border-[#E9ECEF] p-6 text-center hover:shadow-md transition-shadow duration-200 cursor-default"
+          style={{ borderRadius: '15px', boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}
         >
           <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-amber-50 text-amber-600 mb-3">
             <Heart className="w-5 h-5" />
@@ -240,7 +242,7 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
           <div className="text-sm font-medium text-cm-slate-500 mb-2">
             Australian Values
           </div>
-          <div className="text-4xl font-heading font-extrabold text-cm-navy">
+          <div className="text-4xl font-heading font-extrabold text-cm-teal">
             {result.valuesScore}
             <span className="text-xl text-cm-slate-400">/5</span>
           </div>
@@ -263,7 +265,8 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
         <motion.div
           variants={item}
           whileHover={{ y: -4, scale: 1.02, transition: { type: "spring" as const, stiffness: 400, damping: 20 } }}
-          className="bg-white rounded-xl border border-cm-slate-200 p-6 text-center shadow-sm hover:shadow-md transition-shadow duration-200 cursor-default"
+          className="bg-white border border-[#E9ECEF] p-6 text-center hover:shadow-md transition-shadow duration-200 cursor-default"
+          style={{ borderRadius: '15px', boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}
         >
           <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-sky-50 text-cm-sky mb-3">
             <Clock className="w-5 h-5" />
@@ -271,7 +274,7 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
           <div className="text-sm font-medium text-cm-slate-500 mb-2">
             Time Used
           </div>
-          <div className="text-4xl font-heading font-extrabold text-cm-navy">
+          <div className="text-4xl font-heading font-extrabold text-cm-teal">
             {timeMinutes}
             <span className="text-xl text-cm-slate-400">m</span>{" "}
             {timeSeconds}
@@ -286,10 +289,11 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
       {/* Topic Breakdown */}
       <motion.div
         variants={item}
-        className="bg-white rounded-xl border border-cm-slate-200 p-6 shadow-sm"
+        className="bg-white border border-[#E9ECEF] p-6"
+        style={{ borderRadius: '15px', boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}
       >
         <div className="flex items-center gap-2 mb-5">
-          <TrendingUp className="w-5 h-5 text-cm-navy" />
+          <TrendingUp className="w-5 h-5 text-cm-teal" />
           <h3 className="text-lg font-heading font-bold text-cm-slate-900">
             Topic Mastery
           </h3>
@@ -301,7 +305,7 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
                 <span className="text-sm font-medium text-cm-slate-700 flex items-center gap-2">
                   {(() => {
                     const TopicIcon = TOPIC_ICON_COMPONENTS[topic.topic];
-                    return TopicIcon ? <TopicIcon className="w-4 h-4 text-cm-navy" /> : null;
+                    return TopicIcon ? <TopicIcon className="w-4 h-4 text-cm-teal" /> : null;
                   })()}
                   {TOPIC_LABELS[topic.topic]}
                 </span>

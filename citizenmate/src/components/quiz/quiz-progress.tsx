@@ -31,7 +31,7 @@ export function QuizProgress() {
           let bgClass = "bg-cm-slate-100 text-cm-slate-500 hover:bg-cm-slate-200";
 
           if (isCurrent) {
-            bgClass = "bg-cm-navy text-white ring-2 ring-cm-navy ring-offset-2";
+            bgClass = "bg-cm-teal text-white ring-2 ring-cm-teal ring-offset-2";
           } else if (isFlagged && isAnswered) {
             bgClass =
               "bg-amber-100 text-amber-700 border border-amber-300";
@@ -39,7 +39,7 @@ export function QuizProgress() {
             bgClass =
               "bg-amber-50 text-amber-600 border border-amber-200";
           } else if (isAnswered) {
-            bgClass = "bg-cm-eucalyptus-light text-cm-eucalyptus";
+            bgClass = "bg-cm-teal/20 text-cm-teal";
           }
 
           return (
@@ -84,10 +84,10 @@ export function QuizProgress() {
       {/* Legend */}
       <div className="flex items-center gap-4 mt-3 text-xs text-cm-slate-400">
         <span className="flex items-center gap-1.5">
-          <span className="w-3 h-3 rounded bg-cm-navy inline-block" /> Current
+          <span className="w-3 h-3 rounded bg-cm-teal inline-block" /> Current
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="w-3 h-3 rounded bg-cm-eucalyptus-light inline-block" />{" "}
+          <span className="w-3 h-3 rounded bg-cm-teal/20 inline-block" />{" "}
           Answered
         </span>
         <span className="flex items-center gap-1.5">

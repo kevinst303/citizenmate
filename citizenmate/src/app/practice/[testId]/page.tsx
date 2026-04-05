@@ -43,12 +43,12 @@ export default function QuizPage() {
   // Show loading state
   if (!state.test || state.status === "idle") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-cm-ice">
+      <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="text-center">
           <motion.div
             animate={{ scale: [1, 1.1, 1] }}
             transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-            className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-cm-navy text-white font-heading font-bold text-2xl mb-4"
+            className="inline-flex items-center justify-center w-16 h-16 rounded-[15px] bg-cm-teal text-white font-heading font-bold text-2xl mb-4"
           >
             CM
           </motion.div>
@@ -68,7 +68,7 @@ export default function QuizPage() {
     : false;
 
   return (
-    <div className="min-h-screen bg-cm-ice flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col">
       {/* Focused header (no navbar/footer) */}
       <QuizHeader />
 
@@ -131,7 +131,7 @@ export default function QuizPage() {
                     whileHover={{ scale: 1.04 }}
                     whileTap={{ scale: 0.96 }}
                     transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-cm-navy hover:bg-cm-navy-light text-white font-heading font-semibold text-sm rounded-xl transition-colors duration-200 cursor-pointer"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-cm-teal hover:bg-cm-teal/90 text-white font-heading font-semibold text-sm rounded-[10px] transition-colors duration-200 cursor-pointer"
                   >
                     <Send className="w-4 h-4" />
                     Submit Test
@@ -142,7 +142,7 @@ export default function QuizPage() {
                     whileHover={{ scale: 1.04, x: 2 }}
                     whileTap={{ scale: 0.96 }}
                     transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-cm-navy hover:bg-cm-navy-light text-white font-heading font-semibold text-sm rounded-xl transition-colors duration-200 cursor-pointer"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-cm-teal hover:bg-cm-teal/90 text-white font-heading font-semibold text-sm rounded-[10px] transition-colors duration-200 cursor-pointer"
                   >
                     Next
                     <ChevronRight className="w-4 h-4" />
@@ -154,14 +154,14 @@ export default function QuizPage() {
 
           {/* Sidebar: Progress grid */}
           <aside className="order-first lg:order-last">
-            <div className="lg:sticky lg:top-20 bg-white rounded-2xl border border-cm-slate-200 p-4 shadow-sm">
+            <div className="lg:sticky lg:top-20 bg-white border border-[#E9ECEF] p-4 rounded-[15px]" style={{ boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}>
               <QuizProgress />
 
               {/* Mobile submit button */}
               <div className="sm:hidden mt-4 pt-4 border-t border-cm-slate-100">
                 <button
                   onClick={submitQuiz}
-                  className="w-full py-3 bg-cm-navy hover:bg-cm-navy-light text-white font-heading font-semibold rounded-xl transition-all cursor-pointer"
+                  className="w-full py-3 bg-cm-teal hover:bg-cm-teal/90 text-white font-heading font-semibold rounded-[10px] transition-all cursor-pointer"
                 >
                   Submit Test ({answeredCount}/{state.test.questions.length})
                 </button>
