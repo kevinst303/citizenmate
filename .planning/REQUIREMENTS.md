@@ -9,10 +9,10 @@ Requirements for the component implementation phase. Phases 1–2 are complete; 
 
 ### Navigation
 
-- [ ] **NAV-01**: Navbar renders as solid white fixed bar, 66px tall, no glassmorphism or backdrop-blur
-- [ ] **NAV-02**: Navbar scroll transition uses `0.2s cubic-bezier(0.165,0.84,0.44,1)` (no shadow added on scroll)
-- [ ] **NAV-03**: Layout shell page spacer updated to `pt-[66px]`
-- [ ] **NAV-04**: User menu/avatar styled with Conseil card design (15px radius, #E9ECEF border, card shadow)
+- [x] **NAV-01**: Navbar renders as solid white fixed bar, 66px tall, no glassmorphism or backdrop-blur
+- [x] **NAV-02**: Navbar scroll transition uses `0.2s cubic-bezier(0.165,0.84,0.44,1)` (no shadow added on scroll)
+- [x] **NAV-03**: Layout shell page spacer updated to `pt-[66px]`
+- [x] **NAV-04**: User menu/avatar styled with Conseil card design (15px radius, #E9ECEF border, card shadow)
 
 ### Hero & CTA
 
