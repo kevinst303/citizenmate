@@ -47,6 +47,10 @@ const cardVariant = {
   }),
 };
 
+// SOCP-01, SOCP-02, SOCP-03: verified
+// SOCP-01: section-alt-bg on section wrapper
+// SOCP-02: each card has initials avatar, name, star rating, and quote
+// SOCP-03: badge-pill-teal + h2 heading above grid; dual CTA buttons at bottom
 export function SocialProof() {
   return (
     <section className="py-20 sm:py-28 section-alt-bg">

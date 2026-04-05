@@ -1,61 +1,32 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { motion } from "framer-motion";
 import Image from "next/image";
-import { ClipboardList, PieChart, BookOpen, CheckCircle2, ArrowRight, Check } from "lucide-react";
 
 const steps = [
   {
     number: "01",
     title: "Take a free diagnostic test",
-    description:
-      "Start with 10 quick questions to discover where you stand. No sign-up required — see your baseline readiness score instantly.",
-    image: "/generated/feature-tests.webp",
-    imageAlt: "Student taking a diagnostic test on their laptop",
-    features: ["10 quick questions", "Instant results", "No account needed"],
-    imageRight: false,
+    description: "Start with 10 quick questions to discover where you stand.",
   },
   {
     number: "02",
     title: "Study with your personalised plan",
-    description:
-      "Get a tailored study plan based on your gaps. Study the official Our Common Bond content in English alongside your native language.",
-    image: "/generated/feature-bilingual.webp",
-    imageAlt: "Bilingual study interface showing content in two languages",
-    features: ["Bilingual content", "15+ languages", "Official materials"],
-    imageRight: true,
+    description: "Tailored study based on your gaps, in your language.",
   },
   {
     number: "03",
     title: "Practice until you're ready",
-    description:
-      "Take full mock tests in the real exam format. Track your progress topic by topic and watch your readiness score climb.",
-    image: "/generated/feature-progress.webp",
-    imageAlt: "Dashboard showing progress tracking and readiness score",
-    features: ["Real test format", "Progress tracking", "AI explanations"],
-    imageRight: false,
+    description: "Full mock tests, progress tracking, and AI explanations.",
   },
 ];
 
-const zigzagVariant = {
-  hidden: { opacity: 0, y: 50 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { type: "spring" as const, stiffness: 80, damping: 16 },
-  },
-};
-
 export function HowItWorks() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
-
   return (
     <section id="how-it-works" className="py-20 sm:py-28 section-alt-bg">
       <div className="mx-auto max-w-[1140px] px-4 sm:px-6 lg:px-8">
         {/* Section header — Conseil style */}
-        <div className="text-center max-w-2xl mx-auto mb-20">
+        <div className="text-center max-w-2xl mx-auto mb-16">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -89,71 +60,74 @@ export function HowItWorks() {
           </motion.p>
         </div>
 
-        {/* Zig-zag steps — Conseil alternating layout */}
-        <div ref={ref} className="space-y-20 lg:space-y-28">
+        {/* Split-card — Conseil layout (HIOW-01) */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, type: "spring", stiffness: 80, damping: 18 }}
+          className="mx-auto max-w-[1140px]"
+        >
+          <div
+            className="flex flex-col md:flex-row overflow-hidden border border-[#E9ECEF]"
+            style={{
+              borderRadius: "15px",
+              boxShadow:
+                "rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px",
+            }}
+          >
+            {/* Left text panel */}
+            <div
+              className="flex-1 bg-[#F4F4F5] p-[30px] flex flex-col justify-center"
+              style={{ borderRadius: "15px 0 0 15px" }}
+            >
+              <h3 className="font-heading font-bold text-xl md:text-2xl text-foreground mb-3">
+                Everything you need to pass
+              </h3>
+              <p className="text-foreground/70 text-sm mb-6">
+                Start with a diagnostic, study at your own pace with bilingual
+                support, then take full mock tests until you're confident. No
+                fluff — just the three steps that work.
+              </p>
+              <a href="/practice" className="btn-rounded-teal self-start">
+                Start practising
+              </a>
+            </div>
+            {/* Right image panel */}
+            <div
+              className="flex-1 relative min-h-[280px] md:min-h-[320px]"
+              style={{ borderRadius: "0 15px 15px 0" }}
+            >
+              <Image
+                src="/images/conseil/feature-split.jpg"
+                fill
+                className="object-cover"
+                alt="CitizenMate study interface"
+              />
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Simplified 3-step summary row */}
+        <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6">
           {steps.map((step, index) => (
             <motion.div
               key={step.number}
-              variants={zigzagVariant}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, margin: "-60px" }}
-              className={`flex flex-col ${
-                step.imageRight ? "lg:flex-row" : "lg:flex-row-reverse"
-              } items-center gap-12 lg:gap-16`}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.1 * index }}
+              className="card-conseil"
             >
-              {/* Text side */}
-              <div className="flex-1 max-w-lg">
-                <span className="text-cm-teal font-heading font-extrabold text-6xl lg:text-7xl opacity-15 leading-none">
-                  {step.number}
-                </span>
-                <h3 className="font-heading text-2xl sm:text-3xl font-bold mt-2 mb-4 tracking-tight">
-                  {step.title}
-                </h3>
-                <p className="text-muted-foreground text-[1.05rem] leading-relaxed mb-6">
-                  {step.description}
-                </p>
-
-                {/* Feature pills — Conseil checklist style */}
-                <div className="flex flex-wrap gap-3">
-                  {step.features.map((feat) => (
-                    <span
-                      key={feat}
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-cm-slate-100 text-sm font-medium text-foreground"
-                    >
-                      <Check className="size-3.5 text-cm-teal" />
-                      {feat}
-                    </span>
-                  ))}
-                </div>
-
-                {/* CTA */}
-                <motion.a
-                  href="/practice"
-                  whileHover={{ x: 4 }}
-                  className="inline-flex items-center gap-2 mt-8 text-cm-teal font-heading font-semibold text-[0.95rem] hover:text-cm-teal-dark transition-colors"
-                >
-                  Get Started
-                  <ArrowRight className="size-4" />
-                </motion.a>
-              </div>
-
-              {/* Image side — Conseil rounded image with shadow */}
-              <div className="flex-1 w-full max-w-lg">
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                  className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg"
-                >
-                  <Image
-                    src={step.image}
-                    alt={step.imageAlt}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                  />
-                </motion.div>
-              </div>
+              <span className="text-cm-teal font-heading font-extrabold text-4xl opacity-20 leading-none">
+                {step.number}
+              </span>
+              <h4 className="font-heading font-bold text-base mt-2 mb-2">
+                {step.title}
+              </h4>
+              <p className="text-sm text-foreground/70 leading-relaxed">
+                {step.description}
+              </p>
             </motion.div>
           ))}
         </div>
