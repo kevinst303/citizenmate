@@ -42,10 +42,10 @@ Requirements for the component implementation phase. Phases 1–2 are complete; 
 
 ### Pricing & FAQ
 
-- [ ] **PRIC-01**: Pricing cards styled with Conseil card design (white, 15px radius, border, shadow)
-- [ ] **PRIC-02**: Highlighted/popular pricing card uses teal primary style
-- [ ] **FAQ-01**: FAQ section styled with Conseil accordion pattern
-- [ ] **MODL-01**: Shared modal components use Conseil card design tokens
+- [x] **PRIC-01**: Pricing cards styled with Conseil card design (white, 15px radius, border, shadow)
+- [x] **PRIC-02**: Highlighted/popular pricing card uses teal primary style
+- [x] **FAQ-01**: FAQ section styled with Conseil accordion pattern
+- [x] **MODL-01**: Shared modal components use Conseil card design tokens
 
 ### Quiz Flow
 
