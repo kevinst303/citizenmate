@@ -10,15 +10,18 @@ const footerLinks = {
     { label: "Mock Tests", href: "/practice" },
     { label: "Study Mode", href: "/study" },
   ],
-  Support: [
+  Company: [
     { label: "FAQ", href: "#faq" },
     { label: "Contact Us", href: "mailto:hello@citizenmate.com.au" },
     { label: "Blog", href: "/blog" },
-  ],
-  Legal: [
     { label: "Privacy Policy", href: "/privacy" },
     { label: "Terms of Service", href: "/terms" },
-    { label: "Cookie Policy", href: "/cookies" },
+  ],
+  Australia: [
+    { label: "Dept. of Home Affairs", href: "https://immi.homeaffairs.gov.au" },
+    { label: "IELTS Australia", href: "https://www.ielts.org/en-au" },
+    { label: "Our Common Bond", href: "https://immi.homeaffairs.gov.au/citizenship-subsite/files/our-common-bond.pdf" },
+    { label: "Citizenship Test Info", href: "https://immi.homeaffairs.gov.au/citizenship-subsite/pages/prepare-for-test" },
   ],
 };
 
@@ -39,7 +42,7 @@ const columnVariant = {
 export function Footer() {
   return (
     <footer className="bg-white border-t border-border">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+      <div className="mx-auto max-w-[1140px] px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand column */}
           <motion.div
@@ -127,9 +130,23 @@ export function Footer() {
               2026 edition.
             </p>
           </div>
-          <p className="text-xs text-zinc-400 shrink-0">
-            © {new Date().getFullYear()} CitizenMate. All rights reserved.
-          </p>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 shrink-0">
+            <div className="flex items-center gap-3">
+              {["Facebook", "Twitter", "Instagram"].map((social) => (
+                <a
+                  key={social}
+                  href="#"
+                  className="w-8 h-8 rounded-full bg-zinc-100 hover:bg-cm-teal flex items-center justify-center text-zinc-500 hover:text-white transition-all duration-200 text-xs font-bold"
+                  aria-label={social}
+                >
+                  {social.charAt(0)}
+                </a>
+              ))}
+            </div>
+            <p className="text-xs text-zinc-400">
+              © {new Date().getFullYear()} CitizenMate. All rights reserved.
+            </p>
+          </div>
         </motion.div>
       </div>
     </footer>

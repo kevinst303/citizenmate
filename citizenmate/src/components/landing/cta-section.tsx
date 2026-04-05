@@ -57,7 +57,7 @@ export function CTASection() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.6, type: "spring", stiffness: 100, damping: 20 }}
-            className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
+            className="mt-10 flex items-center justify-center"
           >
             <motion.a
               href="/practice"
@@ -68,15 +68,6 @@ export function CTASection() {
             >
               Start Free Practice
               <ArrowRight className="size-5 ml-2" />
-            </motion.a>
-            <motion.a
-              href="/#pricing"
-              whileHover={{ scale: 1.03, y: -1 }}
-              whileTap={{ scale: 0.97 }}
-              transition={{ type: "spring", stiffness: 400, damping: 17 }}
-              className="btn-rounded bg-transparent text-white border-2 border-white/30 font-heading font-semibold text-base px-10 py-4 hover:bg-white/10 hover:border-white/50"
-            >
-              View Pricing
             </motion.a>
           </motion.div>
 
