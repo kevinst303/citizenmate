@@ -16,7 +16,6 @@ const features = [
     href: "/practice",
     image: "/generated/feature-tests.webp",
     imageAlt: "Confident woman taking a practice citizenship test on a tablet",
-    badge: "Popular",
   },
   {
     icon: Languages,
@@ -27,7 +26,7 @@ const features = [
     href: "/study",
     image: "/generated/feature-bilingual.webp",
     imageAlt: "Man studying with bilingual books in multiple languages at an Australian cafe",
-    badge: "New",
+    badge: "Popular",
   },
   {
     icon: BarChart3,
