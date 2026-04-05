@@ -37,7 +37,7 @@ export function QuizHeader() {
                 }
               }}
             >
-              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-cm-navy text-white font-heading font-bold text-sm">
+              <div className="flex items-center justify-center w-8 h-8 rounded-[10px] bg-cm-teal text-white font-heading font-bold text-sm">
                 CM
               </div>
               <span className="hidden sm:inline font-heading text-sm font-semibold text-cm-slate-600">
@@ -49,7 +49,7 @@ export function QuizHeader() {
             <div className="flex items-center gap-2 text-sm font-medium text-cm-slate-600">
               <span className="font-heading">
                 Question{" "}
-                <span className="text-cm-navy font-bold">
+                <span className="text-cm-teal font-bold">
                   {state.currentQuestionIndex + 1}
                 </span>{" "}
                 of {state.test.questions.length}
@@ -147,7 +147,7 @@ export function QuizHeader() {
                       "Calculating your results…"
                     );
                   }}
-                  className="flex-1 px-4 py-3 bg-cm-navy hover:bg-cm-navy-light text-white font-heading font-semibold rounded-xl transition-colors duration-200 cursor-pointer"
+                  className="flex-1 px-4 py-3 bg-cm-teal hover:bg-cm-teal/90 text-white font-heading font-semibold rounded-[10px] transition-colors duration-200 cursor-pointer"
                 >
                   Submit Test
                 </motion.button>
