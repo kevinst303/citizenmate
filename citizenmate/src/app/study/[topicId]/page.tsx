@@ -62,7 +62,7 @@ export default function TopicStudyPage({
     topicIndex < studyTopics.length - 1 ? studyTopics[topicIndex + 1] : null;
 
   return (
-    <div className="min-h-screen bg-cm-ice">
+    <div className="min-h-screen bg-white">
       {/* Header */}
       <section className="bg-white border-b border-cm-slate-200 sticky top-16 z-30">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 py-4">
@@ -70,7 +70,7 @@ export default function TopicStudyPage({
           <div className="flex items-center gap-1.5 text-xs text-cm-slate-400 mb-3">
             <Link
               href="/study"
-              className="hover:text-cm-navy transition-colors cursor-pointer"
+              className="hover:text-cm-teal transition-colors cursor-pointer"
             >
               Study
             </Link>
@@ -81,7 +81,7 @@ export default function TopicStudyPage({
           {/* Title row */}
           <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-0 sm:justify-between">
             <div className="flex items-center gap-3">
-              <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-cm-navy text-white">
+              <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-cm-teal text-white">
                 <Icon className="w-5 h-5" />
               </div>
               <div>
@@ -101,7 +101,7 @@ export default function TopicStudyPage({
             <StudyProgressBar
               completed={progress.completed}
               total={progress.total}
-              colorClass="bg-cm-eucalyptus"
+              colorClass="bg-cm-teal"
               size="sm"
             />
           </div>
@@ -163,12 +163,13 @@ export default function TopicStudyPage({
           {prevTopic ? (
             <Link
               href={`/study/${prevTopic.id}`}
-              className="flex items-center gap-2 px-4 py-3 bg-white border-2 border-cm-slate-200 rounded-xl hover:border-cm-navy hover:shadow-md transition-all duration-200 cursor-pointer group"
+              className="flex items-center gap-2 px-4 py-3 bg-white border border-[#E9ECEF] rounded-[15px] hover:border-cm-teal/40 hover:shadow-md transition-all duration-200 cursor-pointer group"
+              style={{ boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}
             >
-              <ArrowLeft className="w-4 h-4 text-cm-slate-400 group-hover:text-cm-navy transition-colors" />
+              <ArrowLeft className="w-4 h-4 text-cm-slate-400 group-hover:text-cm-teal transition-colors" />
               <div>
                 <div className="text-xs text-cm-slate-400">Previous</div>
-                <div className="text-sm font-heading font-semibold text-cm-slate-700 group-hover:text-cm-navy transition-colors">
+                <div className="text-sm font-heading font-semibold text-cm-slate-700 group-hover:text-cm-teal transition-colors">
                   {prevTopic.title}
                 </div>
               </div>
@@ -179,20 +180,21 @@ export default function TopicStudyPage({
           {nextTopic ? (
             <Link
               href={`/study/${nextTopic.id}`}
-              className="flex items-center gap-2 px-4 py-3 bg-white border-2 border-cm-slate-200 rounded-xl hover:border-cm-navy hover:shadow-md transition-all duration-200 cursor-pointer group text-right"
+              className="flex items-center gap-2 px-4 py-3 bg-white border border-[#E9ECEF] rounded-[15px] hover:border-cm-teal/40 hover:shadow-md transition-all duration-200 cursor-pointer group text-right"
+              style={{ boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}
             >
               <div>
                 <div className="text-xs text-cm-slate-400">Next</div>
-                <div className="text-sm font-heading font-semibold text-cm-slate-700 group-hover:text-cm-navy transition-colors">
+                <div className="text-sm font-heading font-semibold text-cm-slate-700 group-hover:text-cm-teal transition-colors">
                   {nextTopic.title}
                 </div>
               </div>
-              <ArrowRight className="w-4 h-4 text-cm-slate-400 group-hover:text-cm-navy transition-colors" />
+              <ArrowRight className="w-4 h-4 text-cm-slate-400 group-hover:text-cm-teal transition-colors" />
             </Link>
           ) : (
             <Link
               href="/study"
-              className="flex items-center gap-2 px-4 py-3 bg-cm-navy text-white rounded-xl hover:bg-cm-navy-light transition-all duration-200 cursor-pointer font-heading font-semibold text-sm"
+              className="flex items-center gap-2 px-4 py-3 bg-cm-teal text-white rounded-[15px] hover:opacity-90 transition-all duration-200 cursor-pointer font-heading font-semibold text-sm"
             >
               Back to Study Guide
               <ArrowRight className="w-4 h-4" />

@@ -15,15 +15,15 @@ const options: { value: StudyLanguage; label: string }[] = [
 
 export function LanguageToggle({ value, onChange }: LanguageToggleProps) {
   return (
-    <div className="inline-flex items-center rounded-xl bg-cm-slate-100 p-1 gap-0.5">
+    <div className="inline-flex items-center rounded-[10px] bg-cm-slate-100 p-1 gap-0.5">
       {options.map((opt) => (
         <button
           key={opt.value}
           onClick={() => onChange(opt.value)}
           className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all duration-200 cursor-pointer ${
             value === opt.value
-              ? "bg-cm-navy text-white shadow-sm"
-              : "text-cm-slate-500 hover:text-cm-navy hover:bg-white/60"
+              ? "bg-cm-teal text-white shadow-sm"
+              : "text-cm-slate-500 hover:text-cm-teal hover:bg-white/60"
           }`}
         >
           {opt.label}

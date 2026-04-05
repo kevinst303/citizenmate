@@ -82,7 +82,7 @@ export default function StudyPage() {
   const overall = getOverallProgress();
 
   return (
-    <div className="min-h-screen bg-cm-ice">
+    <div className="min-h-screen bg-white">
       {/* Hero */}
       <SubpageHero
         title="Study Our Common Bond"
@@ -96,17 +96,18 @@ export default function StudyPage() {
       />
 
       {/* Overall progress card */}
-      <section className="mx-auto max-w-5xl px-4 sm:px-6 -mt-8 relative z-10">
+      <section className="mx-auto max-w-[1140px] px-4 sm:px-6 -mt-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20, scale: 0.97 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ delay: 0.25, type: "spring" as const, stiffness: 120, damping: 14 }}
           whileHover={{ y: -3, scale: 1.01, transition: { type: "spring" as const, stiffness: 400, damping: 20 } }}
-          className="glass-card rounded-2xl shadow-card p-5 sm:p-6 cursor-default"
+          className="bg-white border border-[#E9ECEF] rounded-[15px] p-5 sm:p-6 cursor-default"
+          style={{ boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}
         >
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2.5">
-              <div className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-cm-eucalyptus-light text-cm-eucalyptus">
+              <div className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-cm-teal/10 text-cm-teal">
                 <Sparkles className="w-4.5 h-4.5" />
               </div>
               <div>
@@ -118,20 +119,20 @@ export default function StudyPage() {
                 </p>
               </div>
             </div>
-            <span className="text-2xl font-heading font-extrabold text-cm-eucalyptus">
+            <span className="text-2xl font-heading font-extrabold text-cm-teal">
               {overall.percentage}%
             </span>
           </div>
           <StudyProgressBar
             completed={overall.completed}
             total={overall.total}
-            colorClass="bg-cm-eucalyptus"
+            colorClass="bg-cm-teal"
           />
         </motion.div>
       </section>
 
       {/* Topic cards */}
-      <section className="mx-auto max-w-5xl px-4 sm:px-6 py-12 sm:py-16">
+      <section className="mx-auto max-w-[1140px] px-4 sm:px-6 py-12 sm:py-16">
         <motion.h2
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -161,7 +162,8 @@ export default function StudyPage() {
                 {isLocked ? (
                   <button
                     onClick={upgrade}
-                    className="group flex flex-col h-full w-full text-left rounded-2xl card-glass shadow-card hover:shadow-card-hover transition-all duration-300 cursor-pointer overflow-hidden"
+                    className="group flex flex-col h-full w-full text-left rounded-[15px] bg-white border border-[#E9ECEF] transition-all duration-300 cursor-pointer overflow-hidden"
+                    style={{ boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}
                   >
                     {/* Topic Image Header */}
                     <div className="relative h-40 w-full bg-cm-navy-50 overflow-hidden">
@@ -200,7 +202,8 @@ export default function StudyPage() {
                 ) : (
                 <Link
                   href={`/study/${topic.id}`}
-                  className="group flex flex-col h-full rounded-2xl card-glass shadow-card hover:shadow-card-hover hover:border-cm-navy transition-all duration-300 cursor-pointer overflow-hidden"
+                  className="group flex flex-col h-full rounded-[15px] bg-white border border-[#E9ECEF] hover:border-cm-teal/40 transition-all duration-300 cursor-pointer overflow-hidden"
+                  style={{ boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}
                 >
                   {/* Topic Image Header */}
                   <div className="relative h-40 w-full bg-cm-navy-50 overflow-hidden">
@@ -235,7 +238,7 @@ export default function StudyPage() {
                     </div>
 
                   {/* Title & description */}
-                  <h3 className="text-lg font-heading font-bold text-cm-slate-900 mb-1.5 group-hover:text-cm-navy transition-colors duration-200">
+                  <h3 className="text-lg font-heading font-bold text-cm-slate-900 mb-1.5 group-hover:text-cm-teal transition-colors duration-200">
                     {topic.title}
                   </h3>
                   <p className="text-sm text-cm-slate-500 leading-relaxed mb-5">
@@ -252,7 +255,7 @@ export default function StudyPage() {
                   />
 
                   {/* CTA */}
-                  <div className="flex items-center justify-center gap-2 w-full mt-5 py-3 bg-cm-navy text-white font-heading font-semibold rounded-xl group-hover:bg-cm-navy-light transition-all duration-200 group-hover:gap-3">
+                  <div className="flex items-center justify-center gap-2 w-full mt-5 py-3 bg-cm-teal text-white font-heading font-semibold rounded-xl hover:opacity-90 transition-all duration-200 group-hover:gap-3">
                     {progress.completed > 0 ? "Continue Studying" : "Start Studying"}
                     <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
                   </div>
@@ -266,19 +269,20 @@ export default function StudyPage() {
       </section>
 
       {/* Study tips */}
-      <section className="mx-auto max-w-5xl px-4 sm:px-6 pb-16">
+      <section className="mx-auto max-w-[1140px] px-4 sm:px-6 pb-16">
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5 }}
-          className="bg-cm-navy-50 rounded-2xl p-6 sm:p-8"
+          className="bg-white border border-[#E9ECEF] rounded-[15px] p-6 sm:p-8"
+          style={{ boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}
         >
           <div className="flex items-center gap-2.5 mb-5">
-            <div className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-cm-navy text-white">
+            <div className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-cm-teal text-white">
               <BookOpen className="w-4 h-4" />
             </div>
-            <h3 className="text-lg font-heading font-bold text-cm-navy">
+            <h3 className="text-lg font-heading font-bold text-cm-teal">
               Study Tips
             </h3>
           </div>
@@ -330,7 +334,7 @@ export default function StudyPage() {
                 transition={{ delay: idx * 0.1 }}
                 className="flex gap-3 items-start"
               >
-                <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 rounded-md bg-cm-navy/10 text-cm-navy mt-0.5">
+                <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 rounded-md bg-cm-teal/10 text-cm-teal mt-0.5">
                   <tip.icon className="w-3.5 h-3.5" />
                 </span>
                 <span>{tip.text}</span>

@@ -19,7 +19,8 @@ export function KeyFactsPanel({ facts, factsZh, language }: KeyFactsPanelProps) 
       initial={{ opacity: 0, y: 8, scale: 0.98 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.4, delay: 0.15, type: "spring" as const, stiffness: 120, damping: 16 }}
-      className="bg-cm-gold-light border-l-4 border-cm-gold rounded-r-xl p-4 mt-4"
+      className="bg-white border border-[#E9ECEF] rounded-[15px] p-4 mt-4"
+      style={{ boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}
     >
       <div className="flex items-center gap-2 mb-3">
         <motion.div
@@ -27,7 +28,7 @@ export function KeyFactsPanel({ facts, factsZh, language }: KeyFactsPanelProps) 
           animate={{ rotate: 0, scale: 1 }}
           transition={{ delay: 0.25, type: "spring", stiffness: 300, damping: 12 }}
         >
-          <Lightbulb className="w-4 h-4 text-cm-gold" />
+          <Lightbulb className="w-4 h-4 text-cm-teal" />
         </motion.div>
         <span className="text-sm font-heading font-bold text-cm-slate-800">
           {language === "zh" ? "关键事实" : "Key Facts"}
@@ -51,7 +52,7 @@ export function KeyFactsPanel({ facts, factsZh, language }: KeyFactsPanelProps) 
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.35 + idx * 0.06, type: "spring", stiffness: 400, damping: 12 }}
-              className="flex-shrink-0 mt-1 w-1.5 h-1.5 rounded-full bg-cm-gold"
+              className="flex-shrink-0 mt-1 w-1.5 h-1.5 rounded-full bg-cm-teal"
             />
             <div>
               <span>{fact}</span>
