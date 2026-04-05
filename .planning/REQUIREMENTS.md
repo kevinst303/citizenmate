@@ -16,29 +16,29 @@ Requirements for the component implementation phase. Phases 1–2 are complete; 
 
 ### Hero & CTA
 
-- [ ] **HERO-01**: Hero section uses full-width bg image with dark overlay (~rgba(0,0,0,0.5))
-- [ ] **HERO-02**: Hero layout includes star-rating badge, h1, subtitle, avatar group + trust text, white pill CTA
-- [ ] **HERO-03**: Hero marquee logo strip renders at bottom of hero section
-- [ ] **CTA-01**: Dark teal CTA band uses full-width bg image with overlay, centered heading + single button
-- [ ] **CTA-02**: Simple Q&A/inline CTA section renders as centered text + teal button
+- [x] **HERO-01**: Hero section uses full-width bg image with dark overlay (~rgba(0,0,0,0.5))
+- [x] **HERO-02**: Hero layout includes star-rating badge, h1, subtitle, avatar group + trust text, white pill CTA
+- [x] **HERO-03**: Hero marquee logo strip renders at bottom of hero section
+- [x] **CTA-01**: Dark teal CTA band uses full-width bg image with overlay, centered heading + single button
+- [x] **CTA-02**: Simple Q&A/inline CTA section renders as centered text + teal button
 
 ### Footer
 
-- [ ] **FOOT-01**: Footer uses 4-column layout: brand/contact, product links, company links, certifications
-- [ ] **FOOT-02**: Footer bottom bar shows copyright + social links
+- [x] **FOOT-01**: Footer uses 4-column layout: brand/contact, product links, company links, certifications
+- [x] **FOOT-02**: Footer bottom bar shows copyright + social links
 
 ### Features & How It Works
 
-- [ ] **FEAT-01**: Features section renders as 3-column card grid with section badge + h2 + description
-- [ ] **FEAT-02**: Feature cards include icon, title, description, "Learn more" link; center card has Popular badge
-- [ ] **HIOW-01**: How It Works section uses split-card layout (left panel: text + CTA, right: image; split radii: 15px 0 0 15px / 0 15px 15px 0)
-- [ ] **HIOW-02**: Wave divider SVG renders between hero and features sections
+- [x] **FEAT-01**: Features section renders as 3-column card grid with section badge + h2 + description
+- [x] **FEAT-02**: Feature cards include icon, title, description, "Learn more" link; center card has Popular badge
+- [x] **HIOW-01**: How It Works section uses split-card layout (left panel: text + CTA, right: image; split radii: 15px 0 0 15px / 0 15px 15px 0)
+- [x] **HIOW-02**: Wave divider SVG renders between hero and features sections
 
 ### Social Proof
 
-- [ ] **SOCP-01**: Testimonials section renders as 3-column card grid on #F4F4F5 background
-- [ ] **SOCP-02**: Testimonial cards include avatar, name, rating, quote
-- [ ] **SOCP-03**: Social proof section includes section badge + heading + dual CTA buttons
+- [x] **SOCP-01**: Testimonials section renders as 3-column card grid on #F4F4F5 background
+- [x] **SOCP-02**: Testimonial cards include avatar, name, rating, quote
+- [x] **SOCP-03**: Social proof section includes section badge + heading + dual CTA buttons
 
 ### Pricing & FAQ
 
@@ -55,15 +55,15 @@ Requirements for the component implementation phase. Phases 1–2 are complete; 
 
 ### Study Flow
 
-- [ ] **STUD-01**: Study card components styled with Conseil card design (15px radius, border, shadow)
-- [ ] **STUD-02**: Study session UI (flashcards, progress, controls) uses Conseil design tokens
-- [ ] **STUD-03**: Study topic/chapter navigation uses Conseil palette and typography
+- [x] **STUD-01**: Study card components styled with Conseil card design (15px radius, border, shadow)
+- [x] **STUD-02**: Study session UI (flashcards, progress, controls) uses Conseil design tokens
+- [x] **STUD-03**: Study topic/chapter navigation uses Conseil palette and typography
 
 ### Dashboard
 
-- [ ] **DASH-01**: Dashboard layout and stat cards use Conseil card design
-- [ ] **DASH-02**: Dashboard charts and data visualizations updated to Conseil palette
-- [ ] **DASH-03**: Dashboard navigation/sidebar styled with Conseil design tokens
+- [x] **DASH-01**: Dashboard layout and stat cards use Conseil card design
+- [x] **DASH-02**: Dashboard charts and data visualizations updated to Conseil palette
+- [x] **DASH-03**: Dashboard navigation/sidebar styled with Conseil design tokens
 
 ## v2 Requirements
 
