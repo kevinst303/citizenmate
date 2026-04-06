@@ -18,7 +18,7 @@ interface SubpageHeroProps {
 
 export function SubpageHero({ title, breadcrumbs, description, badge, bgImage = '/images/conseil/subpage-hero-bg.jpg' }: SubpageHeroProps) {
   return (
-    <div className="relative w-full min-h-[400px] md:min-h-[500px] flex flex-col justify-center bg-conseil-teal overflow-hidden">
+    <div className="relative w-full min-h-[400px] md:min-h-[500px] flex flex-col justify-center bg-cm-teal overflow-hidden">
       {/* Background Image with Overlay */}
       {bgImage && (
         <>
@@ -32,8 +32,8 @@ export function SubpageHero({ title, breadcrumbs, description, badge, bgImage = 
             />
           </div>
           {/* Teal Gradient Overlay - Conseil style */}
-          <div className="absolute inset-0 bg-gradient-to-b from-conseil-teal/95 to-conseil-teal/80 mix-blend-multiply" />
-          <div className="absolute inset-0 bg-gradient-to-t from-conseil-teal via-transparent to-transparent opacity-90" />
+          <div className="absolute inset-0 bg-gradient-to-b from-cm-teal/95 to-cm-teal/80 mix-blend-multiply" />
+          <div className="absolute inset-0 bg-gradient-to-t from-cm-teal via-transparent to-transparent opacity-90" />
         </>
       )}
 
