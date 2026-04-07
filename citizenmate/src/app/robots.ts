@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/api/", "/admin/"],
+      disallow: ["/api/", "/admin/", "/dashboard/"],
     },
     sitemap: "https://citizenmate.com.au/sitemap.xml",
   };

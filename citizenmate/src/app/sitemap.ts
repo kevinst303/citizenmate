@@ -1,43 +1,63 @@
 import { MetadataRoute } from "next";
+import { studyTopics } from "@/data/study-content";
+import { mockTests } from "@/data/tests";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
+  const baseUrl = "https://citizenmate.com.au";
+
+  const staticRoutes: MetadataRoute.Sitemap = [
     {
-      url: "https://citizenmate.com.au",
+      url: baseUrl,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1,
     },
     {
-      url: "https://citizenmate.com.au/practice",
+      url: `${baseUrl}/practice`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.8,
     },
     {
-      url: "https://citizenmate.com.au/study",
+      url: `${baseUrl}/study`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.8,
     },
     {
-      url: "https://citizenmate.com.au/privacy",
+      url: `${baseUrl}/privacy`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.3,
     },
     {
-      url: "https://citizenmate.com.au/terms",
+      url: `${baseUrl}/terms`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.3,
     },
     {
-      url: "https://citizenmate.com.au/cookies",
+      url: `${baseUrl}/cookies`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.3,
     },
   ];
+
+  const studyRoutes: MetadataRoute.Sitemap = studyTopics.map((topic) => ({
+    url: `${baseUrl}/study/${topic.id}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: 0.7,
+  }));
+
+  const practiceRoutes: MetadataRoute.Sitemap = mockTests.map((test) => ({
+    url: `${baseUrl}/practice/${test.id}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: 0.7,
+  }));
+
+  return [...staticRoutes, ...studyRoutes, ...practiceRoutes];
 }
 

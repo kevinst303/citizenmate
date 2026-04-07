@@ -23,7 +23,7 @@ export function QuizHeader() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-lg border-b border-cm-slate-200 shadow-sm">
+      <header className="sticky top-0 z-40 bg-white border-b border-[#E9ECEF] shadow-sm">
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
           <div className="flex items-center justify-between h-14 sm:h-16">
             {/* Logo */}

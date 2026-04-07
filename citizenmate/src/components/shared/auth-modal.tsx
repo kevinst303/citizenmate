@@ -116,7 +116,7 @@ export function AuthModal() {
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header */}
-              <div className="relative bg-gradient-to-br from-cm-navy via-cm-navy-light to-cm-navy px-6 pt-8 pb-6 text-white text-center">
+              <div className="relative bg-gradient-to-br from-cm-teal via-cm-teal-light to-cm-teal px-6 pt-8 pb-6 text-white text-center">
                 <button
                   onClick={handleClose}
                   className="absolute top-4 right-4 p-1.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors cursor-pointer"
@@ -184,7 +184,7 @@ export function AuthModal() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
-                      className="w-full pl-10 pr-4 py-3 border-2 border-cm-slate-200 rounded-xl text-sm text-cm-slate-800 placeholder:text-cm-slate-400 focus:outline-none focus:border-cm-navy focus:ring-1 focus:ring-cm-navy/30 transition-colors"
+                      className="w-full pl-10 pr-4 py-3 border-2 border-cm-slate-200 rounded-xl text-sm text-cm-slate-800 placeholder:text-cm-slate-400 focus:outline-none focus:border-cm-teal focus:ring-1 focus:ring-cm-teal/30 transition-colors"
                     />
                   </div>
 
@@ -197,7 +197,7 @@ export function AuthModal() {
                       onChange={(e) => setPassword(e.target.value)}
                       required
                       minLength={6}
-                      className="w-full pl-10 pr-4 py-3 border-2 border-cm-slate-200 rounded-xl text-sm text-cm-slate-800 placeholder:text-cm-slate-400 focus:outline-none focus:border-cm-navy focus:ring-1 focus:ring-cm-navy/30 transition-colors"
+                      className="w-full pl-10 pr-4 py-3 border-2 border-cm-slate-200 rounded-xl text-sm text-cm-slate-800 placeholder:text-cm-slate-400 focus:outline-none focus:border-cm-teal focus:ring-1 focus:ring-cm-teal/30 transition-colors"
                     />
                   </div>
 
@@ -228,7 +228,7 @@ export function AuthModal() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-3 bg-cm-navy text-white font-heading font-semibold text-sm rounded-xl hover:bg-cm-navy-light disabled:opacity-60 transition-colors cursor-pointer flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-cm-teal text-white font-heading font-semibold text-sm rounded-xl hover:bg-cm-teal-light disabled:opacity-60 transition-colors cursor-pointer flex items-center justify-center gap-2"
                   >
                     {loading && <Loader2 className="w-4 h-4 animate-spin" />}
                     {mode === "sign-in" ? "Sign In" : "Create Account"}
@@ -242,7 +242,7 @@ export function AuthModal() {
                     : "Already have an account? "}
                   <button
                     onClick={switchMode}
-                    className="text-cm-navy font-semibold hover:underline cursor-pointer"
+                    className="text-cm-teal font-semibold hover:underline cursor-pointer"
                   >
                     {mode === "sign-in" ? "Sign up" : "Sign in"}
                   </button>
