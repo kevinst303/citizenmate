@@ -6,6 +6,7 @@
     "dev": "next dev --port ${PORT:-4000}",
     "dev:local": "PORT=4000 next dev",
     "build": "next build --webpack",
+    "vercel-build": "next build --webpack",
     "start": "next start",
     "lint": "eslint"
   },
