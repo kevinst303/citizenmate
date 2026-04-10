@@ -79,6 +79,16 @@ export function AbsInsightsWidget() {
     );
   }
 
+  if (data.length === 0) {
+    return (
+      <div className="bg-white border border-[#E9ECEF] flex flex-col items-center justify-center p-12 text-center h-[400px]" style={{ borderRadius: '15px', boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}>
+        <Map className="w-12 h-12 text-cm-slate-200 mb-4" />
+        <h3 className="font-heading font-bold text-lg text-cm-slate-900 mb-1">No data available</h3>
+        <p className="text-sm text-cm-slate-500 max-w-sm">We couldn't load the population insights at this time. Please check your connection and try again.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white border border-[#E9ECEF] overflow-hidden" style={{ borderRadius: '15px', boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}>
       {/* Header */}
