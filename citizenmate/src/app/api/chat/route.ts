@@ -128,6 +128,7 @@ export async function POST(req: Request) {
   }
 
   const result = streamText({
+    // @ts-expect-error: OpenRouter provider type isn't fully synced with the latest AI SDK types yet
     model: openrouter("openrouter/free"),
     system: getChatSystemPrompt(),
     messages: sanitizedMessages,
