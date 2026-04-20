@@ -10,7 +10,7 @@ export function CTASection() {
   const isInView = useInView(ref, { once: true, margin: "-50px" });
 
   return (
-    <section className="py-20 sm:py-28 relative overflow-hidden">
+    <section className="py-[100px] relative overflow-hidden">
       <Image
         src="/images/conseil/cta-bg.jpg"
         alt=""
@@ -64,7 +64,7 @@ export function CTASection() {
               whileHover={{ scale: 1.04, y: -2 }}
               whileTap={{ scale: 0.97 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
-              className="btn-rounded bg-white text-cm-teal font-heading font-bold text-base px-10 py-4 shadow-lg shadow-black/10 hover:bg-white/95"
+              className="btn-rounded bg-white text-cm-teal font-heading font-bold text-base px-[32px] py-[14px] shadow-lg shadow-black/10 hover:bg-white/95"
             >
               Start Free Practice
               <ArrowRight className="size-5 ml-2" />

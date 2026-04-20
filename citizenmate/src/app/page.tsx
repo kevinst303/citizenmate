@@ -13,16 +13,16 @@ export default function Home() {
   return (
     <>
       <Hero />
-      {/* Wave divider — visual continuity from dark hero to white Features (HIOW-02) */}
-      <div className="relative bg-white">
+      {/* Inverted Arch divider — Conseil Pixfort style transition */}
+      <div className="relative bg-white -mt-1 z-10">
         <svg
-          viewBox="0 0 1440 80"
+          viewBox="0 0 1440 100"
           xmlns="http://www.w3.org/2000/svg"
-          className="w-full h-auto block"
+          className="w-full h-auto block drop-shadow-sm"
           preserveAspectRatio="none"
         >
           <path
-            d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z"
+            d="M0,100 C480,0 960,0 1440,100 L1440,100 L0,100 Z"
             fill="#FFFFFF"
           />
         </svg>

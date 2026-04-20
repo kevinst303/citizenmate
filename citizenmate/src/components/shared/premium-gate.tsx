@@ -67,7 +67,7 @@ export function PremiumGate({
           Unlock {feature}
         </h3>
         <p className="text-sm text-cm-slate-500 max-w-sm mb-6">
-          Get the Exam Sprint Pass for 90 days of full access — unlimited tests,
+          Get the Exam Sprint Pass for 60 days of full access — unlimited tests,
           AI tutoring, bilingual study mode, and more.
         </p>
         <Button
@@ -79,7 +79,7 @@ export function PremiumGate({
           <ArrowRight className="w-4 h-4 ml-2" />
         </Button>
         <p className="text-xs text-cm-slate-400 mt-3">
-          One-time payment · 90 days access · No subscription
+          One-time payment · 60 days access · No subscription
         </p>
       </motion.div>
     );

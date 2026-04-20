@@ -148,6 +148,19 @@ export default function PrivacyPage() {
           <strong>Supabase</strong> — Authentication and database storage
         </li>
         <li>
+          <strong>Stripe</strong> — Payment processing. When you purchase a
+          Sprint Pass, your payment details are processed directly by Stripe.
+          We do not store your card details. See{" "}
+          <a
+            href="https://stripe.com/au/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Stripe&apos;s Privacy Policy
+          </a>
+          .
+        </li>
+        <li>
           <strong>Google Gemini AI</strong> — AI Tutor chatbot responses
         </li>
         <li>
@@ -158,6 +171,16 @@ export default function PrivacyPage() {
           <strong>Vercel</strong> — Application hosting and delivery
         </li>
       </ul>
+
+      <h3>Data Breach Notification</h3>
+      <p>
+        In the event of a data breach that is likely to result in serious harm
+        to affected individuals, we will notify the Office of the Australian
+        Information Commissioner (OAIC) and affected individuals as soon as
+        practicable, in accordance with the{" "}
+        <strong>Notifiable Data Breaches (NDB) scheme</strong> under the
+        Privacy Act 1988.
+      </p>
 
       <h2 id="your-rights">Your Rights</h2>
       <p>Under the Australian Privacy Act, you have the right to:</p>

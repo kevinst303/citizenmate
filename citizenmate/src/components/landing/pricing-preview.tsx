@@ -28,7 +28,7 @@ const plans = [
   {
     name: "Exam Sprint Pass",
     price: "A$29.99",
-    period: "90 days",
+    period: "60 days",
     description: "Everything you need to pass — designed for your study window.",
     cta: "Get Sprint Pass",
     popular: true,
@@ -94,7 +94,7 @@ export function PricingPreview() {
             transition={{ duration: 0.4, delay: 0.2 }}
             className="mt-4 text-lg text-muted-foreground leading-relaxed"
           >
-            Most users pass within 90 days. One payment, no subscriptions, no
+            Most users pass within 60 days. One payment, no subscriptions, no
             surprises.
           </motion.p>
         </div>
@@ -268,7 +268,7 @@ export function PricingPreview() {
         >
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Shield className="size-4 text-cm-teal" />
-            <span>One-time payment · No recurring charges · 90 days of full access</span>
+            <span>One-time payment · No recurring charges · 60 days of full access</span>
           </div>
         </motion.div>
       </div>

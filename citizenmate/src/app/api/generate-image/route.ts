@@ -105,15 +105,14 @@ export async function POST(request: NextRequest) {
     }
 
     // ── Rate limiting (5 images per hour per IP) ──
-    const { rateLimit, getClientIP } = await import('@/lib/rate-limit');
-    const ip = getClientIP(request);
-    const limiter = rateLimit(`image:${ip}`, {
-      maxRequests: 5,
-      windowMs: 60 * 60 * 1000, // 1 hour
-    });
+    const { apiLimiter } = await import('@/lib/rate-limit');
+    const forwarded = request.headers.get('x-forwarded-for');
+    const ip = forwarded ? forwarded.split(',')[0].trim() : 'unknown';
 
-    if (!limiter.success) {
-      const retryAfter = Math.ceil(limiter.resetIn / 1000);
+    const { success, reset } = await apiLimiter.limit(`image:${ip}`);
+
+    if (!success) {
+      const retryAfter = Math.ceil((reset - Date.now()) / 1000);
       return NextResponse.json(
         { error: 'Rate limit exceeded. Please try again later.' },
         {

@@ -42,8 +42,11 @@ export async function POST() {
         },
       ],
       mode: 'payment', // One-time payment for Sprint Pass
-      success_url: `${siteUrl}/dashboard?checkout=success`,
-      cancel_url: `${siteUrl}/#pricing`,
+      // NOTE: No GST/tax applied — business is not yet GST-registered.
+      // When registering, add automatic_tax: { enabled: true } and
+      // set tax_behavior='inclusive' on the Stripe Price object.
+      success_url: `${siteUrl}/checkout/success`,
+      cancel_url: `${siteUrl}/checkout/cancel`,
       client_reference_id: user.id,
       customer_email: user.email,
       metadata: {

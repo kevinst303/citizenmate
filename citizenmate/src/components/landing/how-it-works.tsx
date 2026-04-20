@@ -23,7 +23,7 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-20 sm:py-28 section-alt-bg">
+    <section id="how-it-works" className="py-[100px] section-alt-bg">
       <div className="mx-auto max-w-[1140px] px-4 sm:px-6 lg:px-8">
         {/* Section header — Conseil style */}
         <div className="text-center max-w-2xl mx-auto mb-16">
@@ -71,15 +71,15 @@ export function HowItWorks() {
           <div
             className="flex flex-col md:flex-row overflow-hidden border border-[#E9ECEF]"
             style={{
-              borderRadius: "15px",
+              borderRadius: "var(--radius-card, 24px)",
               boxShadow:
-                "rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px",
+                "0 4px 12px rgba(0, 0, 0, 0.03)",
             }}
           >
             {/* Left text panel */}
             <div
-              className="flex-1 bg-[#F4F4F5] p-[30px] flex flex-col justify-center"
-              style={{ borderRadius: "15px 0 0 15px" }}
+              className="flex-1 bg-[#F4F4F5] p-[40px] flex flex-col justify-center"
+              style={{ borderRadius: "var(--radius-card, 24px) 0 0 var(--radius-card, 24px)" }}
             >
               <h3 className="font-heading font-bold text-xl md:text-2xl text-foreground mb-3">
                 Everything you need to pass
@@ -96,7 +96,7 @@ export function HowItWorks() {
             {/* Right image panel */}
             <div
               className="flex-1 relative min-h-[280px] md:min-h-[320px]"
-              style={{ borderRadius: "0 15px 15px 0" }}
+              style={{ borderRadius: "0 var(--radius-card, 24px) var(--radius-card, 24px) 0" }}
             >
               <Image
                 src="/images/conseil/feature-split.jpg"

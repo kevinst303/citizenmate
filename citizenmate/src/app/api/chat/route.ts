@@ -1,8 +1,21 @@
-import { google } from "@ai-sdk/google";
-import { streamText, convertToModelMessages, createUIMessageStreamResponse } from "ai";
+import { createOpenRouter } from "@openrouter/ai-sdk-provider";
+
+const openrouter = createOpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+});
+import { streamText } from "ai";
 import { getChatSystemPrompt } from "@/lib/chat-context";
-import { rateLimit, getClientIP } from "@/lib/rate-limit";
+import { chatLimiterFree, chatLimiterPremium } from "@/lib/rate-limit";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
+
+// ── Extract client IP for rate limiting ──
+function getClientIP(req: Request): string {
+  const forwarded = req.headers.get("x-forwarded-for");
+  if (forwarded) return forwarded.split(",")[0].trim();
+  const real = req.headers.get("x-real-ip");
+  if (real) return real;
+  return "unknown";
+}
 
 export async function POST(req: Request) {
   let isPremiumUser = false;
@@ -31,22 +44,15 @@ export async function POST(req: Request) {
     console.error("Error verifying premium status for chat API:", err);
   }
 
-  // --- Tiered Rate limiting ---
+  // --- Tiered Rate Limiting (Upstash Redis) ---
   const ip = getClientIP(req);
-  
-  // Free users: max 5 requests per hour per IP (as an anti-bypass measure for local ui limits). 
-  // Premium users: 100 requests per hour per User ID.
-  const limitMax = isPremiumUser ? 100 : 5;
-  const limitKey = isPremiumUser ? `chat:premium:${userId}` : `chat:free:${ip}`;
-  const rateLimitWindowMs = 60 * 60 * 1000; // 1 hour
+  const limiter = isPremiumUser ? chatLimiterPremium : chatLimiterFree;
+  const limitKey = isPremiumUser ? userId : ip;
 
-  const limiter = rateLimit(limitKey, {
-    maxRequests: limitMax,
-    windowMs: rateLimitWindowMs,
-  });
+  const { success, remaining, reset } = await limiter.limit(limitKey);
 
-  if (!limiter.success) {
-    const retryAfter = Math.ceil(limiter.resetIn / 1000);
+  if (!success) {
+    const retryAfter = Math.ceil((reset - Date.now()) / 1000);
     return new Response(
       JSON.stringify({
         error: "Rate limit exceeded",
@@ -115,20 +121,20 @@ export async function POST(req: Request) {
         headers: {
           'Content-Type': 'text/plain; charset=utf-8',
           'X-Vercel-AI-Data-Stream': 'v1',
-          'X-RateLimit-Remaining': String(limiter.remaining),
+          'X-RateLimit-Remaining': String(remaining),
         }
       });
     }
   }
 
   const result = streamText({
-    model: google("gemini-2.5-flash"),
+    model: openrouter("openrouter/free"),
     system: getChatSystemPrompt(),
     messages: sanitizedMessages,
   });
   return result.toUIMessageStreamResponse({
     headers: {
-      "X-RateLimit-Remaining": String(limiter.remaining),
+      "X-RateLimit-Remaining": String(remaining),
     },
   });
 }

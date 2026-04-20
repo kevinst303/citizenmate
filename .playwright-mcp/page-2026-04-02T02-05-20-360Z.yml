@@ -1,0 +1,778 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - navigation [ref=e6]:
+        - link "Consulting" [ref=e9] [cursor=pointer]:
+          - /url: https://conseil.pixfort.com/consulting/
+          - img "Consulting" [ref=e10]
+        - link "English" [ref=e14] [cursor=pointer]:
+          - /url: "#"
+          - img [ref=e15]
+          - generic [ref=e17]: English
+        - list [ref=e19]:
+          - listitem [ref=e20]:
+            - link "Home" [ref=e21] [cursor=pointer]:
+              - /url: https://conseil.pixfort.com/consulting/
+          - listitem [ref=e22]:
+            - link "Services" [ref=e23] [cursor=pointer]:
+              - /url: https://conseil.pixfort.com/consulting/services/
+          - listitem [ref=e24]:
+            - link "Pages" [ref=e25] [cursor=pointer]:
+              - /url: "#"
+              - generic [ref=e26]:
+                - text: Pages
+                - img [ref=e27]
+          - listitem [ref=e29]:
+            - link "Pricing" [ref=e30] [cursor=pointer]:
+              - /url: https://conseil.pixfort.com/consulting/pricing/
+          - listitem [ref=e31]:
+            - link "Contact" [ref=e32] [cursor=pointer]:
+              - /url: https://conseil.pixfort.com/consulting/contact/
+        - link "Get a Quote" [ref=e34] [cursor=pointer]:
+          - /url: "#"
+          - img [ref=e35]
+          - generic [ref=e38]: Get a Quote
+        - link "Get in Touch" [ref=e40] [cursor=pointer]:
+          - /url: "#"
+          - img [ref=e41]
+          - generic [ref=e44]: Get in Touch
+    - generic [ref=e47]:
+      - generic [ref=e48]:
+        - generic [ref=e49]:
+          - img [ref=e50]
+          - generic [ref=e53]: London, UK
+        - link "+44 85 48 63" [ref=e57] [cursor=pointer]:
+          - /url: tel:+44000000
+          - img [ref=e58]
+          - generic [ref=e61]: +44 85 48 63
+      - generic [ref=e62]:
+        - generic [ref=e64]: Follow us on
+        - generic [ref=e65]:
+          - link "X" [ref=e66] [cursor=pointer]:
+            - /url: "#"
+            - img [ref=e67]
+          - link "Instagram" [ref=e70] [cursor=pointer]:
+            - /url: "#"
+            - img [ref=e71]
+          - link "Telegram" [ref=e73] [cursor=pointer]:
+            - /url: "#"
+            - img [ref=e74]
+    - main [ref=e77]:
+      - article [ref=e78]:
+        - generic [ref=e79]:
+          - generic [ref=e80]:
+            - generic [ref=e82]:
+              - group "1 / 2"
+              - group "2 / 2"
+              - group "1 / 2" [ref=e83]
+              - group "2 / 2"
+              - group "1 / 2"
+              - group "2 / 2"
+            - generic:
+              - img
+            - generic [ref=e85]:
+              - generic [ref=e86]:
+                - generic [ref=e87]:
+                  - generic [ref=e90]:
+                    - img [ref=e92]
+                    - img [ref=e95]
+                    - img [ref=e98]
+                    - img [ref=e101]
+                    - img [ref=e104]
+                  - generic [ref=e109]: Top Consulting Firm
+                - heading "Transform your Business with Conseil" [level=1] [ref=e114]:
+                  - generic [ref=e116]: Transform
+                  - generic [ref=e118]: your
+                  - generic [ref=e120]: Business
+                  - generic [ref=e122]: with
+                  - generic [ref=e124]: Conseil
+                - paragraph [ref=e128]: Discover how we can bring your vision to life — contact us!
+                - link "Check Our Services" [ref=e137] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=e138]
+                  - generic [ref=e141]: Check Our Services
+              - generic [ref=e142]:
+                - paragraph [ref=e146]: Trusted by 15K+ Businesses
+                - generic [ref=e150]:
+                  - heading [level=2] [ref=e151]
+                  - heading [level=2] [ref=e152]
+                  - heading [level=2] [ref=e153]
+                  - heading [level=2] [ref=e154]
+                  - heading [level=2] [ref=e155]
+                  - heading [level=2] [ref=e156]
+                  - heading [level=2] [ref=e157]
+                  - heading [level=2] [ref=e158]
+                  - heading [level=2] [ref=e159]
+                  - heading [level=2] [ref=e160]
+                  - heading [level=2] [ref=e161]
+                  - heading [level=2] [ref=e162]
+          - generic [ref=e164]:
+            - generic [ref=e165]:
+              - generic [ref=e169]: Innovative Solutions
+              - heading "Embrace The Future Of Business Design" [level=2] [ref=e174]:
+                - generic [ref=e176]: Embrace
+                - generic [ref=e178]: The
+                - generic [ref=e180]: Future
+                - generic [ref=e182]: Of
+                - generic [ref=e184]: Business
+                - generic [ref=e186]: Design
+              - paragraph [ref=e190]: Our core values include innovation, teamwork, and customer satisfaction.
+            - generic [ref=e191]:
+              - generic [ref=e192]:
+                - link "Product Strategies Every component in our platform is carefully designed for conversion." [ref=e195] [cursor=pointer]:
+                  - /url: "#"
+                  - generic [ref=e196]:
+                    - img [ref=e198]
+                    - generic [ref=e201]: Product Strategies
+                    - generic [ref=e202]: Every component in our platform is carefully designed for conversion.
+                - link "Explore Services" [ref=e205] [cursor=pointer]:
+                  - /url: https://conseil.pixfort.com/consulting/services/
+                  - generic [ref=e206]: Explore Services
+                  - img [ref=e207]
+              - generic [ref=e209]:
+                - link "Flexible Solutions Our technology is designed to adapt to the unique needs of your business." [ref=e212] [cursor=pointer]:
+                  - /url: "#"
+                  - generic [ref=e213]:
+                    - img [ref=e215]
+                    - generic [ref=e218]: Flexible Solutions
+                    - generic [ref=e219]: Our technology is designed to adapt to the unique needs of your business.
+                - link "View Our Work" [ref=e222] [cursor=pointer]:
+                  - /url: https://conseil.pixfort.com/consulting/case-studies/
+                  - generic [ref=e223]: View Our Work
+                  - img [ref=e224]
+                - generic [ref=e229]: Popular
+              - generic [ref=e230]:
+                - link "Scalable Solutions Every component in pixfort theme is meticulously crafted for conversion." [ref=e233] [cursor=pointer]:
+                  - /url: "#"
+                  - generic [ref=e234]:
+                    - img [ref=e236]
+                    - generic [ref=e239]: Scalable Solutions
+                    - generic [ref=e240]: Every component in pixfort theme is meticulously crafted for conversion.
+                - link "Start Now" [ref=e243] [cursor=pointer]:
+                  - /url: https://conseil.pixfort.com/consulting/pricing/
+                  - generic [ref=e244]: Start Now
+                  - img [ref=e245]
+                - generic [ref=e250]: New
+          - generic [ref=e252]:
+            - generic [ref=e253]:
+              - link "Effortless Efficiency" [ref=e256] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=e257]:
+                  - img [ref=e259]
+                  - generic [ref=e264]: Effortless Efficiency
+              - generic [ref=e268]:
+                - generic [ref=e269]: S
+                - generic [ref=e270]: t
+                - generic [ref=e271]: r
+                - generic [ref=e272]: e
+                - generic [ref=e273]: a
+                - generic [ref=e274]: m
+                - generic [ref=e275]: l
+                - generic [ref=e276]: i
+                - generic [ref=e277]: "n"
+                - generic [ref=e278]: e
+                - generic [ref=e279]: d
+                - generic [ref=e280]: W
+                - generic [ref=e281]: o
+                - generic [ref=e282]: r
+                - generic [ref=e283]: k
+                - generic [ref=e284]: f
+                - generic [ref=e285]: l
+                - generic [ref=e286]: o
+                - generic [ref=e287]: w
+                - generic [ref=e288]: f
+                - generic [ref=e289]: o
+                - generic [ref=e290]: r
+                - generic [ref=e291]: F
+                - generic [ref=e292]: a
+                - generic [ref=e293]: s
+                - generic [ref=e294]: t
+                - generic [ref=e295]: D
+                - generic [ref=e296]: e
+                - generic [ref=e297]: p
+                - generic [ref=e298]: l
+                - generic [ref=e299]: o
+                - generic [ref=e300]: "y"
+                - generic [ref=e301]: m
+                - generic [ref=e302]: e
+                - generic [ref=e303]: "n"
+                - generic [ref=e304]: t
+              - paragraph [ref=e309]: Expert guidance for visionary leaders seeking to revolutionize their industries through bold strategies.
+              - link "Unlock Your Potential" [ref=e312] [cursor=pointer]:
+                - /url: "#"
+                - img [ref=e313]
+                - generic [ref=e316]: Unlock Your Potential
+            - paragraph [ref=e336]: Our comprehensive platform combines innovative design with robust technology, empowering businesses to succeed.
+          - generic [ref=e338]:
+            - generic [ref=e339]:
+              - img "Image link" [ref=e346]
+              - paragraph [ref=e351]: Our all-encompassing solution integrates seamless design with stable infrastructure, fostering business growth.
+            - generic [ref=e352]:
+              - link "Industry Pioneers" [ref=e355] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=e356]:
+                  - img [ref=e358]
+                  - heading "Industry Pioneers" [level=6] [ref=e363]
+              - generic [ref=e367]:
+                - generic [ref=e368]: O
+                - generic [ref=e369]: p
+                - generic [ref=e370]: t
+                - generic [ref=e371]: i
+                - generic [ref=e372]: m
+                - generic [ref=e373]: i
+                - generic [ref=e374]: z
+                - generic [ref=e375]: e
+                - generic [ref=e376]: d
+                - generic [ref=e377]: W
+                - generic [ref=e378]: o
+                - generic [ref=e379]: r
+                - generic [ref=e380]: k
+                - generic [ref=e381]: f
+                - generic [ref=e382]: l
+                - generic [ref=e383]: o
+                - generic [ref=e384]: w
+                - generic [ref=e385]: f
+                - generic [ref=e386]: o
+                - generic [ref=e387]: r
+                - generic [ref=e388]: R
+                - generic [ref=e389]: a
+                - generic [ref=e390]: p
+                - generic [ref=e391]: i
+                - generic [ref=e392]: d
+                - generic [ref=e393]: D
+                - generic [ref=e394]: e
+                - generic [ref=e395]: p
+                - generic [ref=e396]: l
+                - generic [ref=e397]: o
+                - generic [ref=e398]: "y"
+                - generic [ref=e399]: m
+                - generic [ref=e400]: e
+                - generic [ref=e401]: "n"
+                - generic [ref=e402]: t
+              - paragraph [ref=e407]: Comprehensive strategies crafted to anticipate trends, capture opportunities, and establish lasting legacies.
+              - generic [ref=e408]:
+                - generic [ref=e411]:
+                  - img [ref=e414]
+                  - generic [ref=e417]:
+                    - generic [ref=e418]: Launch Confidently
+                    - generic [ref=e419]: Performance Ready
+                - generic [ref=e422]:
+                  - img [ref=e425]
+                  - generic [ref=e428]:
+                    - generic [ref=e429]: Visual Interface
+                    - generic [ref=e430]: Instant Feedback
+          - generic [ref=e437]:
+            - generic [ref=e439]:
+              - heading "Take Control of Your Website" [level=2] [ref=e441]
+              - tablist [ref=e443]:
+                - tab "Pioneering Design" [ref=e445] [cursor=pointer]:
+                  - img [ref=e446]
+                  - text: Pioneering Design
+                - tab "Forward-Thinking Solutions" [ref=e450] [cursor=pointer]:
+                  - img [ref=e451]
+                  - text: Forward-Thinking Solutions
+                - tab "Precision Craftsmanship" [ref=e456] [cursor=pointer]:
+                  - img [ref=e457]
+                  - text: Precision Craftsmanship
+            - tabpanel "Trending Solutions Maximize potential with our expertise Our tailored solutions empower your business to evolve seamlessly, driving growth and success Uncover Opportunities Tailored Experiences Expertly Crafted Solutions Trusted By Industry Leaders Advanced Technology Platforms Innovate Today Innovate Today Streamline your online presence with a simple, efficient, and hassle-free setup process Explore Services Elevate Your Brand Elevate Your Brand Seamlessly integrate with top tools and platforms to create a cohesive brand image View Our Work We craft pathways that secure your place at the top. Get in touch" [ref=e463]:
+              - generic [ref=e466]:
+                - generic [ref=e467]:
+                  - generic [ref=e468]:
+                    - generic [ref=e472]: Trending Solutions
+                    - heading "Maximize potential with our expertise" [level=3] [ref=e476]
+                    - paragraph [ref=e480]: Our tailored solutions empower your business to evolve seamlessly, driving growth and success
+                    - link "Uncover Opportunities" [ref=e483] [cursor=pointer]:
+                      - /url: "#"
+                      - generic [ref=e484]: Uncover Opportunities
+                      - img [ref=e485]
+                  - generic [ref=e488]:
+                    - generic [ref=e492]: Tailored Experiences
+                    - generic [ref=e496]:
+                      - generic [ref=e497]:
+                        - img [ref=e499]
+                        - generic [ref=e502]: Expertly Crafted Solutions
+                      - generic [ref=e503]:
+                        - img [ref=e505]
+                        - generic [ref=e508]: Trusted By Industry Leaders
+                      - generic [ref=e509]:
+                        - img [ref=e511]
+                        - generic [ref=e514]: Advanced Technology Platforms
+                - generic [ref=e515]:
+                  - generic [ref=e516]:
+                    - link "Innovate Today Innovate Today Streamline your online presence with a simple, efficient, and hassle-free setup process" [ref=e519] [cursor=pointer]:
+                      - /url: "#"
+                      - generic [ref=e520]:
+                        - img "Innovate Today" [ref=e522]
+                        - generic [ref=e523]: Innovate Today
+                        - generic [ref=e524]: Streamline your online presence with a simple, efficient, and hassle-free setup process
+                    - link "Explore Services" [ref=e527] [cursor=pointer]:
+                      - /url: "#"
+                      - generic [ref=e528]: Explore Services
+                      - img [ref=e529]
+                  - generic [ref=e531]:
+                    - link "Elevate Your Brand Elevate Your Brand Seamlessly integrate with top tools and platforms to create a cohesive brand image" [ref=e534] [cursor=pointer]:
+                      - /url: "#"
+                      - generic [ref=e535]:
+                        - img "Elevate Your Brand" [ref=e537]
+                        - generic [ref=e538]: Elevate Your Brand
+                        - generic [ref=e539]: Seamlessly integrate with top tools and platforms to create a cohesive brand image
+                    - link "View Our Work" [ref=e542] [cursor=pointer]:
+                      - /url: "#"
+                      - generic [ref=e543]: View Our Work
+                      - img [ref=e544]
+                - generic [ref=e548]:
+                  - paragraph [ref=e552]: We craft pathways that secure your place at the top.
+                  - link "Get in touch" [ref=e555] [cursor=pointer]:
+                    - /url: "#"
+                    - generic [ref=e556]: Get in touch
+                    - img [ref=e557]
+          - generic [ref=e562]:
+            - generic [ref=e563]:
+              - img "Image link" [ref=e568]
+              - heading "Advanced Insights" [level=3] [ref=e573]
+              - paragraph [ref=e578]: Leverage data analytics to uncover business opportunities and drive growth.
+            - generic [ref=e579]:
+              - img "Image link" [ref=e584]
+              - heading "Cloud Connectivity" [level=2] [ref=e589]
+              - paragraph [ref=e594]: Facilitate seamless team collaboration, regardless of location or time zone.
+            - generic [ref=e595]:
+              - img "Image link" [ref=e600]
+              - heading "Automated Processes" [level=2] [ref=e605]
+              - paragraph [ref=e610]: Streamline tasks with intelligent automation, boosting efficiency and productivity.
+          - generic [ref=e612]:
+            - generic [ref=e613]:
+              - generic [ref=e614]:
+                - generic [ref=e618]: Powerful Tools
+                - generic [ref=e621]:
+                  - generic [ref=e622]: Operations
+                  - generic [ref=e623]: with
+                  - generic [ref=e624]: Intelligent
+                  - generic [ref=e625]: Solutions
+                - paragraph [ref=e630]: Our solutions are crafted to evolve with your business, ensuring seamless growth and adaptation.
+                - link "Discover More" [ref=e633] [cursor=pointer]:
+                  - /url: "#"
+                  - generic [ref=e634]: Discover More
+                  - img [ref=e635]
+                - generic [ref=e638]:
+                  - generic [ref=e639]:
+                    - generic [ref=e644]: 0K+
+                    - paragraph [ref=e648]: CUSTOMERS SINCE 2012
+                  - generic [ref=e649]:
+                    - link "Strategic Edge" [ref=e652] [cursor=pointer]:
+                      - /url: "#"
+                      - generic [ref=e653]:
+                        - img [ref=e655]
+                        - generic [ref=e660]: Strategic Edge
+                    - paragraph [ref=e665]: Scale smarter with built-in workflows that keep your business running.
+              - generic [ref=e666]:
+                - generic [ref=e670]: Unmatched Precision
+                - generic [ref=e674]:
+                  - generic [ref=e675]:
+                    - img [ref=e677]
+                    - generic [ref=e680]: Forward-Thinking Solutions
+                  - generic [ref=e681]:
+                    - img [ref=e683]
+                    - generic [ref=e686]: Highly Recommended
+                  - generic [ref=e687]:
+                    - img [ref=e689]
+                    - generic [ref=e692]: Robust Infrastructure
+            - generic [ref=e699]:
+              - generic [ref=e700]:
+                - heading "Have a question?" [level=5] [ref=e701]
+                - generic [ref=e702]: We value your time, so we strive to provide fast and efficient support to all of our customers.
+              - link "Inquire Now" [ref=e704] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=e705]: Inquire Now
+                - img [ref=e706]
+          - generic [ref=e711]:
+            - generic [ref=e715]: Innovative Solutions
+            - generic [ref=e719]:
+              - generic [ref=e720]: Embrace
+              - generic [ref=e721]: The
+              - generic [ref=e722]: Future
+              - generic [ref=e723]: Of
+              - generic [ref=e724]: Business
+              - generic [ref=e725]: Design
+            - paragraph [ref=e729]: Our core values include innovation, teamwork, and customer satisfaction.
+            - generic [ref=e732]:
+              - generic [ref=e736]:
+                - link "Transform Your Brand’s Site" [ref=e738] [cursor=pointer]:
+                  - /url: https://conseil.pixfort.com/consulting/2025/08/13/transform-your-brands-site/
+                  - img "Transform Your Brand’s Site" [ref=e740]
+                - generic [ref=e741]:
+                  - generic [ref=e742]:
+                    - link "Design" [ref=e743] [cursor=pointer]:
+                      - /url: https://conseil.pixfort.com/consulting/category/design/
+                      - generic [ref=e745]: Design
+                    - link "New" [ref=e746] [cursor=pointer]:
+                      - /url: https://conseil.pixfort.com/consulting/category/new/
+                      - generic [ref=e748]: New
+                  - link "Transform Your Brand’s Site" [ref=e749] [cursor=pointer]:
+                    - /url: https://conseil.pixfort.com/consulting/2025/08/13/transform-your-brands-site/
+                    - generic [ref=e750]: Transform Your Brand’s Site
+                  - link "August 13, 2025" [ref=e751] [cursor=pointer]:
+                    - /url: https://conseil.pixfort.com/consulting/2025/08/13/transform-your-brands-site/
+                    - img [ref=e753]
+                    - text: August 13, 2025
+              - generic [ref=e758]:
+                - link "Elevate Your Site to New Heights" [ref=e760] [cursor=pointer]:
+                  - /url: https://conseil.pixfort.com/consulting/2025/08/13/elevate-your-site-to-new-heights/
+                  - img "Elevate Your Site to New Heights" [ref=e762]
+                - generic [ref=e763]:
+                  - generic [ref=e764]:
+                    - link "Articles" [ref=e765] [cursor=pointer]:
+                      - /url: https://conseil.pixfort.com/consulting/category/articles/
+                      - generic [ref=e767]: Articles
+                    - link "Design" [ref=e768] [cursor=pointer]:
+                      - /url: https://conseil.pixfort.com/consulting/category/design/
+                      - generic [ref=e770]: Design
+                  - link "Elevate Your Site to New Heights" [ref=e771] [cursor=pointer]:
+                    - /url: https://conseil.pixfort.com/consulting/2025/08/13/elevate-your-site-to-new-heights/
+                    - generic [ref=e772]: Elevate Your Site to New Heights
+                  - link "August 13, 2025" [ref=e773] [cursor=pointer]:
+                    - /url: https://conseil.pixfort.com/consulting/2025/08/13/elevate-your-site-to-new-heights/
+                    - img [ref=e775]
+                    - text: August 13, 2025
+              - generic [ref=e780]:
+                - link "Craft Stunning Web Experience" [ref=e782] [cursor=pointer]:
+                  - /url: https://conseil.pixfort.com/consulting/2025/08/09/craft-stunning-web-experiences/
+                  - img "Craft Stunning Web Experience" [ref=e784]
+                - generic [ref=e785]:
+                  - generic [ref=e786]:
+                    - link "Articles" [ref=e787] [cursor=pointer]:
+                      - /url: https://conseil.pixfort.com/consulting/category/articles/
+                      - generic [ref=e789]: Articles
+                    - link "Design" [ref=e790] [cursor=pointer]:
+                      - /url: https://conseil.pixfort.com/consulting/category/design/
+                      - generic [ref=e792]: Design
+                  - link "Craft Stunning Web Experience" [ref=e793] [cursor=pointer]:
+                    - /url: https://conseil.pixfort.com/consulting/2025/08/09/craft-stunning-web-experiences/
+                    - generic [ref=e794]: Craft Stunning Web Experience
+                  - link "August 9, 2025" [ref=e795] [cursor=pointer]:
+                    - /url: https://conseil.pixfort.com/consulting/2025/08/09/craft-stunning-web-experiences/
+                    - img [ref=e797]
+                    - text: August 9, 2025
+            - link "Visit our blog" [ref=e801] [cursor=pointer]:
+              - /url: https://conseil.pixfort.com/consulting/blog/
+              - img [ref=e802]
+              - generic [ref=e805]: Visit our blog
+          - generic [ref=e807]:
+            - generic [ref=e808]:
+              - generic [ref=e813]:
+                - heading [level=1] [ref=e814]
+                - heading [level=1] [ref=e815]
+                - heading [level=1] [ref=e816]
+                - heading [level=1] [ref=e817]
+                - heading [level=1] [ref=e818]
+                - heading [level=1] [ref=e819]
+                - heading [level=1] [ref=e820]
+                - heading [level=1] [ref=e821]
+                - heading [level=1] [ref=e822]
+                - heading [level=1] [ref=e823]
+              - generic [ref=e827]: Award-Winning Firm
+              - generic [ref=e831]:
+                - generic [ref=e832]: S
+                - generic [ref=e833]: u
+                - generic [ref=e834]: c
+                - generic [ref=e835]: c
+                - generic [ref=e836]: e
+                - generic [ref=e837]: s
+                - generic [ref=e838]: s
+                - generic [ref=e839]: S
+                - generic [ref=e840]: t
+                - generic [ref=e841]: o
+                - generic [ref=e842]: r
+                - generic [ref=e843]: i
+                - generic [ref=e844]: e
+                - generic [ref=e845]: s
+                - generic [ref=e846]: f
+                - generic [ref=e847]: r
+                - generic [ref=e848]: o
+                - generic [ref=e849]: m
+                - generic [ref=e850]: C
+                - generic [ref=e851]: l
+                - generic [ref=e852]: i
+                - generic [ref=e853]: e
+                - generic [ref=e854]: "n"
+                - generic [ref=e855]: t
+                - generic [ref=e856]: s
+              - paragraph [ref=e861]: From launch to long-term success, hear how real users are building better businesses with our expertise.
+            - generic [ref=e862]:
+              - generic [ref=e863]:
+                - paragraph [ref=e867]: Working with this company has been a game-changer for our business. Their team is dedicated to our success!
+                - generic [ref=e868]:
+                  - generic [ref=e871]:
+                    - img [ref=e873]
+                    - img [ref=e876]
+                    - img [ref=e879]
+                    - img [ref=e882]
+                    - img [ref=e885]
+                  - paragraph [ref=e890]:
+                    - generic [ref=e891]: via pixfort.com
+                - generic [ref=e895]:
+                  - img "Emily Johnson" [ref=e897]
+                  - generic [ref=e898]:
+                    - generic [ref=e899]: Emily Johnson
+                    - generic [ref=e900]: Marketing Manager
+              - generic [ref=e901]:
+                - paragraph [ref=e905]: Our experience with this company has been exceptional. Their expertise and dedication to our success have been invaluable.
+                - generic [ref=e906]:
+                  - generic [ref=e909]:
+                    - img [ref=e911]
+                    - img [ref=e914]
+                    - img [ref=e917]
+                    - img [ref=e920]
+                    - img [ref=e923]
+                  - paragraph [ref=e928]:
+                    - generic [ref=e929]: via pixfort.com
+                - generic [ref=e933]:
+                  - img "David Lee" [ref=e935]
+                  - generic [ref=e936]:
+                    - generic [ref=e937]: David Lee
+                    - generic [ref=e938]: CEO at TechCorp
+              - generic [ref=e939]:
+                - paragraph [ref=e943]: They helped us redefine our marketing strategy and implemented innovative solutions that drove real results.
+                - generic [ref=e944]:
+                  - generic [ref=e947]:
+                    - img [ref=e949]
+                    - img [ref=e952]
+                    - img [ref=e955]
+                    - img [ref=e958]
+                    - img [ref=e961]
+                  - paragraph [ref=e966]:
+                    - generic [ref=e967]: via pixfort.com
+                - generic [ref=e971]:
+                  - img "Sophia Patel" [ref=e973]
+                  - generic [ref=e974]:
+                    - generic [ref=e975]: Sophia Patel
+                    - generic [ref=e976]: Head of Marketing
+            - generic [ref=e977]:
+              - link "Create Your Website" [ref=e980] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=e981]: Create Your Website
+                - img [ref=e982]
+              - link "Read More Testimonials" [ref=e987] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=e988]: Read More Testimonials
+                - img [ref=e989]
+    - contentinfo [ref=e992]:
+      - generic [ref=e995]:
+        - generic [ref=e998]:
+          - generic [ref=e1002]:
+            - generic [ref=e1003]: Elevate
+            - generic [ref=e1004]: Your
+            - generic [ref=e1005]: Brand
+            - generic [ref=e1006]: Through
+            - generic [ref=e1007]: Design
+          - paragraph [ref=e1011]: Our friendly support team is here to help.
+          - link "Check our services" [ref=e1015] [cursor=pointer]:
+            - /url: "#"
+            - img [ref=e1016]
+            - generic [ref=e1019]: Check our services
+        - generic [ref=e1020]:
+          - generic [ref=e1021]:
+            - img "Image link" [ref=e1026]
+            - paragraph [ref=e1030]: Ready to start your project? Let’s connect today.
+            - generic [ref=e1034]:
+              - generic [ref=e1035]:
+                - img [ref=e1037]
+                - generic [ref=e1040]: Open 8am to 6pm, Monday to Friday
+              - generic [ref=e1041]:
+                - img [ref=e1043]
+                - generic [ref=e1046]: 16 Avenue George V, Paris, France
+              - generic [ref=e1047]:
+                - img [ref=e1049]
+                - generic [ref=e1052]: Contact us at email@website.com
+          - generic [ref=e1053]:
+            - heading "Product" [level=6] [ref=e1057]
+            - link "Services" [ref=e1060] [cursor=pointer]:
+              - /url: https://conseil.pixfort.com/consulting/services/
+              - generic [ref=e1061]: Services
+            - link "Pricing" [ref=e1064] [cursor=pointer]:
+              - /url: https://conseil.pixfort.com/consulting/pricing/
+              - generic [ref=e1065]: Pricing
+            - link "Case Studies" [ref=e1068] [cursor=pointer]:
+              - /url: https://conseil.pixfort.com/consulting/case-studies/
+              - generic [ref=e1069]: Case Studies
+            - link "Reviews" [ref=e1072] [cursor=pointer]:
+              - /url: "#"
+              - generic [ref=e1073]: Reviews
+            - link "News" [ref=e1076] [cursor=pointer]:
+              - /url: https://conseil.pixfort.com/consulting/blog/
+              - generic [ref=e1077]: News
+            - link "404 Page" [ref=e1080] [cursor=pointer]:
+              - /url: https://conseil.pixfort.com/consulting/404-page/
+              - generic [ref=e1081]: 404 Page
+            - link "Coming Soon" [ref=e1084] [cursor=pointer]:
+              - /url: https://conseil.pixfort.com/consulting/coming-soon/
+              - generic [ref=e1085]: Coming Soon
+          - generic [ref=e1086]:
+            - heading "Company" [level=6] [ref=e1090]
+            - link "About" [ref=e1093] [cursor=pointer]:
+              - /url: https://conseil.pixfort.com/consulting/about/
+              - generic [ref=e1094]: About
+            - link "Blog" [ref=e1097] [cursor=pointer]:
+              - /url: https://conseil.pixfort.com/consulting/blog/
+              - generic [ref=e1098]: Blog
+            - link "Careers" [ref=e1101] [cursor=pointer]:
+              - /url: "#"
+              - generic [ref=e1102]: Careers
+            - link "Job description" [ref=e1105] [cursor=pointer]:
+              - /url: "#"
+              - generic [ref=e1106]: Job description
+            - link "Contact us" [ref=e1109] [cursor=pointer]:
+              - /url: https://conseil.pixfort.com/consulting/contact/
+              - generic [ref=e1110]: Contact us
+            - link "Terms" [ref=e1113] [cursor=pointer]:
+              - /url: https://conseil.pixfort.com/consulting/terms-of-use/
+              - generic [ref=e1114]: Terms
+            - link "Privacy" [ref=e1117] [cursor=pointer]:
+              - /url: https://conseil.pixfort.com/consulting/privacy-policy/
+              - generic [ref=e1118]: Privacy
+          - generic [ref=e1119]:
+            - heading "Certifications" [level=6] [ref=e1123]
+            - generic [ref=e1124]:
+              - img "Image link" [ref=e1129]
+              - img "Image link" [ref=e1134]
+            - heading "Schedule a Consultation" [level=6] [ref=e1141]
+            - paragraph [ref=e1145]: Discover how we can bring your vision to life.
+            - link "Get in touch" [ref=e1149] [cursor=pointer]:
+              - /url: https://conseil.pixfort.com/consulting/contact/
+              - generic [ref=e1150]: Get in touch
+              - img [ref=e1151]
+        - generic [ref=e1154]:
+          - generic [ref=e1155]:
+            - heading "Follow Us" [level=6] [ref=e1159]
+            - generic [ref=e1162]:
+              - link "pixicon-facebook3" [ref=e1163] [cursor=pointer]:
+                - /url: https://www.facebook.com/pixfort
+                - img [ref=e1164]
+              - link "pixicon-x-twitter" [ref=e1166] [cursor=pointer]:
+                - /url: https://www.twitter.com/pixfort
+                - img [ref=e1167]
+              - link "pixicon-instagram2" [ref=e1170] [cursor=pointer]:
+                - /url: https://www.instagram.com/pixfort
+                - img [ref=e1171]
+              - link "pixicon-dribbble" [ref=e1173] [cursor=pointer]:
+                - /url: https://www.dribbble.com/pixfort
+                - img [ref=e1174]
+              - link "pixicon-youtube3" [ref=e1176] [cursor=pointer]:
+                - /url: https://www.youtube.com/pixfort
+                - img [ref=e1177]
+          - generic [ref=e1179]:
+            - paragraph [ref=e1184]: pixfort © All rights reserved
+            - link "Get in touch" [ref=e1187] [cursor=pointer]:
+              - /url: https://conseil.pixfort.com/consulting/contact/
+              - generic [ref=e1188]: Get in touch
+            - link "Privacy" [ref=e1191] [cursor=pointer]:
+              - /url: https://conseil.pixfort.com/consulting/privacy-policy/
+              - generic [ref=e1192]: Privacy
+            - link "Terms of use" [ref=e1195] [cursor=pointer]:
+              - /url: https://conseil.pixfort.com/consulting/terms-of-use/
+              - generic [ref=e1196]: Terms of use
+  - link "Go to top" [ref=e1197] [cursor=pointer]:
+    - /url: "#"
+    - img [ref=e1198]
+  - dialog:
+    - generic:
+      - generic:
+        - img
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "Image link"
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img "Image link"
+                - generic:
+                  - generic:
+                    - generic:
+                      - heading "General Popup with Launcher" [level=6]:
+                        - generic: General Popup with Launcher
+                - generic:
+                  - generic:
+                    - generic:
+                      - paragraph: Creating popups has never been easier thanks to pixfort's next-generation popup builder.
+                - generic:
+                  - generic:
+                    - link "Check All Features":
+                      - /url: "#"
+                      - generic: Check All Features
+                      - img
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - heading "Do you have presale questions?" [level=6]
+                - generic:
+                  - generic:
+                    - generic:
+                      - paragraph: Contact our team if you have any question
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - link "For Freelancers":
+                          - /url: "#"
+                        - link "For Marketers":
+                          - /url: "#"
+                        - link "For Entrepreneurs":
+                          - /url: "#"
+                      - generic:
+                        - link "Get in Touch":
+                          - /url: "#"
+                          - generic: Get in Touch
+                          - img
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic: "Our usual reply time:"
+                        - generic: 1 Business day
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - paragraph: Follow us on
+                - generic:
+                  - generic:
+                    - generic:
+                      - link "pixicon-facebook3":
+                        - /url: "#"
+                        - img
+                      - link "pixicon-twitter":
+                        - /url: "#"
+                        - img
+                      - link "pixicon-youtube3":
+                        - /url: "#"
+                        - img
+                      - link "pixicon-instagram2":
+                        - /url: "#"
+                        - img
+  - link "Launcher General Popup Elementor" [ref=e1200] [cursor=pointer]:
+    - /url: "#"
+    - img [ref=e1202]
+    - img [ref=e1205]
+  - generic [ref=e1207]: desktop
+  - generic [ref=e1210]:
+    - img "cookie" [ref=e1211]
+    - generic [ref=e1212]:
+      - text: By using this website, you agree to our
+      - link "cookie policy" [ref=e1213] [cursor=pointer]:
+        - /url: https://conseil.pixfort.com/consulting/privacy-policy/
+    - link "Close" [ref=e1214] [cursor=pointer]:
+      - /url: "#"
+      - generic [ref=e1215]: Close
+      - img [ref=e1216]

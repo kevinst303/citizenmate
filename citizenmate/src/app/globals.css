@@ -52,10 +52,10 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 
   /* Conseil-inspired Teal Palette */
-  --color-cm-teal: #006d77;
-  --color-cm-teal-dark: #005a61;
-  --color-cm-teal-darker: #004a50;
-  --color-cm-teal-light: #e0f5f6;
+  --color-cm-teal: #006769;
+  --color-cm-teal-dark: #005658;
+  --color-cm-teal-darker: #004547;
+  --color-cm-teal-light: #E6F0F0;
   --color-cm-teal-50: #f0fafa;
   --color-cm-teal-100: #cceded;
 
@@ -107,7 +107,7 @@
   --card-foreground: #3F3F46;
   --popover: #FFFFFF;
   --popover-foreground: #3F3F46;
-  --primary: #006d77;
+  --primary: #006769;
   --primary-foreground: #FFFFFF;
   --secondary: rgba(107, 97, 196, 0.15);
   --secondary-foreground: #3d348b;
@@ -125,12 +125,14 @@
   --chart-4: #D97706;
   --chart-5: #0284C7;
   --radius: 10px;
+  --radius-card: 24px;
+  --radius-button: 50px;
   --sidebar: #FFFFFF;
   --sidebar-foreground: #1a1a1a;
-  --sidebar-primary: #006d77;
+  --sidebar-primary: #006769;
   --sidebar-primary-foreground: #FFFFFF;
   --sidebar-accent: #f0fafa;
-  --sidebar-accent-foreground: #006d77;
+  --sidebar-accent-foreground: #006769;
   --sidebar-border: #e8eaef;
   --sidebar-ring: #006d77;
 }
@@ -271,35 +273,35 @@
 }
 
 /* Conseil card style — exact Conseil tokens */
-/* Track 03-D: updated card-conseil and card-conseil-popular to 15px radius per DESIGN_TOKENS.md */
+/* Track 03-D: updated card-conseil and card-conseil-popular to 24px radius per DESIGN_TOKENS.md */
 .card-conseil {
   background: #FFFFFF;
   border: 1px solid #E9ECEF;
-  border-radius: 15px;
-  padding: 30px;
-  box-shadow: rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px;
+  border-radius: var(--radius-card, 24px);
+  padding: 40px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
   transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
 }
 
 .card-conseil:hover {
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-  transform: translateY(-3px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  transform: translateY(-8px);
   border-color: rgba(0,0,0,0.12);
 }
 
 /* Conseil card — popular/highlighted variant */
 .card-conseil-popular {
-  background: linear-gradient(135deg, #006d77 0%, #005a61 100%);
+  background: linear-gradient(135deg, #006769 0%, #005658 100%);
   border: none;
-  border-radius: 15px;
-  padding: 2rem;
+  border-radius: var(--radius-card, 24px);
+  padding: 40px;
   color: #FFFFFF;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .card-conseil-popular:hover {
-  box-shadow: 0 8px 30px rgba(0, 114, 122, 0.25);
-  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 103, 105, 0.25), 0 10px 10px -5px rgba(0, 103, 105, 0.1);
+  transform: translateY(-8px);
 }
 
 /* Fully rounded CTA button */
@@ -308,22 +310,23 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.75rem 2rem;
+  padding: 14px 32px;
   border-radius: 50px;
   font-weight: 600;
   font-size: 0.9375rem;
-  transition: all 0.25s ease;
+  transition: all 0.3s ease;
   cursor: pointer;
 }
 
 .btn-rounded-teal {
-  background: #006d77;
+  background: #006769;
   color: #FFFFFF;
 }
 
 .btn-rounded-teal:hover {
-  background: #005a61;
-  box-shadow: 0 4px 16px rgba(0, 114, 122, 0.3);
+  background: #005658;
+  filter: brightness(1.1);
+  box-shadow: 0 4px 16px rgba(0, 103, 105, 0.3);
 }
 
 .btn-rounded-outline {
@@ -333,9 +336,9 @@
 }
 
 .btn-rounded-outline:hover {
-  border-color: #006d77;
-  color: #006d77;
-  background: #f0fafa;
+  border-color: #006769;
+  color: #006769;
+  background: #E6F0F0;
 }
 
 .btn-rounded-dark {
@@ -379,7 +382,23 @@
   }
 }
 
-/* Fade in up */
+/* Fade in up - Pixfort style */
+@keyframes fade-in-up-slide {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up-slide {
+  animation: fade-in-up-slide 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Legacy Fade in up */
 @keyframes fade-in-up {
   from {
     opacity: 0;

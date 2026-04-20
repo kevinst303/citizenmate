@@ -153,3 +153,20 @@ CREATE TRIGGER profiles_updated_at
 CREATE TRIGGER study_progress_updated_at
   BEFORE UPDATE ON study_progress
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+-- ===== Webhook Idempotency =====
+
+-- Prevents double-processing of Stripe webhook events
+CREATE TABLE IF NOT EXISTS processed_webhook_events (
+  event_id TEXT PRIMARY KEY,
+  event_type TEXT NOT NULL,
+  processed_at TIMESTAMPTZ DEFAULT NOW(),
+  payload_hash TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_processed_webhook_events_processed_at 
+  ON processed_webhook_events (processed_at);
+
+ALTER TABLE processed_webhook_events ENABLE ROW LEVEL SECURITY;
+-- No user-facing RLS policies: only service_role can access
+
