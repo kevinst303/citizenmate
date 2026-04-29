@@ -39,117 +39,16 @@ import { AbsInsightsWidget } from "@/components/dashboard/abs-insights-widget";
 import { LifeInAustraliaSection } from "@/components/dashboard/life-in-australia-section";
 import type { TopicCategory } from "@/lib/types";
 import { SubpageHero } from "@/components/shared/subpage-hero";
+import {
+  TOPIC_ICONS,
+  TOPIC_COLORS,
+  READINESS_ICONS,
+  STAT_ACCENTS,
+  INSIGHT_ICONS,
+} from "@/lib/dashboard-config";
+import { getAIInsight } from "@/lib/insights";
+import { ReadinessRing } from "@/components/dashboard/readiness-ring";
 
-// ===== Topic visuals =====
-
-const TOPIC_ICONS: Record<TopicCategory, typeof Globe> = {
-  "australia-people": Globe,
-  "democratic-beliefs": Scale,
-  "government-law": Landmark,
-  "australian-values": Heart,
-};
-
-const TOPIC_COLORS: Record<
-  TopicCategory,
-  { bg: string; text: string; bar: string; accent: string; hoverBg: string }
-> = {
-  "australia-people": {
-    bg: "bg-cm-sky-light",
-    text: "text-cm-sky",
-    bar: "bg-cm-sky",
-    accent: "#0284C7",
-    hoverBg: "rgba(224, 242, 254, 0.5)",
-  },
-  "democratic-beliefs": {
-    bg: "bg-cm-navy-50",
-    text: "text-cm-navy",
-    bar: "bg-cm-navy",
-    accent: "#0C2340",
-    hoverBg: "rgba(235, 240, 247, 0.5)",
-  },
-  "government-law": {
-    bg: "bg-cm-gold-light",
-    text: "text-cm-gold",
-    bar: "bg-cm-gold",
-    accent: "#D97706",
-    hoverBg: "rgba(254, 243, 199, 0.5)",
-  },
-  "australian-values": {
-    bg: "bg-cm-red-light",
-    text: "text-cm-red",
-    bar: "bg-cm-red",
-    accent: "#DC2626",
-    hoverBg: "rgba(254, 226, 226, 0.5)",
-  },
-};
-
-// ===== Readiness Icons =====
-
-const READINESS_ICONS: Record<string, typeof Globe> = {
-  hand: Hand,
-  seedling: Sprout,
-  dumbbell: Dumbbell,
-  flame: Flame,
-  zap: Zap,
-  star: Star,
-  "party-popper": PartyPopper,
-};
-
-// ===== Stat accent colors (CSS custom prop) =====
-const STAT_ACCENTS = {
-  navy: "#0C2340",
-  gold: "#D97706",
-  eucalyptus: "#059669",
-  sky: "#0284C7",
-};
-
-// ===== AI Insight Logic =====
-
-function getAIInsight(readiness: ReadinessData): {
-  iconName: "hand" | "alert-triangle" | "party-popper" | "trending-up" | "book-open";
-  message: string;
-  variant: "info" | "success" | "warning";
-  recommendedAction: string; // matches a quick action title
-} {
-  if (readiness.totalQuizzesTaken === 0) {
-    return {
-      iconName: "hand",
-      message: "Welcome! Start with the study guide to build a strong foundation, then test yourself with a mock test.",
-      variant: "info",
-      recommendedAction: "Continue Studying",
-    };
-  }
-  if (!readiness.valuesReady) {
-    return {
-      iconName: "alert-triangle",
-      message: "Australian Values require 5/5 to pass. This is the fastest way to boost your readiness score.",
-      variant: "warning",
-      recommendedAction: "Review Values",
-    };
-  }
-  if (readiness.score >= 75) {
-    return {
-      iconName: "party-popper",
-      message: "You're looking test-ready! Take one more mock test to lock in your confidence before the real thing.",
-      variant: "success",
-      recommendedAction: "Take a Mock Test",
-    };
-  }
-  if (readiness.score >= 40) {
-    return {
-      iconName: "trending-up",
-      message: "Your scores are trending up! Keep the momentum going with consistent practice and study.",
-      variant: "info",
-      recommendedAction: "Smart Practice",
-    };
-  }
-  return {
-    iconName: "book-open",
-    message: "Build your knowledge first — study the guide, then take practice tests to track your progress.",
-    variant: "info",
-    recommendedAction: "Continue Studying",
-  };
-}
 
 // ===== Animations =====
 
@@ -166,107 +65,6 @@ const item = {
   show: { opacity: 1, y: 0, transition: { duration: 0.4 } },
 };
 
-// ===== Readiness ring — enhanced with double ring =====
-
-function ReadinessRing({ score }: { score: number }) {
-  const circumference = 2 * Math.PI * 54;
-  const filled = (score / 100) * circumference;
-
-  const outerCircumference = 2 * Math.PI * 58;
-  const outerFilled = (score / 100) * outerCircumference;
-
-  const color =
-    score >= 75
-      ? "stroke-cm-eucalyptus"
-      : score >= 50
-        ? "stroke-cm-gold"
-        : score >= 25
-          ? "stroke-orange-400"
-          : "stroke-cm-red";
-
-  const outerColor =
-    score >= 75
-      ? "stroke-cm-eucalyptus/30"
-      : score >= 50
-        ? "stroke-cm-gold/30"
-        : score >= 25
-          ? "stroke-orange-400/30"
-          : "stroke-cm-red/30";
-
-  return (
-    <div className="relative inline-flex items-center justify-center w-40 h-40 animate-glow">
-      <svg className="w-40 h-40 -rotate-90" viewBox="0 0 128 128">
-        {/* Outer track (subtle) */}
-        <circle
-          cx="64"
-          cy="64"
-          r="58"
-          fill="none"
-          strokeWidth="3"
-          className="stroke-cm-slate-100/50"
-        />
-        {/* Outer progress ring (subtle accent) */}
-        <motion.circle
-          cx="64"
-          cy="64"
-          r="58"
-          fill="none"
-          strokeWidth="3"
-          strokeLinecap="round"
-          className={outerColor}
-          initial={{ strokeDasharray: `0 ${outerCircumference}` }}
-          animate={{
-            strokeDasharray: `${outerFilled} ${outerCircumference - outerFilled}`,
-          }}
-          transition={{ duration: 1.4, ease: "easeOut", delay: 0.2 }}
-        />
-        {/* Inner track */}
-        <circle
-          cx="64"
-          cy="64"
-          r="54"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="7"
-          className="text-cm-slate-100"
-        />
-        {/* Inner progress ring (main) */}
-        <motion.circle
-          cx="64"
-          cy="64"
-          r="54"
-          fill="none"
-          strokeWidth="7"
-          strokeLinecap="round"
-          className={color}
-          initial={{ strokeDasharray: `0 ${circumference}` }}
-          animate={{
-            strokeDasharray: `${filled} ${circumference - filled}`,
-          }}
-          transition={{ duration: 1.2, ease: "easeOut", delay: 0.3 }}
-        />
-      </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <motion.span
-          initial={{ opacity: 0, scale: 0.6 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.5, type: "spring", stiffness: 200 }}
-          className="text-4xl font-heading font-extrabold text-cm-slate-900"
-        >
-          {score}%
-        </motion.span>
-        <motion.span
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="text-xs text-cm-slate-500 font-semibold tracking-wide uppercase"
-        >
-          Ready
-        </motion.span>
-      </div>
-    </div>
-  );
-}
 
 // ===== Page =====
 
@@ -353,14 +151,7 @@ export default function DashboardPage() {
               </div>
               <p className="text-sm text-cm-slate-700 leading-relaxed">
                 {(() => {
-                  const InsightIcon: Record<string, typeof Hand> = {
-                    "hand": Hand,
-                    "alert-triangle": AlertTriangle,
-                    "party-popper": PartyPopper,
-                    "trending-up": TrendingUp,
-                    "book-open": BookOpen,
-                  };
-                  const Icon = InsightIcon[aiInsight.iconName];
+                  const Icon = INSIGHT_ICONS[aiInsight.iconName];
                   return Icon ? <Icon className="w-4 h-4 inline-block mr-1.5 -mt-0.5 text-cm-slate-500" /> : null;
                 })()}
                 {aiInsight.message}

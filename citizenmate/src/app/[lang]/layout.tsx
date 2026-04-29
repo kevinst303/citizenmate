@@ -9,6 +9,7 @@ import { ReferralTracker } from "@/components/shared/referral-tracker";
 import { Suspense } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import { locales } from "@/i18n/config";
+import { PostHogProvider } from "@/components/providers/posthog-provider";
 import "../globals.css";
 
 const jsonLd = {
@@ -129,19 +130,21 @@ export default async function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
-        <AuthProvider>
-          <TestDateProvider>
-            <StudyProvider>
-              <SRSProvider>
-                <LayoutShell>{children}</LayoutShell>
-                <Suspense fallback={null}>
-                  <ReferralTracker />
-                </Suspense>
-                <Analytics />
-              </SRSProvider>
-            </StudyProvider>
-          </TestDateProvider>
-        </AuthProvider>
+        <PostHogProvider>
+          <AuthProvider>
+            <TestDateProvider>
+              <StudyProvider>
+                <SRSProvider>
+                  <LayoutShell>{children}</LayoutShell>
+                  <Suspense fallback={null}>
+                    <ReferralTracker />
+                  </Suspense>
+                  <Analytics />
+                </SRSProvider>
+              </StudyProvider>
+            </TestDateProvider>
+          </AuthProvider>
+        </PostHogProvider>
       </body>
     </html>
   );
