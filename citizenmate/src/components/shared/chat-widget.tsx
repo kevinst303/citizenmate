@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { toast } from "@/lib/toast";
 import { usePremium } from "@/lib/auth-context";
+import { useUpgradeModal } from "@/lib/store/useUpgradeModal";
 
 // ─── Rate Limiting ───────────────────────────────────────────
 
@@ -92,7 +93,8 @@ const THINKING_STAGES = [
 // ─── Chat Widget ─────────────────────────────────────────────
 
 export function ChatWidget() {
-  const { isPremium, upgrade } = usePremium();
+  const { isPremium } = usePremium();
+  const { openUpgradeModal } = useUpgradeModal();
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [dailyUsage, setDailyUsage] = useState<DailyUsage>(() => ({
@@ -420,7 +422,7 @@ export function ChatWidget() {
                   </p>
                 </div>
                 <button
-                  onClick={upgrade}
+                  onClick={() => openUpgradeModal('ai_tutor_limit')}
                   className="w-full mt-1 bg-cm-red hover:bg-cm-red-dark text-white text-xs font-semibold py-2 rounded-lg flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                 >
                   <Sparkles className="w-3.5 h-3.5" />

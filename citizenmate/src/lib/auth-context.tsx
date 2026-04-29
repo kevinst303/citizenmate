@@ -119,6 +119,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (currentUser) {
         fetchPremiumStatus(currentUser.id);
+        
+        // Redirect to onboarding if they haven't completed it and don't have a test date
+        const hasTestDate = localStorage.getItem("citizenmate-test-date");
+        const hasCompletedOnboarding = localStorage.getItem("citizenmate-onboarding-completed");
+        if (!hasTestDate && !hasCompletedOnboarding && window.location.pathname !== "/onboarding") {
+           window.location.href = "/onboarding";
+        }
       } else {
         setPremium({ isPremium: false, expiresAt: null, loading: false });
       }
@@ -137,6 +144,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           await syncAllToSupabase(newUser.id);
           await pullFromSupabase(newUser.id);
           await fetchPremiumStatus(newUser.id);
+          
+          // Check onboarding status after pulling from Supabase
+          const hasTestDate = localStorage.getItem("citizenmate-test-date");
+          const hasCompletedOnboarding = localStorage.getItem("citizenmate-onboarding-completed");
+          if (!hasTestDate && !hasCompletedOnboarding && window.location.pathname !== "/onboarding") {
+             window.location.href = "/onboarding";
+          }
         } catch (err) {
           console.error("[AuthProvider] Sync error on sign-in:", err);
         }

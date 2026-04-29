@@ -8,6 +8,7 @@ import { TestDateModal } from "@/components/shared/test-date-modal";
 import { InstallPrompt } from "@/components/shared/install-prompt";
 import { ChatWidget } from "@/components/shared/chat-widget";
 import { AuthModal } from "@/components/shared/auth-modal";
+import { UpgradeModal } from "@/components/global/upgrade-modal";
 import { GooeyToaster } from "@/components/ui/goey-toaster";
 import { CookieConsent } from "@/components/shared/cookie-consent";
 import { Analytics } from "@/components/shared/analytics";
@@ -53,6 +54,7 @@ export function LayoutShell({ children }: { children: React.ReactNode }) {
       {!isActiveQuiz && <Footer />}
       <TestDateModal />
       <AuthModal />
+      <UpgradeModal />
       <GooeyToaster />
       {!isActiveQuiz && <InstallPrompt />}
       {showChat && <ChatWidget />}

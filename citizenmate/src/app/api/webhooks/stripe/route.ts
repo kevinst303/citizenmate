@@ -71,8 +71,12 @@ async function handleCheckoutCompleted(
 
   const updateData: Record<string, unknown> = {
     is_premium: true,
-    premium_expires_at: expiresAt.toISOString(),
   };
+
+  // Only set expiry here if it's not a subscription
+  if (session.mode !== 'subscription') {
+    updateData.premium_expires_at = expiresAt.toISOString();
+  }
 
   if (stripeCustomerId) {
     updateData.stripe_customer_id = stripeCustomerId;
@@ -98,6 +102,37 @@ async function handleCheckoutCompleted(
     await sendPurchaseConfirmation(customerEmail, expiresAt.toISOString()).catch((err) =>
       console.error('[Webhook] Failed to send confirmation email:', err)
     );
+  }
+}
+
+async function handleSubscriptionUpdated(
+  subscription: Stripe.Subscription,
+  adminSupabase: ReturnType<typeof createSupabaseAdminClient>
+): Promise<void> {
+  const customerId = subscription.customer as string;
+  const status = subscription.status;
+
+  if (status === 'active' || status === 'trialing') {
+    const currentPeriodEnd = subscription.items.data[0]?.current_period_end || 0;
+    const expiresAt = new Date(currentPeriodEnd * 1000);
+    console.log(`[Webhook] Subscription active/trialing | customer=${customerId} | expires=${expiresAt.toISOString()}`);
+    
+    await adminSupabase
+      .from('profiles')
+      .update({
+        is_premium: true,
+        premium_expires_at: expiresAt.toISOString(),
+      })
+      .eq('stripe_customer_id', customerId);
+  } else if (status === 'canceled' || status === 'unpaid' || status === 'past_due') {
+    console.log(`[Webhook] Subscription ${status} | customer=${customerId}`);
+    await adminSupabase
+      .from('profiles')
+      .update({
+        is_premium: false,
+        premium_expires_at: null,
+      })
+      .eq('stripe_customer_id', customerId);
   }
 }
 
@@ -236,6 +271,14 @@ export async function POST(req: Request) {
       case 'checkout.session.completed':
         await handleCheckoutCompleted(
           event.data.object as Stripe.Checkout.Session,
+          adminSupabase
+        );
+        break;
+
+      case 'customer.subscription.created':
+      case 'customer.subscription.updated':
+        await handleSubscriptionUpdated(
+          event.data.object as Stripe.Subscription,
           adminSupabase
         );
         break;

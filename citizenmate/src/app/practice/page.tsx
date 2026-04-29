@@ -8,6 +8,7 @@ import { getAttemptHistory } from "@/lib/quiz-context";
 import { useEffect, useState } from "react";
 import type { QuizResult } from "@/lib/types";
 import { usePremium } from "@/lib/auth-context";
+import { useUpgradeModal } from "@/lib/store/useUpgradeModal";
 import { PremiumBadge } from "@/components/shared/premium-gate";
 import { SubpageHero } from "@/components/shared/subpage-hero";
 import {
@@ -43,7 +44,8 @@ const item = {
 const FREE_TEST_COUNT = 1;
 
 export default function PracticePage() {
-  const { isPremium, upgrade } = usePremium();
+  const { isPremium } = usePremium();
+  const { openUpgradeModal } = useUpgradeModal();
   const [attempts, setAttempts] = useState<
     Array<{ testId: string; result: QuizResult; completedAt: string }>
   >([]);
@@ -154,7 +156,7 @@ export default function PracticePage() {
             </Link>
           ) : (
             <button
-              onClick={upgrade}
+              onClick={() => openUpgradeModal('practice_limit')}
               className="group relative block w-full text-left bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 rounded-2xl shadow-lg shadow-purple-500/20 overflow-hidden cursor-pointer"
             >
               <div className="absolute inset-0 animate-shimmer" />
@@ -216,7 +218,7 @@ export default function PracticePage() {
                 >
                   {isLocked ? (
                     <button
-                      onClick={upgrade}
+                      onClick={() => openUpgradeModal('practice_limit')}
                       className="group flex flex-col h-full w-full text-left rounded-2xl card-glass p-6 shadow-card hover:shadow-card-hover transition-all duration-300 cursor-pointer relative overflow-hidden"
                     >
                       {/* Lock overlay */}

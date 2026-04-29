@@ -26,9 +26,12 @@ import {
   Star,
   PartyPopper,
   Brain,
+  Lock,
 } from "lucide-react";
 import { useStudy } from "@/lib/study-context";
 import { useTestDate } from "@/lib/test-date-context";
+import { usePremium } from "@/lib/auth-context";
+import { useUpgradeModal } from "@/lib/store/useUpgradeModal";
 import {
   calculateReadiness,
   getQuizHistory,
@@ -273,6 +276,8 @@ function ReadinessRing({ score }: { score: number }) {
 export default function DashboardPage() {
   const { progress } = useStudy();
   const { daysUntilTest, urgencyLevel, openModal, testDate } = useTestDate();
+  const { isPremium } = usePremium();
+  const { openUpgradeModal } = useUpgradeModal();
 
   // Defer localStorage reads until after hydration to prevent SSR mismatch
   const [hasMounted, setHasMounted] = useState(false);
@@ -318,6 +323,40 @@ export default function DashboardPage() {
           animate="show"
           className="space-y-8"
         >
+          {/* Premium Upgrade Banner for Free Users */}
+          {!isPremium && (
+            <motion.div
+              variants={item}
+              className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-[1px] rounded-2xl shadow-lg relative overflow-hidden group"
+            >
+              <div className="absolute inset-0 bg-white/20 group-hover:bg-transparent transition-colors duration-300 pointer-events-none" />
+              <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 justify-between relative z-10">
+                <div className="flex items-center gap-4 w-full sm:w-auto">
+                  <div className="bg-gradient-to-br from-indigo-100 to-purple-100 p-3 rounded-xl text-indigo-600 shadow-inner flex-shrink-0">
+                    <Sparkles className="w-6 h-6 animate-pulse" />
+                  </div>
+                  <div>
+                    <h3 className="font-heading font-bold text-lg text-cm-slate-900 flex items-center gap-2">
+                      Unlock Full Readiness
+                      <span className="bg-gradient-to-r from-indigo-500 to-purple-500 text-transparent bg-clip-text text-xs uppercase tracking-wider font-extrabold px-2 py-0.5 rounded-full border border-indigo-200">
+                        Pro
+                      </span>
+                    </h3>
+                    <p className="text-sm text-cm-slate-600 mt-0.5">
+                      Get unlimited mock tests, premium study guides, and advanced analytics to ensure you pass.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => openUpgradeModal('dashboard_banner')}
+                  className="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-heading font-semibold text-sm rounded-xl hover:shadow-lg transition-all hover:-translate-y-0.5 whitespace-nowrap cursor-pointer"
+                >
+                  Upgrade Now
+                </button>
+              </div>
+            </motion.div>
+          )}
+
           {/* AI Insight Banner — Situation-Based Smart Nudge */}
           <motion.div
             variants={item}
@@ -554,16 +593,20 @@ export default function DashboardPage() {
               </h2>
             </div>
 
-            <div className="space-y-4">
-              {readiness.topicMastery.map((topic) => {
+            <div className="space-y-4 relative">
+              {/* If premium, show all. If free, show 3 items, blur the last one, and add overlay */}
+              {(isPremium ? readiness.topicMastery : readiness.topicMastery.slice(0, 3)).map((topic, index) => {
                 const Icon = TOPIC_ICONS[topic.topicId];
                 const colors = TOPIC_COLORS[topic.topicId];
+                
+                // For free users, the third item is blurred
+                const isBlurredPreview = !isPremium && index === 2;
 
                 return (
                   <Link
                     key={topic.topicId}
                     href={`/study/${topic.topicId}`}
-                    className="topic-row group flex items-center gap-4 p-3 rounded-xl cursor-pointer"
+                    className={`topic-row group flex items-center gap-4 p-3 rounded-xl cursor-pointer ${isBlurredPreview ? 'filter blur-[2px] opacity-60 pointer-events-none' : ''}`}
                     style={
                       {
                         "--topic-accent-color": colors.accent,
@@ -600,6 +643,28 @@ export default function DashboardPage() {
                   </Link>
                 );
               })}
+              
+              {!isPremium && (
+                <div className="absolute inset-x-0 bottom-0 top-24 flex items-center justify-center bg-gradient-to-t from-white via-white/80 to-transparent pt-12 pb-4 z-10 rounded-b-xl">
+                  <button
+                    onClick={() => openUpgradeModal('dashboard_analytics')}
+                    className="flex flex-col items-center justify-center px-6 py-4 bg-white rounded-2xl shadow-xl border border-purple-100 hover:border-purple-300 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer"
+                  >
+                    <div className="w-12 h-12 bg-purple-50 rounded-full flex items-center justify-center mb-3 group-hover:bg-purple-100 transition-colors">
+                      <Lock className="w-6 h-6 text-purple-600" />
+                    </div>
+                    <h4 className="font-heading font-bold text-cm-slate-900 text-base mb-1">
+                      Advanced Topic Analytics
+                    </h4>
+                    <p className="text-sm text-cm-slate-500 mb-4 max-w-[220px] text-center">
+                      See your exact strengths and weaknesses across all categories.
+                    </p>
+                    <span className="text-sm font-semibold text-purple-600 group-hover:text-purple-700 flex items-center gap-1">
+                      Unlock with Pro <ArrowRight className="w-4 h-4" />
+                    </span>
+                  </button>
+                </div>
+              )}
             </div>
           </motion.div>
 

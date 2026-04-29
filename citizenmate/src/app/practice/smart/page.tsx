@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -22,6 +22,9 @@ import {
   RotateCcw,
   AlertCircle,
 } from "lucide-react";
+import { usePremium } from "@/lib/auth-context";
+import { useUpgradeModal } from "@/lib/store/useUpgradeModal";
+import { toast } from "@/lib/toast";
 
 const TOPIC_ICONS: Record<TopicCategory, typeof Globe> = {
   "australia-people": Globe,
@@ -80,14 +83,51 @@ const item = {
 export default function SmartPracticePage() {
   const router = useRouter();
   const { getStats, getTopicWeakness, getSmartQuestions } = useSRS();
+  const { isPremium } = usePremium();
+  const { openUpgradeModal } = useUpgradeModal();
   const [focusTopic, setFocusTopic] = useState<TopicCategory | null>(null);
+  
+  const [dailyUsage, setDailyUsage] = useState({ date: new Date().toISOString().slice(0, 10), count: 0 });
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const key = "citizenmate-srs-usage";
+    const today = new Date().toISOString().slice(0, 10);
+    const raw = localStorage.getItem(key);
+    if (raw) {
+      try {
+        const parsed = JSON.parse(raw);
+        if (parsed.date === today) {
+          setDailyUsage(parsed);
+          return;
+        }
+      } catch (e) {}
+    }
+    const newUsage = { date: today, count: 0 };
+    localStorage.setItem(key, JSON.stringify(newUsage));
+    setDailyUsage(newUsage);
+  }, []);
 
   const stats = useMemo(() => getStats(), [getStats]);
   const topicWeakness = useMemo(() => getTopicWeakness(), [getTopicWeakness]);
 
   const hasData = stats.totalQuestions - stats.newCount > 0;
+  
+  const MAX_DAILY_SESSIONS = 1;
+  const isLimitReached = !isPremium && dailyUsage.count >= MAX_DAILY_SESSIONS;
 
   const handleStartSession = () => {
+    if (isLimitReached) {
+      openUpgradeModal("srs_limit");
+      return;
+    }
+
+    if (!isPremium) {
+      const newUsage = { date: dailyUsage.date, count: dailyUsage.count + 1 };
+      localStorage.setItem("citizenmate-srs-usage", JSON.stringify(newUsage));
+      setDailyUsage(newUsage);
+    }
+
     // Pre-generate questions and store in sessionStorage for the session page
     const questions = getSmartQuestions(15, focusTopic ?? undefined);
     sessionStorage.setItem(
@@ -359,13 +399,17 @@ export default function SmartPracticePage() {
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <motion.button
-                  whileHover={{ scale: 1.02, y: -1 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={!isLimitReached ? { scale: 1.02, y: -1 } : {}}
+                  whileTap={!isLimitReached ? { scale: 0.98 } : {}}
                   onClick={handleStartSession}
-                  className="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-heading font-bold rounded-xl shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/30 transition-all duration-200 cursor-pointer"
+                  className={`inline-flex items-center gap-2 px-8 py-3.5 font-heading font-bold rounded-xl transition-all duration-200 cursor-pointer ${
+                    isLimitReached 
+                      ? "bg-gradient-to-r from-cm-red to-rose-600 text-white shadow-lg shadow-cm-red/25 hover:shadow-xl hover:shadow-cm-red/30"
+                      : "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/30"
+                  }`}
                 >
                   <Sparkles className="w-5 h-5" />
-                  Start Session
+                  {isLimitReached ? "Unlock Unlimited Practice" : "Start Session"}
                   <ArrowRight className="w-4 h-4" />
                 </motion.button>
 
@@ -378,6 +422,17 @@ export default function SmartPracticePage() {
                   </button>
                 )}
               </div>
+              
+              {/* Limit Banner */}
+              {isLimitReached && (
+                <motion.div 
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  className="mt-4 text-xs font-semibold text-cm-red"
+                >
+                  You've used your 1 free Smart Practice session for today.
+                </motion.div>
+              )}
 
               <div className="flex items-center justify-center gap-4 mt-5 text-xs text-cm-slate-400">
                 <span className="flex items-center gap-1">

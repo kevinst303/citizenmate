@@ -1,6 +1,6 @@
 "use client";
 
-import { use } from "react";
+import { use, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -12,6 +12,7 @@ import {
   Landmark,
   Heart,
   ChevronRight,
+  Lock,
 } from "lucide-react";
 import { studyTopics } from "@/data/study-content";
 import { useStudy } from "@/lib/study-context";
@@ -20,6 +21,10 @@ import { LanguageToggle } from "@/components/study/language-toggle";
 import { StudyProgressBar } from "@/components/study/study-progress-bar";
 import type { TopicCategory } from "@/lib/types";
 import { toast } from "@/lib/toast";
+import { usePremium } from "@/lib/auth-context";
+import { useUpgradeModal } from "@/lib/store/useUpgradeModal";
+
+const FREE_TOPIC_COUNT = 1;
 
 const TOPIC_ICONS: Record<TopicCategory, typeof Globe> = {
   "australia-people": Globe,
@@ -42,14 +47,25 @@ export default function TopicStudyPage({
     isSectionComplete,
     getTopicProgress,
   } = useStudy();
+  const { isPremium } = usePremium();
+  const { openUpgradeModal } = useUpgradeModal();
 
   // Find topic
   const topicIndex = studyTopics.findIndex((t) => t.id === topicId);
   const topic = studyTopics[topicIndex];
 
+  const isLocked = !isPremium && topicIndex >= FREE_TOPIC_COUNT;
+
+  useEffect(() => {
+    if (isLocked) {
+      openUpgradeModal('study_limit');
+      router.replace('/study');
+    }
+  }, [isLocked, openUpgradeModal, router]);
+
   // Redirect if invalid topic
-  if (!topic) {
-    router.replace("/study");
+  if (!topic || isLocked) {
+    if (!topic) router.replace("/study");
     return null;
   }
 
@@ -60,6 +76,7 @@ export default function TopicStudyPage({
   const prevTopic = topicIndex > 0 ? studyTopics[topicIndex - 1] : null;
   const nextTopic =
     topicIndex < studyTopics.length - 1 ? studyTopics[topicIndex + 1] : null;
+  const isNextLocked = !isPremium && (topicIndex + 1) >= FREE_TOPIC_COUNT;
 
   return (
     <div className="min-h-screen bg-white">
@@ -178,19 +195,36 @@ export default function TopicStudyPage({
             <div />
           )}
           {nextTopic ? (
-            <Link
-              href={`/study/${nextTopic.id}`}
-              className="flex items-center gap-2 px-4 py-3 bg-white border border-[#E9ECEF] rounded-[15px] hover:border-cm-teal/40 hover:shadow-md transition-all duration-200 cursor-pointer group text-right"
-              style={{ boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}
-            >
-              <div>
-                <div className="text-xs text-cm-slate-400">Next</div>
-                <div className="text-sm font-heading font-semibold text-cm-slate-700 group-hover:text-cm-teal transition-colors">
-                  {nextTopic.title}
+            isNextLocked ? (
+              <button
+                onClick={() => openUpgradeModal('study_limit')}
+                className="flex items-center gap-2 px-4 py-3 bg-cm-red/10 border border-cm-red/20 rounded-[15px] hover:bg-cm-red/20 transition-all duration-200 cursor-pointer group text-right ml-auto"
+              >
+                <div>
+                  <div className="text-xs text-cm-red/70 font-semibold flex items-center justify-end gap-1">
+                    <Lock className="w-3 h-3" /> Premium
+                  </div>
+                  <div className="text-sm font-heading font-semibold text-cm-red">
+                    Unlock {nextTopic.title}
+                  </div>
                 </div>
-              </div>
-              <ArrowRight className="w-4 h-4 text-cm-slate-400 group-hover:text-cm-teal transition-colors" />
-            </Link>
+                <ArrowRight className="w-4 h-4 text-cm-red group-hover:translate-x-1 transition-transform" />
+              </button>
+            ) : (
+              <Link
+                href={`/study/${nextTopic.id}`}
+                className="flex items-center gap-2 px-4 py-3 bg-white border border-[#E9ECEF] rounded-[15px] hover:border-cm-teal/40 hover:shadow-md transition-all duration-200 cursor-pointer group text-right ml-auto"
+                style={{ boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}
+              >
+                <div>
+                  <div className="text-xs text-cm-slate-400">Next</div>
+                  <div className="text-sm font-heading font-semibold text-cm-slate-700 group-hover:text-cm-teal transition-colors">
+                    {nextTopic.title}
+                  </div>
+                </div>
+                <ArrowRight className="w-4 h-4 text-cm-slate-400 group-hover:text-cm-teal transition-colors" />
+              </Link>
+            )
           ) : (
             <Link
               href="/study"
