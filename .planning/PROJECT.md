@@ -1,12 +1,21 @@
-# CitizenMate — Conseil Design Overhaul
+# CitizenMate — Launch Readiness
+
+## Current Milestone: v1.1 Launch Readiness
+
+**Goal:** Get CitizenMate production-ready with infrastructure hardening, revenue conversion engine, and growth mechanics from the business plan.
+
+**Target features:**
+- Infrastructure: Automated tests, Sentry error tracking, Redis rate limiting, dashboard refactor
+- Revenue Engine: Test-date onboarding, 6 upgrade moment triggers, tiered pricing (Pro/Premium), PostHog analytics
+- Growth: 4 new language pairs, "Help a Mate" referral program, email notifications
 
 ## What This Is
 
-CitizenMate is a Next.js 16 civic-education SaaS app (quiz, study, and dashboard flows). The v1.0 milestone delivered a pixel-accurate redesign based on the conseil.pixfort.com consulting template — every visual design token, typography choice, component layout, and page section now matches the Conseil aesthetic throughout the app.
+CitizenMate is a Next.js 16 civic-education SaaS app (quiz, study, and dashboard flows). The v1.1 milestone focuses on transitioning from an MVP to a revenue-generating SaaS by implementing test automation, robust infrastructure, and business-critical features.
 
 ## Core Value
 
-Every page of CitizenMate renders with the Conseil design system: Poppins + Inter typography, teal/purple palette, 15px-radius cards, solid white navbar, and component layouts that match the Conseil reference.
+Every page of CitizenMate renders with the Conseil design system. v1.1 ensures the application is reliable, secure, and optimized for user conversion and growth.
 
 ## Requirements
 
@@ -29,6 +38,17 @@ Every page of CitizenMate renders with the Conseil design system: Poppins + Inte
 ### Active
 
 *(Next milestone requirements — defined via `/gsd:new-milestone`)*
+- INFRA-01: Implement automated test framework (Vitest)
+- INFRA-02: Add Sentry error tracking
+- INFRA-03: Implement Redis rate limiting
+- INFRA-04: Refactor dashboard monolithic structure
+- REV-01: Build test-date onboarding flow
+- REV-02: Implement 6 upgrade moment triggers
+- REV-03: Implement tiered pricing (Pro/Premium)
+- REV-04: Integrate PostHog analytics
+- GROW-01: Add 4 new language pairs
+- GROW-02: Build "Help a Mate" referral program
+- GROW-03: Implement email notifications
 
 ### Out of Scope
 
@@ -74,5 +94,22 @@ Every page of CitizenMate renders with the Conseil design system: Poppins + Inte
 | cm-eucalyptus → cm-teal throughout study flow | cm-eucalyptus not in Conseil palette | ✓ Good |
 | conseil-teal → cm-teal in SubpageHero | conseil-teal was undefined; cm-teal is canonical | ✓ Good — caught in audit |
 
+## Evolution
+
+This document evolves at phase transitions and milestone boundaries.
+
+**After each phase transition** (via `/gsd-transition`):
+1. Requirements invalidated? → Move to Out of Scope with reason
+2. Requirements validated? → Move to Validated with phase reference
+3. New requirements emerged? → Add to Active
+4. Decisions to log? → Add to Key Decisions
+5. "What This Is" still accurate? → Update if drifted
+
+**After each milestone** (via `/gsd-complete-milestone`):
+1. Full review of all sections
+2. Core Value check — still the right priority?
+3. Audit Out of Scope — reasons still valid?
+4. Update Context with current state
+
 ---
-*Last updated: 2026-04-06 after v1.0 milestone (Conseil Design Overhaul shipped)*
+*Last updated: 2026-04-29 starting v1.1 milestone (Launch Readiness)*

@@ -1,34 +1,35 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: Conseil Design Overhaul
-status: complete
-last_updated: "2026-04-06"
+milestone: v1.1
+milestone_name: Launch Readiness
+status: planning
+last_updated: "2026-04-29"
 progress:
-  total_phases: 3
-  completed_phases: 3
-  total_plans: 7
-  completed_plans: 7
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
 ---
 
-# Project State: CitizenMate Conseil Design Overhaul
+# Project State: CitizenMate Launch Readiness
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-04-06 after v1.0)
+See: .planning/PROJECT.md (updated 2026-04-29)
 
-**Core value:** Every page of CitizenMate renders with the Conseil design system
-**Current focus:** v1.0 shipped — planning next milestone
+**Core value:** Every page of CitizenMate renders with the Conseil design system. v1.1 ensures the application is reliable, secure, and optimized for user conversion and growth.
+**Current focus:** Defining requirements and roadmap for v1.1
 
-## Milestone Status
+## Current Position
 
-**v1.0 Conseil Design Overhaul — SHIPPED 2026-04-06**
-
-All 3 phases complete. All 7 Phase 3 plans complete. Milestone archived to `.planning/milestones/`.
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-04-29 — Milestone v1.1 started
 
 ## Branch
 
-`feat/conseil-design-overhaul`
+`main`
 
 ## Known Tech Debt (carried to next milestone)
 
@@ -38,4 +39,4 @@ All 3 phases complete. All 7 Phase 3 plans complete. Milestone archived to `.pla
 - `auth-modal.tsx` submit button uses legacy `bg-cm-navy` alias (renders identically to cm-teal)
 
 ---
-*State initialized: 2026-04-02 | v1.0 completed: 2026-04-06*
+*State initialized: 2026-04-29*
