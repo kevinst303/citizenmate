@@ -24,4 +24,14 @@
 - Major UI/UX redesigns (already completed in v1.0).
 
 ## Traceability
-*(To be filled by roadmap)*
+- **INFRA-01**: Phase 4
+- **INFRA-02**: Phase 5
+- **INFRA-03**: Phase 5
+- **INFRA-04**: Phase 4
+- **REV-01**: Phase 6
+- **REV-02**: Phase 6
+- **REV-03**: Phase 6
+- **REV-04**: Phase 5
+- **GROW-01**: Phase 7
+- **GROW-02**: Phase 7
+- **GROW-03**: Phase 7
