@@ -1,24 +1,33 @@
-# Roadmap: CitizenMate Conseil Design Overhaul
+# CitizenMate Roadmap
 
-## Milestones
+## Phase 4: Test Automation & Codebase Health
+**Goal:** Establish a testing baseline and reduce monolithic technical debt to ensure future feature development is safe and maintainable.
+**Requirements:** INFRA-01, INFRA-04
+**Success Criteria:**
+- Vitest is configured and running successfully in CI/CD.
+- Unit tests are passing for the SRS engine and Readiness Calculator.
+- `src/app/dashboard/page.tsx` and `src/data/questions.ts` are refactored into smaller, maintainable modules without breaking existing functionality.
 
-- ✅ **v1.0 Conseil Design Overhaul** — Phases 1-3 (shipped 2026-04-06) → [archive](.planning/milestones/v1.0-ROADMAP.md)
+## Phase 5: Production Infrastructure & Monitoring
+**Goal:** Harden the application for production traffic by addressing security vulnerabilities and enabling comprehensive monitoring.
+**Requirements:** INFRA-02, INFRA-03, REV-04
+**Success Criteria:**
+- Sentry is integrated and successfully capturing frontend and backend errors.
+- Upstash Redis rate limiting is active for the AI Tutor and Vercel serverless functions.
+- PostHog analytics is configured and tracking key conversion funnels.
 
-## Phases
+## Phase 6: Revenue Engine & Monetization
+**Goal:** Implement the core business logic necessary to convert free users into paying subscribers at scale.
+**Requirements:** REV-01, REV-02, REV-03
+**Success Criteria:**
+- Users can complete a test-date-anchored onboarding flow that generates a personalized study plan.
+- Six distinct upgrade triggers are active and successfully prompt users to subscribe.
+- Stripe checkout supports both Pro and Premium tiered subscriptions with recurring and micro-transaction logic.
 
-<details>
-<summary>✅ v1.0 Conseil Design Overhaul (Phases 1-3) — SHIPPED 2026-04-06</summary>
-
-- [x] Phase 1: Reconnaissance — Extract Conseil design system (pre-GSD, artifacts in citizenmate/docs/research/conseil/)
-- [x] Phase 2: Foundation — Apply global CSS tokens, fonts, navbar, hero images (pre-GSD, gate passed 2026-04-02)
-- [x] Phase 3: Component Implementation — 7/7 plans complete (completed 2026-04-05)
-
-</details>
-
-## Progress
-
-| Phase | Milestone | Plans Complete | Status | Completed |
-|-------|-----------|----------------|--------|-----------|
-| 1. Reconnaissance | v1.0 | ✓ | Complete | 2026-04-02 |
-| 2. Foundation | v1.0 | ✓ | Complete | 2026-04-02 |
-| 3. Component Implementation | v1.0 | 7/7 | Complete | 2026-04-05 |
+## Phase 7: Growth & Retention
+**Goal:** Deploy features designed to increase top-of-funnel acquisition and re-engage dormant users.
+**Requirements:** GROW-01, GROW-02, GROW-03
+**Success Criteria:**
+- The application UI and content support 4 new language pairs.
+- Users can generate and share unique referral links via the "Help a Mate" program.
+- Email notifications (via Resend or similar) are successfully triggering based on user inactivity or key milestones.

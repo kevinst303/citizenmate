@@ -1,0 +1,31 @@
+{
+  "navigation": {
+    "dashboard": "仪表板",
+    "practice": "练习",
+    "study": "学习指南",
+    "upgrade": "升级到高级版",
+    "logout": "登出",
+    "login": "登录"
+  },
+  "dashboard": {
+    "welcome": "欢迎回来",
+    "start_test": "开始练习测试",
+    "readiness": "准备度得分",
+    "recent_tests": "最近测试",
+    "refer_friend": "帮助朋友",
+    "refer_desc": "分享 CitizenMate 并免费获得 7 天高级版！"
+  },
+  "referral": {
+    "title": "帮助朋友",
+    "description": "分享此链接。当他们注册时，你们都会获得 7 天高级版！",
+    "copy_link": "复制推荐链接",
+    "copied": "已复制！"
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "发生错误",
+    "save": "保存",
+    "cancel": "取消",
+    "back": "返回"
+  }
+}

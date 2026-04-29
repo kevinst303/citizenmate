@@ -1,0 +1,31 @@
+{
+  "navigation": {
+    "dashboard": "لوحة القيادة",
+    "practice": "ممارسة",
+    "study": "أدلة الدراسة",
+    "upgrade": "الترقية إلى Pro",
+    "logout": "تسجيل خروج",
+    "login": "تسجيل الدخول"
+  },
+  "dashboard": {
+    "welcome": "مرحبًا بعودتك",
+    "start_test": "بدء اختبار الممارسة",
+    "readiness": "درجة الاستعداد",
+    "recent_tests": "الاختبارات الأخيرة",
+    "refer_friend": "ساعد صديقًا",
+    "refer_desc": "شارك CitizenMate واحصل على 7 أيام Premium مجانًا!"
+  },
+  "referral": {
+    "title": "ساعد صديقًا",
+    "description": "شارك هذا الرابط. عندما يقومون بالتسجيل، ستحصلان على 7 أيام Premium!",
+    "copy_link": "نسخ رابط الإحالة",
+    "copied": "تم النسخ!"
+  },
+  "common": {
+    "loading": "جارٍ التحميل...",
+    "error": "حدث خطأ",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "back": "عودة"
+  }
+}

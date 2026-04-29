@@ -1,0 +1,31 @@
+{
+  "navigation": {
+    "dashboard": "Dashboard",
+    "practice": "Practice",
+    "study": "Study Guides",
+    "upgrade": "Upgrade to Pro",
+    "logout": "Logout",
+    "login": "Login"
+  },
+  "dashboard": {
+    "welcome": "Welcome back",
+    "start_test": "Start Practice Test",
+    "readiness": "Readiness Score",
+    "recent_tests": "Recent Tests",
+    "refer_friend": "Help a Mate",
+    "refer_desc": "Share CitizenMate and get 7 days of Premium free!"
+  },
+  "referral": {
+    "title": "Help a Mate",
+    "description": "Share this link. When they sign up, you both get 7 days of Premium!",
+    "copy_link": "Copy Referral Link",
+    "copied": "Copied!"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "navigation": {
+    "dashboard": "Panel de control",
+    "practice": "Práctica",
+    "study": "Guías de estudio",
+    "upgrade": "Mejorar a Pro",
+    "logout": "Cerrar sesión",
+    "login": "Iniciar sesión"
+  },
+  "dashboard": {
+    "welcome": "Bienvenido de nuevo",
+    "start_test": "Iniciar prueba de práctica",
+    "readiness": "Puntuación de preparación",
+    "recent_tests": "Pruebas recientes",
+    "refer_friend": "Ayuda a un amigo",
+    "refer_desc": "¡Comparte CitizenMate y obtén 7 días de Premium gratis!"
+  },
+  "referral": {
+    "title": "Ayuda a un amigo",
+    "description": "Comparte este enlace. Cuando se registren, ¡ambos obtendrán 7 días de Premium!",
+    "copy_link": "Copiar enlace de referencia",
+    "copied": "¡Copiado!"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Ocurrió un error",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "back": "Volver"
+  }
+}
