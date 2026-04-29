@@ -15,6 +15,7 @@ node_modules/
 # === Next.js ===
 .next/
 out/
+citizenmate/tmp/
 
 # === PWA — generated service worker ===
 citizenmate/public/sw.js
@@ -64,3 +65,4 @@ coverage/
 
 # === Misc ===
 .turbo
+.gitnexus
