@@ -190,7 +190,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return { error: { message: "Supabase not configured" } as AuthError };
       }
       const supabase = getSupabaseBrowserClient();
-      const { error } = await supabase.auth.signUp({ email, password });
+      
+      let referred_by = undefined;
+      if (typeof document !== "undefined") {
+        const match = document.cookie.match(/(^| )citizenmate_ref=([^;]+)/);
+        if (match) referred_by = match[2];
+      }
+
+      const { error } = await supabase.auth.signUp({ 
+        email, 
+        password,
+        options: {
+          data: {
+            referred_by,
+          }
+        }
+      });
       if (!error) closeAuthModal();
       return { error };
     },

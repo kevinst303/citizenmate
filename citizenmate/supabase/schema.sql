@@ -17,8 +17,20 @@ CREATE TABLE IF NOT EXISTS profiles (
   stripe_customer_id TEXT,
   study_language TEXT DEFAULT 'en',
   test_date DATE,
+  referred_by UUID REFERENCES profiles(id) ON DELETE SET NULL,
+  unsubscribed_from_emails BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Referral rewards to track limits per user
+CREATE TABLE IF NOT EXISTS referral_rewards (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  referrer_id UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL,
+  referee_id UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL,
+  reward_days INTEGER NOT NULL DEFAULT 7,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(referrer_id, referee_id)
 );
 
 -- Study progress (one row per user)
@@ -116,15 +128,22 @@ CREATE POLICY "Users can insert own quiz history"
   ON quiz_history FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
+-- Referral rewards
+ALTER TABLE referral_rewards ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Users can read own referral rewards"
+  ON referral_rewards FOR SELECT
+  USING (auth.uid() = referrer_id OR auth.uid() = referee_id);
+
 -- ===== Auto-create profile on signup =====
 
 CREATE OR REPLACE FUNCTION handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
-  INSERT INTO profiles (id, display_name)
+  INSERT INTO profiles (id, display_name, referred_by)
   VALUES (
     NEW.id,
-    COALESCE(NEW.raw_user_meta_data->>'full_name', NEW.email)
+    COALESCE(NEW.raw_user_meta_data->>'full_name', NEW.email),
+    (NEW.raw_user_meta_data->>'referred_by')::UUID
   );
   RETURN NEW;
 END;

@@ -1,24 +1,8 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "regions": ["syd1"],
-  "framework": "nextjs",
-  "installCommand": "pnpm install --no-frozen-lockfile",
-  "buildCommand": "pnpm build",
-  "headers": [
+  "crons": [
     {
-      "source": "/api/health",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-store, no-cache, must-revalidate"
-        }
-      ]
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/robots.txt",
-      "destination": "/api/robots"
+      "path": "/api/cron/emails",
+      "schedule": "0 10 * * *"
     }
   ]
 }
