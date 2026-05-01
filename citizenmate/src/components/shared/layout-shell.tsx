@@ -11,6 +11,7 @@ import { AuthModal } from "@/components/shared/auth-modal";
 import { GooeyToaster } from "@/components/ui/goey-toaster";
 import { CookieConsent } from "@/components/shared/cookie-consent";
 import { Analytics } from "@/components/shared/analytics";
+import { Suspense } from "react";
 
 /**
  * Conditionally shows/hides the Navbar and Footer based on the current route.
@@ -55,7 +56,9 @@ export function LayoutShell({ children }: { children: React.ReactNode }) {
       <main id="main-content" className="flex-1">{children}</main>
       {!hideShellUI && <Footer />}
       <TestDateModal />
-      <AuthModal />
+      <Suspense fallback={null}>
+        <AuthModal />
+      </Suspense>
       <GooeyToaster />
       {!hideShellUI && <InstallPrompt />}
       {showChat && <ChatWidget />}
