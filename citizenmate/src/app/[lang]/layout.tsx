@@ -8,6 +8,7 @@ import { SRSProvider } from "@/lib/srs-context";
 import { ReferralTracker } from "@/components/shared/referral-tracker";
 import { Suspense } from "react";
 import { Analytics } from "@vercel/analytics/react";
+import { AuthRedirectHandler } from "@/components/shared/auth-redirect-handler";
 import { locales } from "@/i18n/config";
 import { PostHogProvider } from "@/components/providers/posthog-provider";
 import "../globals.css";
@@ -138,6 +139,7 @@ export default async function RootLayout({
                   <LayoutShell>{children}</LayoutShell>
                   <Suspense fallback={null}>
                     <ReferralTracker />
+                    <AuthRedirectHandler />
                   </Suspense>
                   <Analytics />
                 </SRSProvider>

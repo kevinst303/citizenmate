@@ -106,6 +106,7 @@ export default function DashboardPage() {
         description={readiness.message}
         bgImage="/generated/dash-welcome.webp"
         badge="Your Dashboard"
+        curveColorClass="text-cm-ice"
       />
 
       {/* ===== Main content ===== */}

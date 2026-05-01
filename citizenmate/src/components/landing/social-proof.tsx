@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const testimonials = [
   {
@@ -31,21 +32,52 @@ const testimonials = [
     avatar: "AA",
     gradient: "from-violet-400 to-violet-600",
   },
+  {
+    name: "Elena Rodriguez",
+    role: "New citizen from Colombia",
+    review:
+      "The simulated exams were a lifesaver! I was able to familiarize myself with the question format. By the time I took the actual test, it felt just like another practice run.",
+    rating: 5,
+    avatar: "ER",
+    gradient: "from-rose-400 to-rose-600",
+  },
+  {
+    name: "Kwame Osei",
+    role: "New citizen from Ghana",
+    review:
+      "The bite-sized lessons made it so easy to study during my daily commute. I never felt overwhelmed, and the progress tracker kept me motivated. Highly recommended!",
+    rating: 5,
+    avatar: "KO",
+    gradient: "from-blue-400 to-blue-600",
+  },
+  {
+    name: "Mateo Silva",
+    role: "New citizen from Brazil",
+    review:
+      "I struggled with the 'Democratic beliefs and rights' section initially. The detailed explanations after every wrong answer finally made it click for me.",
+    rating: 4,
+    avatar: "MS",
+    gradient: "from-amber-400 to-amber-600",
+  },
+  {
+    name: "Yuki Tanaka",
+    role: "New citizen from Japan",
+    review:
+      "English is not my first language, so the simple, clear wording of the study materials was fantastic. Passed with 100% on my first attempt!",
+    rating: 5,
+    avatar: "YT",
+    gradient: "from-fuchsia-400 to-fuchsia-600",
+  },
+  {
+    name: "Samir Patel",
+    role: "New citizen from UK",
+    review:
+      "Even as a native English speaker, the history and government sections were daunting. CitizenMate broke it all down beautifully. Worth every penny.",
+    rating: 5,
+    avatar: "SP",
+    gradient: "from-sky-400 to-sky-600",
+  }
 ];
-
-const cardVariant = {
-  hidden: { opacity: 0, y: 30 },
-  show: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: 0.15 * i,
-      type: "spring" as const,
-      stiffness: 100,
-      damping: 16,
-    },
-  }),
-};
 
 // SOCP-01, SOCP-02, SOCP-03: verified
 // SOCP-01: section-alt-bg on section wrapper
@@ -53,10 +85,10 @@ const cardVariant = {
 // SOCP-03: badge-pill-teal + h2 heading above grid; dual CTA buttons at bottom
 export function SocialProof() {
   return (
-    <section className="py-20 sm:py-28 section-alt-bg">
-      <div className="mx-auto max-w-[1140px] px-4 sm:px-6 lg:px-8">
+    <section className="py-20 sm:py-28 section-alt-bg overflow-hidden relative">
+      <div className="mx-auto max-w-[1140px] px-4 sm:px-6 lg:px-8 relative mb-16">
         {/* Section header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
+        <div className="text-center max-w-2xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -88,19 +120,26 @@ export function SocialProof() {
             Join thousands of people who passed their citizenship test with confidence.
           </motion.p>
         </div>
+      </div>
 
-        {/* Testimonial cards — Conseil 3-column */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-          {testimonials.map((testimonial, index) => (
+      {/* Testimonial marquee - Full Width */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="relative group py-4"
+      >
+        {/* Gradient masks for infinite effect - Anchored to screen edges */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-24 sm:w-40 lg:w-64 bg-gradient-to-r from-[#F4F4F5] to-transparent z-10" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-24 sm:w-40 lg:w-64 bg-gradient-to-l from-[#F4F4F5] to-transparent z-10" />
+
+        <div className="flex w-max min-w-full animate-[marquee_40s_linear_infinite] group-hover:[animation-play-state:paused]">
+          {[...testimonials, ...testimonials].map((testimonial, index) => (
             <motion.div
-              key={testimonial.name}
-              custom={index}
-              variants={cardVariant}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true }}
+              key={`${testimonial.name}-${index}`}
               whileHover={{ y: -4, transition: { type: "spring", stiffness: 300, damping: 20 } }}
-              className="card-conseil flex flex-col"
+              className="card-conseil flex flex-col w-[320px] sm:w-[350px] md:w-[400px] shrink-0 mr-6 lg:mr-8"
             >
               {/* Stars */}
               <div className="flex items-center gap-0.5 mb-4">
@@ -139,7 +178,9 @@ export function SocialProof() {
             </motion.div>
           ))}
         </div>
+      </motion.div>
 
+      <div className="mx-auto max-w-[1140px] px-4 sm:px-6 lg:px-8 relative">
         {/* Summary stat row — elevated card style */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -170,12 +211,12 @@ export function SocialProof() {
           transition={{ delay: 0.7 }}
           className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <a href="/practice" className="btn-rounded btn-rounded-teal">
+          <Button render={<a href="/practice" />}>
             Start Free Practice
-          </a>
-          <a href="/#pricing" className="btn-rounded btn-rounded-outline">
+          </Button>
+          <Button render={<a href="/#pricing" />} variant="outline">
             View Pricing
-          </a>
+          </Button>
         </motion.div>
       </div>
     </section>

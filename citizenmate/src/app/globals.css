@@ -304,53 +304,6 @@
   transform: translateY(-8px);
 }
 
-/* Fully rounded CTA button */
-.btn-rounded {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 14px 32px;
-  border-radius: 50px;
-  font-weight: 600;
-  font-size: 0.9375rem;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.btn-rounded-teal {
-  background: #006769;
-  color: #FFFFFF;
-}
-
-.btn-rounded-teal:hover {
-  background: #005658;
-  filter: brightness(1.1);
-  box-shadow: 0 4px 16px rgba(0, 103, 105, 0.3);
-}
-
-.btn-rounded-outline {
-  background: transparent;
-  color: #1a1a1a;
-  border: 1.5px solid #e8eaef;
-}
-
-.btn-rounded-outline:hover {
-  border-color: #006769;
-  color: #006769;
-  background: #E6F0F0;
-}
-
-.btn-rounded-dark {
-  background: #1a1a1a;
-  color: #FFFFFF;
-}
-
-.btn-rounded-dark:hover {
-  background: #2d2d2d;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-}
-
 /* Section alternate background — Conseil zinc-100 */
 .section-alt-bg {
   background-color: #F4F4F5;

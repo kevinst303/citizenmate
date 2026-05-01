@@ -31,3 +31,13 @@
 - The application UI and content support 4 new language pairs.
 - Users can generate and share unique referral links via the "Help a Mate" program.
 - Email notifications (via Resend or similar) are successfully triggering based on user inactivity or key milestones.
+
+### Phase 8: Super Admin Dashboard
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 7
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd-plan-phase 8 to break down)

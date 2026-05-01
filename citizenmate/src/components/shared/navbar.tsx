@@ -8,6 +8,7 @@ import {
   BookOpen, Sparkles, Zap, HelpCircle, FileText
 } from "lucide-react";
 import { UserMenu } from "@/components/shared/user-menu";
+import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
@@ -103,9 +104,9 @@ export function Navbar() {
             🇦🇺 Australia&apos;s #1 AI-Powered Citizenship Test Prep
           </span>
           <div className="flex items-center gap-4 font-medium tracking-wide">
-            <a href="mailto:hello@citizenmate.com.au" className="hover:text-white transition-colors text-white/80">
-              hello@citizenmate.com.au
-            </a>
+            <Link href="/about#contact" className="hover:text-white transition-colors text-white/80">
+              Contact Us
+            </Link>
           </div>
         </div>
       </div>
@@ -186,25 +187,28 @@ export function Navbar() {
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
               className="hidden xl:block"
             >
-              <Link
-                href="/practice"
-                className="btn-rounded btn-rounded-outline !rounded-[10px] text-sm h-9 px-5 font-semibold"
+              <Button
+                render={<Link href="/practice" />}
+                variant="outline"
+                size="sm"
+                className="px-5 font-semibold"
               >
                 Start Free
-              </Link>
+              </Button>
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
-              <Link
-                href="/#pricing"
-                className="btn-rounded btn-rounded-teal !rounded-[10px] text-sm h-9 px-5 shadow-md shadow-cm-teal/20 font-semibold"
+              <Button
+                render={<Link href="/#pricing" />}
+                size="sm"
+                className="px-5 font-semibold"
               >
                 Get Sprint Pass
                 <ChevronRight className="size-3.5 ml-1" />
-              </Link>
+              </Button>
             </motion.div>
             <div className="ml-2 pl-3 border-l border-border h-6 flex items-center">
               <UserMenu />
@@ -251,9 +255,9 @@ export function Navbar() {
                   <SheetClose
                     nativeButton={false}
                     render={
-                      <Link
-                        href="/#pricing"
-                        className="flex items-center justify-center w-full btn-rounded btn-rounded-teal h-12 text-[0.95rem] font-semibold shadow-md shadow-cm-teal/20"
+                      <Button
+                        render={<Link href="/#pricing" />}
+                        className="w-full h-12 text-[0.95rem]"
                         onClick={() => setOpen(false)}
                       />
                     }
@@ -263,9 +267,10 @@ export function Navbar() {
                   <SheetClose
                     nativeButton={false}
                     render={
-                      <Link
-                        href="/practice"
-                        className="flex items-center justify-center w-full btn-rounded btn-rounded-outline bg-white h-12 text-[0.95rem] font-semibold mt-2.5"
+                      <Button
+                        render={<Link href="/practice" />}
+                        variant="outline"
+                        className="w-full h-12 text-[0.95rem] bg-white mt-2.5"
                         onClick={() => setOpen(false)}
                       />
                     }

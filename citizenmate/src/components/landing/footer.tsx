@@ -12,7 +12,7 @@ const footerLinks = {
   ],
   Company: [
     { label: "FAQ", href: "#faq" },
-    { label: "Contact Us", href: "mailto:hello@citizenmate.com.au" },
+    { label: "About & Contact", href: "/about" },
     { label: "Blog", href: "/blog" },
     { label: "Privacy Policy", href: "/privacy" },
     { label: "Terms of Service", href: "/terms" },
@@ -99,6 +99,7 @@ export function Footer() {
                     <a
                       href={link.href}
                       className="text-sm text-zinc-500 hover:text-foreground transition-colors duration-200 cursor-pointer"
+                      suppressHydrationWarning
                     >
                       {link.label}
                     </a>
@@ -143,7 +144,7 @@ export function Footer() {
                 </a>
               ))}
             </div>
-            <p className="text-xs text-zinc-400">
+            <p className="text-xs text-zinc-400" suppressHydrationWarning>
               © {new Date().getFullYear()} CitizenMate. All rights reserved.
             </p>
           </div>

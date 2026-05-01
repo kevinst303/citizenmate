@@ -59,7 +59,7 @@ export function Features() {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section id="features" className="py-[100px]">
+    <section id="features" className="pt-[140px] pb-[100px]">
       <div className="mx-auto max-w-[1140px] px-4 sm:px-6 lg:px-8">
         {/* Section header — Conseil style with badge pill */}
         <div className="text-center max-w-2xl mx-auto mb-16">

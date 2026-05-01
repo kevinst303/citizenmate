@@ -73,6 +73,7 @@ export default function PracticePage() {
         description="20 questions. 45 minutes. Just like the real Australian citizenship test. See where you stand, mate."
         bgImage="/generated/test-start.webp"
         badge="Practice Tests"
+        curveColorClass="text-cm-ice"
       />
 
       {/* Test format info */}

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
 
 const steps = [
   {
@@ -78,20 +79,20 @@ export function HowItWorks() {
           >
             {/* Left text panel */}
             <div
-              className="flex-1 bg-[#F4F4F5] p-[40px] flex flex-col justify-center"
+              className="flex-1 bg-white p-[40px] sm:p-[60px] flex flex-col justify-center"
               style={{ borderRadius: "var(--radius-card, 24px) 0 0 var(--radius-card, 24px)" }}
             >
-              <h3 className="font-heading font-bold text-xl md:text-2xl text-foreground mb-3">
+              <h3 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-4">
                 Everything you need to pass
               </h3>
-              <p className="text-foreground/70 text-sm mb-6">
+              <p className="text-foreground/70 text-base md:text-lg mb-8 leading-relaxed">
                 Start with a diagnostic, study at your own pace with bilingual
                 support, then take full mock tests until you're confident. No
                 fluff — just the three steps that work.
               </p>
-              <a href="/practice" className="btn-rounded-teal self-start">
+              <Button render={<a href="/practice" />} className="self-start">
                 Start practising
-              </a>
+              </Button>
             </div>
             {/* Right image panel */}
             <div

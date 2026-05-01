@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Mail, Lock, Loader2, AlertCircle } from "lucide-react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import { toast } from "@/lib/toast";
 
@@ -18,6 +19,10 @@ export function AuthModal() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const redirectPath = searchParams?.get("redirect");
 
   const resetForm = () => {
     setEmail("");
@@ -52,6 +57,9 @@ export function AuthModal() {
           toast.error("Sign-in failed", authError.message);
         } else {
           toast.success("Welcome back, mate! 🇦🇺", "Your progress is synced.");
+          if (redirectPath) {
+            router.push(redirectPath);
+          }
         }
       } else {
         const { error: authError } = await signUp(email, password);
@@ -77,7 +85,7 @@ export function AuthModal() {
     setError(null);
     setLoading(true);
     try {
-      const { error: authError } = await signInWithGoogle();
+      const { error: authError } = await signInWithGoogle(redirectPath || undefined);
       if (authError) {
         setError(authError.message);
         setLoading(false);
@@ -116,10 +124,10 @@ export function AuthModal() {
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header */}
-              <div className="relative bg-gradient-to-br from-cm-teal via-cm-teal-light to-cm-teal px-6 pt-8 pb-6 text-white text-center">
+              <div className="relative bg-cm-teal px-6 pt-8 pb-6 text-white text-center">
                 <button
                   onClick={handleClose}
-                  className="absolute top-4 right-4 p-1.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors cursor-pointer"
+                  className="absolute top-4 right-4 p-1.5 rounded-full bg-white/20 hover:bg-white/30 transition-colors cursor-pointer"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -168,7 +176,7 @@ export function AuthModal() {
                     <div className="w-full border-t border-cm-slate-200" />
                   </div>
                   <div className="relative flex justify-center">
-                    <span className="bg-white px-3 text-xs text-cm-slate-400">
+                    <span className="bg-white px-3 text-xs text-cm-slate-500">
                       or continue with email
                     </span>
                   </div>
@@ -180,6 +188,7 @@ export function AuthModal() {
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cm-slate-400" />
                     <input
                       type="email"
+                      aria-label="Email address"
                       placeholder="Email address"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -192,6 +201,7 @@ export function AuthModal() {
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cm-slate-400" />
                     <input
                       type="password"
+                      aria-label="Password"
                       placeholder="Password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}

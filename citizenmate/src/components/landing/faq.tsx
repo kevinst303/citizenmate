@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import {
   Accordion,
   AccordionContent,
@@ -124,13 +126,13 @@ export function FAQ() {
               We&apos;re here to help you on your citizenship journey.
             </p>
           </div>
-          <a
-            href="mailto:hello@citizenmate.com.au"
-            className="btn-rounded btn-rounded-teal text-sm shrink-0"
+          <Button
+            render={<Link href="/about#contact" />}
+            className="shrink-0"
           >
             Contact Us
             <ArrowRight className="size-4 ml-1" />
-          </a>
+          </Button>
         </motion.div>
       </div>
     </section>

@@ -33,6 +33,7 @@ export function LegalLayout({
         ]}
         description={`Last updated: ${lastUpdated}`}
         bgImage=""
+        curveColorClass="text-slate-50"
       />
 
       {/* Content body */}
@@ -66,7 +67,7 @@ export function LegalLayout({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15, type: "spring", stiffness: 120, damping: 18 }}
-            className="prose prose-lg max-w-none bg-white p-8 md:p-12 rounded-[10px] shadow-[0_1px_3px_0_rgba(0,0,0,0.1),0_1px_2px_-1px_rgba(0,0,0,0.1)] prose-headings:font-bold prose-headings:text-gray-900 prose-p:text-gray-600 prose-p:leading-relaxed prose-a:text-conseil-teal hover:prose-a:text-conseil-teal/80 prose-li:text-gray-600"
+            className="legal-content bg-white p-8 md:p-12 rounded-[10px] shadow-card"
           >
             {children}
           </motion.article>

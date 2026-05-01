@@ -4,6 +4,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
 
 export function CTASection() {
   const ref = useRef(null);
@@ -59,16 +60,20 @@ export function CTASection() {
             transition={{ delay: 0.6, type: "spring", stiffness: 100, damping: 20 }}
             className="mt-10 flex items-center justify-center"
           >
-            <motion.a
-              href="/practice"
+            <motion.div
               whileHover={{ scale: 1.04, y: -2 }}
               whileTap={{ scale: 0.97 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
-              className="btn-rounded bg-white text-cm-teal font-heading font-bold text-base px-[32px] py-[14px] shadow-lg shadow-black/10 hover:bg-white/95"
             >
-              Start Free Practice
-              <ArrowRight className="size-5 ml-2" />
-            </motion.a>
+              <Button
+                render={<a href="/practice" />}
+                size="lg"
+                className="bg-white text-cm-teal font-heading font-bold border-none shadow-lg shadow-black/10 hover:bg-white/95"
+              >
+                Start Free Practice
+                <ArrowRight className="size-5 ml-2" />
+              </Button>
+            </motion.div>
           </motion.div>
 
           <motion.p

@@ -20,12 +20,15 @@ import { Analytics } from "@/components/shared/analytics";
 export function LayoutShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
-  // Hide navbar/footer when user is actively taking a quiz
+  // Hide navbar/footer when user is actively taking a quiz or in the admin dashboard
   // Match: /practice/mock-test-1, /practice/mock-test-2, etc.
   // Don't match: /practice (dashboard) or /practice/mock-test-1/results (results page)
   const isActiveQuiz =
     /^\/practice\/[^/]+$/.test(pathname) &&
     !pathname.endsWith("/results");
+
+  const isAdminRoute = pathname.startsWith("/admin") || /^\/[a-zA-Z-]+\/admin/.test(pathname);
+  const hideShellUI = isActiveQuiz || isAdminRoute;
 
   // Show test-date banner on study, practice dashboard, and dashboard pages (not landing or active quiz)
   const showBanner =
@@ -45,16 +48,16 @@ export function LayoutShell({ children }: { children: React.ReactNode }) {
       >
         Skip to main content
       </a>
-      {!isActiveQuiz && <Navbar />}
+      {!hideShellUI && <Navbar />}
       {/* Spacer for fixed navbar height (landing page hero handles its own spacing) — NAV-03: verified pt-[66px] */}
-      {!isActiveQuiz && pathname !== "/" && <div className="pt-[66px]" />}
+      {!hideShellUI && pathname !== "/" && <div className="pt-[66px]" />}
       {showBanner && <TestDateBanner />}
       <main id="main-content" className="flex-1">{children}</main>
-      {!isActiveQuiz && <Footer />}
+      {!hideShellUI && <Footer />}
       <TestDateModal />
       <AuthModal />
       <GooeyToaster />
-      {!isActiveQuiz && <InstallPrompt />}
+      {!hideShellUI && <InstallPrompt />}
       {showChat && <ChatWidget />}
       <CookieConsent />
       <Analytics />

@@ -99,7 +99,7 @@ export function TestDateBanner() {
           <span className={`text-sm font-medium ${styles.text}`}>
             <span className="font-bold">{getDaysLabel(daysUntilTest)}</span>
             {daysUntilTest > 1 && " until your test"}
-            <span className="hidden sm:inline text-opacity-70">
+            <span className="hidden sm:inline text-opacity-70" suppressHydrationWarning>
               {" "}
               · {formatTestDate(testDate)}
             </span>

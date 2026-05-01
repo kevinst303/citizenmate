@@ -51,6 +51,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             { label: post.frontmatter.title }
           ]}
           bgImage={post.frontmatter.image}
+          curveColorClass="text-slate-50"
         />
 
         <article className="mx-auto max-w-3xl py-16 px-4 md:px-0">

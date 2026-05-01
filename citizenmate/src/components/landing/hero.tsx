@@ -31,7 +31,7 @@ export function Hero() {
       {/* Background image with Conseil-style overlay */}
       <div className="absolute inset-0 -z-10">
         <Image
-          src="/images/conseil/hero-bg.jpg"
+          src="/images/conseil/hero-bg-new.png"
           alt="Diverse group of people studying together for the Australian citizenship test"
           fill
           priority
@@ -88,13 +88,14 @@ export function Hero() {
               whileTap={{ scale: 0.97 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
-              <a
-                href="/practice"
-                className="btn-rounded bg-white text-cm-teal font-heading font-bold text-base px-8 py-3.5 shadow-lg shadow-black/10 hover:bg-white/95"
+              <Button
+                render={<a href="/practice" />}
+                size="lg"
+                className="bg-white text-cm-teal font-heading font-bold border-none shadow-lg shadow-black/10 hover:bg-white/95"
               >
                 Start Free Practice
                 <ChevronRight className="size-4 ml-1" />
-              </a>
+              </Button>
             </motion.div>
 
             {/* Secondary CTA */}
@@ -103,12 +104,14 @@ export function Hero() {
               whileTap={{ scale: 0.97 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
-              <a
-                href="#how-it-works"
-                className="btn-rounded bg-transparent text-white border-2 border-white/30 font-heading font-semibold text-base px-8 py-3.5 hover:bg-white/10 hover:border-white/50"
+              <Button
+                render={<a href="#how-it-works" />}
+                size="lg"
+                variant="outline"
+                className="bg-transparent text-white border-2 border-white/30 font-heading hover:bg-white/10 hover:border-white/50 hover:text-white"
               >
                 See How It Works
-              </a>
+              </Button>
             </motion.div>
           </motion.div>
 

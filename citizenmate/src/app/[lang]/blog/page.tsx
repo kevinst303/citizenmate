@@ -19,6 +19,7 @@ export default function BlogPage() {
           { label: 'Home', href: '/' },
           { label: 'Blog' }
         ]}
+        curveColorClass="text-slate-50"
       />
       <BlogClient posts={posts} />
     </div>

@@ -6,7 +6,7 @@ import { locales, defaultLocale } from '@/i18n/config';
 import { createServerClient } from '@supabase/ssr';
 
 // Routes that require authentication
-const PROTECTED_ROUTES = ["/dashboard", "/practice", "/study"];
+const PROTECTED_ROUTES = ["/dashboard", "/practice", "/study", "/admin"];
 const PROTECTED_API_ROUTES = ["/api/checkout", "/api/chat"];
 
 function getLocale(request: NextRequest): string {

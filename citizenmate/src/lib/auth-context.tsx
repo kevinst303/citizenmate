@@ -29,7 +29,7 @@ interface AuthContextValue {
   closeAuthModal: () => void;
   signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signUp: (email: string, password: string) => Promise<{ error: AuthError | null }>;
-  signInWithGoogle: () => Promise<{ error: AuthError | null }>;
+  signInWithGoogle: (redirectTo?: string) => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<void>;
   refreshPremiumStatus: () => Promise<void>;
   startCheckout: () => Promise<void>;
@@ -212,14 +212,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [closeAuthModal]
   );
 
-  const signInWithGoogle = useCallback(async () => {
+  const signInWithGoogle = useCallback(async (redirectTo?: string) => {
     if (!isSupabaseConfigured()) {
       return { error: { message: "Supabase not configured" } as AuthError };
     }
     const supabase = getSupabaseBrowserClient();
+    const finalRedirect = redirectTo
+      ? `${window.location.origin}${redirectTo}`
+      : `${window.location.origin}/dashboard`;
+      
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${window.location.origin}/dashboard` },
+      options: { redirectTo: finalRedirect },
     });
     return { error };
   }, []);

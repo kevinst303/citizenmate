@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+
 export function InlineCTA() {
   return (
     <section className="bg-white py-16">
@@ -8,9 +10,9 @@ export function InlineCTA() {
         <p className="text-foreground/70 mb-6">
           Join thousands of students preparing smarter with CitizenMate.
         </p>
-        <a href="/practice" className="btn-rounded-teal">
+        <Button render={<a href="/practice" />}>
           Start for free
-        </a>
+        </Button>
       </div>
     </section>
   );

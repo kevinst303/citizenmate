@@ -212,12 +212,13 @@ export function PricingPreview() {
                       )}
                     </Button>
                   ) : (
-                    <a
-                      href="/practice"
-                      className="btn-rounded btn-rounded-outline w-full h-12 text-sm font-bold"
+                    <Button
+                      render={<a href="/practice" />}
+                      variant="outline"
+                      className="w-full h-12 text-sm font-bold"
                     >
                       {plan.cta}
-                    </a>
+                    </Button>
                   )}
                 </motion.div>
 

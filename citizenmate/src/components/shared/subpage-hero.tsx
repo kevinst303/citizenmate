@@ -14,9 +14,10 @@ interface SubpageHeroProps {
   description?: string;
   badge?: string;
   bgImage?: string; // Optional background image
+  curveColorClass?: string; // Optional class to match the background color below the curve
 }
 
-export function SubpageHero({ title, breadcrumbs, description, badge, bgImage = '/images/conseil/subpage-hero-bg.jpg' }: SubpageHeroProps) {
+export function SubpageHero({ title, breadcrumbs, description, badge, bgImage = '/images/conseil/subpage-hero-bg.jpg', curveColorClass = 'text-white' }: SubpageHeroProps) {
   return (
     <div className="relative w-full min-h-[400px] md:min-h-[500px] flex flex-col justify-center bg-cm-teal overflow-hidden">
       {/* Background Image with Overlay */}
@@ -93,7 +94,7 @@ export function SubpageHero({ title, breadcrumbs, description, badge, bgImage = 
           viewBox="0 0 1920 150"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="w-full h-auto text-white"
+          className={`w-full h-auto ${curveColorClass}`}
           preserveAspectRatio="none"
           style={{ width: '100%', height: 'auto', minHeight: '60px', maxHeight: '150px' }}
         >
