@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Menu, ChevronRight, LayoutDashboard, PenTool, 
@@ -67,7 +69,7 @@ const MobileMenuLink = ({ href, label, setOpen }: { href: string, label: string,
   <SheetClose
     nativeButton={false}
     render={
-      <a
+      <Link
         href={href}
         className="flex items-center px-4 py-2.5 text-[0.95rem] font-medium text-foreground hover:bg-cm-teal-50 hover:text-cm-teal rounded-xl transition-colors duration-200 cursor-pointer"
         onClick={() => setOpen(false)}
@@ -79,8 +81,20 @@ const MobileMenuLink = ({ href, label, setOpen }: { href: string, label: string,
 );
 
 export function Navbar() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+
+  const langMatch = pathname?.match(/^\/([a-z]{2}(-[A-Z]{2})?)/);
+  const lang = langMatch ? langMatch[1] : 'en';
+
+  const getUrl = (path: string) => {
+    if (path.startsWith('/#')) return `/${lang}${path.substring(1)}`;
+    if (path.startsWith('/') && !path.startsWith(`/${lang}/`) && path !== `/${lang}`) {
+      return `/${lang}${path === '/' ? '' : path}`;
+    }
+    return path;
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -104,7 +118,7 @@ export function Navbar() {
             🇦🇺 Australia&apos;s #1 AI-Powered Citizenship Test Prep
           </span>
           <div className="flex items-center gap-4 font-medium tracking-wide">
-            <Link href="/about#contact" className="hover:text-white transition-colors text-white/80">
+            <Link href={getUrl("/about#contact")} className="hover:text-white transition-colors text-white/80">
               Contact Us
             </Link>
           </div>
@@ -125,14 +139,14 @@ export function Navbar() {
           {/* Inner container to constrain content to 1140px */}
           <div className="mx-auto w-full max-w-[1140px] flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 cursor-pointer group shrink-0">
+          <Link href={getUrl("/")} className="flex items-center gap-2.5 cursor-pointer group shrink-0">
             <motion.div
               whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.96 }}
               transition={{ type: "spring", stiffness: 400, damping: 15 }}
-              className="flex items-center justify-center w-9 h-9 rounded-xl bg-cm-teal text-white font-heading font-bold text-lg shadow-sm"
+              className="flex items-center justify-center"
             >
-              CM
+              <Image src="/logo.svg" alt="CitizenMate Logo" width={36} height={36} />
             </motion.div>
             <span className="font-heading text-xl font-bold text-foreground tracking-tight">
               Citizen<span className="text-cm-teal">Mate</span>
@@ -143,38 +157,38 @@ export function Navbar() {
           <div className="hidden lg:flex items-center gap-2">
             <DesktopMenuItem label="Study Tools">
               <MegaMenuLink 
-                href="/dashboard" icon={LayoutDashboard} 
+                href={getUrl("/dashboard")} icon={LayoutDashboard} 
                 title="Dashboard" desc="Track your progress and stats" 
               />
               <MegaMenuLink 
-                href="/practice" icon={PenTool} 
+                href={getUrl("/practice")} icon={PenTool} 
                 title="Practice Tests" desc="Real exam format simulations" 
               />
               <MegaMenuLink 
-                href="/study" icon={BookOpen} 
+                href={getUrl("/study")} icon={BookOpen} 
                 title="Study Material" desc="Our Common Bond in 5 languages" 
               />
             </DesktopMenuItem>
 
             <DesktopMenuItem label="Platform">
               <MegaMenuLink 
-                href="/#features" icon={Sparkles} 
+                href={getUrl("/#features")} icon={Sparkles} 
                 title="Features" desc="AI analytics and smart reviews" 
               />
               <MegaMenuLink 
-                href="/#how-it-works" icon={Zap} 
+                href={getUrl("/#how-it-works")} icon={Zap} 
                 title="How It Works" desc="The proven 3-step learning path" 
               />
               <MegaMenuLink 
-                href="/#faq" icon={HelpCircle} 
+                href={getUrl("/#faq")} icon={HelpCircle} 
                 title="FAQ" desc="Common questions answered" 
               />
             </DesktopMenuItem>
 
-            <Link href="/#pricing" className="px-3 py-2 text-[0.95rem] font-medium text-muted-foreground hover:text-cm-teal transition-colors">
+            <Link href={getUrl("/#pricing")} className="px-3 py-2 text-[0.95rem] font-medium text-muted-foreground hover:text-cm-teal transition-colors">
               Pricing
             </Link>
-            <Link href="/blog" className="px-3 py-2 text-[0.95rem] font-medium text-muted-foreground hover:text-cm-teal transition-colors">
+            <Link href={getUrl("/blog")} className="px-3 py-2 text-[0.95rem] font-medium text-muted-foreground hover:text-cm-teal transition-colors">
               Blog
             </Link>
           </div>
@@ -188,7 +202,7 @@ export function Navbar() {
               className="hidden xl:block"
             >
               <Button
-                render={<Link href="/practice" />}
+                render={<Link href={getUrl("/practice")} />}
                 variant="outline"
                 size="sm"
                 className="px-5 font-semibold"
@@ -202,7 +216,7 @@ export function Navbar() {
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
               <Button
-                render={<Link href="/#pricing" />}
+                render={<Link href={getUrl("/#pricing")} />}
                 size="sm"
                 className="px-5 font-semibold"
               >
@@ -228,8 +242,8 @@ export function Navbar() {
               <SheetContent side="right" className="w-[85vw] max-w-[320px] bg-white flex flex-col p-0">
                 <div className="p-4 border-b border-border shadow-sm">
                   <SheetTitle className="font-heading text-xl font-bold flex items-center gap-2">
-                    <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-cm-teal text-white font-heading font-bold text-sm">
-                      CM
+                    <div className="flex items-center justify-center w-8 h-8">
+                      <Image src="/logo.svg" alt="CitizenMate Logo" width={32} height={32} />
                     </div>
                     <span>Citizen<span className="text-cm-teal">Mate</span></span>
                   </SheetTitle>
@@ -237,18 +251,18 @@ export function Navbar() {
                 
                 <div className="flex-1 overflow-y-auto px-2 py-4">
                   <div className="text-[0.7rem] font-bold text-muted-foreground/70 uppercase tracking-widest px-4 mb-1">Study Tools</div>
-                  <MobileMenuLink href="/dashboard" label="Dashboard" setOpen={setOpen} />
-                  <MobileMenuLink href="/practice" label="Practice" setOpen={setOpen} />
-                  <MobileMenuLink href="/study" label="Study" setOpen={setOpen} />
+                  <MobileMenuLink href={getUrl("/dashboard")} label="Dashboard" setOpen={setOpen} />
+                  <MobileMenuLink href={getUrl("/practice")} label="Practice" setOpen={setOpen} />
+                  <MobileMenuLink href={getUrl("/study")} label="Study" setOpen={setOpen} />
                   
                   <div className="text-[0.7rem] font-bold text-muted-foreground/70 uppercase tracking-widest px-4 mt-5 mb-1">Platform</div>
-                  <MobileMenuLink href="/#features" label="Features" setOpen={setOpen} />
-                  <MobileMenuLink href="/#how-it-works" label="How It Works" setOpen={setOpen} />
-                  <MobileMenuLink href="/#faq" label="FAQ" setOpen={setOpen} />
+                  <MobileMenuLink href={getUrl("/#features")} label="Features" setOpen={setOpen} />
+                  <MobileMenuLink href={getUrl("/#how-it-works")} label="How It Works" setOpen={setOpen} />
+                  <MobileMenuLink href={getUrl("/#faq")} label="FAQ" setOpen={setOpen} />
 
                   <div className="text-[0.7rem] font-bold text-muted-foreground/70 uppercase tracking-widest px-4 mt-5 mb-1">Resources</div>
-                  <MobileMenuLink href="/#pricing" label="Pricing" setOpen={setOpen} />
-                  <MobileMenuLink href="/blog" label="Blog" setOpen={setOpen} />
+                  <MobileMenuLink href={getUrl("/#pricing")} label="Pricing" setOpen={setOpen} />
+                  <MobileMenuLink href={getUrl("/blog")} label="Blog" setOpen={setOpen} />
                 </div>
 
                 <div className="mt-auto p-4 border-t border-border bg-cm-slate-50">
@@ -256,7 +270,7 @@ export function Navbar() {
                     nativeButton={false}
                     render={
                       <Button
-                        render={<Link href="/#pricing" />}
+                        render={<Link href={getUrl("/#pricing")} />}
                         className="w-full h-12 text-[0.95rem]"
                         onClick={() => setOpen(false)}
                       />
@@ -268,7 +282,7 @@ export function Navbar() {
                     nativeButton={false}
                     render={
                       <Button
-                        render={<Link href="/practice" />}
+                        render={<Link href={getUrl("/practice")} />}
                         variant="outline"
                         className="w-full h-12 text-[0.95rem] bg-white mt-2.5"
                         onClick={() => setOpen(false)}
@@ -287,4 +301,5 @@ export function Navbar() {
     </>
   );
 }
+
 

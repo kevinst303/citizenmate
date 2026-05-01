@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useQuiz } from "@/lib/quiz-context";
 import { QuizTimer } from "./quiz-timer";
 import { useState } from "react";
@@ -37,8 +38,8 @@ export function QuizHeader() {
                 }
               }}
             >
-              <div className="flex items-center justify-center w-8 h-8 rounded-[10px] bg-cm-teal text-white font-heading font-bold text-sm">
-                CM
+              <div className="flex items-center justify-center w-8 h-8">
+                <Image src="/logo.svg" alt="CitizenMate Logo" width={32} height={32} />
               </div>
               <span className="hidden sm:inline font-heading text-sm font-semibold text-cm-slate-600">
                 {state.test.title}

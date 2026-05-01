@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 
 const footerLinks = {
   Product: [
@@ -53,8 +54,8 @@ export function Footer() {
             transition={{ type: "spring", stiffness: 120, damping: 16 }}
           >
             <Link href="/" className="flex items-center gap-2.5">
-              <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-cm-teal text-white font-heading font-bold text-lg">
-                CM
+              <div className="flex items-center justify-center">
+                <Image src="/logo.svg" alt="CitizenMate Logo" width={36} height={36} />
               </div>
               <span className="font-heading text-xl font-bold text-foreground">
                 Citizen<span className="text-cm-teal">Mate</span>
