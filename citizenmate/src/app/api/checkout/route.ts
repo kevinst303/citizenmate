@@ -22,6 +22,15 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    // ── Parse optional promo code from request body ──
+    let promoCode: string | undefined;
+    try {
+      const body = await req.json().catch(() => ({}));
+      promoCode = body.promoCode;
+    } catch {
+      // No body or invalid JSON — continue without promo code
+    }
+
     const stripeKey = process.env.STRIPE_SECRET_KEY;
     if (!stripeKey) {
       return NextResponse.json({ error: 'Stripe not configured' }, { status: 500 });
@@ -31,7 +40,7 @@ export async function POST(req: Request) {
       apiVersion: '2025-02-24.acacia' as Stripe.LatestApiVersion,
       appInfo: {
         name: 'CitizenMate',
-        version: '1.0.0'
+        version: '1.1.0'
       }
     });
 
@@ -42,8 +51,31 @@ export async function POST(req: Request) {
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://citizenmate.com.au';
 
+    // ── Look up Stripe Promotion Code if a promo code was provided ──
+    const discounts: Stripe.Checkout.SessionCreateParams.Discount[] = [];
+    let referralPromoCodeId: string | undefined;
+
+    if (promoCode) {
+      try {
+        const promoCodes = await stripe.promotionCodes.list({
+          code: promoCode,
+          active: true,
+          limit: 1,
+        });
+
+        if (promoCodes.data.length > 0) {
+          const promoCodeObj = promoCodes.data[0];
+          discounts.push({ promotion_code: promoCodeObj.id });
+          referralPromoCodeId = promoCodeObj.id;
+        }
+      } catch (err) {
+        console.warn('[Checkout] Failed to look up promo code:', err);
+        // Continue without discount rather than blocking checkout
+      }
+    }
+
     // Use verified user identity — never trust client-provided userId/email
-    const session = await stripe.checkout.sessions.create({
+    const sessionParams: Stripe.Checkout.SessionCreateParams = {
       payment_method_types: ['card'],
       line_items: [
         {
@@ -62,8 +94,19 @@ export async function POST(req: Request) {
       metadata: {
         userId: user.id,
         product: 'sprint_pass',
+        ...(referralPromoCodeId && { referral_promo_code_id: referralPromoCodeId }),
       },
-    });
+    };
+
+    // Apply discount if a valid promo code was found
+    if (discounts.length > 0) {
+      sessionParams.discounts = discounts;
+    } else {
+      // Allow customers to enter promo codes manually at checkout
+      sessionParams.allow_promotion_codes = true;
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionParams);
 
     return NextResponse.json({ 
       id: session.id,

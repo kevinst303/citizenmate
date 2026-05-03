@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
-import { LayoutDashboard, Users, FileText, ArrowLeft } from "lucide-react";
+import { LayoutDashboard, Users, FileText, Gift, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
 export default async function AdminLayout({
@@ -53,6 +53,10 @@ export default async function AdminLayout({
           <Link href={`/${lang}/admin/users`} className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/10 transition-colors text-white/80 hover:text-white">
             <Users className="w-4.5 h-4.5" />
             <span className="font-semibold text-sm">Users & Plans</span>
+          </Link>
+          <Link href={`/${lang}/admin/referrals`} className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/10 transition-colors text-white/80 hover:text-white">
+            <Gift className="w-4.5 h-4.5" />
+            <span className="font-semibold text-sm">Referrals</span>
           </Link>
           <Link href={`/${lang}/admin/blog`} className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/10 transition-colors text-white/80 hover:text-white">
             <FileText className="w-4.5 h-4.5" />

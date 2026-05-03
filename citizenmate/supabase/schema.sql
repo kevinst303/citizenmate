@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS profiles (
   study_language TEXT DEFAULT 'en',
   test_date DATE,
   referred_by UUID REFERENCES profiles(id) ON DELETE SET NULL,
+  referral_promo_code TEXT UNIQUE,
   unsubscribed_from_emails BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
@@ -29,9 +30,28 @@ CREATE TABLE IF NOT EXISTS referral_rewards (
   referrer_id UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL,
   referee_id UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL,
   reward_days INTEGER NOT NULL DEFAULT 7,
+  reward_type TEXT DEFAULT 'premium_days',
+  qualified BOOLEAN DEFAULT FALSE,
+  qualified_at TIMESTAMPTZ,
+  stripe_promo_code_id TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   UNIQUE(referrer_id, referee_id)
 );
+
+-- Referral program configuration (singleton row, id=1)
+CREATE TABLE IF NOT EXISTS referral_config (
+  id INTEGER PRIMARY KEY DEFAULT 1 CHECK (id = 1),
+  discount_percent INTEGER DEFAULT 20,
+  reward_days INTEGER DEFAULT 7,
+  max_referrals_per_user INTEGER DEFAULT 5,
+  require_quiz_completion BOOLEAN DEFAULT TRUE,
+  require_purchase BOOLEAN DEFAULT FALSE,
+  program_active BOOLEAN DEFAULT TRUE,
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Seed default config
+INSERT INTO referral_config (id) VALUES (1) ON CONFLICT (id) DO NOTHING;
 
 -- Study progress (one row per user)
 CREATE TABLE IF NOT EXISTS study_progress (

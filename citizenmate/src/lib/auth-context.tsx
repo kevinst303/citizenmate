@@ -244,9 +244,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     try {
+      // Check for referral promo code from cookie
+      let promoCode: string | undefined;
+      if (typeof document !== "undefined") {
+        const match = document.cookie.match(/(^| )citizenmate_promo=([^;]+)/);
+        if (match) promoCode = match[2];
+      }
+
       const response = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ promoCode }),
       });
 
       if (!response.ok) {

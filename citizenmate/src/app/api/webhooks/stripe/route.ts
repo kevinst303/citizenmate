@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createSupabaseAdminClient } from '@/lib/supabase-admin';
 import { sendPurchaseConfirmation } from '@/lib/email';
+import { checkAndProcessPendingReward } from '@/lib/referrals';
+import { findReferrerByPromoCode } from '@/lib/referral-codes';
 
 // ===== Stripe Webhook Handler =====
 // Handles payment lifecycle events with idempotency protection.
@@ -98,6 +100,33 @@ async function handleCheckoutCompleted(
     await sendPurchaseConfirmation(customerEmail, expiresAt.toISOString()).catch((err) =>
       console.error('[Webhook] Failed to send confirmation email:', err)
     );
+  }
+
+  // ── Process referral rewards ──
+  // 1. If this checkout used a referral promo code, credit the referrer
+  const referralPromoCodeId = session.metadata?.referral_promo_code_id;
+  if (referralPromoCodeId) {
+    try {
+      const referrerId = await findReferrerByPromoCode(referralPromoCodeId);
+      if (referrerId) {
+        console.log(`[Webhook] Referral purchase detected | referrer=${referrerId} | buyer=${userId}`);
+        // Store the referral relationship if not already present
+        await adminSupabase
+          .from('profiles')
+          .update({ referred_by: referrerId })
+          .eq('id', userId)
+          .is('referred_by', null); // Only set if not already referred
+      }
+    } catch (err) {
+      console.error('[Webhook] Failed to process referral promo code:', err);
+    }
+  }
+
+  // 2. Buyer just purchased → they qualify as a referee. Check for pending rewards.
+  try {
+    await checkAndProcessPendingReward(userId);
+  } catch (err) {
+    console.error('[Webhook] Failed to check pending referral reward:', err);
   }
 }
 

@@ -66,7 +66,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             {/* The title is already in the hero, but we keep the date here for reading flow */}
           </header>
 
-          <div className="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-gray-900 prose-p:text-gray-600 prose-p:leading-relaxed prose-a:text-conseil-teal hover:prose-a:text-conseil-teal/80 prose-img:rounded-[10px] prose-img:shadow-[0_4px_16px_rgba(0,0,0,0.1)] pb-24">
+          <div className="prose prose-lg prose-slate max-w-none prose-headings:font-bold prose-headings:text-cm-dark prose-headings:tracking-tight prose-p:text-cm-slate-600 prose-p:leading-relaxed prose-a:text-cm-teal prose-a:no-underline hover:prose-a:text-cm-teal-dark hover:prose-a:underline prose-img:rounded-[24px] prose-img:shadow-card prose-li:text-cm-slate-600 prose-strong:text-cm-slate-800 pb-24">
             <MDXRemote source={post.content} components={mdxComponents} />
           </div>
         </article>
