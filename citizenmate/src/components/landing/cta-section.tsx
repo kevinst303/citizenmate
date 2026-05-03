@@ -13,7 +13,7 @@ export function CTASection() {
   return (
     <section className="py-[100px] relative overflow-hidden">
       <Image
-        src="/images/conseil/cta-bg.jpg"
+        src="/images/conseil/cta-bg.webp"
         alt=""
         fill
         className="object-cover"

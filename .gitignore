@@ -67,3 +67,4 @@ coverage/
 .turbo
 .gitnexus
 .worktrees/
+.env*.local

@@ -25,14 +25,14 @@ export async function POST(request: Request) {
     );
 
     const {
-      data: { session },
-    } = await supabase.auth.getSession();
+      data: { user },
+    } = await supabase.auth.getUser();
 
-    if (!session?.user) {
+    if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const result = await processReferralReward(session.user.id);
+    const result = await processReferralReward(user.id);
     
     if (!result.success) {
       return NextResponse.json({ message: result.error }, { status: 200 });

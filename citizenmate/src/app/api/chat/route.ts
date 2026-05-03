@@ -23,10 +23,10 @@ export async function POST(req: Request) {
   
   try {
     const supabase = await createSupabaseServerClient();
-    const { data: { session } } = await supabase.auth.getSession();
+    const { data: { user } } = await supabase.auth.getUser();
     
-    if (session?.user) {
-      userId = session.user.id;
+    if (user) {
+      userId = user.id;
       const { data } = await supabase
         .from("profiles")
         .select("is_premium, premium_expires_at")

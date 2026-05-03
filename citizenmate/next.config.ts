@@ -33,6 +33,10 @@ const securityHeaders = [
       "frame-ancestors 'none'",
     ].join("; "),
   },
+  // Prevent indexing of preview/staging deployments
+  ...(process.env.VERCEL_ENV && process.env.VERCEL_ENV !== 'production'
+    ? [{ key: "X-Robots-Tag", value: "noindex, nofollow" }]
+    : []),
 ];
 
 const nextConfig: NextConfig = {

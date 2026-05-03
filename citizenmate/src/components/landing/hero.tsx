@@ -31,7 +31,7 @@ export function Hero() {
       {/* Background image with Conseil-style overlay */}
       <div className="absolute inset-0 -z-10">
         <Image
-          src="/images/conseil/hero-bg-new.png"
+          src="/images/conseil/hero-bg-new.webp"
           alt="Diverse group of people studying together for the Australian citizenship test"
           fill
           priority
@@ -122,11 +122,11 @@ export function Hero() {
           >
             <div className="flex -space-x-2.5">
               {[
-                "/generated/avatars/avatar_new_1_1775103892672.png",
-                "/generated/avatars/avatar_new_2_1775103906195.png",
-                "/generated/avatars/avatar_new_3_1775103920848.png",
-                "/generated/avatars/avatar_new_4_1775103934205.png",
-                "/generated/avatars/avatar_new_5_1775103948242.png",
+                "/generated/avatars/avatar_new_1_1775103892672.webp",
+                "/generated/avatars/avatar_new_2_1775103906195.webp",
+                "/generated/avatars/avatar_new_3_1775103920848.webp",
+                "/generated/avatars/avatar_new_4_1775103934205.webp",
+                "/generated/avatars/avatar_new_5_1775103948242.webp",
               ].map((src, i) => (
                 <motion.div
                   key={i}

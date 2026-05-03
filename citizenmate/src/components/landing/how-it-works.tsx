@@ -100,7 +100,7 @@ export function HowItWorks() {
               style={{ borderRadius: "0 var(--radius-card, 24px) var(--radius-card, 24px) 0" }}
             >
               <Image
-                src="/images/conseil/feature-split.jpg"
+                src="/images/conseil/feature-split.webp"
                 fill
                 className="object-cover"
                 alt="CitizenMate study interface"

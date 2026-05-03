@@ -17,7 +17,7 @@ interface SubpageHeroProps {
   curveColorClass?: string; // Optional class to match the background color below the curve
 }
 
-export function SubpageHero({ title, breadcrumbs, description, badge, bgImage = '/images/conseil/subpage-hero-bg.jpg', curveColorClass = 'text-white' }: SubpageHeroProps) {
+export function SubpageHero({ title, breadcrumbs, description, badge, bgImage = '/images/conseil/subpage-hero-bg.webp', curveColorClass = 'text-white' }: SubpageHeroProps) {
   return (
     <div className="relative w-full min-h-[400px] md:min-h-[500px] flex flex-col justify-center bg-cm-teal overflow-hidden">
       {/* Background Image with Overlay */}
