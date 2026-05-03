@@ -14,16 +14,17 @@ import { syncAllToSupabase, pullFromSupabase } from "@/lib/sync";
 
 // ===== Types =====
 
-interface PremiumStatus {
+interface ProfileData {
   isPremium: boolean;
   expiresAt: Date | null;
+  testDate: string | null;
   loading: boolean;
 }
 
 interface AuthContextValue {
   user: User | null;
   loading: boolean;
-  premium: PremiumStatus;
+  profile: ProfileData;
   isAuthModalOpen: boolean;
   openAuthModal: () => void;
   closeAuthModal: () => void;
@@ -52,16 +53,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [premium, setPremium] = useState<PremiumStatus>({
+  const [profile, setProfile] = useState<ProfileData>({
     isPremium: false,
     expiresAt: null,
+    testDate: null,
     loading: true,
   });
 
-  // Fetch premium status from Supabase profile
-  const fetchPremiumStatus = useCallback(async (userId: string) => {
+  // Fetch profile data from Supabase profile
+  const fetchProfileData = useCallback(async (userId: string) => {
     if (!isSupabaseConfigured()) {
-      setPremium({ isPremium: false, expiresAt: null, loading: false });
+      setProfile({ isPremium: false, expiresAt: null, testDate: null, loading: false });
       return;
     }
 
@@ -69,12 +71,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const supabase = getSupabaseBrowserClient();
       const { data, error } = await supabase
         .from("profiles")
-        .select("is_premium, premium_expires_at")
+        .select("is_premium, premium_expires_at, test_date")
         .eq("id", userId)
         .single();
 
       if (error || !data) {
-        setPremium({ isPremium: false, expiresAt: null, loading: false });
+        setProfile({ isPremium: false, expiresAt: null, testDate: null, loading: false });
         return;
       }
 
@@ -86,26 +88,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         data.is_premium === true &&
         (expiresAt === null || expiresAt > new Date());
 
-      setPremium({
+      setProfile({
         isPremium: isActive,
         expiresAt,
+        testDate: data.test_date,
         loading: false,
       });
+      
+      // Redirect to onboarding if they don't have a test date
+      if (!data.test_date && typeof window !== "undefined") {
+        const path = window.location.pathname;
+        if (!path.includes("/onboarding") && !path.includes("/admin")) {
+          const match = path.match(/^\/([a-z]{2})\//);
+          const langPrefix = match ? `/${match[1]}` : "/en";
+          window.location.href = `${langPrefix}/onboarding`;
+        }
+      }
     } catch {
-      setPremium({ isPremium: false, expiresAt: null, loading: false });
+      setProfile({ isPremium: false, expiresAt: null, testDate: null, loading: false });
     }
   }, []);
 
   const refreshPremiumStatus = useCallback(async () => {
     if (user) {
-      await fetchPremiumStatus(user.id);
+      await fetchProfileData(user.id);
     }
-  }, [user, fetchPremiumStatus]);
+  }, [user, fetchProfileData]);
 
   useEffect(() => {
     if (!isSupabaseConfigured()) {
       setLoading(false);
-      setPremium((p) => ({ ...p, loading: false }));
+      setProfile((p) => ({ ...p, loading: false }));
       return;
     }
 
@@ -118,9 +131,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(false);
 
       if (currentUser) {
-        fetchPremiumStatus(currentUser.id);
+        fetchProfileData(currentUser.id);
       } else {
-        setPremium({ isPremium: false, expiresAt: null, loading: false });
+        setProfile({ isPremium: false, expiresAt: null, testDate: null, loading: false });
       }
     });
 
@@ -136,21 +149,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         try {
           await syncAllToSupabase(newUser.id);
           await pullFromSupabase(newUser.id);
-          await fetchPremiumStatus(newUser.id);
+          await fetchProfileData(newUser.id);
         } catch (err) {
           console.error("[AuthProvider] Sync error on sign-in:", err);
         }
       }
 
       if (event === "SIGNED_OUT") {
-        setPremium({ isPremium: false, expiresAt: null, loading: false });
+        setProfile({ isPremium: false, expiresAt: null, testDate: null, loading: false });
       }
     });
 
     return () => {
       subscription.unsubscribe();
     };
-  }, [fetchPremiumStatus]);
+  }, [fetchProfileData]);
 
   // Check for checkout success on mount (user returning from Stripe)
   useEffect(() => {
@@ -233,7 +246,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const supabase = getSupabaseBrowserClient();
     await supabase.auth.signOut();
     setUser(null);
-    setPremium({ isPremium: false, expiresAt: null, loading: false });
+    setProfile({ isPremium: false, expiresAt: null, testDate: null, loading: false });
   }, []);
 
   // Initiate Stripe checkout
@@ -280,7 +293,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       value={{
         user,
         loading,
-        premium,
+        profile,
         isAuthModalOpen,
         openAuthModal,
         closeAuthModal,
@@ -311,11 +324,11 @@ export function useAuth(): AuthContextValue {
 // Use this in any component to check if user has premium access
 
 export function usePremium() {
-  const { premium, startCheckout, user } = useAuth();
+  const { profile, startCheckout, user } = useAuth();
   return {
-    isPremium: premium.isPremium,
-    premiumLoading: premium.loading,
-    expiresAt: premium.expiresAt,
+    isPremium: profile.isPremium,
+    premiumLoading: profile.loading,
+    expiresAt: profile.expiresAt,
     isSignedIn: !!user,
     upgrade: startCheckout,
   };

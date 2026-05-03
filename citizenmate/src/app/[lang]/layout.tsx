@@ -9,6 +9,7 @@ import { ReferralTracker } from "@/components/shared/referral-tracker";
 import { Suspense } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import { AuthRedirectHandler } from "@/components/shared/auth-redirect-handler";
+import { UpgradeModal } from "@/components/global/upgrade-modal";
 import { locales } from "@/i18n/config";
 import { PostHogProvider } from "@/components/providers/posthog-provider";
 import "../globals.css";
@@ -140,6 +141,7 @@ export default async function RootLayout({
                   <Suspense fallback={null}>
                     <ReferralTracker />
                     <AuthRedirectHandler />
+                    <UpgradeModal />
                   </Suspense>
                   <Analytics />
                 </SRSProvider>
