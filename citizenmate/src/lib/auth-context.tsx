@@ -11,6 +11,7 @@ import {
 import type { User, AuthError } from "@supabase/supabase-js";
 import { getSupabaseBrowserClient } from "@/lib/supabase";
 import { syncAllToSupabase, pullFromSupabase } from "@/lib/sync";
+import { useUpgradeModal } from "@/lib/store/useUpgradeModal";
 
 // ===== Types =====
 
@@ -324,12 +325,14 @@ export function useAuth(): AuthContextValue {
 // Use this in any component to check if user has premium access
 
 export function usePremium() {
-  const { profile, startCheckout, user } = useAuth();
+  const { profile, user } = useAuth();
+  const { openModal } = useUpgradeModal();
+  
   return {
     isPremium: profile.isPremium,
     premiumLoading: profile.loading,
     expiresAt: profile.expiresAt,
     isSignedIn: !!user,
-    upgrade: startCheckout,
+    upgrade: () => openModal("premium_gate"),
   };
 }

@@ -8,7 +8,8 @@ const mockStudyProgress = {
     "ap-aboriginal": true,
     // "ap-early-days" is missing
   },
-  bookmarkedQuestions: [],
+  lastStudiedAt: null,
+  lastSectionId: null,
 };
 
 const mockQuizHistory: QuizResult[] = [
@@ -74,7 +75,7 @@ describe("Readiness Calculator", () => {
     });
 
     it("returns zero score with no history or study progress", () => {
-      const result = calculateReadiness([], { completedSections: {}, bookmarkedQuestions: [] });
+      const result = calculateReadiness([], { completedSections: {}, lastStudiedAt: null, lastSectionId: null });
       
       expect(result.score).toBe(0);
       expect(result.quizComponent).toBe(0);

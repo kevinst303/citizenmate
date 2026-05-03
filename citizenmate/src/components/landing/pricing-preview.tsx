@@ -49,7 +49,7 @@ const plans = [
 export function PricingPreview() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const { startCheckout, premium } = useAuth();
+  const { startCheckout, profile: premium } = useAuth();
   const [checkoutLoading, setCheckoutLoading] = useState(false);
 
   const handleGetSprintPass = async () => {

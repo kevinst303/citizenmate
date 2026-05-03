@@ -1,27 +1,16 @@
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
-import { LayoutDashboard, Users, FileText, Gift, ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { LayoutDashboard, Users, FileText, ArrowLeft } from "lucide-react";
 
-export default async function AdminLayout({
-  children,
-  params,
-}: {
-  children: React.ReactNode;
-  params: Promise<{ lang: string }>;
-}) {
-  const { lang } = await params;
+export default async function AdminLayout({ children, params }: { children: React.ReactNode, params: Promise<{ lang: string }> }) {
   const supabase = await createSupabaseServerClient();
-  
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect(`/${lang}?auth=required`);
+    redirect("/");
   }
 
-  // Check if admin
   const { data: profile } = await supabase
     .from("profiles")
     .select("is_admin")
@@ -29,70 +18,46 @@ export default async function AdminLayout({
     .single();
 
   if (!profile?.is_admin) {
-    redirect(`/${lang}`);
+    redirect("/");
   }
 
+  const { lang } = await params;
+
   return (
-    <div className="flex h-screen bg-cm-ice overflow-hidden">
+    <div className="flex h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
       {/* Sidebar */}
-      <aside className="w-64 bg-cm-navy text-white flex flex-col hidden md:flex">
-        <div className="p-6">
-          <h1 className="text-2xl font-heading font-bold text-cm-gold drop-shadow-sm">
-            CitizenMate
-          </h1>
-          <p className="text-[11px] text-white/60 mt-1 uppercase tracking-wider font-bold">
-            Super Admin
-          </p>
+      <aside className="w-64 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 p-6 flex flex-col gap-6 h-full shadow-sm z-10">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white font-bold">
+            CM
+          </div>
+          <div className="font-heading font-semibold text-lg">Admin Control</div>
         </div>
-        
-        <nav className="flex-1 px-4 space-y-1.5 mt-2">
-          <Link href={`/${lang}/admin`} className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/10 transition-colors text-white/80 hover:text-white">
-            <LayoutDashboard className="w-4.5 h-4.5" />
-            <span className="font-semibold text-sm">Insights</span>
+        <nav className="flex flex-col gap-2 mt-4 flex-1">
+          <Link href={`/${lang}/admin`} className="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-sm font-medium">
+            <LayoutDashboard size={18} className="text-zinc-500" />
+            <span>Dashboard</span>
           </Link>
-          <Link href={`/${lang}/admin/users`} className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/10 transition-colors text-white/80 hover:text-white">
-            <Users className="w-4.5 h-4.5" />
-            <span className="font-semibold text-sm">Users & Plans</span>
+          <Link href={`/${lang}/admin/users`} className="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-sm font-medium">
+            <Users size={18} className="text-zinc-500" />
+            <span>Users</span>
           </Link>
-          <Link href={`/${lang}/admin/referrals`} className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/10 transition-colors text-white/80 hover:text-white">
-            <Gift className="w-4.5 h-4.5" />
-            <span className="font-semibold text-sm">Referrals</span>
-          </Link>
-          <Link href={`/${lang}/admin/blog`} className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/10 transition-colors text-white/80 hover:text-white">
-            <FileText className="w-4.5 h-4.5" />
-            <span className="font-semibold text-sm">Blog Posts</span>
+          <Link href={`/${lang}/admin/blog`} className="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-sm font-medium">
+            <FileText size={18} className="text-zinc-500" />
+            <span>Blog</span>
           </Link>
         </nav>
-        
-        <div className="p-5 border-t border-white/10">
-          <Link href={`/${lang}/dashboard`} className="flex items-center gap-2 text-sm font-medium text-white/60 hover:text-white transition-colors">
-            <ArrowLeft className="w-4 h-4" />
-            Back to App
+        <div className="mt-auto border-t border-zinc-200 dark:border-zinc-800 pt-4">
+          <Link href={`/${lang}/dashboard`} className="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-sm font-medium text-zinc-500">
+            <ArrowLeft size={18} />
+            <span>Back to App</span>
           </Link>
         </div>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
-        {/* Topbar */}
-        <header className="h-[66px] bg-white border-b border-[#E9ECEF] flex items-center justify-between px-6 shrink-0 z-10" style={{ boxShadow: 'rgba(0,0,0,0.02) 0px 4px 12px' }}>
-          <div className="flex items-center gap-3">
-             <h2 className="font-heading font-bold text-cm-navy md:hidden text-lg">Admin</h2>
-          </div>
-          <div className="flex items-center gap-4">
-             <div className="flex items-center justify-center w-8 h-8 rounded-full bg-cm-navy-50 text-cm-navy font-bold text-xs uppercase">
-               {user.email?.charAt(0) || 'A'}
-             </div>
-             <span className="text-sm font-medium text-cm-slate-600 hidden sm:block">{user.email}</span>
-          </div>
-        </header>
-        
-        {/* Page Content */}
-        <div className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8">
-          <div className="max-w-6xl mx-auto">
-            {children}
-          </div>
-        </div>
+      <main className="flex-1 h-full overflow-y-auto">
+        {children}
       </main>
     </div>
   );

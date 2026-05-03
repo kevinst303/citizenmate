@@ -1,6 +1,11 @@
 import type { NextConfig } from "next";
 import withSerwistInit from "@serwist/next";
 import { withSentryConfig } from "@sentry/nextjs";
+import withBundleAnalyzer from "@next/bundle-analyzer";
+
+const analyzer = withBundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+});
 
 const withSerwist = withSerwistInit({
   swSrc: "src/sw.ts",
@@ -41,6 +46,11 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   ...(isDev ? { distDir: "/tmp/citizenmate-next" } : {}),
+  experimental: {
+  },
+  images: {
+    formats: ['image/avif', 'image/webp'],
+  },
   async headers() {
     return [
       {
@@ -51,7 +61,7 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withSentryConfig(withSerwist(nextConfig), {
+export default withSentryConfig(withSerwist(analyzer(nextConfig)), {
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options
   org: "citizenmate",

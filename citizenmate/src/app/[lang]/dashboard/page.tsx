@@ -26,6 +26,8 @@ import {
   Star,
   PartyPopper,
   Brain,
+  X,
+  Lock,
 } from "lucide-react";
 import { useStudy } from "@/lib/study-context";
 import { useTestDate } from "@/lib/test-date-context";
@@ -48,6 +50,8 @@ import {
 } from "@/lib/dashboard-config";
 import { getAIInsight } from "@/lib/insights";
 import { ReadinessRing } from "@/components/dashboard/readiness-ring";
+import { useAuth } from "@/lib/auth-context";
+import { useUpgradeModal } from "@/lib/store/useUpgradeModal";
 
 
 // ===== Animations =====
@@ -71,9 +75,13 @@ const item = {
 export default function DashboardPage() {
   const { progress } = useStudy();
   const { daysUntilTest, urgencyLevel, openModal, testDate } = useTestDate();
+  const { profileData } = useAuth();
+  const { openModal: openUpgradeModal } = useUpgradeModal();
 
   // Defer localStorage reads until after hydration to prevent SSR mismatch
   const [hasMounted, setHasMounted] = useState(false);
+  const [showBanner, setShowBanner] = useState(true);
+  
   useEffect(() => {
     setHasMounted(true);
   }, []);
@@ -117,6 +125,39 @@ export default function DashboardPage() {
           animate="show"
           className="space-y-8"
         >
+          {/* Upgrade Banner for Free Users */}
+          {hasMounted && profileData?.tier === "free" && showBanner && (
+            <motion.div
+              variants={item}
+              className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-cm-gold/20 via-cm-gold/10 to-transparent border border-cm-gold/30 px-5 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+            >
+              <div className="flex items-center gap-4">
+                <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-cm-gold/20 text-cm-gold flex items-center justify-center">
+                  <Lock className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-cm-navy mb-0.5">Unlock Premium Features</h3>
+                  <p className="text-sm text-cm-slate-600">Get unlimited mock tests, AI tutor access, and advanced analytics.</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 self-end sm:self-auto">
+                <button
+                  onClick={() => openUpgradeModal("dashboard_banner")}
+                  className="px-4 py-2 bg-cm-navy text-white text-sm font-bold rounded-xl hover:bg-cm-navy/90 transition-colors shadow-md"
+                >
+                  Upgrade Now
+                </button>
+                <button
+                  onClick={() => setShowBanner(false)}
+                  className="p-2 text-cm-slate-400 hover:text-cm-slate-600 hover:bg-white/50 rounded-lg transition-colors"
+                  aria-label="Dismiss"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </motion.div>
+          )}
+
           {/* AI Insight Banner — Situation-Based Smart Nudge */}
           <motion.div
             variants={item}
@@ -334,7 +375,7 @@ export default function DashboardPage() {
           {/* Topic mastery */}
           <motion.div
             variants={item}
-            className="bg-white border border-[#E9ECEF] p-6"
+            className="bg-white border border-[#E9ECEF] p-6 relative overflow-hidden"
               style={{ borderRadius: '15px', boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}
           >
             <div className="flex items-center gap-2.5 mb-5">
@@ -346,52 +387,69 @@ export default function DashboardPage() {
               </h2>
             </div>
 
-            <div className="space-y-4">
-              {readiness.topicMastery.map((topic) => {
-                const Icon = TOPIC_ICONS[topic.topicId];
-                const colors = TOPIC_COLORS[topic.topicId];
-
-                return (
-                  <Link
-                    key={topic.topicId}
-                    href={`/study/${topic.topicId}`}
-                    className="topic-row group flex items-center gap-4 p-3 rounded-xl cursor-pointer"
-                    style={
-                      {
-                        "--topic-accent-color": colors.accent,
-                        "--topic-hover-bg": colors.hoverBg,
-                      } as React.CSSProperties
-                    }
+            <div className="space-y-4 relative">
+              {hasMounted && profileData?.tier === "free" && (
+                <div className="absolute inset-0 z-20 backdrop-blur-md bg-white/50 flex flex-col items-center justify-center rounded-xl border border-white/50 shadow-sm">
+                  <div className="w-12 h-12 rounded-full bg-cm-gold/20 text-cm-gold flex items-center justify-center mb-3 shadow-inner">
+                    <Lock className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-lg font-bold text-cm-navy mb-1 text-center px-4 drop-shadow-sm">Detailed Analytics Locked</h3>
+                  <p className="text-sm text-cm-slate-800 font-medium mb-4 text-center px-6 drop-shadow-sm">Upgrade to Premium to see your detailed strengths and weaknesses.</p>
+                  <button
+                    onClick={() => openUpgradeModal("topic_mastery")}
+                    className="px-5 py-2.5 bg-cm-navy text-white text-sm font-bold rounded-xl hover:bg-cm-navy/90 transition-colors shadow-lg cursor-pointer"
                   >
-                    <div
-                      className={`flex-shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-xl ${colors.bg} ${colors.text} transition-transform duration-200 group-hover:scale-105`}
+                    Unlock Analytics
+                  </button>
+                </div>
+              )}
+              <div className={hasMounted && profileData?.tier === "free" ? "opacity-30 select-none pointer-events-none" : ""}>
+                {readiness.topicMastery.map((topic) => {
+                  const Icon = TOPIC_ICONS[topic.topicId];
+                  const colors = TOPIC_COLORS[topic.topicId];
+
+                  return (
+                    <Link
+                      key={topic.topicId}
+                      href={`/study/${topic.topicId}`}
+                      className="topic-row group flex items-center gap-4 p-3 rounded-xl cursor-pointer"
+                      style={
+                        {
+                          "--topic-accent-color": colors.accent,
+                          "--topic-hover-bg": colors.hoverBg,
+                        } as React.CSSProperties
+                      }
                     >
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between mb-1.5">
-                        <h3 className="text-sm font-semibold text-cm-slate-800 group-hover:text-cm-navy transition-colors duration-200">
-                          {topic.label}
-                        </h3>
-                        <span className="text-sm font-bold text-cm-slate-700">
-                          {topic.overallMastery}%
-                        </span>
+                      <div
+                        className={`flex-shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-xl ${colors.bg} ${colors.text} transition-transform duration-200 group-hover:scale-105`}
+                      >
+                        <Icon className="w-5 h-5" />
                       </div>
-                      <StudyProgressBar
-                        completed={topic.overallMastery}
-                        total={100}
-                        colorClass={colors.bar}
-                        size="sm"
-                      />
-                      <div className="flex gap-4 mt-1.5 text-xs text-cm-slate-400">
-                        <span>Quiz: {topic.quizAccuracy}%</span>
-                        <span>Study: {topic.studyCompletion}%</span>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between mb-1.5">
+                          <h3 className="text-sm font-semibold text-cm-slate-800 group-hover:text-cm-navy transition-colors duration-200">
+                            {topic.label}
+                          </h3>
+                          <span className="text-sm font-bold text-cm-slate-700">
+                            {topic.overallMastery}%
+                          </span>
+                        </div>
+                        <StudyProgressBar
+                          completed={topic.overallMastery}
+                          total={100}
+                          colorClass={colors.bar}
+                          size="sm"
+                        />
+                        <div className="flex gap-4 mt-1.5 text-xs text-cm-slate-400">
+                          <span>Quiz: {topic.quizAccuracy}%</span>
+                          <span>Study: {topic.studyCompletion}%</span>
+                        </div>
                       </div>
-                    </div>
-                    <ArrowRight className="w-4 h-4 text-cm-slate-300 group-hover:text-cm-navy group-hover:translate-x-1 transition-all duration-200 flex-shrink-0" />
-                  </Link>
-                );
-              })}
+                      <ArrowRight className="w-4 h-4 text-cm-slate-300 group-hover:text-cm-navy group-hover:translate-x-1 transition-all duration-200 flex-shrink-0" />
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
           </motion.div>
 
