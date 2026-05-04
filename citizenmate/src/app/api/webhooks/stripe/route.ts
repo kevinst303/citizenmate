@@ -65,15 +65,24 @@ async function handleCheckoutCompleted(
 
   // Calculate premium expiry
   const expiresAt = new Date();
-  expiresAt.setDate(expiresAt.getDate() + SPRINT_PASS_DAYS);
+  const tier = session.metadata?.product || 'premium';
+  
+  if (session.mode === 'subscription') {
+    // Initial grant; webhooks will keep this updated
+    expiresAt.setDate(expiresAt.getDate() + 31);
+  } else {
+    // Sprint pass
+    expiresAt.setDate(expiresAt.getDate() + SPRINT_PASS_DAYS);
+  }
 
   console.log(
-    `[Webhook] Sprint Pass purchased | user=${userId} | expires=${expiresAt.toISOString()}`
+    `[Webhook] Checkout completed | mode=${session.mode} | user=${userId} | expires=${expiresAt.toISOString()} | tier=${tier}`
   );
 
   const updateData: Record<string, unknown> = {
     is_premium: true,
     premium_expires_at: expiresAt.toISOString(),
+    tier: tier,
   };
 
   if (stripeCustomerId) {
@@ -130,24 +139,48 @@ async function handleCheckoutCompleted(
   }
 }
 
-async function handleSubscriptionDeleted(
+async function handleSubscriptionCreatedOrUpdated(
   subscription: Stripe.Subscription,
   adminSupabase: ReturnType<typeof createSupabaseAdminClient>
 ): Promise<void> {
   const customerId = subscription.customer as string;
+  const status = subscription.status;
+  const tier = subscription.metadata?.product || 'premium';
 
-  console.log(`[Webhook] Subscription cancelled | customer=${customerId}`);
+  console.log(`[Webhook] Subscription ${status} | customer=${customerId} | tier=${tier}`);
 
-  const { error } = await adminSupabase
-    .from('profiles')
-    .update({
-      is_premium: false,
-      premium_expires_at: null,
-    })
-    .eq('stripe_customer_id', customerId);
+  if (status === 'active' || status === 'trialing') {
+    // Current period end is in seconds, convert to milliseconds
+    const currentPeriodEnd = subscription.items.data[0]?.current_period_end ?? Math.floor(Date.now() / 1000);
+    const expiresAt = new Date(currentPeriodEnd * 1000);
+    // Add 3 days grace period
+    expiresAt.setDate(expiresAt.getDate() + 3);
 
-  if (error) {
-    console.error('[Webhook] Failed to revoke premium:', error.message);
+    const { error } = await adminSupabase
+      .from('profiles')
+      .update({
+        is_premium: true,
+        premium_expires_at: expiresAt.toISOString(),
+        tier: tier,
+      })
+      .eq('stripe_customer_id', customerId);
+
+    if (error) {
+      console.error('[Webhook] Failed to update premium access:', error.message);
+    }
+  } else if (status === 'canceled' || status === 'unpaid' || status === 'past_due') {
+    const { error } = await adminSupabase
+      .from('profiles')
+      .update({
+        is_premium: false,
+        premium_expires_at: null,
+        tier: 'free',
+      })
+      .eq('stripe_customer_id', customerId);
+
+    if (error) {
+      console.error('[Webhook] Failed to revoke premium access:', error.message);
+    }
   }
 }
 
@@ -185,7 +218,7 @@ async function handleChargeDisputed(
       console.log(`[Webhook] Revoking premium during dispute | user=${userId}`);
       await adminSupabase
         .from('profiles')
-        .update({ is_premium: false })
+        .update({ is_premium: false, tier: 'free' })
         .eq('id', userId);
     }
   }
@@ -207,6 +240,7 @@ async function handleChargeRefunded(
       .update({
         is_premium: false,
         premium_expires_at: null,
+        tier: 'free',
       })
       .eq('stripe_customer_id', customerId);
 
@@ -269,8 +303,10 @@ export async function POST(req: Request) {
         );
         break;
 
+      case 'customer.subscription.created':
+      case 'customer.subscription.updated':
       case 'customer.subscription.deleted':
-        await handleSubscriptionDeleted(
+        await handleSubscriptionCreatedOrUpdated(
           event.data.object as Stripe.Subscription,
           adminSupabase
         );

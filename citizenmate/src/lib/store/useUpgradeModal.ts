@@ -10,6 +10,6 @@ interface UpgradeModalState {
 export const useUpgradeModal = create<UpgradeModalState>((set) => ({
   isOpen: false,
   triggerSource: null,
-  openModal: (source = null) => set({ isOpen: true, triggerSource: source }),
+  openModal: (source?: string) => set({ isOpen: true, triggerSource: source ?? null }),
   closeModal: () => set({ isOpen: false, triggerSource: null }),
 }));

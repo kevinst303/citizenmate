@@ -16,6 +16,7 @@ import { useUpgradeModal } from "@/lib/store/useUpgradeModal";
 // ===== Types =====
 
 interface ProfileData {
+  tier: 'free' | 'pro' | 'premium';
   isPremium: boolean;
   expiresAt: Date | null;
   testDate: string | null;
@@ -34,7 +35,7 @@ interface AuthContextValue {
   signInWithGoogle: (redirectTo?: string) => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<void>;
   refreshPremiumStatus: () => Promise<void>;
-  startCheckout: () => Promise<void>;
+  startCheckout: (tier?: string, interval?: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -55,6 +56,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [profile, setProfile] = useState<ProfileData>({
+    tier: 'free',
     isPremium: false,
     expiresAt: null,
     testDate: null,
@@ -64,7 +66,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Fetch profile data from Supabase profile
   const fetchProfileData = useCallback(async (userId: string) => {
     if (!isSupabaseConfigured()) {
-      setProfile({ isPremium: false, expiresAt: null, testDate: null, loading: false });
+      setProfile({ tier: 'free', isPremium: false, expiresAt: null, testDate: null, loading: false });
       return;
     }
 
@@ -72,12 +74,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const supabase = getSupabaseBrowserClient();
       const { data, error } = await supabase
         .from("profiles")
-        .select("is_premium, premium_expires_at, test_date")
+        .select("tier, is_premium, premium_expires_at, test_date")
         .eq("id", userId)
         .single();
 
       if (error || !data) {
-        setProfile({ isPremium: false, expiresAt: null, testDate: null, loading: false });
+        setProfile({ tier: 'free', isPremium: false, expiresAt: null, testDate: null, loading: false });
         return;
       }
 
@@ -90,6 +92,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         (expiresAt === null || expiresAt > new Date());
 
       setProfile({
+        tier: (data.tier as 'free' | 'pro' | 'premium') || 'free',
         isPremium: isActive,
         expiresAt,
         testDate: data.test_date,
@@ -106,7 +109,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       }
     } catch {
-      setProfile({ isPremium: false, expiresAt: null, testDate: null, loading: false });
+      setProfile({ tier: 'free', isPremium: false, expiresAt: null, testDate: null, loading: false });
     }
   }, []);
 
@@ -134,7 +137,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (currentUser) {
         fetchProfileData(currentUser.id);
       } else {
-        setProfile({ isPremium: false, expiresAt: null, testDate: null, loading: false });
+        setProfile({ tier: 'free', isPremium: false, expiresAt: null, testDate: null, loading: false });
       }
     });
 
@@ -157,7 +160,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       if (event === "SIGNED_OUT") {
-        setProfile({ isPremium: false, expiresAt: null, testDate: null, loading: false });
+        setProfile({ tier: 'free', isPremium: false, expiresAt: null, testDate: null, loading: false });
       }
     });
 
@@ -247,11 +250,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const supabase = getSupabaseBrowserClient();
     await supabase.auth.signOut();
     setUser(null);
-    setProfile({ isPremium: false, expiresAt: null, testDate: null, loading: false });
+    setProfile({ tier: 'free', isPremium: false, expiresAt: null, testDate: null, loading: false });
   }, []);
 
   // Initiate Stripe checkout
-  const startCheckout = useCallback(async () => {
+  const startCheckout = useCallback(async (tier: string = 'premium', interval: string = 'month') => {
     if (!user) {
       openAuthModal();
       return;
@@ -268,7 +271,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const response = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ promoCode }),
+        body: JSON.stringify({ promoCode, tier, interval }),
       });
 
       if (!response.ok) {
@@ -329,6 +332,7 @@ export function usePremium() {
   const { openModal } = useUpgradeModal();
   
   return {
+    tier: profile.tier,
     isPremium: profile.isPremium,
     premiumLoading: profile.loading,
     expiresAt: profile.expiresAt,

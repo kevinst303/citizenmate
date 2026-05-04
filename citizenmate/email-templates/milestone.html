@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body { margin: 0; padding: 0; background-color: #F4F4F5; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  .wrapper { width: 100%; table-layout: fixed; background-color: #F4F4F5; padding: 40px 0; }
+  .main { background-color: #ffffff; margin: 0 auto; width: 100%; max-width: 600px; border-radius: 24px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03); }
+  .header { padding: 32px 40px; text-align: center; }
+  .header img { height: 40px; }
+  .banner { width: 100%; height: auto; display: block; }
+  .content { padding: 40px; color: #3F3F46; font-size: 16px; line-height: 1.6; }
+  .content h1 { color: #006769; font-size: 24px; font-weight: bold; margin-top: 0; margin-bottom: 20px; }
+  .button { display: inline-block; background-color: #006769; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 50px; font-weight: bold; font-size: 16px; margin-top: 24px; margin-bottom: 24px; }
+  .footer { padding: 32px 40px; text-align: center; font-size: 12px; color: #8b92a0; background-color: #F4F4F5; border-radius: 0 0 24px 24px;}
+  .footer a { color: #006769; text-decoration: underline; }
+  .highlight { color: #006769; font-weight: bold; font-size: 20px; display: block; margin: 20px 0; text-align: center; padding: 16px; background-color: #F0FDF4; border-radius: 12px; border: 1px solid #BBF7D0; }
+</style>
+</head>
+<body>
+  <div class="wrapper">
+    <table class="main" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+      <tr>
+        <td class="header">
+          <img src="https://citizenmate.com.au/CitizenMate-Logo-full.gif" alt="CitizenMate Logo">
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <img class="banner" src="https://citizenmate.com.au/emails/milestone-banner.jpg" alt="Milestone Achieved">
+        </td>
+      </tr>
+      <tr>
+        <td class="content">
+          <h1>Incredible work, {{userName}}! 🎉</h1>
+          <p>We noticed you've been putting in the hard yards. You just hit a massive milestone in your preparation for the Australian Citizenship Test!</p>
+          
+          <div class="highlight">
+            You have answered {{questionsCount}} questions!
+          </div>
+          
+          <p>Consistency is the secret to passing your citizenship test with flying colours. Every question you answer gets you one step closer to your goal.</p>
+          <center>
+            <a href="https://citizenmate.com.au/practice" class="button">Keep Up The Momentum</a>
+          </center>
+          <p>We're cheering you on! Let's keep that streak alive.</p>
+          <p>Cheers,<br>The CitizenMate Team</p>
+        </td>
+      </tr>
+      <tr>
+        <td class="footer">
+          <p>&copy; 2026 CitizenMate. All rights reserved.</p>
+          <p>You received this email because you're preparing with CitizenMate.</p>
+          <p><a href="{{unsubscribeUrl}}">Unsubscribe</a></p>
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

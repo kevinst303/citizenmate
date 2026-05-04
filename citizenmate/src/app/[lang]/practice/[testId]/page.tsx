@@ -2,7 +2,9 @@
 
 import { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { useQuiz } from "@/lib/quiz-context";
+import { useQuiz, getAttemptHistory } from "@/lib/quiz-context";
+import { useAuth } from "@/lib/auth-context";
+import { useUpgradeModal } from "@/lib/store/useUpgradeModal";
 import { QuizHeader } from "@/components/quiz/quiz-header";
 import { QuizCard } from "@/components/quiz/quiz-card";
 import { QuizProgress } from "@/components/quiz/quiz-progress";
@@ -14,6 +16,9 @@ export default function QuizPage() {
   const params = useParams();
   const router = useRouter();
   const testId = params.testId as string;
+  const { profile, loading } = useAuth();
+  const isPremium = profile.isPremium;
+  const { openModal } = useUpgradeModal();
   const {
     state,
     currentQuestion,
@@ -27,11 +32,22 @@ export default function QuizPage() {
 
   // Start quiz on mount
   useEffect(() => {
+    if (loading) return; // Wait for profile to load
+    
+    // Protection: allow 1 free test completion total across any test
+    const attempts = getAttemptHistory();
+    if (!isPremium && (testId !== "mock-1" || attempts.length > 0)) {
+      // User is not premium and trying to take a test they shouldn't
+      router.push("/practice");
+      openModal("quiz_limit");
+      return;
+    }
+
     const test = getTestById(testId);
     if (test && state.status === "idle") {
       startQuiz(testId);
     }
-  }, [testId, state.status, startQuiz]);
+  }, [testId, state.status, startQuiz, isPremium, loading, router, openModal]);
 
   // Redirect to results when completed
   useEffect(() => {

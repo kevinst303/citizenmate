@@ -26,7 +26,7 @@ function getLocale(request: NextRequest): string {
   }
 }
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
     request: {
       headers: request.headers,
@@ -123,6 +123,15 @@ export async function proxy(request: NextRequest) {
     redirectUrl.pathname = `/${localeToUse}`;
     
     return NextResponse.redirect(redirectUrl);
+  }
+
+  const ref = request.nextUrl.searchParams.get("ref");
+  if (ref) {
+    response.cookies.set("citizenmate_ref", ref, {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 30, // 30 days
+      sameSite: "lax",
+    });
   }
 
   return response;

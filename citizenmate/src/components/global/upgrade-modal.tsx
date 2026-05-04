@@ -17,9 +17,9 @@ export function UpgradeModal() {
   const handleUpgrade = async (tier: string) => {
     setLoadingTier(tier);
     try {
-      // In a real implementation, you would pass the tier to startCheckout
-      // await startCheckout(tier);
-      await startCheckout();
+      // Pass the tier to startCheckout
+      const interval = tier.toLowerCase() === 'pro' ? 'month' : 'year';
+      await startCheckout(tier.toLowerCase(), interval);
     } finally {
       setTimeout(() => setLoadingTier(null), 3000);
     }

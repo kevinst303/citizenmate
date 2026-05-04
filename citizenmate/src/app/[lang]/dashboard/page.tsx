@@ -75,7 +75,7 @@ const item = {
 export default function DashboardPage() {
   const { progress } = useStudy();
   const { daysUntilTest, urgencyLevel, openModal, testDate } = useTestDate();
-  const { profileData } = useAuth();
+  const { profile } = useAuth();
   const { openModal: openUpgradeModal } = useUpgradeModal();
 
   // Defer localStorage reads until after hydration to prevent SSR mismatch
@@ -126,7 +126,7 @@ export default function DashboardPage() {
           className="space-y-8"
         >
           {/* Upgrade Banner for Free Users */}
-          {hasMounted && profileData?.tier === "free" && showBanner && (
+          {hasMounted && !profile.isPremium && showBanner && (
             <motion.div
               variants={item}
               className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-cm-gold/20 via-cm-gold/10 to-transparent border border-cm-gold/30 px-5 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
@@ -388,7 +388,7 @@ export default function DashboardPage() {
             </div>
 
             <div className="space-y-4 relative">
-              {hasMounted && profileData?.tier === "free" && (
+              {hasMounted && !profile.isPremium && (
                 <div className="absolute inset-0 z-20 backdrop-blur-md bg-white/50 flex flex-col items-center justify-center rounded-xl border border-white/50 shadow-sm">
                   <div className="w-12 h-12 rounded-full bg-cm-gold/20 text-cm-gold flex items-center justify-center mb-3 shadow-inner">
                     <Lock className="w-6 h-6" />
@@ -403,7 +403,7 @@ export default function DashboardPage() {
                   </button>
                 </div>
               )}
-              <div className={hasMounted && profileData?.tier === "free" ? "opacity-30 select-none pointer-events-none" : ""}>
+              <div className={hasMounted && !profile.isPremium ? "opacity-30 select-none pointer-events-none" : ""}>
                 {readiness.topicMastery.map((topic) => {
                   const Icon = TOPIC_ICONS[topic.topicId];
                   const colors = TOPIC_COLORS[topic.topicId];

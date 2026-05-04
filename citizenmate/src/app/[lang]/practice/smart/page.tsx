@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -22,6 +22,32 @@ import {
   RotateCcw,
   AlertCircle,
 } from "lucide-react";
+import { usePremium } from "@/lib/auth-context";
+
+const RATE_KEY = "citizenmate-srs-usage";
+const MAX_DAILY_SESSIONS = 1;
+
+function getTodayString(): string {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function getDailyUsage(): { date: string; count: number } {
+  if (typeof window === "undefined") return { date: getTodayString(), count: 0 };
+  const raw = localStorage.getItem(RATE_KEY);
+  if (!raw) return { date: getTodayString(), count: 0 };
+  const parsed = JSON.parse(raw);
+  if (parsed.date !== getTodayString()) {
+    return { date: getTodayString(), count: 0 };
+  }
+  return parsed;
+}
+
+function incrementUsage(): { date: string; count: number } {
+  const usage = getDailyUsage();
+  usage.count += 1;
+  localStorage.setItem(RATE_KEY, JSON.stringify(usage));
+  return usage;
+}
 
 const TOPIC_ICONS: Record<TopicCategory, typeof Globe> = {
   "australia-people": Globe,
@@ -80,14 +106,32 @@ const item = {
 export default function SmartPracticePage() {
   const router = useRouter();
   const { getStats, getTopicWeakness, getSmartQuestions } = useSRS();
+  const { isPremium, upgrade } = usePremium();
   const [focusTopic, setFocusTopic] = useState<TopicCategory | null>(null);
+  const [dailyUsage, setDailyUsage] = useState(() => ({
+    date: getTodayString(),
+    count: 0,
+  }));
+
+  useEffect(() => {
+    setDailyUsage(getDailyUsage());
+  }, []);
 
   const stats = useMemo(() => getStats(), [getStats]);
   const topicWeakness = useMemo(() => getTopicWeakness(), [getTopicWeakness]);
 
   const hasData = stats.totalQuestions - stats.newCount > 0;
+  const isLimitReached = !isPremium && dailyUsage.count >= MAX_DAILY_SESSIONS;
 
   const handleStartSession = () => {
+    if (isLimitReached) {
+      upgrade();
+      return;
+    }
+
+    const newUsage = incrementUsage();
+    setDailyUsage(newUsage);
+
     // Pre-generate questions and store in sessionStorage for the session page
     const questions = getSmartQuestions(15, focusTopic ?? undefined);
     sessionStorage.setItem(
@@ -365,7 +409,7 @@ export default function SmartPracticePage() {
                   className="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-heading font-bold rounded-xl shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/30 transition-all duration-200 cursor-pointer"
                 >
                   <Sparkles className="w-5 h-5" />
-                  Start Session
+                  {isLimitReached ? "Unlock Unlimited Practice" : "Start Session"}
                   <ArrowRight className="w-4 h-4" />
                 </motion.button>
 
@@ -378,6 +422,16 @@ export default function SmartPracticePage() {
                   </button>
                 )}
               </div>
+
+              {!isPremium && (
+                <div className="mt-3">
+                  <p className={`text-xs ${isLimitReached ? 'text-cm-red font-semibold' : 'text-cm-slate-400'}`}>
+                    {isLimitReached 
+                      ? "Daily limit reached. Upgrade for unlimited practice." 
+                      : `${MAX_DAILY_SESSIONS - dailyUsage.count} free session${(MAX_DAILY_SESSIONS - dailyUsage.count) !== 1 ? 's' : ''} remaining today.`}
+                  </p>
+                </div>
+              )}
 
               <div className="flex items-center justify-center gap-4 mt-5 text-xs text-cm-slate-400">
                 <span className="flex items-center gap-1">

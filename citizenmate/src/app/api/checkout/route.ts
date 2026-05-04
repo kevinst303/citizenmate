@@ -22,13 +22,18 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // ── Parse optional promo code from request body ──
+    // ── Parse options from request body ──
     let promoCode: string | undefined;
+    let tier = 'premium';
+    let interval = 'year';
+    
     try {
       const body = await req.json().catch(() => ({}));
       promoCode = body.promoCode;
+      if (body.tier) tier = body.tier;
+      if (body.interval) interval = body.interval;
     } catch {
-      // No body or invalid JSON — continue without promo code
+      // No body or invalid JSON
     }
 
     const stripeKey = process.env.STRIPE_SECRET_KEY;
@@ -44,9 +49,23 @@ export async function POST(req: Request) {
       }
     });
 
-    const priceId = process.env.NEXT_PUBLIC_STRIPE_PRICE_ID;
+    // ── Map tier to Price ID and Mode ──
+    let priceId: string | undefined;
+    const mode: Stripe.Checkout.SessionCreateParams.Mode = 'subscription';
+
+    if (tier === 'pro') {
+      priceId = interval === 'year' 
+        ? process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_YEAR 
+        : process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_MONTH;
+    } else {
+      // Premium tier
+      priceId = interval === 'year'
+        ? process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PREMIUM_YEAR
+        : process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PREMIUM_MONTH;
+    }
+
     if (!priceId) {
-      return NextResponse.json({ error: 'Price ID not configured' }, { status: 500 });
+      return NextResponse.json({ error: `Price ID not configured for tier: ${tier}, interval: ${interval}` }, { status: 500 });
     }
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://citizenmate.com.au';
@@ -83,7 +102,7 @@ export async function POST(req: Request) {
           quantity: 1,
         },
       ],
-      mode: 'payment', // One-time payment for Sprint Pass
+      mode: mode,
       // NOTE: No GST/tax applied — business is not yet GST-registered.
       // When registering, add automatic_tax: { enabled: true } and
       // set tax_behavior='inclusive' on the Stripe Price object.
@@ -93,10 +112,21 @@ export async function POST(req: Request) {
       customer_email: user.email,
       metadata: {
         userId: user.id,
-        product: 'sprint_pass',
+        product: tier,
         ...(referralPromoCodeId && { referral_promo_code_id: referralPromoCodeId }),
       },
     };
+    
+    // For subscriptions, we also need to pass metadata to the subscription object
+    if (mode === 'subscription') {
+      sessionParams.subscription_data = {
+        metadata: {
+          userId: user.id,
+          product: tier,
+          ...(referralPromoCodeId && { referral_promo_code_id: referralPromoCodeId }),
+        }
+      };
+    }
 
     // Apply discount if a valid promo code was found
     if (discounts.length > 0) {

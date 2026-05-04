@@ -20,14 +20,7 @@ function getResendClient(): Resend | null {
 }
 
 // ── Default sender ──
-const FROM_ADDRESS = process.env.RESEND_FROM_EMAIL || 'CitizenMate <noreply@mail.tigotechnology.com>';
-
-// ── Email types ──
-
-export type EmailTemplate =
-  | 'purchase_confirmation'
-  | 'premium_expiry_warning'
-  | 'welcome';
+const FROM_ADDRESS = process.env.RESEND_FROM_EMAIL || 'CitizenMate <hello@citizenmate.com.au>';
 
 // ── Send email ──
 
@@ -37,29 +30,44 @@ export async function sendEmail({
   html,
   text,
   replyTo,
+  templateId,
+  variables,
 }: {
   to: string;
   subject: string;
-  html: string;
+  html?: string;
   text?: string;
   replyTo?: string;
+  templateId?: string;
+  variables?: Record<string, unknown>;
 }) {
   const client = getResendClient();
 
   if (!client) {
     console.log(`[email] Would send to ${to}: ${subject}`);
+    if (templateId) console.log(`[email] With templateId ${templateId}`, variables);
     return { success: true, dev: true };
   }
 
   try {
-    const result = await client.emails.send({
+    const payload: any = {
       from: FROM_ADDRESS,
       to,
       subject,
-      html,
-      text,
       replyTo: replyTo || 'support@citizenmate.com.au',
-    });
+    };
+
+    if (templateId) {
+      payload.template = {
+        id: templateId,
+        variables: variables || {},
+      };
+    } else {
+      if (html) payload.html = html;
+      if (text) payload.text = text;
+    }
+
+    const result = await client.emails.send(payload);
 
     console.log(`[email] Sent "${subject}" to ${to}`, result);
     return { success: true, id: result.data?.id };
@@ -78,123 +86,37 @@ export async function sendPurchaseConfirmation(email: string, expiresAt: string)
     day: 'numeric',
   });
 
+  const templateId = process.env.RESEND_TEMPLATE_PURCHASE;
+  if (!templateId) console.warn('[email] Missing RESEND_TEMPLATE_PURCHASE env var');
+
   return sendEmail({
     to: email,
     subject: '🎉 Your Exam Sprint Pass is Active — CitizenMate',
-    html: `
-      <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px;">
-        <div style="text-align: center; margin-bottom: 30px;">
-          <h1 style="color: #0d9488; font-size: 28px; margin: 0;">🇦🇺 CitizenMate</h1>
-        </div>
-        
-        <h2 style="color: #1e293b; font-size: 22px;">You're all set, mate! 🎉</h2>
-        
-        <p style="color: #475569; font-size: 16px; line-height: 1.6;">
-          Your <strong style="color: #0d9488;">Exam Sprint Pass</strong> is now active. 
-          You have <strong>60 days</strong> of full access to everything CitizenMate offers.
-        </p>
-        
-        <div style="background: #f0fdfa; border-radius: 12px; padding: 20px; margin: 24px 0;">
-          <p style="margin: 0; color: #1e293b; font-size: 14px;">
-            <strong>Access expires:</strong> ${expiryDate}
-          </p>
-        </div>
-        
-        <h3 style="color: #1e293b; font-size: 16px;">What's included:</h3>
-        <ul style="color: #475569; font-size: 14px; line-height: 2;">
-          <li>✅ All 15 mock tests with unlimited retakes</li>
-          <li>✅ Complete bilingual study mode</li>
-          <li>✅ Unlimited AI tutor explanations</li>
-          <li>✅ 500+ practice questions</li>
-          <li>✅ Readiness score & analytics</li>
-        </ul>
-        
-        <div style="text-align: center; margin: 30px 0;">
-          <a href="https://citizenmate.com.au/dashboard" 
-             style="display: inline-block; background: #0d9488; color: white; text-decoration: none; padding: 14px 32px; border-radius: 999px; font-weight: bold; font-size: 16px;">
-            Start Studying →
-          </a>
-        </div>
-        
-        <p style="color: #94a3b8; font-size: 12px; text-align: center; margin-top: 40px;">
-          Questions? Email us at <a href="mailto:support@citizenmate.com.au" style="color: #0d9488;">support@citizenmate.com.au</a>
-        </p>
-      </div>
-    `,
-    text: `Your Exam Sprint Pass is now active! You have 60 days of full access until ${expiryDate}. Start studying at https://citizenmate.com.au/dashboard`,
+    templateId,
+    variables: { expiryDate },
   });
 }
 
 export async function sendPremiumExpiryWarning(email: string, daysLeft: number) {
+  const templateId = process.env.RESEND_TEMPLATE_EXPIRY_WARNING;
+  if (!templateId) console.warn('[email] Missing RESEND_TEMPLATE_EXPIRY_WARNING env var');
+
   return sendEmail({
     to: email,
     subject: `⏰ Your Sprint Pass expires in ${daysLeft} day${daysLeft === 1 ? '' : 's'} — CitizenMate`,
-    html: `
-      <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px;">
-        <div style="text-align: center; margin-bottom: 30px;">
-          <h1 style="color: #0d9488; font-size: 28px; margin: 0;">🇦🇺 CitizenMate</h1>
-        </div>
-        
-        <h2 style="color: #1e293b; font-size: 22px;">Your Sprint Pass expires in ${daysLeft} day${daysLeft === 1 ? '' : 's'}</h2>
-        
-        <p style="color: #475569; font-size: 16px; line-height: 1.6;">
-          Make the most of your remaining access — take a few more mock tests and review any weak areas.
-        </p>
-        
-        <div style="text-align: center; margin: 30px 0;">
-          <a href="https://citizenmate.com.au/practice" 
-             style="display: inline-block; background: #0d9488; color: white; text-decoration: none; padding: 14px 32px; border-radius: 999px; font-weight: bold; font-size: 16px;">
-            Take a Mock Test →
-          </a>
-        </div>
-        
-        <p style="color: #94a3b8; font-size: 12px; text-align: center;">
-          Need more time? You can purchase a new Sprint Pass after expiry.
-        </p>
-      </div>
-    `,
-    text: `Your Sprint Pass expires in ${daysLeft} day${daysLeft === 1 ? '' : 's'}. Take a mock test at https://citizenmate.com.au/practice`,
+    templateId,
+    variables: { daysLeft },
   });
 }
 
 export async function sendWelcomeEmail(email: string, name?: string) {
-  const greeting = name ? `Hi ${name}` : 'Welcome';
+  const templateId = process.env.RESEND_TEMPLATE_WELCOME;
+  if (!templateId) console.warn('[email] Missing RESEND_TEMPLATE_WELCOME env var');
 
   return sendEmail({
     to: email,
     subject: 'Welcome to CitizenMate 🇦🇺 — Your Citizenship Test Prep Starts Here',
-    html: `
-      <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px;">
-        <div style="text-align: center; margin-bottom: 30px;">
-          <h1 style="color: #0d9488; font-size: 28px; margin: 0;">🇦🇺 CitizenMate</h1>
-        </div>
-        
-        <h2 style="color: #1e293b; font-size: 22px;">${greeting}!</h2>
-        
-        <p style="color: #475569; font-size: 16px; line-height: 1.6;">
-          Thanks for signing up for CitizenMate — Australia's smartest citizenship test prep platform.
-        </p>
-        
-        <h3 style="color: #1e293b; font-size: 16px;">Here's how to get started:</h3>
-        <ol style="color: #475569; font-size: 14px; line-height: 2;">
-          <li>📖 <strong>Study the topics</strong> — Start with the free chapters</li>
-          <li>📝 <strong>Take a free mock test</strong> — See where you stand</li>
-          <li>🤖 <strong>Ask the AI Tutor</strong> — Get explanations in your language</li>
-        </ol>
-        
-        <div style="text-align: center; margin: 30px 0;">
-          <a href="https://citizenmate.com.au/dashboard" 
-             style="display: inline-block; background: #0d9488; color: white; text-decoration: none; padding: 14px 32px; border-radius: 999px; font-weight: bold; font-size: 16px;">
-            Go to Dashboard →
-          </a>
-        </div>
-        
-        <p style="color: #94a3b8; font-size: 12px; text-align: center; margin-top: 40px;">
-          You received this email because you signed up at citizenmate.com.au. 
-          <a href="https://citizenmate.com.au/privacy" style="color: #0d9488;">Privacy Policy</a>
-        </p>
-      </div>
-    `,
-    text: `${greeting}! Thanks for signing up for CitizenMate. Start studying at https://citizenmate.com.au/dashboard`,
+    templateId,
+    variables: { userName: name || 'there' },
   });
 }

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body { margin: 0; padding: 0; background-color: #F4F4F5; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  .wrapper { width: 100%; table-layout: fixed; background-color: #F4F4F5; padding: 40px 0; }
+  .main { background-color: #ffffff; margin: 0 auto; width: 100%; max-width: 600px; border-radius: 24px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03); }
+  .header { padding: 32px 40px; text-align: center; }
+  .header img { height: 40px; }
+  .content { padding: 40px; color: #3F3F46; font-size: 16px; line-height: 1.6; }
+  .content h1 { color: #006769; font-size: 24px; font-weight: bold; margin-top: 0; margin-bottom: 20px; }
+  .receipt-box { background-color: #f0fafa; border-radius: 12px; padding: 24px; margin: 24px 0; border-left: 4px solid #006769; }
+  .button { display: inline-block; background-color: #006769; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 50px; font-weight: bold; font-size: 16px; margin-top: 24px; margin-bottom: 24px; }
+  .footer { padding: 32px 40px; text-align: center; font-size: 12px; color: #8b92a0; background-color: #F4F4F5; border-radius: 0 0 24px 24px;}
+  .footer a { color: #006769; text-decoration: underline; }
+</style>
+</head>
+<body>
+  <div class="wrapper">
+    <table class="main" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+      <tr>
+        <td class="header">
+          <img src="https://citizenmate.com.au/CitizenMate-Logo-full.gif" alt="CitizenMate Logo">
+        </td>
+      </tr>
+      <tr>
+        <td class="content">
+          <h1>🎉 Your Sprint Pass is Active!</h1>
+          <p>Thanks for purchasing the CitizenMate Sprint Pass! You now have full access to all premium features, including advanced mock tests, performance analytics, and smart review.</p>
+          
+          <div class="receipt-box">
+            <p style="margin: 0;"><strong>Access Expiry Date:</strong> {{expiryDate}}</p>
+          </div>
+
+          <p>Make the most of your premium access and jump straight into a practice test.</p>
+          <center>
+            <a href="https://citizenmate.com.au/practice" class="button">Go to Premium Practice</a>
+          </center>
+          <p>If you have any questions regarding your purchase, please reply to this email.</p>
+          <p>Cheers,<br>The CitizenMate Team</p>
+        </td>
+      </tr>
+      <tr>
+        <td class="footer">
+          <p>&copy; 2026 CitizenMate. All rights reserved.</p>
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

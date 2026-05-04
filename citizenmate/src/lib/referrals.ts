@@ -1,6 +1,7 @@
 import { createSupabaseAdminClient } from '@/lib/supabase-admin';
 import { sendEmail } from '@/lib/email';
 
+
 // ===== Referral Reward Processing =====
 // Two-sided referral system:
 //   - Referrer gets 7 days of premium when their friend *qualifies*
@@ -73,7 +74,7 @@ export async function processReferralReward(refereeId: string): Promise<{
   // 4. Send notification emails (non-blocking)
   await Promise.allSettled([
     sendReferrerNotification(referrerId, referee.display_name || 'a mate'),
-    sendRefereeNotification(referee.email, referee.display_name),
+    sendRefereeNotification(refereeId, referee.email, referee.display_name),
   ]);
 
   return { success: true };
@@ -143,101 +144,47 @@ async function sendReferrerNotification(
   if (!referrer?.email || referrer.unsubscribed_from_emails) return;
 
   const name = referrer.display_name || 'Mate';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://citizenmate.com.au';
+  const unsubscribeUrl = `${siteUrl}/api/unsubscribe?id=${referrerId}`;
+
+  const templateId = process.env.RESEND_TEMPLATE_REFERRAL_BONUS;
+  if (!templateId) console.warn('[email] Missing RESEND_TEMPLATE_REFERRAL_BONUS env var');
 
   await sendEmail({
     to: referrer.email,
     subject: '🎉 Your mate just qualified — 7 bonus premium days added!',
-    html: `
-      <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px;">
-        <div style="text-align: center; margin-bottom: 30px;">
-          <h1 style="color: #0d9488; font-size: 28px; margin: 0;">🇦🇺 CitizenMate</h1>
-        </div>
-        
-        <h2 style="color: #1e293b; font-size: 22px;">Legend, ${name}! 🎉</h2>
-        
-        <p style="color: #475569; font-size: 16px; line-height: 1.6;">
-          Your mate <strong>${refereeName}</strong> just qualified, so we've added 
-          <strong style="color: #0d9488;">7 bonus days</strong> of Premium to your account!
-        </p>
-        
-        <div style="background: #f0fdfa; border-radius: 12px; padding: 20px; margin: 24px 0; text-align: center;">
-          <p style="margin: 0; color: #0d9488; font-size: 18px; font-weight: bold;">
-            +7 Premium Days Added ✅
-          </p>
-        </div>
-        
-        <p style="color: #475569; font-size: 14px; line-height: 1.6;">
-          Keep sharing your referral code to earn more premium time. You can refer up to 5 mates!
-        </p>
-        
-        <div style="text-align: center; margin: 30px 0;">
-          <a href="https://citizenmate.com.au/dashboard" 
-             style="display: inline-block; background: #0d9488; color: white; text-decoration: none; padding: 14px 32px; border-radius: 999px; font-weight: bold; font-size: 16px;">
-            View Dashboard →
-          </a>
-        </div>
-        
-        <p style="color: #94a3b8; font-size: 12px; text-align: center; margin-top: 40px;">
-          Questions? Email us at <a href="mailto:support@citizenmate.com.au" style="color: #0d9488;">support@citizenmate.com.au</a>
-        </p>
-      </div>
-    `,
-    text: `Legend, ${name}! Your mate ${refereeName} just qualified. We've added 7 bonus premium days to your account. Keep sharing your code — you can refer up to 5 mates!`,
+    templateId,
+    variables: { userName: name, refereeName, unsubscribeUrl },
   });
 }
 
 async function sendRefereeNotification(
+  refereeId: string,
   email: string | null,
   displayName?: string | null
 ): Promise<void> {
   if (!email) return;
 
+  const adminSupabase = createSupabaseAdminClient();
+  const { data: profile } = await adminSupabase
+    .from('profiles')
+    .select('unsubscribed_from_emails')
+    .eq('id', refereeId)
+    .single();
+
+  if (profile?.unsubscribed_from_emails) return;
+
   const name = displayName || 'there';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://citizenmate.com.au';
+  const unsubscribeUrl = `${siteUrl}/api/unsubscribe?id=${refereeId}`;
+
+  const templateId = process.env.RESEND_TEMPLATE_REFERRAL_WELCOME;
+  if (!templateId) console.warn('[email] Missing RESEND_TEMPLATE_REFERRAL_WELCOME env var');
 
   await sendEmail({
     to: email,
     subject: '🎁 You unlocked 7 bonus premium days — CitizenMate',
-    html: `
-      <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px;">
-        <div style="text-align: center; margin-bottom: 30px;">
-          <h1 style="color: #0d9488; font-size: 28px; margin: 0;">🇦🇺 CitizenMate</h1>
-        </div>
-        
-        <h2 style="color: #1e293b; font-size: 22px;">Nice one, ${name}! 🎁</h2>
-        
-        <p style="color: #475569; font-size: 16px; line-height: 1.6;">
-          Because you were referred by a friend, you've just earned 
-          <strong style="color: #0d9488;">7 bonus days</strong> of Premium access!
-        </p>
-        
-        <div style="background: #f0fdfa; border-radius: 12px; padding: 20px; margin: 24px 0; text-align: center;">
-          <p style="margin: 0; color: #0d9488; font-size: 18px; font-weight: bold;">
-            +7 Premium Days Unlocked ✅
-          </p>
-        </div>
-        
-        <p style="color: #475569; font-size: 14px; line-height: 1.6;">
-          Use your bonus time to take mock tests, study with the AI tutor, and track your readiness score.
-        </p>
-        
-        <div style="text-align: center; margin: 30px 0;">
-          <a href="https://citizenmate.com.au/dashboard" 
-             style="display: inline-block; background: #0d9488; color: white; text-decoration: none; padding: 14px 32px; border-radius: 999px; font-weight: bold; font-size: 16px;">
-            Start Studying →
-          </a>
-        </div>
-
-        <div style="background: #fef3c7; border-radius: 12px; padding: 16px; margin: 24px 0;">
-          <p style="margin: 0; color: #92400e; font-size: 14px;">
-            💡 <strong>Want more free time?</strong> Share your own referral code from your dashboard and earn 7 days for every mate who joins!
-          </p>
-        </div>
-        
-        <p style="color: #94a3b8; font-size: 12px; text-align: center; margin-top: 40px;">
-          Questions? Email us at <a href="mailto:support@citizenmate.com.au" style="color: #0d9488;">support@citizenmate.com.au</a>
-        </p>
-      </div>
-    `,
-    text: `Nice one, ${name}! Because you were referred by a friend, you've earned 7 bonus premium days. Start studying at https://citizenmate.com.au/dashboard`,
+    templateId,
+    variables: { userName: name, unsubscribeUrl },
   });
 }

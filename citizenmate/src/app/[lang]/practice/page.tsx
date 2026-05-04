@@ -206,7 +206,11 @@ export default function PracticePage() {
             const bestScore = getBestScore(test.id);
             const attemptCount = getTestAttempts(test.id).length;
             const testNumber = index + 1;
-            const isLocked = !isPremium && index >= FREE_TEST_COUNT;
+            
+            // Allow 1 free completion total. If they've taken any tests (attempts.length > 0)
+            // or if it's not the first test (index >= FREE_TEST_COUNT), lock it.
+            const totalAttempts = attempts.length;
+            const isLocked = !isPremium && (index >= FREE_TEST_COUNT || totalAttempts > 0);
 
             return (
               <div key={test.id} className="h-full">

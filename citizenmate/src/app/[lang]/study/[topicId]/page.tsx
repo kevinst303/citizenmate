@@ -1,6 +1,6 @@
 "use client";
 
-import { use } from "react";
+import { use, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -20,6 +20,7 @@ import { LanguageToggle } from "@/components/study/language-toggle";
 import { StudyProgressBar } from "@/components/study/study-progress-bar";
 import type { TopicCategory } from "@/lib/types";
 import { toast } from "@/lib/toast";
+import { usePremium } from "@/lib/auth-context";
 
 const TOPIC_ICONS: Record<TopicCategory, typeof Globe> = {
   "australia-people": Globe,
@@ -35,6 +36,7 @@ export default function TopicStudyPage({
 }) {
   const { topicId } = use(params);
   const router = useRouter();
+  const { isPremium, premiumLoading, upgrade } = usePremium();
   const {
     language,
     setLanguage,
@@ -46,6 +48,17 @@ export default function TopicStudyPage({
   // Find topic
   const topicIndex = studyTopics.findIndex((t) => t.id === topicId);
   const topic = studyTopics[topicIndex];
+
+  // Premium lock protection
+  useEffect(() => {
+    if (premiumLoading) return;
+    
+    const FREE_TOPIC_COUNT = 1;
+    if (!isPremium && topicIndex >= FREE_TOPIC_COUNT) {
+      router.replace("/study");
+      upgrade();
+    }
+  }, [isPremium, premiumLoading, topicIndex, router, upgrade]);
 
   // Redirect if invalid topic
   if (!topic) {
