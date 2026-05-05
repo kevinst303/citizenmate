@@ -6,9 +6,15 @@ import { createSupabaseServerClient } from '@/lib/supabase-server';
  */
 export async function verifyAdmin() {
   const supabase = await createSupabaseServerClient();
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  let { data: { user }, error: authError } = await supabase.auth.getUser();
 
-  if (authError || !user) return null;
+  // Fallback: if getUser() fails (token refresh contention), read session from cookies
+  if ((authError || !user)) {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session?.user) user = session.user;
+  }
+
+  if (!user) return null;
 
   const { data: profile } = await supabase
     .from('profiles')

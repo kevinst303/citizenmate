@@ -19,7 +19,7 @@ export function ReferralActivity({ activity }: Props) {
   const [filter, setFilter] = useState<FilterStatus>("all");
   const [sortField, setSortField] = useState<SortField>("created_at");
   const [sortAsc, setSortAsc] = useState(false);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -28,7 +28,7 @@ export function ReferralActivity({ activity }: Props) {
       setSortField(field);
       setSortAsc(false);
     }
-    setPage(0);
+    setPage(1);
   };
 
   const filtered = useMemo(() => {
@@ -74,7 +74,7 @@ export function ReferralActivity({ activity }: Props) {
   }, [activity, search, filter, sortField, sortAsc]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-  const paginated = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
     <div className="space-y-4">
@@ -85,7 +85,7 @@ export function ReferralActivity({ activity }: Props) {
             type="text"
             placeholder="Search by name or email..."
             value={search}
-            onChange={(e) => { setSearch(e.target.value); setPage(0); }}
+            onChange={(e) => { setSearch(e.target.value); setPage(1); }}
             className="w-full pl-10 pr-4 py-2.5 text-sm border border-cm-slate-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-cm-sky/20 focus:border-cm-sky transition-colors"
           />
         </div>
@@ -93,7 +93,7 @@ export function ReferralActivity({ activity }: Props) {
           {(["all", "qualified", "pending"] as FilterStatus[]).map((f) => (
             <button
               key={f}
-              onClick={() => { setFilter(f); setPage(0); }}
+              onClick={() => { setFilter(f); setPage(1); }}
               className={`px-3 py-1.5 text-xs font-semibold rounded-lg capitalize transition-colors ${
                 filter === f
                   ? "bg-white text-cm-navy shadow-sm"

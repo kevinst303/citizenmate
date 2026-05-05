@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { verifyAdmin } from "@/lib/admin-auth";
-import { createSupabaseAdminClient } from "@/lib/supabase-admin";
+import { createSupabaseServerClient } from "@/lib/supabase-server";
 
 export async function GET(req: Request) {
   const admin = await verifyAdmin();
@@ -17,7 +17,7 @@ export async function GET(req: Request) {
     const previousStart = new Date(currentStart);
     previousStart.setDate(previousStart.getDate() - days);
 
-    const supabase = createSupabaseAdminClient();
+    const supabase = await createSupabaseServerClient();
 
     // Current period counts
     const [totalUsers, usersCurrent, usersPrevious] = await Promise.all([

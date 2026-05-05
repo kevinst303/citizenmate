@@ -23,7 +23,7 @@ export default function AdminBlogPage() {
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState({ title: '', slug: '', content: '', published: false });
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [deleteTarget, setDeleteTarget] = useState<BlogPost | null>(null);
   const [deleting, setDeleting] = useState(false);
 
@@ -31,12 +31,16 @@ export default function AdminBlogPage() {
     setLoading(true);
     try {
       const res = await fetch('/api/admin/blog');
-      if (!res.ok) throw new Error('Failed to fetch posts');
-      const data = await res.json();
-      setPosts(data.posts || []);
-      setError(null);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load');
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({ error: 'Failed to fetch posts' }));
+        setError(errData.error || 'Failed to fetch posts');
+      } else {
+        const json = await res.json();
+        setPosts(json.posts || []);
+        setError(null);
+      }
+    } catch {
+      setError('Failed to fetch posts');
     }
     setLoading(false);
   }, []);
@@ -44,10 +48,10 @@ export default function AdminBlogPage() {
   useEffect(() => { fetchPosts(); }, [fetchPosts]);
 
   const totalPages = Math.max(1, Math.ceil(posts.length / PAGE_SIZE));
-  const paginatedPosts = posts.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+  const paginatedPosts = posts.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   useEffect(() => {
-    if (page >= totalPages) setPage(Math.max(0, totalPages - 1));
+    if (page > totalPages) setPage(Math.max(1, totalPages));
   }, [page, totalPages]);
 
   const handleSave = async () => {

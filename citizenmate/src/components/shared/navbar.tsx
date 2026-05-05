@@ -223,7 +223,7 @@ export function Navbar() {
                 size="sm"
                 className="px-5 font-semibold"
               >
-                Get Sprint Pass
+                {t("navigation.get_sprint_pass", "Get Sprint Pass")}
                 <ChevronRight className="size-3.5 ml-1" />
               </Button>
             </motion.div>

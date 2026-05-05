@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { verifyAdmin } from "@/lib/admin-auth";
-import { createSupabaseAdminClient } from "@/lib/supabase-admin";
+import { createSupabaseServerClient } from "@/lib/supabase-server";
 
 export async function GET(req: Request) {
   const admin = await verifyAdmin();
@@ -16,7 +16,7 @@ export async function GET(req: Request) {
     const page = Math.max(1, parseInt(searchParams.get("page") || "1"));
     const pageSize = Math.min(100, Math.max(1, parseInt(searchParams.get("pageSize") || "20")));
 
-    const supabase = createSupabaseAdminClient();
+    const supabase = await createSupabaseServerClient();
 
     let query = supabase.from("profiles").select("*", { count: "exact" });
 
@@ -72,7 +72,7 @@ export async function PATCH(req: Request) {
       return NextResponse.json({ error: "User ID is required" }, { status: 400 });
     }
 
-    const supabase = createSupabaseAdminClient();
+    const supabase = await createSupabaseServerClient();
     const updateData: Record<string, unknown> = {};
 
     if (is_admin !== undefined) updateData.is_admin = is_admin;
@@ -112,7 +112,7 @@ export async function DELETE(req: Request) {
       return NextResponse.json({ error: "User ID is required" }, { status: 400 });
     }
 
-    const supabase = createSupabaseAdminClient();
+    const supabase = await createSupabaseServerClient();
 
     const { error } = await supabase.auth.admin.deleteUser(id);
 

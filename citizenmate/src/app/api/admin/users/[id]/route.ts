@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { verifyAdmin } from "@/lib/admin-auth";
-import { createSupabaseAdminClient } from "@/lib/supabase-admin";
+import { createSupabaseServerClient } from "@/lib/supabase-server";
 
 export async function GET(
   req: Request,
@@ -13,7 +13,7 @@ export async function GET(
 
   try {
     const { id } = await params;
-    const supabase = createSupabaseAdminClient();
+    const supabase = await createSupabaseServerClient();
 
     const [profileRes, quizRes, referralRes] = await Promise.all([
       supabase.from("profiles").select("*").eq("id", id).single(),

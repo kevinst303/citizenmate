@@ -5,7 +5,6 @@ import Negotiator from 'negotiator';
 import { locales, defaultLocale } from '@/i18n/config';
 import { createServerClient } from '@supabase/ssr';
 
-// Routes that require authentication
 const PROTECTED_ROUTES = ["/dashboard", "/practice", "/study", "/admin"];
 const PROTECTED_API_ROUTES = ["/api/checkout", "/api/chat"];
 
@@ -21,16 +20,14 @@ function getLocale(request: NextRequest): string {
   const languages = new Negotiator({ headers: negotiatorHeaders }).languages();
   try {
     return matchLocale(languages, locales as unknown as string[], defaultLocale);
-  } catch (e) {
+  } catch {
     return defaultLocale;
   }
 }
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
-    request: {
-      headers: request.headers,
-    },
+    request: { headers: request.headers },
   });
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -38,7 +35,6 @@ export async function middleware(request: NextRequest) {
 
   let user = null;
 
-  // Supabase Auth Session Refreshing
   if (supabaseUrl && supabaseAnonKey) {
     const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
       cookies: {
@@ -46,7 +42,9 @@ export async function middleware(request: NextRequest) {
           return request.cookies.getAll();
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
+          cookiesToSet.forEach(({ name, value }) =>
+            request.cookies.set(name, value)
+          );
           response = NextResponse.next({
             request: { headers: request.headers },
           });
@@ -63,23 +61,23 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
-  // Paths to exclude from i18n entirely
   if (
     pathname.startsWith('/api') ||
     pathname.startsWith('/_next') ||
-    pathname.includes('.') // Exclude files like favicon.ico
+    pathname.includes('.')
   ) {
-    // Return 401 for unauthenticated API requests
-    const isProtectedAPI = PROTECTED_API_ROUTES.some((route) => pathname.startsWith(route));
+    const isProtectedAPI = PROTECTED_API_ROUTES.some((route) =>
+      pathname.startsWith(route)
+    );
     if (isProtectedAPI && !user) {
-      return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      );
     }
     return response;
   }
 
-  // --- I18n Routing ---
-  
-  // Check if pathname has a locale
   const pathnameIsMissingLocale = locales.every(
     (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
   );
@@ -88,49 +86,49 @@ export async function middleware(request: NextRequest) {
 
   if (pathnameIsMissingLocale) {
     const locale = getLocale(request);
-    
-    // Create new URL with locale
-    const newUrl = new URL(`/${locale}${pathname.startsWith('/') ? '' : '/'}${pathname}${request.nextUrl.search}`, request.url);
-    
-    // Return a redirect response
+    const newUrl = new URL(
+      `/${locale}${pathname.startsWith('/') ? '' : '/'}${pathname}${request.nextUrl.search}`,
+      request.url
+    );
     response = NextResponse.redirect(newUrl);
     localePathname = `/${locale}${pathname}`;
   }
 
-  // --- Auth Protection Check ---
-  
-  // We need to strip the locale to check against PROTECTED_ROUTES
-  // e.g. /en/dashboard -> /dashboard
   let pathWithoutLocale = localePathname;
   for (const locale of locales) {
-    if (localePathname.startsWith(`/${locale}/`) || localePathname === `/${locale}`) {
+    if (
+      localePathname.startsWith(`/${locale}/`) ||
+      localePathname === `/${locale}`
+    ) {
       pathWithoutLocale = localePathname.replace(`/${locale}`, '');
       if (pathWithoutLocale === '') pathWithoutLocale = '/';
       break;
     }
   }
 
-  const isProtectedPage = PROTECTED_ROUTES.some((route) => pathWithoutLocale.startsWith(route));
+  const isProtectedPage = PROTECTED_ROUTES.some((route) =>
+    pathWithoutLocale.startsWith(route)
+  );
 
-  // Redirect unauthenticated users from protected pages to home
   if (isProtectedPage && !user) {
-    const redirectUrl = new URL("/", request.url);
-    redirectUrl.searchParams.set("auth", "required");
-    redirectUrl.searchParams.set("redirect", pathWithoutLocale);
-    
-    // Maintain locale in redirect if one was present or determined
-    const localeToUse = pathnameIsMissingLocale ? getLocale(request) : localePathname.split('/')[1];
+    const redirectUrl = new URL('/', request.url);
+    redirectUrl.searchParams.set('auth', 'required');
+    redirectUrl.searchParams.set('redirect', pathWithoutLocale);
+
+    const localeToUse = pathnameIsMissingLocale
+      ? getLocale(request)
+      : localePathname.split('/')[1];
     redirectUrl.pathname = `/${localeToUse}`;
-    
+
     return NextResponse.redirect(redirectUrl);
   }
 
-  const ref = request.nextUrl.searchParams.get("ref");
+  const ref = request.nextUrl.searchParams.get('ref');
   if (ref) {
-    response.cookies.set("citizenmate_ref", ref, {
-      path: "/",
-      maxAge: 60 * 60 * 24 * 30, // 30 days
-      sameSite: "lax",
+    response.cookies.set('citizenmate_ref', ref, {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 30,
+      sameSite: 'lax',
     });
   }
 
@@ -138,5 +136,7 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|sw\\.js|manifest\\.json|icons/|api/webhooks).*)'],
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|sw\\.js|manifest\\.json|icons/|api/webhooks).*)',
+  ],
 };

@@ -33,6 +33,7 @@ export function LayoutShell({ children }: { children: React.ReactNode }) {
 
   // Show test-date banner on study, practice dashboard, and dashboard pages (not landing or active quiz)
   const showBanner =
+    !isAdminRoute &&
     !isActiveQuiz &&
     pathname !== "/" &&
     !pathname.startsWith("/practice/");
