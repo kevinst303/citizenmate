@@ -23,6 +23,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { usePremium } from "@/lib/auth-context";
+import { useT } from "@/i18n/i18n-context";
 
 const RATE_KEY = "citizenmate-srs-usage";
 const MAX_DAILY_SESSIONS = 1;
@@ -107,6 +108,7 @@ export default function SmartPracticePage() {
   const router = useRouter();
   const { getStats, getTopicWeakness, getSmartQuestions } = useSRS();
   const { isPremium, upgrade } = usePremium();
+  const { t } = useT();
   const [focusTopic, setFocusTopic] = useState<TopicCategory | null>(null);
   const [dailyUsage, setDailyUsage] = useState(() => ({
     date: getTodayString(),
@@ -192,7 +194,7 @@ export default function SmartPracticePage() {
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-sm font-medium mb-6"
             >
               <Brain className="w-4 h-4" />
-              AI-Powered Practice
+              {t("smart_practice.badge", "AI-Powered Practice")}
             </motion.span>
             <h1 className="text-4xl sm:text-5xl font-heading font-extrabold leading-tight mb-4">
               Smart{" "}
@@ -201,8 +203,7 @@ export default function SmartPracticePage() {
               </span>
             </h1>
             <p className="text-lg sm:text-xl text-white/80 max-w-xl mx-auto">
-              Questions are ordered based on your performance — weakest areas
-              first. Learn smarter, not harder, mate.
+              {t("smart_practice.hero_desc", "Questions are ordered based on your performance — weakest areas first. Learn smarter, not harder, mate.")}
             </p>
           </motion.div>
         </div>
@@ -221,35 +222,35 @@ export default function SmartPracticePage() {
               {
                 icon: Sparkles,
                 value: stats.newCount,
-                label: "New",
+                label: t("smart_practice.stats_new", "New"),
                 color: "text-cm-slate-400",
                 bg: "bg-cm-slate-50",
               },
               {
                 icon: RotateCcw,
                 value: stats.learningCount,
-                label: "Learning",
+                label: t("smart_practice.stats_learning", "Learning"),
                 color: "text-amber-500",
                 bg: "bg-amber-50",
               },
               {
                 icon: Target,
                 value: stats.reviewingCount,
-                label: "Reviewing",
+                label: t("smart_practice.stats_reviewing", "Reviewing"),
                 color: "text-cm-sky",
                 bg: "bg-cm-sky-light",
               },
               {
                 icon: Zap,
                 value: stats.masteredCount,
-                label: "Mastered",
+                label: t("smart_practice.stats_mastered", "Mastered"),
                 color: "text-cm-eucalyptus",
                 bg: "bg-cm-eucalyptus-light",
               },
               {
                 icon: AlertCircle,
                 value: stats.dueCount,
-                label: "Due Now",
+                label: t("smart_practice.stats_due_now", "Due Now"),
                 color: "text-purple-600",
                 bg: "bg-purple-50",
               },
@@ -294,7 +295,7 @@ export default function SmartPracticePage() {
                   <TrendingDown className="w-4 h-4" />
                 </div>
                 <h2 className="text-lg font-heading font-bold text-cm-slate-900">
-                  Your Weak Areas
+                  {t("smart_practice.weak_areas", "Your Weak Areas")}
                 </h2>
               </div>
 
@@ -330,13 +331,13 @@ export default function SmartPracticePage() {
                           </h3>
                           <p className="text-xs text-cm-slate-500">
                             {topic.totalAnswered > 0
-                              ? `${topic.accuracy}% accuracy`
-                              : "Not yet practised"}
+                              ? `${topic.accuracy}% ${t("smart_practice.accuracy", "accuracy")}`
+                              : t("smart_practice.not_practised", "Not yet practised")}
                           </p>
                         </div>
                         {isSelected && (
                           <span className="flex-shrink-0 text-xs font-semibold text-purple-600 bg-purple-100 px-2 py-1 rounded-full">
-                            Focus
+                            {t("smart_practice.focus_tag", "Focus")}
                           </span>
                         )}
                       </div>
@@ -360,12 +361,12 @@ export default function SmartPracticePage() {
                           <div className="flex justify-between text-xs text-cm-slate-400">
                             <span>
                               {topic.weakQuestionCount > 0
-                                ? `${topic.weakQuestionCount} weak questions`
-                                : "Looking good"}
+                                ? `${topic.weakQuestionCount} ${t("smart_practice.weak_questions", "weak questions")}`
+                                : t("smart_practice.looking_good", "Looking good")}
                             </span>
                             {topic.dueCount > 0 && (
                               <span className="text-purple-500 font-medium">
-                                {topic.dueCount} due
+                                {topic.dueCount} {t("smart_practice.due", "due")}
                               </span>
                             )}
                           </div>
@@ -392,13 +393,13 @@ export default function SmartPracticePage() {
 
               <h2 className="text-2xl font-heading font-bold text-cm-slate-900 mb-2">
                 {focusTopic
-                  ? `Focus: ${TOPIC_LABELS[focusTopic]}`
-                  : "Start Smart Practice"}
+                  ? `${t("smart_practice.start_focus", "Focus:")} ${TOPIC_LABELS[focusTopic]}`
+                  : t("smart_practice.start_session", "Start Smart Practice")}
               </h2>
               <p className="text-sm text-cm-slate-500 max-w-md mx-auto mb-6">
                 {focusTopic
-                  ? "Get 15 questions focused on this topic, ordered from weakest to strongest."
-                  : "Get 15 questions across all topics, ordered so you tackle your weakest areas first. Instant feedback — no timer."}
+                  ? t("smart_practice.focus_desc", "Get 15 questions focused on this topic, ordered from weakest to strongest.")
+                  : t("smart_practice.all_desc", "Get 15 questions across all topics, ordered so you tackle your weakest areas first. Instant feedback — no timer.")}
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -409,7 +410,7 @@ export default function SmartPracticePage() {
                   className="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-heading font-bold rounded-xl shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/30 transition-all duration-200 cursor-pointer"
                 >
                   <Sparkles className="w-5 h-5" />
-                  {isLimitReached ? "Unlock Unlimited Practice" : "Start Session"}
+                  {isLimitReached ? t("smart_practice.unlock_unlimited", "Unlock Unlimited Practice") : t("smart_practice.start_session", "Start Session")}
                   <ArrowRight className="w-4 h-4" />
                 </motion.button>
 
@@ -418,7 +419,7 @@ export default function SmartPracticePage() {
                     onClick={() => setFocusTopic(null)}
                     className="text-sm text-cm-slate-500 hover:text-cm-slate-700 transition-colors cursor-pointer"
                   >
-                    Clear focus
+                    {t("smart_practice.clear_focus", "Clear focus")}
                   </button>
                 )}
               </div>
@@ -427,8 +428,8 @@ export default function SmartPracticePage() {
                 <div className="mt-3">
                   <p className={`text-xs ${isLimitReached ? 'text-cm-red font-semibold' : 'text-cm-slate-400'}`}>
                     {isLimitReached 
-                      ? "Daily limit reached. Upgrade for unlimited practice." 
-                      : `${MAX_DAILY_SESSIONS - dailyUsage.count} free session${(MAX_DAILY_SESSIONS - dailyUsage.count) !== 1 ? 's' : ''} remaining today.`}
+                      ? t("smart_practice.daily_limit_reached", "Daily limit reached. Upgrade for unlimited practice.")
+                      : `${MAX_DAILY_SESSIONS - dailyUsage.count} ${(MAX_DAILY_SESSIONS - dailyUsage.count) !== 1 ? t("smart_practice.free_remaining_other", "free sessions remaining today.") : t("smart_practice.free_remaining_one", "1 free session remaining today.")}`}
                   </p>
                 </div>
               )}
@@ -436,15 +437,15 @@ export default function SmartPracticePage() {
               <div className="flex items-center justify-center gap-4 mt-5 text-xs text-cm-slate-400">
                 <span className="flex items-center gap-1">
                   <BookOpen className="w-3 h-3" />
-                  15 questions
+                  {t("smart_practice.questions_count", "15 questions")}
                 </span>
                 <span className="flex items-center gap-1">
                   <Zap className="w-3 h-3" />
-                  Instant feedback
+                  {t("smart_practice.instant_feedback", "Instant feedback")}
                 </span>
                 <span className="flex items-center gap-1">
                   <Target className="w-3 h-3" />
-                  No timer
+                  {t("smart_practice.no_timer", "No timer")}
                 </span>
               </div>
             </div>
@@ -458,25 +459,25 @@ export default function SmartPracticePage() {
                   <Brain className="w-4 h-4" />
                 </div>
                 <h3 className="text-lg font-heading font-bold text-cm-slate-900">
-                  How Smart Practice Works
+                  {t("smart_practice.how_title", "How Smart Practice Works")}
                 </h3>
               </div>
               <div className="grid gap-4 sm:grid-cols-3">
                 {[
                   {
                     step: "1",
-                    title: "Tracks Every Answer",
-                    desc: "We remember every question you've answered — right or wrong — across all practice tests and smart sessions.",
+                    title: t("smart_practice.step_1_title", "Tracks Every Answer"),
+                    desc: t("smart_practice.step_1_desc", "We remember every question you've answered — right or wrong — across all practice tests and smart sessions."),
                   },
                   {
                     step: "2",
-                    title: "Prioritises Weak Areas",
-                    desc: "Questions you've gotten wrong come back sooner. Mastered ones fade away. Your weakest topics always come first.",
+                    title: t("smart_practice.step_2_title", "Prioritises Weak Areas"),
+                    desc: t("smart_practice.step_2_desc", "Questions you've gotten wrong come back sooner. Mastered ones fade away. Your weakest topics always come first."),
                   },
                   {
                     step: "3",
-                    title: "Spaces Reviews",
-                    desc: "As you master a question, it appears less often — at 1 day, then 3, then a week. Just like how your brain actually learns.",
+                    title: t("smart_practice.step_3_title", "Spaces Reviews"),
+                    desc: t("smart_practice.step_3_desc", "As you master a question, it appears less often — at 1 day, then 3, then a week. Just like how your brain actually learns."),
                   },
                 ].map((step) => (
                   <div key={step.step} className="flex gap-3">
@@ -504,7 +505,7 @@ export default function SmartPracticePage() {
               className="inline-flex items-center gap-2 text-sm text-cm-slate-500 hover:text-cm-navy transition-colors"
             >
               <ArrowRight className="w-4 h-4 rotate-180" />
-              Back to Practice Tests
+              {t("smart_practice.back_to_practice", "Back to Practice Tests")}
             </Link>
           </motion.div>
         </motion.div>

@@ -21,7 +21,10 @@ import {
   Sparkles,
   ArrowRight,
   Target,
+  Zap,
 } from "lucide-react";
+import { useAuth } from "@/lib/auth-context";
+import { useUpgradeModal } from "@/lib/store/useUpgradeModal";
 
 const TOPIC_ICON_COMPONENTS: Record<TopicCategory, typeof Globe> = {
   "australia-people": Globe,
@@ -114,6 +117,9 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
   const timeMinutes = Math.floor(result.timeUsed / 60);
   const timeSeconds = result.timeUsed % 60;
   const recommendation = getRecommendation(result);
+  const { profile } = useAuth();
+  const { openModal } = useUpgradeModal();
+  const isFreeUser = profile.tier === 'free';
 
   return (
     <motion.div
@@ -340,6 +346,37 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
           ))}
         </div>
       </motion.div>
+
+      {/* Premium Upsell — Free users who haven't passed */}
+      {isFreeUser && !result.passed && (
+        <motion.div
+          variants={item}
+          className="bg-gradient-to-r from-cm-navy via-cm-navy-light to-cm-navy-lighter rounded-2xl p-6 text-white"
+        >
+          <div className="flex items-start gap-4">
+            <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
+              <Zap className="w-5 h-5 text-cm-gold" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h4 className="text-base font-heading font-bold mb-1">
+                Need targeted help?
+              </h4>
+              <p className="text-sm text-white/70 leading-relaxed mb-4">
+                Unlock CitizenMate Pro for targeted weak-area quizzes, unlimited AI tutor Q&A, and a personalised study plan matched to your test date.
+              </p>
+              <motion.button
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
+                onClick={() => openModal("weak_area_results")}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-heading font-semibold bg-cm-gold text-cm-navy hover:bg-cm-gold-light transition-colors cursor-pointer"
+              >
+                Upgrade to Pro
+                <ArrowRight className="w-4 h-4" />
+              </motion.button>
+            </div>
+          </div>
+        </motion.div>
+      )}
 
       {/* AI Recommendation — Smart Next Step */}
       <motion.div

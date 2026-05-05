@@ -4,6 +4,7 @@ import { createSupabaseAdminClient } from '@/lib/supabase-admin';
 import { sendPurchaseConfirmation } from '@/lib/email';
 import { checkAndProcessPendingReward } from '@/lib/referrals';
 import { findReferrerByPromoCode } from '@/lib/referral-codes';
+import * as Sentry from '@sentry/nextjs';
 
 // ===== Stripe Webhook Handler =====
 // Handles payment lifecycle events with idempotency protection.
@@ -341,7 +342,7 @@ export async function POST(req: Request) {
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'Unknown error';
     console.error(`[Webhook] Processing error | event=${event.id} | type=${event.type} | error=${message}`);
-    // Return 500 so Stripe retries the event
+    Sentry.captureException(err);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

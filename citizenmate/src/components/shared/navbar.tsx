@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { UserMenu } from "@/components/shared/user-menu";
 import { Button } from "@/components/ui/button";
+import { useT } from "@/i18n/i18n-context";
 import {
   Sheet,
   SheetContent,
@@ -84,6 +85,7 @@ export function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const { t } = useT();
 
   const langMatch = pathname?.match(/^\/([a-z]{2}(-[A-Z]{2})?)/);
   const lang = langMatch ? langMatch[1] : 'en';
@@ -115,11 +117,11 @@ export function Navbar() {
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between h-9">
           <span className="flex items-center gap-1.5 font-medium tracking-wide">
-            🇦🇺 Australia&apos;s #1 AI-Powered Citizenship Test Prep
+            🇦🇺 {t("navigation.tagline", "Australia&apos;s #1 AI-Powered Citizenship Test Prep")}
           </span>
           <div className="flex items-center gap-4 font-medium tracking-wide">
             <Link href={getUrl("/about#contact")} className="hover:text-white transition-colors text-white/80">
-              Contact Us
+              {t("navigation.contact_us", "Contact Us")}
             </Link>
           </div>
         </div>
@@ -155,41 +157,41 @@ export function Navbar() {
 
           {/* Desktop Nav Links */}
           <div className="hidden lg:flex items-center gap-2">
-            <DesktopMenuItem label="Study Tools">
+            <DesktopMenuItem label={t("navigation.study_tools", "Study Tools")}>
               <MegaMenuLink 
                 href={getUrl("/dashboard")} icon={LayoutDashboard} 
-                title="Dashboard" desc="Track your progress and stats" 
+                title={t("navigation.dashboard", "Dashboard")} desc={t("navigation.dashboard_desc", "Track your progress and stats")} 
               />
               <MegaMenuLink 
                 href={getUrl("/practice")} icon={PenTool} 
-                title="Practice Tests" desc="Real exam format simulations" 
+                title={t("navigation.practice_tests", "Practice Tests")} desc={t("navigation.practice_tests_desc", "Real exam format simulations")} 
               />
               <MegaMenuLink 
                 href={getUrl("/study")} icon={BookOpen} 
-                title="Study Material" desc="Our Common Bond in 5 languages" 
+                title={t("navigation.study_material", "Study Material")} desc={t("navigation.study_material_desc", "Our Common Bond in 5 languages")} 
               />
             </DesktopMenuItem>
 
-            <DesktopMenuItem label="Platform">
+            <DesktopMenuItem label={t("navigation.platform", "Platform")}>
               <MegaMenuLink 
                 href={getUrl("/#features")} icon={Sparkles} 
-                title="Features" desc="AI analytics and smart reviews" 
+                title={t("navigation.features", "Features")} desc={t("navigation.features_desc", "AI analytics and smart reviews")} 
               />
               <MegaMenuLink 
                 href={getUrl("/#how-it-works")} icon={Zap} 
-                title="How It Works" desc="The proven 3-step learning path" 
+                title={t("navigation.how_it_works", "How It Works")} desc={t("navigation.how_it_works_desc", "The proven 3-step learning path")} 
               />
               <MegaMenuLink 
                 href={getUrl("/#faq")} icon={HelpCircle} 
-                title="FAQ" desc="Common questions answered" 
+                title={t("navigation.faq", "FAQ")} desc={t("navigation.faq_desc", "Common questions answered")} 
               />
             </DesktopMenuItem>
 
             <Link href={getUrl("/#pricing")} className="px-3 py-2 text-[0.95rem] font-medium text-muted-foreground hover:text-cm-teal transition-colors">
-              Pricing
+              {t("navigation.pricing", "Pricing")}
             </Link>
             <Link href={getUrl("/blog")} className="px-3 py-2 text-[0.95rem] font-medium text-muted-foreground hover:text-cm-teal transition-colors">
-              Blog
+              {t("navigation.blog", "Blog")}
             </Link>
           </div>
 
@@ -207,7 +209,7 @@ export function Navbar() {
                 size="sm"
                 className="px-5 font-semibold"
               >
-                Start Free
+                {t("navigation.start_free", "Start Free")}
               </Button>
             </motion.div>
             <motion.div
@@ -250,19 +252,19 @@ export function Navbar() {
                 </div>
                 
                 <div className="flex-1 overflow-y-auto px-2 py-4">
-                  <div className="text-[0.7rem] font-bold text-muted-foreground/70 uppercase tracking-widest px-4 mb-1">Study Tools</div>
-                  <MobileMenuLink href={getUrl("/dashboard")} label="Dashboard" setOpen={setOpen} />
-                  <MobileMenuLink href={getUrl("/practice")} label="Practice" setOpen={setOpen} />
-                  <MobileMenuLink href={getUrl("/study")} label="Study" setOpen={setOpen} />
+                  <div className="text-[0.7rem] font-bold text-muted-foreground/70 uppercase tracking-widest px-4 mb-1">{t("navigation.study_tools", "Study Tools")}</div>
+                  <MobileMenuLink href={getUrl("/dashboard")} label={t("navigation.dashboard", "Dashboard")} setOpen={setOpen} />
+                  <MobileMenuLink href={getUrl("/practice")} label={t("navigation.practice", "Practice")} setOpen={setOpen} />
+                  <MobileMenuLink href={getUrl("/study")} label={t("navigation.study", "Study Guides")} setOpen={setOpen} />
                   
-                  <div className="text-[0.7rem] font-bold text-muted-foreground/70 uppercase tracking-widest px-4 mt-5 mb-1">Platform</div>
-                  <MobileMenuLink href={getUrl("/#features")} label="Features" setOpen={setOpen} />
-                  <MobileMenuLink href={getUrl("/#how-it-works")} label="How It Works" setOpen={setOpen} />
-                  <MobileMenuLink href={getUrl("/#faq")} label="FAQ" setOpen={setOpen} />
+                  <div className="text-[0.7rem] font-bold text-muted-foreground/70 uppercase tracking-widest px-4 mt-5 mb-1">{t("navigation.platform", "Platform")}</div>
+                  <MobileMenuLink href={getUrl("/#features")} label={t("navigation.features", "Features")} setOpen={setOpen} />
+                  <MobileMenuLink href={getUrl("/#how-it-works")} label={t("navigation.how_it_works", "How It Works")} setOpen={setOpen} />
+                  <MobileMenuLink href={getUrl("/#faq")} label={t("navigation.faq", "FAQ")} setOpen={setOpen} />
 
-                  <div className="text-[0.7rem] font-bold text-muted-foreground/70 uppercase tracking-widest px-4 mt-5 mb-1">Resources</div>
-                  <MobileMenuLink href={getUrl("/#pricing")} label="Pricing" setOpen={setOpen} />
-                  <MobileMenuLink href={getUrl("/blog")} label="Blog" setOpen={setOpen} />
+                  <div className="text-[0.7rem] font-bold text-muted-foreground/70 uppercase tracking-widest px-4 mt-5 mb-1">{t("navigation.resources", "Resources")}</div>
+                  <MobileMenuLink href={getUrl("/#pricing")} label={t("navigation.pricing", "Pricing")} setOpen={setOpen} />
+                  <MobileMenuLink href={getUrl("/blog")} label={t("navigation.blog", "Blog")} setOpen={setOpen} />
                 </div>
 
                 <div className="mt-auto p-4 border-t border-border bg-cm-slate-50">
@@ -276,7 +278,7 @@ export function Navbar() {
                       />
                     }
                   >
-                    Get Sprint Pass
+                {t("navigation.get_sprint_pass", "Get Sprint Pass")}
                   </SheetClose>
                   <SheetClose
                     nativeButton={false}
@@ -289,7 +291,7 @@ export function Navbar() {
                       />
                     }
                   >
-                    Start Free Practice
+                    {t("navigation.start_free_practice", "Start Free Practice")}
                   </SheetClose>
                 </div>
               </SheetContent>

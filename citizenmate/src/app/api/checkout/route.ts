@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createSupabaseServerClient } from '@/lib/supabase-server';
 import { checkoutLimiter } from '@/lib/rate-limit';
+import * as Sentry from '@sentry/nextjs';
 
 export async function POST(req: Request) {
   try {
@@ -56,6 +57,8 @@ export async function POST(req: Request) {
       priceId = interval === 'year' 
         ? process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_YEAR 
         : process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_MONTH;
+    } else if (tier === 'sprint_pass') {
+      priceId = process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_SPRINT_PASS;
     } else {
       // Premium tier
       priceId = interval === 'year'
@@ -151,6 +154,7 @@ export async function POST(req: Request) {
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Unknown error';
     console.error('Stripe Checkout Error:', message);
+    Sentry.captureException(error);
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

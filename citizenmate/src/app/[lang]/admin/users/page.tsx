@@ -29,20 +29,23 @@ export default async function AdminUsersPage() {
                 <th className="px-6 py-4">User ID</th>
                 <th className="px-6 py-4">Joined</th>
                 <th className="px-6 py-4">Role</th>
+                <th className="px-6 py-4">Tier</th>
+                <th className="px-6 py-4">Premium</th>
+                <th className="px-6 py-4">Expires</th>
                 <th className="px-6 py-4 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#E9ECEF]">
               {error && (
                 <tr>
-                  <td colSpan={4} className="px-6 py-8 text-center text-red-500">
+                  <td colSpan={7} className="px-6 py-8 text-center text-red-500">
                     Failed to load users
                   </td>
                 </tr>
               )}
               {profiles?.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="px-6 py-8 text-center text-cm-slate-500">
+                  <td colSpan={7} className="px-6 py-8 text-center text-cm-slate-500">
                     No users found.
                   </td>
                 </tr>
@@ -59,6 +62,31 @@ export default async function AdminUsersPage() {
                     }`}>
                       {profile.is_admin ? 'Admin' : 'User'}
                     </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${
+                      profile.tier === 'premium' ? 'bg-cm-gold-light text-cm-gold' :
+                      profile.tier === 'pro' ? 'bg-cm-teal/10 text-cm-teal' :
+                      profile.tier === 'sprint_pass' ? 'bg-purple-100 text-purple-700' :
+                      'bg-cm-slate-100 text-cm-slate-600'
+                    }`}>
+                      {profile.tier || 'free'}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    {profile.is_premium ? (
+                      <span className="inline-flex items-center gap-1 text-xs font-semibold text-cm-eucalyptus">
+                        <span className="w-2 h-2 rounded-full bg-cm-eucalyptus" />
+                        Yes
+                      </span>
+                    ) : (
+                      <span className="text-xs text-cm-slate-400">No</span>
+                    )}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-xs">
+                    {profile.premium_expires_at
+                      ? new Date(profile.premium_expires_at).toLocaleDateString()
+                      : <span className="text-cm-slate-400">—</span>}
                   </td>
                   <td className="px-6 py-4 text-right">
                     <button className="text-cm-sky hover:text-cm-navy font-medium text-sm transition-colors">

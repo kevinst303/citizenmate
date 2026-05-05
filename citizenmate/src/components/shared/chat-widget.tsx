@@ -115,7 +115,25 @@ export function ChatWidget() {
     sendMessage,
     status,
     setMessages,
-  } = useChat();
+  } = useChat({
+    onFinish: () => {
+      const newUsage = incrementUsage();
+      setDailyUsage(newUsage);
+      if (newUsage.count >= MAX_DAILY_QUESTIONS) {
+        toast.warning(
+          "Daily AI questions reached",
+          "Unlock unlimited questions with CitizenMate Pro",
+          { timing: { displayDuration: 5000 } }
+        );
+        setTimeout(() => upgrade(), 1200);
+      } else if (newUsage.count === MAX_DAILY_QUESTIONS - 1) {
+        toast.info(
+          "Last question for today",
+          "Make it a good one, mate!"
+        );
+      }
+    },
+  });
 
   const isStreaming = status === "streaming" || status === "submitted";
 
@@ -152,24 +170,8 @@ export function ChatWidget() {
       const trimmed = text.trim();
       if (!trimmed || isStreaming || isLimitReached) return;
 
-      const newUsage = incrementUsage();
-      setDailyUsage(newUsage);
       setInputValue("");
       sendMessage({ text: trimmed });
-
-      // Show warning when approaching or hitting limit
-      if (newUsage.count >= MAX_DAILY_QUESTIONS) {
-        toast.warning(
-          "Daily limit reached",
-          "Come back tomorrow, or explore the study guide!",
-          { timing: { displayDuration: 5000 } }
-        );
-      } else if (newUsage.count === MAX_DAILY_QUESTIONS - 1) {
-        toast.info(
-          "Last question for today",
-          "Make it a good one, mate!"
-        );
-      }
     },
     [isStreaming, isLimitReached, sendMessage]
   );

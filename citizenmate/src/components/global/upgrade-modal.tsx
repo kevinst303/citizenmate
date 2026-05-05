@@ -6,11 +6,13 @@ import { useUpgradeModal } from "@/lib/store/useUpgradeModal";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth-context";
 import { useState } from "react";
+import { useT } from "@/i18n/i18n-context";
 
 export function UpgradeModal() {
   const { isOpen, closeModal } = useUpgradeModal();
   const { startCheckout } = useAuth();
   const [loadingTier, setLoadingTier] = useState<string | null>(null);
+  const { t } = useT();
 
   if (!isOpen) return null;
 
@@ -27,34 +29,34 @@ export function UpgradeModal() {
 
   const tiers = [
     {
-      name: "Pro",
+      name: t("upgrade.pro_name", "Pro"),
       price: "A$14.99",
       period: "monthly",
-      description: "Perfect for pacing your study over a few months.",
+      description: t("upgrade.pro_desc", "Perfect for pacing your study over a few months."),
       features: [
-        "All 15 mock tests",
-        "Bilingual study mode",
-        "500+ practice questions",
-        "Standard support",
+        t("upgrade.pro_feature_1", "All 15 mock tests"),
+        t("upgrade.pro_feature_2", "Bilingual study mode"),
+        t("upgrade.pro_feature_3", "500+ practice questions"),
+        t("upgrade.pro_feature_4", "Standard support"),
       ],
       icon: <Star className="w-5 h-5 text-amber-500" />,
       popular: false,
     },
     {
-      name: "Premium",
+      name: t("upgrade.premium_name", "Premium"),
       price: "A$29.99",
       period: "60 days",
-      description: "Everything you need to pass in one go. No subscriptions.",
+      description: t("upgrade.premium_desc", "Everything you need to pass in one go. No subscriptions."),
       features: [
-        "All Pro features",
-        "Unlimited AI tutor",
-        "Readiness score & analytics",
-        "Test-date study plan",
-        "Ad-free experience",
+        t("upgrade.premium_feature_1", "All Pro features"),
+        t("upgrade.premium_feature_2", "Unlimited AI tutor"),
+        t("upgrade.premium_feature_3", "Readiness score & analytics"),
+        t("upgrade.premium_feature_4", "Test-date study plan"),
+        t("upgrade.premium_feature_5", "Ad-free experience"),
       ],
       icon: <Zap className="w-5 h-5 text-white" />,
       popular: true,
-      badge: "Most Popular",
+      badge: t("upgrade.most_popular", "Most Popular"),
     },
   ];
 
@@ -79,10 +81,10 @@ export function UpgradeModal() {
           <div className="p-6 pb-0 flex justify-between items-start">
             <div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
-                Unlock Your Full Potential
+                {t("upgrade.title", "Unlock Your Full Potential")}
               </h2>
               <p className="mt-2 text-neutral-500 dark:text-neutral-400">
-                Choose the plan that fits your study timeline.
+                {t("upgrade.subtitle", "Choose the plan that fits your study timeline.")}
               </p>
             </div>
             <button
@@ -153,8 +155,8 @@ export function UpgradeModal() {
                     }`}
                   >
                     {loadingTier === tier.name
-                      ? "Processing..."
-                      : `Get ${tier.name}`}
+                      ? t("upgrade.processing", "Processing...")
+                      : `${t("upgrade.get_" + tier.name.toLowerCase() + "_" + tier.name.toLowerCase(), "Get " + tier.name)}`}
                   </Button>
                 </div>
               ))}

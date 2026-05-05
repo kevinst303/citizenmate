@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import Link from "next/link";
-import { LayoutDashboard, Users, FileText, ArrowLeft } from "lucide-react";
+import { LayoutDashboard, Users, FileText, ArrowLeft, Gift } from "lucide-react";
 
 export default async function AdminLayout({ children, params }: { children: React.ReactNode, params: Promise<{ lang: string }> }) {
   const supabase = await createSupabaseServerClient();
@@ -41,6 +41,10 @@ export default async function AdminLayout({ children, params }: { children: Reac
           <Link href={`/${lang}/admin/users`} className="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-sm font-medium">
             <Users size={18} className="text-zinc-500" />
             <span>Users</span>
+          </Link>
+          <Link href={`/${lang}/admin/referrals`} className="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-sm font-medium">
+            <Gift size={18} className="text-zinc-500" />
+            <span>Referrals</span>
           </Link>
           <Link href={`/${lang}/admin/blog`} className="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-sm font-medium">
             <FileText size={18} className="text-zinc-500" />

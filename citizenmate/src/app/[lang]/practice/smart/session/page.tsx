@@ -25,6 +25,7 @@ import {
   Landmark,
   Heart,
 } from "lucide-react";
+import { posthog } from "@/components/providers/posthog-provider";
 
 const TOPIC_ICONS: Record<TopicCategory, typeof Globe> = {
   "australia-people": Globe,
@@ -89,7 +90,6 @@ export default function SmartSessionPage() {
 
       const wasCorrect = answerIndex === currentQuestion.correctAnswer;
 
-      // Record to SRS immediately
       recordAnswer(currentQuestion.id, currentQuestion.topic, wasCorrect);
 
       setResults((prev) => [
@@ -100,8 +100,15 @@ export default function SmartSessionPage() {
           selectedAnswer: answerIndex,
         },
       ]);
+
+      if (results.length === 0 && typeof window !== "undefined") {
+        posthog.capture("srs_session_started", {
+          focus_topic: sessionStorage.getItem("citizenmate-smart-focus") ?? "mixed",
+          total_questions: totalQuestions,
+        });
+      }
     },
-    [showFeedback, currentQuestion, recordAnswer]
+    [showFeedback, currentQuestion, recordAnswer, results.length, totalQuestions]
   );
 
   const handleNext = useCallback(() => {
@@ -130,6 +137,20 @@ export default function SmartSessionPage() {
   }
 
   // ─── Session Complete ─────────────────────────────────
+
+  useEffect(() => {
+    if (sessionComplete && typeof window !== "undefined") {
+      const accuracy =
+        results.length > 0
+          ? Math.round((results.filter((r) => r.wasCorrect).length / results.length) * 100)
+          : 0;
+      posthog.capture("srs_session_completed", {
+        total_questions: results.length,
+        correct: results.filter((r) => r.wasCorrect).length,
+        accuracy,
+      });
+    }
+  }, [sessionComplete, results]);
 
   if (sessionComplete) {
     const accuracy =

@@ -13,11 +13,12 @@ import { getSupabaseBrowserClient } from "@/lib/supabase";
 import { syncAllToSupabase, pullFromSupabase } from "@/lib/sync";
 import { useUpgradeModal } from "@/lib/store/useUpgradeModal";
 import { toast } from "@/lib/toast";
+import { posthog } from "@/components/providers/posthog-provider";
 
 // ===== Types =====
 
 interface ProfileData {
-  tier: 'free' | 'pro' | 'premium';
+  tier: 'free' | 'pro' | 'premium' | 'sprint_pass';
   isPremium: boolean;
   expiresAt: Date | null;
   testDate: string | null;
@@ -171,16 +172,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(false);
 
       if (newUser) {
-        // Only fetch if we haven't already or if it's a new sign in
+        if (typeof window !== 'undefined') {
+          posthog.identify(newUser.id, { email: newUser.email });
+        }
+
         if (event === "SIGNED_IN" || event === "INITIAL_SESSION") {
           try {
             if (event === "SIGNED_IN") {
               await syncAllToSupabase(newUser.id);
               await pullFromSupabase(newUser.id);
+              if (typeof window !== 'undefined') {
+                posthog.capture('user_signed_in', {
+                  provider: newUser.app_metadata?.provider ?? 'email',
+                });
+              }
             }
             await fetchProfileData(newUser.id);
           } catch (err) {
             console.error(`[AuthProvider] error during ${event}:`, err);
+            if (typeof window !== 'undefined') {
+              posthog.capture('auth_error', { event_type: event, error: String(err) });
+            }
             setProfile(p => ({ ...p, loading: false }));
           }
         }
@@ -301,6 +313,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!user) {
       openAuthModal();
       return;
+    }
+
+    if (typeof window !== 'undefined') {
+      posthog.capture('checkout_started', { tier, interval });
     }
 
     try {

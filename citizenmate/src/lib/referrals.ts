@@ -144,17 +144,11 @@ async function sendReferrerNotification(
   if (!referrer?.email || referrer.unsubscribed_from_emails) return;
 
   const name = referrer.display_name || 'Mate';
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://citizenmate.com.au';
-  const unsubscribeUrl = `${siteUrl}/api/unsubscribe?id=${referrerId}`;
-
-  const templateId = process.env.RESEND_TEMPLATE_REFERRAL_BONUS;
-  if (!templateId) console.warn('[email] Missing RESEND_TEMPLATE_REFERRAL_BONUS env var');
 
   await sendEmail({
     to: referrer.email,
-    subject: '🎉 Your mate just qualified — 7 bonus premium days added!',
-    templateId,
-    variables: { userName: name, refereeName, unsubscribeUrl },
+    subject: 'Your mate just qualified — 7 bonus premium days added!',
+    text: `Hi ${name},\n\nYour mate ${refereeName} just qualified. You've received 7 bonus premium days!\n\nEnjoy the extra prep time.\n\n– CitizenMate`,
   });
 }
 
@@ -175,16 +169,10 @@ async function sendRefereeNotification(
   if (profile?.unsubscribed_from_emails) return;
 
   const name = displayName || 'there';
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://citizenmate.com.au';
-  const unsubscribeUrl = `${siteUrl}/api/unsubscribe?id=${refereeId}`;
-
-  const templateId = process.env.RESEND_TEMPLATE_REFERRAL_WELCOME;
-  if (!templateId) console.warn('[email] Missing RESEND_TEMPLATE_REFERRAL_WELCOME env var');
 
   await sendEmail({
     to: email,
-    subject: '🎁 You unlocked 7 bonus premium days — CitizenMate',
-    templateId,
-    variables: { userName: name, unsubscribeUrl },
+    subject: 'You unlocked 7 bonus premium days — CitizenMate',
+    text: `Hi ${name},\n\nYou've unlocked 7 bonus premium days thanks to a referral!\n\nTime to keep practising.\n\n– CitizenMate`,
   });
 }

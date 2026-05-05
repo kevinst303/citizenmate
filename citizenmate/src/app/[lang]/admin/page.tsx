@@ -21,9 +21,11 @@ export default async function AdminInsightsPage({
     .from("blog_posts")
     .select("*", { count: "exact", head: true });
 
-  // For this example, active subscriptions would be fetched from Stripe or a subscriptions table
-  // Here we'll just mock it or show 0 if not implemented yet
-  const activeSubscriptions = 0; 
+  // Active subscriptions: users with is_premium=true OR paid tier
+  const { count: activeSubscriptions } = await supabase
+    .from("profiles")
+    .select("*", { count: "exact", head: true })
+    .or("is_premium.eq.true,tier.in.(pro,premium,sprint_pass)");
   
   // Total quiz history entries (to show engagement)
   const { count: totalQuizzes } = await supabase
