@@ -16,6 +16,8 @@ export function UserMenu() {
   const menuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
+  const [imageError, setImageError] = useState(false);
+
   // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -69,12 +71,13 @@ export function UserMenu() {
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 cursor-pointer group"
       >
-        {avatarUrl ? (
+        {avatarUrl && !imageError ? (
           <img 
             src={avatarUrl} 
             alt={displayName} 
             className="w-9 h-9 rounded-full object-cover shadow-md group-hover:shadow-lg transition-shadow border border-cm-slate-200"
             referrerPolicy="no-referrer"
+            onError={() => setImageError(true)}
           />
         ) : (
           <div className="w-9 h-9 rounded-full bg-gradient-to-br from-cm-teal to-cm-teal-dark flex items-center justify-center text-white text-xs font-bold shadow-md group-hover:shadow-lg transition-shadow">

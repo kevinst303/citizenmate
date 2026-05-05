@@ -37,6 +37,8 @@ export default function SettingsPage() {
   const { testDate, openModal: openTestDateModal } = useTestDate();
   const { openModal: openUpgradeModal } = useUpgradeModal();
   const router = useRouter();
+  
+  const [imageError, setImageError] = useState(false);
 
   // Prevent hydration mismatch for client-only rendering
   const [hasMounted, setHasMounted] = useState(false);
@@ -104,12 +106,13 @@ export default function SettingsPage() {
             
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
               <div className="flex-shrink-0">
-                {avatarUrl ? (
+                {avatarUrl && !imageError ? (
                   <img 
                     src={avatarUrl} 
                     alt={displayName} 
                     className="w-24 h-24 rounded-full object-cover shadow-md border-4 border-white ring-1 ring-cm-slate-200"
                     referrerPolicy="no-referrer"
+                    onError={() => setImageError(true)}
                   />
                 ) : (
                   <div className="w-24 h-24 rounded-full bg-gradient-to-br from-cm-teal to-cm-teal-dark flex items-center justify-center text-white text-3xl font-bold shadow-md border-4 border-white ring-1 ring-cm-slate-200">
