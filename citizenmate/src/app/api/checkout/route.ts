@@ -49,9 +49,8 @@ export async function POST(req: Request) {
       }
     });
 
-    // ── Map tier to Price ID and Mode ──
+    // ── Map tier to Price ID ──
     let priceId: string | undefined;
-    const mode: Stripe.Checkout.SessionCreateParams.Mode = 'subscription';
 
     if (tier === 'pro') {
       priceId = interval === 'year' 
@@ -67,6 +66,10 @@ export async function POST(req: Request) {
     if (!priceId) {
       return NextResponse.json({ error: `Price ID not configured for tier: ${tier}, interval: ${interval}` }, { status: 500 });
     }
+
+    // Determine mode dynamically based on the price type
+    const price = await stripe.prices.retrieve(priceId);
+    const mode: Stripe.Checkout.SessionCreateParams.Mode = price.type === 'one_time' ? 'payment' : 'subscription';
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://citizenmate.com.au';
 
@@ -93,6 +96,12 @@ export async function POST(req: Request) {
       }
     }
 
+    const metadataPayload = {
+      userId: user.id,
+      product: tier,
+      ...(referralPromoCodeId && { referral_promo_code_id: referralPromoCodeId }),
+    };
+
     // Use verified user identity — never trust client-provided userId/email
     const sessionParams: Stripe.Checkout.SessionCreateParams = {
       payment_method_types: ['card'],
@@ -110,21 +119,18 @@ export async function POST(req: Request) {
       cancel_url: `${siteUrl}/checkout/cancel`,
       client_reference_id: user.id,
       customer_email: user.email,
-      metadata: {
-        userId: user.id,
-        product: tier,
-        ...(referralPromoCodeId && { referral_promo_code_id: referralPromoCodeId }),
-      },
+      metadata: metadataPayload,
     };
     
-    // For subscriptions, we also need to pass metadata to the subscription object
+    // For subscriptions, we pass metadata to the subscription object.
+    // For payments (one-time), we pass metadata to the payment_intent.
     if (mode === 'subscription') {
       sessionParams.subscription_data = {
-        metadata: {
-          userId: user.id,
-          product: tier,
-          ...(referralPromoCodeId && { referral_promo_code_id: referralPromoCodeId }),
-        }
+        metadata: metadataPayload
+      };
+    } else if (mode === 'payment') {
+      sessionParams.payment_intent_data = {
+        metadata: metadataPayload
       };
     }
 
