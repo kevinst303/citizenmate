@@ -12,6 +12,7 @@ import type { User, AuthError } from "@supabase/supabase-js";
 import { getSupabaseBrowserClient } from "@/lib/supabase";
 import { syncAllToSupabase, pullFromSupabase } from "@/lib/sync";
 import { useUpgradeModal } from "@/lib/store/useUpgradeModal";
+import { toast } from "@/lib/toast";
 
 // ===== Types =====
 
@@ -275,11 +276,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signOut = useCallback(async () => {
-    if (!isSupabaseConfigured()) return;
-    const supabase = getSupabaseBrowserClient();
-    await supabase.auth.signOut();
+    // Clear local state first
     setUser(null);
     setProfile({ tier: 'free', isPremium: false, expiresAt: null, testDate: null, loading: false });
+
+    // Attempt to sign out of Supabase if configured
+    if (isSupabaseConfigured()) {
+      try {
+        const supabase = getSupabaseBrowserClient();
+        await supabase.auth.signOut();
+      } catch (e) {
+        console.error("Failed to sign out of Supabase:", e);
+      }
+    }
     
     // Force a hard redirect to home to clear server-side middleware state
     if (typeof window !== "undefined") {
@@ -311,6 +320,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         console.error("[Checkout] Server error:", errorData.error || response.statusText);
+        if (errorData.error === "Stripe not configured") {
+          toast.error("Checkout Unavailable", "Stripe is not configured in this environment.");
+        } else {
+          toast.error("Checkout Error", "Something went wrong starting checkout. Please try again.");
+        }
         return;
       }
 

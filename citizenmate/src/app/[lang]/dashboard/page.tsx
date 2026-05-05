@@ -118,7 +118,7 @@ export default function DashboardPage() {
       />
 
       {/* ===== Main content ===== */}
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 -mt-8 relative z-10 pb-20">
+      <section className="mx-auto max-w-6xl px-4 sm:px-6 relative z-10 pb-20">
         <motion.div
           variants={container}
           initial="hidden"
@@ -129,30 +129,33 @@ export default function DashboardPage() {
           {hasMounted && !profile.isPremium && showBanner && (
             <motion.div
               variants={item}
-              className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-cm-gold/20 via-cm-gold/10 to-transparent border border-cm-gold/30 px-5 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+              className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-cm-slate-900 via-cm-navy-darker to-cm-slate-900 shadow-xl border border-white/10 px-6 py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-5 group"
             >
-              <div className="flex items-center gap-4">
-                <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-cm-gold/20 text-cm-gold flex items-center justify-center">
-                  <Lock className="w-5 h-5" />
+              {/* Premium shimmer effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-shimmer pointer-events-none" />
+              
+              <div className="relative z-10 flex items-center gap-4">
+                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-cm-gold to-amber-500 text-white shadow-lg shadow-amber-500/20 flex items-center justify-center">
+                  <Lock className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-cm-navy mb-0.5">Unlock Premium Features</h3>
-                  <p className="text-sm text-cm-slate-600">Get unlimited mock tests, AI tutor access, and advanced analytics.</p>
+                  <h3 className="text-base font-bold text-white mb-0.5 tracking-tight">Unlock Premium Features</h3>
+                  <p className="text-sm text-cm-slate-200">Get unlimited mock tests, AI tutor access, and advanced analytics.</p>
                 </div>
               </div>
-              <div className="flex items-center gap-3 self-end sm:self-auto">
+              <div className="relative z-10 flex items-center gap-3 self-end sm:self-auto">
                 <button
                   onClick={() => openUpgradeModal("dashboard_banner")}
-                  className="px-4 py-2 bg-cm-navy text-white text-sm font-bold rounded-xl hover:bg-cm-navy/90 transition-colors shadow-md"
+                  className="px-5 py-2.5 bg-white text-cm-navy-darker text-sm font-bold rounded-xl hover:bg-cm-ice transition-colors shadow-lg shadow-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-cm-slate-900"
                 >
                   Upgrade Now
                 </button>
                 <button
                   onClick={() => setShowBanner(false)}
-                  className="p-2 text-cm-slate-400 hover:text-cm-slate-600 hover:bg-white/50 rounded-lg transition-colors"
-                  aria-label="Dismiss"
+                  className="p-2 text-cm-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-cm-slate-900"
+                  aria-label="Dismiss upgrade banner"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
             </motion.div>
@@ -206,8 +209,7 @@ export default function DashboardPage() {
             {/* Readiness card */}
             <motion.div
               variants={item}
-              className="bg-white border border-[#E9ECEF] p-6 flex flex-col items-center text-center"
-              style={{ borderRadius: '15px', boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}
+              className="bg-white border border-cm-slate-200/60 p-6 flex flex-col items-center text-center rounded-2xl shadow-sm hover:shadow-md transition-shadow"
             >
               <ReadinessRing score={readiness.score} />
 
@@ -215,7 +217,7 @@ export default function DashboardPage() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1 }}
-                className="mt-4 text-sm text-cm-slate-500"
+                className="mt-4 text-sm text-cm-slate-600"
               >
                 {(() => {
                   const ReadinessIcon =
@@ -251,8 +253,7 @@ export default function DashboardPage() {
             {/* Test date card */}
             <motion.div
               variants={item}
-              className="relative bg-white border border-[#E9ECEF] p-6 flex flex-col overflow-hidden"
-              style={{ borderRadius: '15px', boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}
+              className="relative bg-white border border-cm-slate-200/60 p-6 flex flex-col overflow-hidden rounded-2xl shadow-sm hover:shadow-md transition-shadow"
             >
               {/* Subtle visual goal setting background */}
               <div className="absolute inset-0 z-0 opacity-[0.08] pointer-events-none mix-blend-luminosity">
@@ -305,7 +306,7 @@ export default function DashboardPage() {
                       {daysUntilTest}
                     </motion.p>
                   </div>
-                  <p className="text-sm text-cm-slate-500 mt-2 font-medium">
+                  <p className="text-sm text-cm-slate-600 mt-2 font-medium">
                     {daysUntilTest === 0
                       ? "Your test is today! Good luck!"
                       : daysUntilTest === 1
@@ -322,7 +323,7 @@ export default function DashboardPage() {
                   </span>
                   <button
                     onClick={openModal}
-                    className="mt-4 text-xs text-cm-slate-400 hover:text-cm-navy transition-colors duration-200 cursor-pointer"
+                    className="mt-4 text-xs text-cm-slate-500 hover:text-cm-navy transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cm-navy focus-visible:ring-offset-2 rounded-md px-2 py-1"
                   >
                     Change date
                   </button>
@@ -332,12 +333,12 @@ export default function DashboardPage() {
                   <div className="w-16 h-16 rounded-full bg-cm-navy-50 flex items-center justify-center mb-4">
                     <Calendar className="w-8 h-8 text-cm-navy/40" />
                   </div>
-                  <p className="text-sm text-cm-slate-500 mb-4">
+                  <p className="text-sm text-cm-slate-600 mb-4">
                     Set your test date to get a personalised countdown
                   </p>
                   <button
                     onClick={openModal}
-                    className="px-5 py-2.5 bg-cm-navy text-white font-heading font-semibold text-sm rounded-xl hover:bg-cm-navy-light transition-colors duration-200 cursor-pointer hover:shadow-md"
+                    className="px-5 py-2.5 bg-cm-navy text-white font-heading font-semibold text-sm rounded-xl hover:bg-cm-navy-light transition-colors duration-200 cursor-pointer hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cm-navy focus-visible:ring-offset-2"
                   >
                     Set Test Date
                   </button>
@@ -351,7 +352,7 @@ export default function DashboardPage() {
           {!readiness.valuesReady && readiness.totalQuizzesTaken > 0 && (
             <motion.div
               variants={item}
-              className="flex items-center gap-3 px-5 py-4 bg-cm-red-light/80 backdrop-blur-sm border border-cm-red/15 rounded-2xl alert-gradient"
+              className="flex items-center gap-3 px-5 py-4 bg-red-50/80 border border-red-100 rounded-2xl alert-gradient"
             >
               <AlertTriangle className="w-5 h-5 text-cm-red flex-shrink-0 animate-icon-pulse" />
               <div>
@@ -365,7 +366,7 @@ export default function DashboardPage() {
               </div>
               <Link
                 href="/study/australian-values"
-                className="flex-shrink-0 px-3 py-1.5 bg-cm-red text-white text-xs font-semibold rounded-lg hover:bg-cm-red/90 transition-colors duration-200 cursor-pointer"
+                className="flex-shrink-0 px-3 py-1.5 bg-cm-red text-white text-xs font-semibold rounded-lg hover:bg-cm-red/90 transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cm-red focus-visible:ring-offset-2 shadow-sm"
               >
                 Study Now
               </Link>
@@ -373,11 +374,10 @@ export default function DashboardPage() {
           )}
 
           {/* Topic mastery */}
-          <motion.div
-            variants={item}
-            className="bg-white border border-[#E9ECEF] p-6 relative overflow-hidden"
-              style={{ borderRadius: '15px', boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}
-          >
+            <motion.div
+              variants={item}
+              className="bg-white border border-cm-slate-200/60 p-6 relative overflow-hidden rounded-2xl shadow-sm hover:shadow-md transition-shadow"
+            >
             <div className="flex items-center gap-2.5 mb-5">
               <div className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-cm-gold-light text-cm-gold">
                 <TrendingUp className="w-4.5 h-4.5" />
@@ -388,68 +388,114 @@ export default function DashboardPage() {
             </div>
 
             <div className="space-y-4 relative">
-              {hasMounted && !profile.isPremium && (
-                <div className="absolute inset-0 z-20 backdrop-blur-md bg-white/50 flex flex-col items-center justify-center rounded-xl border border-white/50 shadow-sm">
-                  <div className="w-12 h-12 rounded-full bg-cm-gold/20 text-cm-gold flex items-center justify-center mb-3 shadow-inner">
-                    <Lock className="w-6 h-6" />
+              {hasMounted && !profile.isPremium ? (
+                // Locked View
+                <div className="relative">
+                  <div className="space-y-4 opacity-40 select-none pointer-events-none blur-[3px] grayscale-[0.3]">
+                    {readiness.topicMastery.slice(0, 4).map((topic) => {
+                      const Icon = TOPIC_ICONS[topic.topicId];
+                      const colors = TOPIC_COLORS[topic.topicId];
+
+                      return (
+                        <div
+                          key={topic.topicId}
+                          className="flex items-center gap-4 p-3 rounded-xl"
+                        >
+                          <div
+                            className={`flex-shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-xl ${colors.bg} ${colors.text}`}
+                          >
+                            <Icon className="w-5 h-5" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between mb-1.5">
+                              <h3 className="text-sm font-semibold text-cm-slate-800">
+                                {topic.label}
+                              </h3>
+                              <span className="text-sm font-bold text-cm-slate-700">
+                                {topic.overallMastery}%
+                              </span>
+                            </div>
+                            <StudyProgressBar
+                              completed={topic.overallMastery}
+                              total={100}
+                              colorClass={colors.bar}
+                              size="sm"
+                            />
+                            <div className="flex gap-4 mt-1.5 text-xs text-cm-slate-500">
+                              <span>Quiz: {topic.quizAccuracy}%</span>
+                              <span>Study: {topic.studyCompletion}%</span>
+                            </div>
+                          </div>
+                          <ArrowRight className="w-4 h-4 text-cm-slate-300 flex-shrink-0" />
+                        </div>
+                      );
+                    })}
                   </div>
-                  <h3 className="text-lg font-bold text-cm-navy mb-1 text-center px-4 drop-shadow-sm">Detailed Analytics Locked</h3>
-                  <p className="text-sm text-cm-slate-800 font-medium mb-4 text-center px-6 drop-shadow-sm">Upgrade to Premium to see your detailed strengths and weaknesses.</p>
-                  <button
-                    onClick={() => openUpgradeModal("topic_mastery")}
-                    className="px-5 py-2.5 bg-cm-navy text-white text-sm font-bold rounded-xl hover:bg-cm-navy/90 transition-colors shadow-lg cursor-pointer"
-                  >
-                    Unlock Analytics
-                  </button>
+                  
+                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-gradient-to-b from-transparent via-white/80 to-white pt-10">
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-cm-gold to-amber-500 text-white flex items-center justify-center mb-4 shadow-lg shadow-amber-500/20">
+                      <Lock className="w-6 h-6" />
+                    </div>
+                    <h3 className="text-xl font-heading font-bold text-cm-slate-900 mb-2 text-center drop-shadow-sm">Detailed Analytics Locked</h3>
+                    <p className="text-sm text-cm-slate-600 font-medium mb-6 text-center max-w-[250px] drop-shadow-sm">Upgrade to Premium to see your detailed strengths and weaknesses.</p>
+                    <button
+                      onClick={() => openUpgradeModal("topic_mastery")}
+                      className="px-6 py-2.5 bg-cm-navy text-white text-sm font-bold rounded-xl hover:bg-cm-navy-light transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cm-navy focus-visible:ring-offset-2"
+                    >
+                      Unlock Analytics
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                // Unlocked View
+                <div className="space-y-4">
+                  {readiness.topicMastery.map((topic) => {
+                    const Icon = TOPIC_ICONS[topic.topicId];
+                    const colors = TOPIC_COLORS[topic.topicId];
+
+                    return (
+                      <Link
+                        key={topic.topicId}
+                        href={`/study/${topic.topicId}`}
+                        className="topic-row group flex items-center gap-4 p-3 rounded-xl cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cm-navy focus-visible:ring-offset-2"
+                        style={
+                          {
+                            "--topic-accent-color": colors.accent,
+                            "--topic-hover-bg": colors.hoverBg,
+                          } as React.CSSProperties
+                        }
+                      >
+                        <div
+                          className={`flex-shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-xl ${colors.bg} ${colors.text} transition-transform duration-200 group-hover:scale-105`}
+                        >
+                          <Icon className="w-5 h-5" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between mb-1.5">
+                            <h3 className="text-sm font-semibold text-cm-slate-800 group-hover:text-cm-navy transition-colors duration-200">
+                              {topic.label}
+                            </h3>
+                            <span className="text-sm font-bold text-cm-slate-700">
+                              {topic.overallMastery}%
+                            </span>
+                          </div>
+                          <StudyProgressBar
+                            completed={topic.overallMastery}
+                            total={100}
+                            colorClass={colors.bar}
+                            size="sm"
+                          />
+                          <div className="flex gap-4 mt-1.5 text-xs text-cm-slate-500">
+                            <span>Quiz: {topic.quizAccuracy}%</span>
+                            <span>Study: {topic.studyCompletion}%</span>
+                          </div>
+                        </div>
+                        <ArrowRight className="w-4 h-4 text-cm-slate-300 group-hover:text-cm-navy group-hover:translate-x-1 transition-all duration-200 flex-shrink-0" />
+                      </Link>
+                    );
+                  })}
                 </div>
               )}
-              <div className={hasMounted && !profile.isPremium ? "opacity-30 select-none pointer-events-none" : ""}>
-                {readiness.topicMastery.map((topic) => {
-                  const Icon = TOPIC_ICONS[topic.topicId];
-                  const colors = TOPIC_COLORS[topic.topicId];
-
-                  return (
-                    <Link
-                      key={topic.topicId}
-                      href={`/study/${topic.topicId}`}
-                      className="topic-row group flex items-center gap-4 p-3 rounded-xl cursor-pointer"
-                      style={
-                        {
-                          "--topic-accent-color": colors.accent,
-                          "--topic-hover-bg": colors.hoverBg,
-                        } as React.CSSProperties
-                      }
-                    >
-                      <div
-                        className={`flex-shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-xl ${colors.bg} ${colors.text} transition-transform duration-200 group-hover:scale-105`}
-                      >
-                        <Icon className="w-5 h-5" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between mb-1.5">
-                          <h3 className="text-sm font-semibold text-cm-slate-800 group-hover:text-cm-navy transition-colors duration-200">
-                            {topic.label}
-                          </h3>
-                          <span className="text-sm font-bold text-cm-slate-700">
-                            {topic.overallMastery}%
-                          </span>
-                        </div>
-                        <StudyProgressBar
-                          completed={topic.overallMastery}
-                          total={100}
-                          colorClass={colors.bar}
-                          size="sm"
-                        />
-                        <div className="flex gap-4 mt-1.5 text-xs text-cm-slate-400">
-                          <span>Quiz: {topic.quizAccuracy}%</span>
-                          <span>Study: {topic.studyCompletion}%</span>
-                        </div>
-                      </div>
-                      <ArrowRight className="w-4 h-4 text-cm-slate-300 group-hover:text-cm-navy group-hover:translate-x-1 transition-all duration-200 flex-shrink-0" />
-                    </Link>
-                  );
-                })}
-              </div>
             </div>
           </motion.div>
 
@@ -470,33 +516,36 @@ export default function DashboardPage() {
                   title: "Smart Practice",
                   desc: "AI-powered weak area focus",
                   href: "/practice/smart",
-                  bg: "bg-gradient-to-br from-purple-600 to-indigo-600",
-                  hoverBg:
-                    "hover:from-purple-700 hover:to-indigo-700",
+                  color: "text-purple-600",
+                  bgIcon: "bg-purple-100/80",
+                  borderHover: "hover:border-purple-300 hover:shadow-purple-500/5",
                 },
                 {
                   icon: ClipboardCheck,
                   title: "Take a Mock Test",
                   desc: "20 questions, 45 minutes",
                   href: "/practice",
-                  bg: "bg-cm-navy",
-                  hoverBg: "hover:bg-cm-navy-light",
+                  color: "text-blue-600",
+                  bgIcon: "bg-blue-100/80",
+                  borderHover: "hover:border-blue-300 hover:shadow-blue-500/5",
                 },
                 {
                   icon: BookOpen,
                   title: "Continue Studying",
                   desc: "Pick up where you left off",
                   href: "/study",
-                  bg: "bg-cm-eucalyptus",
-                  hoverBg: "hover:bg-cm-eucalyptus/90",
+                  color: "text-emerald-600",
+                  bgIcon: "bg-emerald-100/80",
+                  borderHover: "hover:border-emerald-300 hover:shadow-emerald-500/5",
                 },
                 {
                   icon: Heart,
                   title: "Review Values",
                   desc: "Must pass 5/5 to succeed",
                   href: "/study/australian-values",
-                  bg: "bg-cm-red",
-                  hoverBg: "hover:bg-cm-red/90",
+                  color: "text-red-600",
+                  bgIcon: "bg-red-100/80",
+                  borderHover: "hover:border-red-300 hover:shadow-red-500/5",
                 },
               ].map((action, actionIdx) => (
                 <motion.div
@@ -504,32 +553,34 @@ export default function DashboardPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 * actionIdx, type: "spring", stiffness: 150, damping: 16 }}
-                  whileHover={{ y: -6, scale: 1.02, transition: { type: "spring", stiffness: 400, damping: 20 } }}
-                  whileTap={{ scale: 0.97 }}
                 >
                   <Link
                     href={action.href}
-                    className={`action-card-shine group flex items-center gap-3 p-4 ${action.bg} ${action.hoverBg} text-white rounded-2xl transition-colors duration-200 hover:shadow-xl cursor-pointer relative`}
+                    className={`group flex items-center gap-4 p-5 bg-white border border-cm-slate-200/60 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${action.borderHover} relative overflow-hidden`}
                   >
                     {/* Recommended badge */}
                     {action.title === aiInsight.recommendedAction && (
-                      <span className="absolute -top-2 -right-2 recommended-pulse inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-cm-gold text-white text-[10px] font-bold shadow-md z-10">
+                      <span className="absolute top-2.5 right-2.5 recommended-pulse inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-cm-gold text-white text-[10px] font-bold shadow-sm z-10">
                         <Sparkles className="w-2.5 h-2.5" />
                         Recommended
                       </span>
                     )}
-                    <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-white/15 backdrop-blur-sm transition-transform duration-200 group-hover:scale-110">
+                    
+                    {/* Hover subtle background highlight */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-100 -translate-x-full group-hover:translate-x-full transition-all duration-700 ease-out z-0"></div>
+
+                    <div className={`inline-flex items-center justify-center w-11 h-11 rounded-xl ${action.bgIcon} ${action.color} transition-transform duration-300 group-hover:scale-110 z-10`}>
                       <action.icon className="w-5 h-5" />
                     </div>
-                    <div>
-                      <h3 className="font-heading font-semibold text-sm">
+                    <div className="z-10 relative">
+                      <h3 className="font-heading font-semibold text-sm text-cm-slate-900 mb-0.5">
                         {action.title}
                       </h3>
-                      <p className="text-xs text-white/70">
+                      <p className="text-xs text-cm-slate-500">
                         {action.desc}
                       </p>
                     </div>
-                    <ArrowRight className="w-4 h-4 ml-auto opacity-60 group-hover:translate-x-1 group-hover:opacity-100 transition-all duration-200" />
+                    <ArrowRight className="w-4 h-4 ml-auto text-cm-slate-400 opacity-60 group-hover:translate-x-1 group-hover:opacity-100 group-hover:text-cm-navy transition-all duration-300 z-10" />
                   </Link>
                 </motion.div>
               ))}
@@ -589,13 +640,9 @@ export default function DashboardPage() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ delay: 0.08 * statIdx, type: "spring", stiffness: 150, damping: 14 }}
                   whileHover={{ y: -4, scale: 1.04, transition: { type: "spring", stiffness: 400, damping: 20 } }}
-                  className="stat-card rounded-2xl p-4 text-center cursor-default"
-                  style={
-                    {
-                      "--stat-accent-color": stat.accent,
-                    } as React.CSSProperties
-                  }
+                  className="rounded-2xl border border-cm-slate-200/60 bg-white p-4 text-center shadow-sm hover:shadow-md transition-all relative overflow-hidden group cursor-default"
                 >
+                  <div className="absolute top-0 left-0 right-0 h-[3px] rounded-t-2xl opacity-80" style={{ backgroundColor: stat.accent }} />
                   <div
                     className={`inline-flex items-center justify-center w-9 h-9 rounded-xl ${stat.bg} ${stat.iconColor} mb-2`}
                   >
@@ -604,7 +651,7 @@ export default function DashboardPage() {
                   <p className="text-xl font-heading font-bold text-cm-slate-900">
                     {stat.value}
                   </p>
-                  <p className="text-xs text-cm-slate-500 font-medium">
+                  <p className="text-xs text-cm-slate-600 font-medium">
                     {stat.label}
                   </p>
                 </motion.div>

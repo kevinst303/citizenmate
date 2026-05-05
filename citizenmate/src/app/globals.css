@@ -528,34 +528,6 @@
   transform: translateY(-2px);
 }
 
-/* Stat card */
-.stat-card {
-  background: #FFFFFF;
-  border: 1px solid #e8eaef;
-  border-radius: 15px;
-  box-shadow: rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px;
-  position: relative;
-  overflow: hidden;
-  transition: box-shadow 0.25s ease, transform 0.25s ease;
-}
-
-.stat-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: var(--stat-accent-color, #006d77);
-  border-radius: 3px 3px 0 0;
-}
-
-.stat-card:hover {
-  box-shadow:
-    0 4px 8px rgba(0, 0, 0, 0.03),
-    0 12px 28px rgba(0, 0, 0, 0.05);
-  transform: translateY(-2px);
-}
 
 /* Topic row */
 .topic-row {

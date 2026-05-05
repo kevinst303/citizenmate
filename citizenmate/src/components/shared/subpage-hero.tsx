@@ -19,7 +19,7 @@ interface SubpageHeroProps {
 
 export function SubpageHero({ title, breadcrumbs, description, badge, bgImage = '/images/conseil/subpage-hero-bg.webp', curveColorClass = 'text-white' }: SubpageHeroProps) {
   return (
-    <div className="relative w-full min-h-[400px] md:min-h-[500px] flex flex-col justify-center bg-cm-teal overflow-hidden">
+    <div className="relative w-full min-h-[400px] md:min-h-[500px] flex flex-col justify-center bg-cm-teal overflow-hidden border-b border-teal-900/30">
       {/* Background Image with Overlay */}
       {bgImage && (
         <>
@@ -39,7 +39,7 @@ export function SubpageHero({ title, breadcrumbs, description, badge, bgImage = 
       )}
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 md:px-6 flex flex-col items-center text-center mt-12 pb-24">
+      <div className="relative z-10 container mx-auto px-4 md:px-6 flex flex-col items-center text-center mt-12 pb-20">
         
         {/* Badge (Optional) */}
         {badge && (
@@ -88,23 +88,8 @@ export function SubpageHero({ title, breadcrumbs, description, badge, bgImage = 
         </nav>
       </div>
 
-      {/* Bottom Arched Curve (Conseil Signature) */}
-      <div className="absolute bottom-0 left-0 w-full z-20 translate-y-[2px]">
-        <svg
-          viewBox="0 0 1920 150"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className={`w-full h-auto ${curveColorClass}`}
-          preserveAspectRatio="none"
-          style={{ width: '100%', height: 'auto', minHeight: '60px', maxHeight: '150px' }}
-        >
-          {/* An elegant arch/wave that matches the original Conseil styling */}
-          <path
-            d="M0 150H1920V0C1920 0 1500 150 960 150C420 150 0 0 0 0V150Z"
-            fill="currentColor"
-          />
-        </svg>
-      </div>
+      {/* Straight Divider */}
+      <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent z-20"></div>
     </div>
   );
 }

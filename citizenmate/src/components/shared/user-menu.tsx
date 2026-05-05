@@ -2,8 +2,9 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, LogOut, LayoutDashboard, ChevronDown, Sparkles } from "lucide-react";
+import { User, LogOut, LayoutDashboard, ChevronDown, Crown } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 
 // ===== User Menu =====
@@ -13,6 +14,7 @@ export function UserMenu() {
   const { user, loading, openAuthModal, signOut, startCheckout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -55,6 +57,11 @@ export function UserMenu() {
     .toUpperCase();
     
   const avatarUrl = user.user_metadata?.avatar_url || user.user_metadata?.picture;
+
+  const handleNavigation = (path: string) => {
+    setIsOpen(false);
+    router.push(path);
+  };
 
   return (
     <div className="relative" ref={menuRef}>
@@ -103,14 +110,13 @@ export function UserMenu() {
 
             {/* Menu items */}
             <div className="py-1">
-              <Link
-                href="/dashboard"
-                onClick={() => setIsOpen(false)}
-                className="flex items-center gap-3 px-4 py-2.5 text-sm text-cm-slate-700 hover:bg-cm-slate-50 transition-colors"
+              <button
+                onClick={() => handleNavigation("/dashboard")}
+                className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-cm-slate-700 hover:bg-cm-slate-50 transition-colors text-left"
               >
                 <LayoutDashboard className="w-4 h-4 text-cm-slate-400" />
                 Dashboard
-              </Link>
+              </button>
               <button
                 onClick={async () => {
                   setIsOpen(false);
@@ -122,17 +128,16 @@ export function UserMenu() {
                 }}
                 className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-cm-teal hover:bg-cm-teal-50 transition-colors cursor-pointer text-left"
               >
-                <Sparkles className="w-4 h-4 text-cm-teal" />
+                <Crown className="w-4 h-4 text-cm-teal" />
                 Upgrade to Premium
               </button>
-              <Link
-                href="/dashboard"
-                onClick={() => setIsOpen(false)}
-                className="flex items-center gap-3 px-4 py-2.5 text-sm text-cm-slate-700 hover:bg-cm-slate-50 transition-colors"
+              <button
+                onClick={() => handleNavigation("/settings")}
+                className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-cm-slate-700 hover:bg-cm-slate-50 transition-colors text-left"
               >
                 <User className="w-4 h-4 text-cm-slate-400" />
                 Profile Settings
-              </Link>
+              </button>
             </div>
 
             {/* Sign out */}
@@ -142,7 +147,7 @@ export function UserMenu() {
                   setIsOpen(false);
                   signOut();
                 }}
-                className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-cm-red hover:bg-cm-red-light transition-colors cursor-pointer"
+                className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-cm-red hover:bg-cm-red-light transition-colors cursor-pointer text-left"
               >
                 <LogOut className="w-4 h-4" />
                 Sign Out
