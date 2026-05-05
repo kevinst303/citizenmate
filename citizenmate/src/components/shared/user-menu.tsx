@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, LogOut, LayoutDashboard, ChevronDown } from "lucide-react";
+import { User, LogOut, LayoutDashboard, ChevronDown, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
 
@@ -10,7 +10,7 @@ import { useAuth } from "@/lib/auth-context";
 // Navbar component that shows "Sign In" when logged out, avatar+dropdown when logged in.
 
 export function UserMenu() {
-  const { user, loading, openAuthModal, signOut } = useAuth();
+  const { user, loading, openAuthModal, signOut, startCheckout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -115,15 +115,14 @@ export function UserMenu() {
                 onClick={async () => {
                   setIsOpen(false);
                   try {
-                    const res = await fetch('/api/checkout', { method: 'POST', body: JSON.stringify({ userId: user?.id, email: user?.email }) });
-                    const data = await res.json();
-                    if (data.url) window.location.href = data.url;
+                    await startCheckout('premium', 'month');
                   } catch (e) {
                     console.error(e);
                   }
                 }}
                 className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-cm-teal hover:bg-cm-teal-50 transition-colors cursor-pointer text-left"
               >
+                <Sparkles className="w-4 h-4 text-cm-teal" />
                 Upgrade to Premium
               </button>
               <Link
@@ -132,7 +131,7 @@ export function UserMenu() {
                 className="flex items-center gap-3 px-4 py-2.5 text-sm text-cm-slate-700 hover:bg-cm-slate-50 transition-colors"
               >
                 <User className="w-4 h-4 text-cm-slate-400" />
-                Profile
+                Profile Settings
               </Link>
             </div>
 

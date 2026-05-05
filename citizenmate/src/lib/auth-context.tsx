@@ -280,6 +280,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await supabase.auth.signOut();
     setUser(null);
     setProfile({ tier: 'free', isPremium: false, expiresAt: null, testDate: null, loading: false });
+    
+    // Force a hard redirect to home to clear server-side middleware state
+    if (typeof window !== "undefined") {
+      window.location.href = "/";
+    }
   }, []);
 
   // Initiate Stripe checkout
