@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { cookies } from 'next/headers'
+import { sendWelcomeEmail } from '@/lib/email'
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
@@ -29,9 +30,22 @@ export async function GET(request: Request) {
     )
     
     // Exchange the auth code for a user session
-    const { error } = await supabase.auth.exchangeCodeForSession(code)
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code)
     
-    if (!error) {
+    if (!error && data.user) {
+      // Check if this is a newly created user (within the last 60 seconds)
+      const createdAt = new Date(data.user.created_at)
+      const now = new Date()
+      const isNewUser = now.getTime() - createdAt.getTime() < 60000
+
+      if (isNewUser && data.user.email) {
+        const name = data.user.user_metadata?.full_name || data.user.user_metadata?.name || undefined;
+        // Don't await the email sending to avoid blocking the redirect
+        sendWelcomeEmail(data.user.email, name).catch(err => {
+          console.error('[Auth Callback] Failed to send welcome email:', err);
+        });
+      }
+
       // Successful login, redirect to the desired page
       return NextResponse.redirect(`${origin}${next}`)
     }

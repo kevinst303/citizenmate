@@ -115,6 +115,42 @@ export async function GET(request: Request) {
       }
     }
 
+    // --- Expiry Warning Emails ---
+    // Find users whose premium expires in exactly 3 days
+    const threeDaysFromNow = new Date();
+    threeDaysFromNow.setDate(threeDaysFromNow.getDate() + 3);
+    
+    const fourDaysFromNow = new Date();
+    fourDaysFromNow.setDate(fourDaysFromNow.getDate() + 4);
+
+    const { data: expiringUsers, error: expiringError } = await supabaseAdmin
+      .from("profiles")
+      .select("id, email, display_name, premium_expires_at, unsubscribed_from_emails")
+      .eq("is_premium", true)
+      .eq("unsubscribed_from_emails", false)
+      .gte("premium_expires_at", threeDaysFromNow.toISOString())
+      .lt("premium_expires_at", fourDaysFromNow.toISOString());
+
+    if (!expiringError && expiringUsers && expiringUsers.length > 0) {
+      for (const user of expiringUsers) {
+        if (!user.email) continue;
+        const daysLeft = 3;
+        batchEmails.push({
+          from: "CitizenMate <hello@citizenmate.com.au>",
+          to: user.email,
+          subject: `⏰ Your Sprint Pass expires in ${daysLeft} days — CitizenMate`,
+          template: {
+            id: process.env.RESEND_TEMPLATE_EXPIRY_WARNING || '',
+            variables: {
+              daysLeft,
+              userName: user.display_name || "Mate",
+              unsubscribeUrl: `${siteUrl}/api/unsubscribe?id=${user.id}`
+            }
+          }
+        });
+      }
+    }
+
     // Filter out missing template IDs in development just in case
     const validBatchEmails = batchEmails.filter(e => e.template?.id);
 
