@@ -40,10 +40,12 @@ export async function GET(request: Request) {
 
       if (isNewUser && data.user.email) {
         const name = data.user.user_metadata?.full_name || data.user.user_metadata?.name || undefined;
-        // Don't await the email sending to avoid blocking the redirect
-        sendWelcomeEmail(data.user.email, name).catch(err => {
+        // Await the email sending so Vercel doesn't kill the serverless function prematurely
+        try {
+          await sendWelcomeEmail(data.user.email, name);
+        } catch (err) {
           console.error('[Auth Callback] Failed to send welcome email:', err);
-        });
+        }
       }
 
       // Successful login, redirect to the desired page
