@@ -34,7 +34,20 @@
     "readiness": "درجة الاستعداد",
     "recent_tests": "الاختبارات الأخيرة",
     "refer_friend": "ساعد صديقًا",
-    "refer_desc": "شارك CitizenMate واحصل على 7 أيام Premium مجانًا!"
+    "refer_desc": "شارك CitizenMate واحصل على 7 أيام Premium مجانًا!",
+    "quiz_score": "درجة الاختبار",
+    "study_progress": "تقدم الدراسة",
+    "test_date": "تاريخ الاختبار",
+    "change_date": "تغيير التاريخ",
+    "set_test_date": "حدد تاريخ الاختبار",
+    "set_date_prompt": "حدد تاريخ اختبارك للحصول على عد تنازلي مخصص",
+    "day_until": "يوم حتى اختبارك",
+    "days_until": "أيام حتى اختبارك",
+    "test_today": "اختبارك اليوم! بالتوفيق!",
+    "continue_studying": "متابعة الدراسة",
+    "topic_mastery": "إتقان الموضوع",
+    "upgrade_banner": "احصل على بطاقة Sprint Pass — 29.99 دولار لمرة واحدة لمدة 60 يومًا",
+    "premium_dashboard": "ميزات مميزة مفتوحة"
   },
   "onboarding": {
     "welcome": "مرحباً بك في CitizenMate!",

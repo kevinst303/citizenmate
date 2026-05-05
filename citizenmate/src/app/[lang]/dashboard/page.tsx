@@ -52,6 +52,7 @@ import { getAIInsight } from "@/lib/insights";
 import { ReadinessRing } from "@/components/dashboard/readiness-ring";
 import { useAuth } from "@/lib/auth-context";
 import { useUpgradeModal } from "@/lib/store/useUpgradeModal";
+import { useT } from "@/i18n/i18n-context";
 
 
 // ===== Animations =====
@@ -77,6 +78,7 @@ export default function DashboardPage() {
   const { daysUntilTest, urgencyLevel, openModal, testDate } = useTestDate();
   const { profile } = useAuth();
   const { openModal: openUpgradeModal } = useUpgradeModal();
+  const { t } = useT();
 
   // Defer localStorage reads until after hydration to prevent SSR mismatch
   const [hasMounted, setHasMounted] = useState(false);
@@ -233,7 +235,7 @@ export default function DashboardPage() {
               <div className="flex gap-4 mt-5 w-full">
                 <div className="flex-1 bg-cm-navy-50 rounded-xl p-3 transition-all duration-200 hover:bg-cm-navy-100 hover:shadow-sm cursor-default">
                   <p className="text-xs text-cm-slate-500 font-medium">
-                    Quiz Score
+                    {t("dashboard.quiz_score", "Quiz Score")}
                   </p>
                   <p className="text-lg font-heading font-bold text-cm-navy">
                     {readiness.quizComponent}%
@@ -241,7 +243,7 @@ export default function DashboardPage() {
                 </div>
                 <div className="flex-1 bg-cm-eucalyptus-light rounded-xl p-3 transition-all duration-200 hover:bg-cm-eucalyptus-light/80 hover:shadow-sm cursor-default">
                   <p className="text-xs text-cm-slate-500 font-medium">
-                    Study Progress
+                    {t("dashboard.study_progress", "Study Progress")}
                   </p>
                   <p className="text-lg font-heading font-bold text-cm-eucalyptus">
                     {readiness.studyComponent}%
@@ -270,7 +272,7 @@ export default function DashboardPage() {
                   <Calendar className="w-4.5 h-4.5" />
                 </div>
                 <h2 className="font-heading font-bold text-cm-slate-900 drop-shadow-sm">
-                  Test Date
+                  {t("dashboard.test_date", "Test Date")}
                 </h2>
               </div>
               
@@ -308,10 +310,10 @@ export default function DashboardPage() {
                   </div>
                   <p className="text-sm text-cm-slate-600 mt-2 font-medium">
                     {daysUntilTest === 0
-                      ? "Your test is today! Good luck!"
+                      ? t("dashboard.test_today", "Your test is today! Good luck!")
                       : daysUntilTest === 1
-                        ? "day until your test"
-                        : "days until your test"}
+                        ? `1 ${t("dashboard.day_until", "day until your test")}`
+                        : `${daysUntilTest} ${t("dashboard.days_until", "days until your test")}`}
                   </p>
                   <span className="inline-block mt-2 px-3 py-1 bg-cm-slate-50 rounded-lg text-xs text-cm-slate-500">
                     {new Date(testDate).toLocaleDateString("en-AU", {
@@ -325,7 +327,7 @@ export default function DashboardPage() {
                     onClick={openModal}
                     className="mt-4 text-xs text-cm-slate-500 hover:text-cm-navy transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cm-navy focus-visible:ring-offset-2 rounded-md px-2 py-1"
                   >
-                    Change date
+                    {t("dashboard.change_date", "Change date")}
                   </button>
                 </div>
               ) : (
@@ -334,13 +336,13 @@ export default function DashboardPage() {
                     <Calendar className="w-8 h-8 text-cm-navy/40" />
                   </div>
                   <p className="text-sm text-cm-slate-600 mb-4">
-                    Set your test date to get a personalised countdown
+                    {t("dashboard.set_date_prompt", "Set your test date to get a personalised countdown")}
                   </p>
                   <button
                     onClick={openModal}
                     className="px-5 py-2.5 bg-cm-navy text-white font-heading font-semibold text-sm rounded-xl hover:bg-cm-navy-light transition-colors duration-200 cursor-pointer hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cm-navy focus-visible:ring-offset-2"
                   >
-                    Set Test Date
+                    {t("dashboard.set_test_date", "Set Test Date")}
                   </button>
                 </div>
               )}

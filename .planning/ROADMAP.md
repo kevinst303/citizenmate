@@ -34,10 +34,14 @@
 
 ### Phase 8: Super Admin Dashboard
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** Provide a full-featured admin dashboard with analytics, user management, blog CMS, and referral program management. All pages use the Conseil design system consistently, with functional CRUD operations, pagination, and responsive layout.
+
+**Requirements**: ADMIN-01, ADMIN-02, ADMIN-03
 **Depends on:** Phase 7
-**Plans:** 0 plans
+**Plans:** 4 plans
 
 Plans:
-- [ ] TBD (run /gsd-plan-phase 8 to break down)
+- [x] 01 — Schema, auth guard, admin layout shell (executed)
+- [x] 02 — Dashboard insights + users table + blog list (executed)
+- [x] 03 — Referral management dashboard (executed)
+- [ ] 04 — UI refinement: analytics hub, user CRUD modals, Conseil alignment, pagination, confirmation dialogs

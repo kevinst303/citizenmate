@@ -48,3 +48,4 @@ Last activity: 2026-05-03 -- Phase 06 execution started
 ### Roadmap Evolution
 
 - Phase 8 added: Super Admin Dashboard
+- Phase 08-04 planned: Admin Dashboard UI Refinement — analytics hub (recharts), user CRUD modals, Conseil alignment, pagination, confirmation dialogs. See `.planning/phases/08-super-admin-dashboard/08-04-PLAN.md`

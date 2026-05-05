@@ -34,7 +34,20 @@
     "readiness": "तैयारी स्कोर",
     "recent_tests": "हाल के परीक्षण",
     "refer_friend": "एक दोस्त की मदद करें",
-    "refer_desc": "CitizenMate साझा करें और 7 दिन का प्रीमियम मुफ्त पाएं!"
+    "refer_desc": "CitizenMate साझा करें और 7 दिन का प्रीमियम मुफ्त पाएं!",
+    "quiz_score": "क्विज़ स्कोर",
+    "study_progress": "अध्ययन प्रगति",
+    "test_date": "परीक्षा तिथि",
+    "change_date": "तिथि बदलें",
+    "set_test_date": "परीक्षा तिथि निर्धारित करें",
+    "set_date_prompt": "व्यक्तिगत उलटी गिनती के लिए अपनी परीक्षा तिथि सेट करें",
+    "day_until": "दिन आपकी परीक्षा तक",
+    "days_until": "दिन आपकी परीक्षा तक",
+    "test_today": "आज आपकी परीक्षा है! शुभकामनाएँ!",
+    "continue_studying": "अध्ययन जारी रखें",
+    "topic_mastery": "विषय निपुणता",
+    "upgrade_banner": "Sprint Pass प्राप्त करें — 60 दिनों के लिए एक बार $29.99",
+    "premium_dashboard": "प्रीमियम सुविधाएँ अनलॉक"
   },
   "onboarding": {
     "welcome": "CitizenMate में आपका स्वागत है!",

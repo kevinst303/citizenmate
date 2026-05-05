@@ -34,7 +34,20 @@
     "readiness": "Puntuación de preparación",
     "recent_tests": "Pruebas recientes",
     "refer_friend": "Ayuda a un amigo",
-    "refer_desc": "¡Comparte CitizenMate y obtén 7 días de Premium gratis!"
+    "refer_desc": "¡Comparte CitizenMate y obtén 7 días de Premium gratis!",
+    "quiz_score": "Puntaje del Examen",
+    "study_progress": "Progreso de Estudio",
+    "test_date": "Fecha del Examen",
+    "change_date": "Cambiar fecha",
+    "set_test_date": "Establecer Fecha de Examen",
+    "set_date_prompt": "Establece la fecha de tu examen para una cuenta regresiva personalizada",
+    "day_until": "día hasta tu examen",
+    "days_until": "días hasta tu examen",
+    "test_today": "¡Tu examen es hoy! ¡Buena suerte!",
+    "continue_studying": "Continuar Estudiando",
+    "topic_mastery": "Dominio del Tema",
+    "upgrade_banner": "Obtén Sprint Pass — $29.99 pago único por 60 días",
+    "premium_dashboard": "Funciones premium desbloqueadas"
   },
   "onboarding": {
     "welcome": "¡Bienvenido a CitizenMate!",

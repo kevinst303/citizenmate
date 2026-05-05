@@ -3,6 +3,9 @@ import { createSupabaseServerClient } from "@/lib/supabase-server";
 import Link from "next/link";
 import { LayoutDashboard, Users, FileText, ArrowLeft, Gift } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function AdminLayout({ children, params }: { children: React.ReactNode, params: Promise<{ lang: string }> }) {
   const supabase = await createSupabaseServerClient();
   const { data: { user } } = await supabase.auth.getUser();

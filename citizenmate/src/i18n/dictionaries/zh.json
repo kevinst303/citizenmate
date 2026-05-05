@@ -34,7 +34,20 @@
     "readiness": "准备度得分",
     "recent_tests": "最近测试",
     "refer_friend": "帮助朋友",
-    "refer_desc": "分享 CitizenMate 并免费获得 7 天高级版！"
+    "refer_desc": "分享 CitizenMate 并免费获得 7 天高级版！",
+    "quiz_score": "测验得分",
+    "study_progress": "学习进度",
+    "test_date": "考试日期",
+    "change_date": "更改日期",
+    "set_test_date": "设置考试日期",
+    "set_date_prompt": "设置您的考试日期以获得个性化倒计时",
+    "day_until": "天直到考试",
+    "days_until": "天直到考试",
+    "test_today": "您的考试就在今天！祝您好运！",
+    "continue_studying": "继续学习",
+    "topic_mastery": "主题掌握",
+    "upgrade_banner": "获取Sprint Pass — 一次性$29.99，有效期60天",
+    "premium_dashboard": "高级功能已解锁"
   },
   "onboarding": {
     "welcome": "欢迎使用 CitizenMate！",

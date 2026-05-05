@@ -34,7 +34,20 @@
     "readiness": "Readiness Score",
     "recent_tests": "Recent Tests",
     "refer_friend": "Help a Mate",
-    "refer_desc": "Share CitizenMate and get 7 days of Premium free!"
+    "refer_desc": "Share CitizenMate and get 7 days of Premium free!",
+    "quiz_score": "Quiz Score",
+    "study_progress": "Study Progress",
+    "test_date": "Test Date",
+    "change_date": "Change date",
+    "set_test_date": "Set Test Date",
+    "set_date_prompt": "Set your test date to get a personalised countdown",
+    "day_until": "day until your test",
+    "days_until": "days until your test",
+    "test_today": "Your test is today! Good luck!",
+    "continue_studying": "Continue Studying",
+    "topic_mastery": "Topic Mastery",
+    "upgrade_banner": "Get Sprint Pass — $29.99 one-time for 60 days",
+    "premium_dashboard": "Premium features unlocked"
   },
   "onboarding": {
     "welcome": "Welcome to CitizenMate!",

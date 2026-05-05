@@ -10,6 +10,7 @@ import {
   BookOpen, Sparkles, Zap, HelpCircle, FileText
 } from "lucide-react";
 import { UserMenu } from "@/components/shared/user-menu";
+import { LanguageSwitcher } from "@/components/shared/language-switcher";
 import { Button } from "@/components/ui/button";
 import { useT } from "@/i18n/i18n-context";
 import {
@@ -227,12 +228,16 @@ export function Navbar() {
               </Button>
             </motion.div>
             <div className="ml-2 pl-3 border-l border-border flex items-center relative z-[6060]">
-              <UserMenu />
+              <LanguageSwitcher />
+              <div className="ml-1 pl-2 border-l border-border">
+                <UserMenu />
+              </div>
             </div>
           </div>
 
           {/* Mobile Menu */}
           <div className="lg:hidden flex items-center gap-2 shrink-0">
+            <LanguageSwitcher />
             <UserMenu />
             <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger
