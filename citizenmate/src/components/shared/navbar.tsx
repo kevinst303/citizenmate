@@ -224,7 +224,7 @@ export function Navbar() {
                 <ChevronRight className="size-3.5 ml-1" />
               </Button>
             </motion.div>
-            <div className="ml-2 pl-3 border-l border-border h-6 flex items-center">
+            <div className="ml-2 pl-3 border-l border-border flex items-center relative z-[6060]">
               <UserMenu />
             </div>
           </div>

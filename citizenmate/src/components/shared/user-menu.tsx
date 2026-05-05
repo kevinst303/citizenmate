@@ -53,6 +53,8 @@ export function UserMenu() {
     .join("")
     .substring(0, 2)
     .toUpperCase();
+    
+  const avatarUrl = user.user_metadata?.avatar_url || user.user_metadata?.picture;
 
   return (
     <div className="relative" ref={menuRef}>
@@ -60,9 +62,18 @@ export function UserMenu() {
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 cursor-pointer group"
       >
-        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-cm-teal to-cm-teal-dark flex items-center justify-center text-white text-xs font-bold shadow-md group-hover:shadow-lg transition-shadow">
-          {initials}
-        </div>
+        {avatarUrl ? (
+          <img 
+            src={avatarUrl} 
+            alt={displayName} 
+            className="w-9 h-9 rounded-full object-cover shadow-md group-hover:shadow-lg transition-shadow border border-cm-slate-200"
+            referrerPolicy="no-referrer"
+          />
+        ) : (
+          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-cm-teal to-cm-teal-dark flex items-center justify-center text-white text-xs font-bold shadow-md group-hover:shadow-lg transition-shadow">
+            {initials}
+          </div>
+        )}
         <ChevronDown
           className={`w-3.5 h-3.5 text-cm-slate-500 transition-transform ${
             isOpen ? "rotate-180" : ""

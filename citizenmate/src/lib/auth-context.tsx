@@ -126,10 +126,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
 
+    let isMounted = true;
+    
+    // Safety fallback: Never stay in loading state longer than 3 seconds
+    const loadingTimeout = setTimeout(() => {
+      if (isMounted) {
+        setLoading(false);
+        setProfile(p => p.loading ? { ...p, loading: false } : p);
+      }
+    }, 3000);
+
     const supabase = getSupabaseBrowserClient();
 
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!isMounted) return;
       const currentUser = session?.user ?? null;
       setUser(currentUser);
       setLoading(false);
@@ -139,32 +150,49 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } else {
         setProfile({ tier: 'free', isPremium: false, expiresAt: null, testDate: null, loading: false });
       }
+    }).catch((err) => {
+      console.error("[AuthProvider] getSession error:", err);
+      if (isMounted) {
+        setLoading(false);
+        setProfile({ tier: 'free', isPremium: false, expiresAt: null, testDate: null, loading: false });
+      }
     });
 
     // Listen for auth changes
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (!isMounted) return;
       const newUser = session?.user ?? null;
       setUser(newUser);
+      
+      // Always clear loading state when we receive an auth event
+      setLoading(false);
 
-      // On sign-in: sync localStorage data to Supabase, then pull latest
-      if (event === "SIGNED_IN" && newUser) {
-        try {
-          await syncAllToSupabase(newUser.id);
-          await pullFromSupabase(newUser.id);
-          await fetchProfileData(newUser.id);
-        } catch (err) {
-          console.error("[AuthProvider] Sync error on sign-in:", err);
+      if (newUser) {
+        // Only fetch if we haven't already or if it's a new sign in
+        if (event === "SIGNED_IN" || event === "INITIAL_SESSION") {
+          try {
+            if (event === "SIGNED_IN") {
+              await syncAllToSupabase(newUser.id);
+              await pullFromSupabase(newUser.id);
+            }
+            await fetchProfileData(newUser.id);
+          } catch (err) {
+            console.error(`[AuthProvider] error during ${event}:`, err);
+            setProfile(p => ({ ...p, loading: false }));
+          }
         }
-      }
-
-      if (event === "SIGNED_OUT") {
-        setProfile({ tier: 'free', isPremium: false, expiresAt: null, testDate: null, loading: false });
+      } else {
+        if (event === "SIGNED_OUT" || event === "INITIAL_SESSION") {
+          setProfile({ tier: 'free', isPremium: false, expiresAt: null, testDate: null, loading: false });
+        }
       }
     });
 
     return () => {
+      isMounted = false;
+      clearTimeout(loadingTimeout);
       subscription.unsubscribe();
     };
   }, [fetchProfileData]);
