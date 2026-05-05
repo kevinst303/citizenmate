@@ -1,10 +1,12 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { cache } from "react";
 
 // ===== Supabase Server Client =====
-// Used in server components and API routes.
+// Deduplicated per-request via React.cache() to avoid auth-token lock contention
+// between middleware, layouts, and server pages.
 
-export async function createSupabaseServerClient() {
+export const createSupabaseServerClient = cache(async () => {
   const cookieStore = await cookies();
 
   return createServerClient(
@@ -28,4 +30,4 @@ export async function createSupabaseServerClient() {
       },
     }
   );
-}
+});
