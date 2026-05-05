@@ -234,13 +234,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return { error: { message: "Supabase not configured" } as AuthError };
     }
     const supabase = getSupabaseBrowserClient();
-    const finalRedirect = redirectTo
-      ? `${window.location.origin}${redirectTo}`
-      : `${window.location.origin}/dashboard`;
+    
+    // Redirect to the API route to exchange the code for a session on the server
+    const finalRedirect = new URL(`${window.location.origin}/api/auth/callback`);
+    finalRedirect.searchParams.set("next", redirectTo || "/dashboard");
       
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: finalRedirect },
+      options: { redirectTo: finalRedirect.toString() },
     });
     return { error };
   }, []);

@@ -95,17 +95,31 @@ export function Footer() {
                 {title}
               </h3>
               <ul className="space-y-3">
-                {links.map((link) => (
-                  <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="text-sm text-zinc-500 hover:text-foreground transition-colors duration-200 cursor-pointer"
-                      suppressHydrationWarning
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
+                {links.map((link) => {
+                  const isPdf = link.href.endsWith(".pdf");
+                  
+                  if (isPdf) {
+                    return (
+                      <li
+                        key={link.label}
+                        dangerouslySetInnerHTML={{
+                          __html: `<a href="${link.href}" class="text-sm text-zinc-500 hover:text-foreground transition-colors duration-200 cursor-pointer" target="_blank" rel="noopener noreferrer">${link.label}</a>`
+                        }}
+                      />
+                    );
+                  }
+
+                  return (
+                    <li key={link.label}>
+                      <a
+                        href={link.href}
+                        className="text-sm text-zinc-500 hover:text-foreground transition-colors duration-200 cursor-pointer"
+                      >
+                        {link.label}
+                      </a>
+                    </li>
+                  );
+                })}
               </ul>
             </motion.div>
           ))}
