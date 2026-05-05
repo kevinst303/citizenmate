@@ -3,9 +3,9 @@
 import { Search, CheckCircle2, Clock, ArrowUpDown } from "lucide-react";
 import { useState, useMemo } from "react";
 import type { ReferralActivityItem } from "./referral-dashboard";
+import { Pagination } from "./pagination";
 
-// ===== Activity Tab =====
-// Full referral activity table with search, filtering, and sorting.
+const PAGE_SIZE = 15;
 
 interface Props {
   activity: ReferralActivityItem[];
@@ -19,6 +19,7 @@ export function ReferralActivity({ activity }: Props) {
   const [filter, setFilter] = useState<FilterStatus>("all");
   const [sortField, setSortField] = useState<SortField>("created_at");
   const [sortAsc, setSortAsc] = useState(false);
+  const [page, setPage] = useState(0);
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -27,12 +28,12 @@ export function ReferralActivity({ activity }: Props) {
       setSortField(field);
       setSortAsc(false);
     }
+    setPage(0);
   };
 
   const filtered = useMemo(() => {
     let result = [...activity];
 
-    // Search
     if (search) {
       const q = search.toLowerCase();
       result = result.filter(
@@ -44,14 +45,12 @@ export function ReferralActivity({ activity }: Props) {
       );
     }
 
-    // Filter
     if (filter === "qualified") {
       result = result.filter((r) => r.qualified);
     } else if (filter === "pending") {
       result = result.filter((r) => !r.qualified);
     }
 
-    // Sort
     result.sort((a, b) => {
       let cmp = 0;
       switch (sortField) {
@@ -74,9 +73,11 @@ export function ReferralActivity({ activity }: Props) {
     return result;
   }, [activity, search, filter, sortField, sortAsc]);
 
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const paginated = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+
   return (
     <div className="space-y-4">
-      {/* Toolbar */}
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cm-slate-400" />
@@ -84,15 +85,15 @@ export function ReferralActivity({ activity }: Props) {
             type="text"
             placeholder="Search by name or email..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 text-sm border border-[#E9ECEF] rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-cm-sky/20 focus:border-cm-sky transition-colors"
+            onChange={(e) => { setSearch(e.target.value); setPage(0); }}
+            className="w-full pl-10 pr-4 py-2.5 text-sm border border-cm-slate-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-cm-sky/20 focus:border-cm-sky transition-colors"
           />
         </div>
         <div className="flex gap-1.5 bg-cm-slate-50 rounded-xl p-1">
           {(["all", "qualified", "pending"] as FilterStatus[]).map((f) => (
             <button
               key={f}
-              onClick={() => setFilter(f)}
+              onClick={() => { setFilter(f); setPage(0); }}
               className={`px-3 py-1.5 text-xs font-semibold rounded-lg capitalize transition-colors ${
                 filter === f
                   ? "bg-white text-cm-navy shadow-sm"
@@ -105,110 +106,58 @@ export function ReferralActivity({ activity }: Props) {
         </div>
       </div>
 
-      {/* Table */}
       <div
-        className="bg-white rounded-2xl border border-[#E9ECEF] overflow-hidden"
-        style={{ boxShadow: "rgba(0,0,0,0.02) 0px 4px 12px" }}
+        className="bg-white rounded-2xl border border-cm-slate-200 overflow-hidden card-conseil"
       >
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm text-cm-slate-600">
-            <thead className="bg-cm-slate-50 border-b border-[#E9ECEF] text-xs uppercase font-semibold text-cm-slate-500">
+            <thead className="bg-cm-slate-50 border-b border-cm-slate-200 text-xs uppercase font-semibold text-cm-slate-500">
               <tr>
-                <SortableHeader
-                  label="Referrer"
-                  field="referrer_name"
-                  active={sortField}
-                  asc={sortAsc}
-                  onSort={handleSort}
-                />
-                <SortableHeader
-                  label="Referee"
-                  field="referee_name"
-                  active={sortField}
-                  asc={sortAsc}
-                  onSort={handleSort}
-                />
-                <SortableHeader
-                  label="Status"
-                  field="qualified"
-                  active={sortField}
-                  asc={sortAsc}
-                  onSort={handleSort}
-                />
+                <SortableHeader label="Referrer" field="referrer_name" active={sortField} asc={sortAsc} onSort={handleSort} />
+                <SortableHeader label="Referee" field="referee_name" active={sortField} asc={sortAsc} onSort={handleSort} />
+                <SortableHeader label="Status" field="qualified" active={sortField} asc={sortAsc} onSort={handleSort} />
                 <th className="px-5 py-3.5">Reward</th>
-                <SortableHeader
-                  label="Date"
-                  field="created_at"
-                  active={sortField}
-                  asc={sortAsc}
-                  onSort={handleSort}
-                />
+                <SortableHeader label="Date" field="created_at" active={sortField} asc={sortAsc} onSort={handleSort} />
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#E9ECEF]">
-              {filtered.length === 0 ? (
+            <tbody className="divide-y divide-cm-slate-200">
+              {paginated.length === 0 ? (
                 <tr>
-                  <td
-                    colSpan={5}
-                    className="px-6 py-10 text-center text-cm-slate-400"
-                  >
+                  <td colSpan={5} className="px-6 py-10 text-center text-cm-slate-400">
                     {search || filter !== "all"
                       ? "No matching referrals found"
                       : "No referral activity yet"}
                   </td>
                 </tr>
               ) : (
-                filtered.map((item) => (
-                  <tr
-                    key={item.id}
-                    className="hover:bg-cm-slate-50 transition-colors"
-                  >
+                paginated.map((item) => (
+                  <tr key={item.id} className="hover:bg-cm-slate-50 transition-colors">
                     <td className="px-5 py-3.5">
                       <div>
-                        <p className="font-medium text-cm-slate-800 text-sm">
-                          {item.referrer_name}
-                        </p>
-                        <p className="text-xs text-cm-slate-400">
-                          {item.referrer_email}
-                        </p>
+                        <p className="font-medium text-cm-slate-800 text-sm">{item.referrer_name}</p>
+                        <p className="text-xs text-cm-slate-400">{item.referrer_email}</p>
                       </div>
                     </td>
                     <td className="px-5 py-3.5">
                       <div>
-                        <p className="font-medium text-cm-slate-800 text-sm">
-                          {item.referee_name}
-                        </p>
-                        <p className="text-xs text-cm-slate-400">
-                          {item.referee_email}
-                        </p>
+                        <p className="font-medium text-cm-slate-800 text-sm">{item.referee_name}</p>
+                        <p className="text-xs text-cm-slate-400">{item.referee_email}</p>
                       </div>
                     </td>
                     <td className="px-5 py-3.5">
-                      <span
-                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${
-                          item.qualified
-                            ? "bg-emerald-50 text-emerald-700"
-                            : "bg-amber-50 text-amber-700"
-                        }`}
-                      >
-                        {item.qualified ? (
-                          <CheckCircle2 className="w-3 h-3" />
-                        ) : (
-                          <Clock className="w-3 h-3" />
-                        )}
+                      <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${
+                        item.qualified ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"
+                      }`}>
+                        {item.qualified ? <CheckCircle2 className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
                         {item.qualified ? "Qualified" : "Pending"}
                       </span>
                     </td>
                     <td className="px-5 py-3.5">
-                      <span className="text-sm font-medium text-cm-teal">
-                        +{item.reward_days} days
-                      </span>
+                      <span className="text-sm font-medium text-cm-teal">+{item.reward_days} days</span>
                     </td>
                     <td className="px-5 py-3.5 whitespace-nowrap text-sm">
                       {new Date(item.created_at).toLocaleDateString("en-AU", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
+                        day: "numeric", month: "short", year: "numeric",
                       })}
                     </td>
                   </tr>
@@ -219,20 +168,19 @@ export function ReferralActivity({ activity }: Props) {
         </div>
       </div>
 
-      <p className="text-xs text-cm-slate-400 text-center">
-        Showing {filtered.length} of {activity.length} referrals
-      </p>
+      <Pagination
+        page={page}
+        totalPages={totalPages}
+        total={filtered.length}
+        pageSize={PAGE_SIZE}
+        onPageChange={setPage}
+      />
     </div>
   );
 }
 
-// ===== Sortable Header =====
 function SortableHeader({
-  label,
-  field,
-  active,
-  asc,
-  onSort,
+  label, field, active, asc, onSort,
 }: {
   label: string;
   field: SortField;
@@ -247,11 +195,7 @@ function SortableHeader({
         className="flex items-center gap-1 hover:text-cm-slate-700 transition-colors"
       >
         {label}
-        <ArrowUpDown
-          className={`w-3 h-3 ${
-            active === field ? "text-cm-sky" : "text-cm-slate-300"
-          }`}
-        />
+        <ArrowUpDown className={`w-3 h-3 ${active === field ? "text-cm-sky" : "text-cm-slate-300"}`} />
       </button>
     </th>
   );

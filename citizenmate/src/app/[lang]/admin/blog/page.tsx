@@ -1,7 +1,10 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { createSupabaseBrowserClient } from '@/lib/supabase';
+import { Pagination } from '@/components/admin/pagination';
+import { ConfirmDialog } from '@/components/admin/confirm-dialog';
+
+const PAGE_SIZE = 10;
 
 interface BlogPost {
   id: string;
@@ -20,20 +23,32 @@ export default function AdminBlogPage() {
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState({ title: '', slug: '', content: '', published: false });
+  const [page, setPage] = useState(0);
+  const [deleteTarget, setDeleteTarget] = useState<BlogPost | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const fetchPosts = useCallback(async () => {
     setLoading(true);
-    const supabase = createSupabaseBrowserClient();
-    const { data, error: err } = await supabase
-      .from('blog_posts')
-      .select('*')
-      .order('created_at', { ascending: false });
-    if (err) setError(err.message);
-    else setPosts(data);
+    try {
+      const res = await fetch('/api/admin/blog');
+      if (!res.ok) throw new Error('Failed to fetch posts');
+      const data = await res.json();
+      setPosts(data.posts || []);
+      setError(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load');
+    }
     setLoading(false);
   }, []);
 
   useEffect(() => { fetchPosts(); }, [fetchPosts]);
+
+  const totalPages = Math.max(1, Math.ceil(posts.length / PAGE_SIZE));
+  const paginatedPosts = posts.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+
+  useEffect(() => {
+    if (page >= totalPages) setPage(Math.max(0, totalPages - 1));
+  }, [page, totalPages]);
 
   const handleSave = async () => {
     const res = await fetch('/api/admin/blog', {
@@ -61,6 +76,24 @@ export default function AdminBlogPage() {
     setShowForm(true);
   };
 
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    try {
+      const res = await fetch('/api/admin/blog', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: deleteTarget.id }),
+      });
+      if (res.ok) {
+        setDeleteTarget(null);
+        fetchPosts();
+      }
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -77,7 +110,7 @@ export default function AdminBlogPage() {
       </div>
 
       {showForm && (
-        <div className="bg-white rounded-2xl border border-[#E9ECEF] p-6 space-y-4" style={{ boxShadow: 'rgba(0,0,0,0.02) 0px 4px 12px' }}>
+        <div className="bg-white rounded-2xl border border-cm-slate-200 p-6 space-y-4 card-conseil">
           <h3 className="text-lg font-heading font-bold text-cm-slate-900">
             {editingId ? 'Edit Post' : 'New Post'}
           </h3>
@@ -127,10 +160,10 @@ export default function AdminBlogPage() {
         </div>
       )}
 
-      <div className="bg-white rounded-2xl border border-[#E9ECEF] overflow-hidden" style={{ boxShadow: 'rgba(0,0,0,0.02) 0px 4px 12px' }}>
+      <div className="bg-white rounded-2xl border border-cm-slate-200 overflow-hidden card-conseil">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm text-cm-slate-600">
-            <thead className="bg-cm-slate-50 border-b border-[#E9ECEF] text-xs uppercase font-semibold text-cm-slate-500">
+            <thead className="bg-cm-slate-50 border-b border-cm-slate-200 text-xs uppercase font-semibold text-cm-slate-500">
               <tr>
                 <th className="px-6 py-4">Title</th>
                 <th className="px-6 py-4">Status</th>
@@ -138,7 +171,7 @@ export default function AdminBlogPage() {
                 <th className="px-6 py-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#E9ECEF]">
+            <tbody className="divide-y divide-cm-slate-200">
               {error && (
                 <tr>
                   <td colSpan={4} className="px-6 py-8 text-center text-red-500">Failed to load posts</td>
@@ -151,7 +184,7 @@ export default function AdminBlogPage() {
                   </td>
                 </tr>
               )}
-              {posts.map((post) => (
+              {paginatedPosts.map((post) => (
                 <tr key={post.id} className="hover:bg-cm-slate-50 transition-colors">
                   <td className="px-6 py-4 font-medium text-cm-slate-900">{post.title}</td>
                   <td className="px-6 py-4">
@@ -171,6 +204,12 @@ export default function AdminBlogPage() {
                     >
                       Edit
                     </button>
+                    <button
+                      onClick={() => setDeleteTarget(post)}
+                      className="text-red-500 hover:text-red-700 font-medium text-sm transition-colors"
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -178,6 +217,23 @@ export default function AdminBlogPage() {
           </table>
         </div>
       </div>
+
+      <Pagination
+        page={page}
+        totalPages={totalPages}
+        total={posts.length}
+        pageSize={PAGE_SIZE}
+        onPageChange={setPage}
+      />
+
+      <ConfirmDialog
+        open={!!deleteTarget}
+        onCancel={() => setDeleteTarget(null)}
+        onConfirm={handleDelete}
+        title="Delete Blog Post"
+        description={`Are you sure you want to delete "${deleteTarget?.title}"? This action cannot be undone.`}
+        confirmLabel="Delete"
+      />
     </div>
   );
 }

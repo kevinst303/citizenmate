@@ -23,8 +23,7 @@ export function ReferralOverview({ kpis, topReferrers, recentActivity }: Props) 
       <div className="lg:col-span-2 space-y-6">
         {/* Conversion Funnel */}
         <div
-          className="bg-white rounded-2xl p-6 border border-[#E9ECEF]"
-          style={{ boxShadow: "rgba(0,0,0,0.02) 0px 4px 12px" }}
+          className="bg-white rounded-2xl p-6 border border-cm-slate-200 card-conseil"
         >
           <h3 className="text-sm font-bold text-cm-slate-900 uppercase tracking-wider mb-4">
             Referral Funnel
@@ -59,8 +58,7 @@ export function ReferralOverview({ kpis, topReferrers, recentActivity }: Props) 
 
         {/* Top Referrers Leaderboard */}
         <div
-          className="bg-white rounded-2xl p-6 border border-[#E9ECEF]"
-          style={{ boxShadow: "rgba(0,0,0,0.02) 0px 4px 12px" }}
+          className="bg-white rounded-2xl p-6 border border-cm-slate-200 card-conseil"
         >
           <h3 className="text-sm font-bold text-cm-slate-900 uppercase tracking-wider mb-4 flex items-center gap-2">
             <Trophy className="w-4 h-4 text-cm-gold" />
@@ -116,8 +114,7 @@ export function ReferralOverview({ kpis, topReferrers, recentActivity }: Props) 
       {/* Right: Recent Activity Feed */}
       <div className="lg:col-span-3">
         <div
-          className="bg-white rounded-2xl p-6 border border-[#E9ECEF]"
-          style={{ boxShadow: "rgba(0,0,0,0.02) 0px 4px 12px" }}
+          className="bg-white rounded-2xl p-6 border border-cm-slate-200 card-conseil"
         >
           <h3 className="text-sm font-bold text-cm-slate-900 uppercase tracking-wider mb-4 flex items-center gap-2">
             <ArrowUpRight className="w-4 h-4 text-cm-sky" />

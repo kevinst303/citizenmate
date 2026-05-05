@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { useUpgradeModal } from "@/lib/store/useUpgradeModal";
+import { useT } from "@/i18n/i18n-context";
 
 const TOPIC_ICON_COMPONENTS: Record<TopicCategory, typeof Globe> = {
   "australia-people": Globe,
@@ -32,66 +33,6 @@ const TOPIC_ICON_COMPONENTS: Record<TopicCategory, typeof Globe> = {
   "government-law": Landmark,
   "australian-values": Heart,
 };
-
-// ─── AI Recommendation Logic ────────────────────────────────
-
-function getRecommendation(result: QuizResult): {
-  emoji: string;
-  title: string;
-  message: string;
-  actionLabel: string;
-  actionHref: string;
-  urgency: "critical" | "warning" | "positive";
-} {
-  // Critical: Values not passed
-  if (!result.valuesPassed) {
-    return {
-      emoji: "🎯",
-      title: "Focus Area: Australian Values",
-      message: `You scored ${result.valuesScore}/5 on Australian Values. All 5 must be correct to pass the real test. This is the fastest way to improve your result.`,
-      actionLabel: "Study Australian Values",
-      actionHref: "/study/australian-values",
-      urgency: "critical",
-    };
-  }
-
-  // Warning: Close to passing but not there yet
-  if (!result.passed && result.score >= 12) {
-    return {
-      emoji: "💪",
-      title: "Almost There!",
-      message: `You need ${15 - result.score} more correct answer${15 - result.score === 1 ? "" : "s"} to pass. One more focused practice session could push you over the line.`,
-      actionLabel: "Take Another Practice Test",
-      actionHref: "/practice",
-      urgency: "warning",
-    };
-  }
-
-  // Warning: Need significant improvement
-  if (!result.passed) {
-    const weakest = [...result.topicBreakdown].sort(
-      (a, b) => a.percentage - b.percentage
-    )[0];
-    return {
-      emoji: "📚",
-      title: `Strengthen: ${TOPIC_LABELS[weakest.topic]}`,
-      message: `You scored ${weakest.correct}/${weakest.total} (${weakest.percentage}%) in this area. Studying this topic will have the biggest impact on your overall score.`,
-      actionLabel: `Study ${TOPIC_LABELS[weakest.topic]}`,
-      actionHref: `/study/${weakest.topic}`,
-      urgency: "warning",
-    };
-  }
-
-  // Positive: Passed!
-  return {
-    emoji: "🎉",
-    title: "You're Test-Ready!",
-    message: `Great result! You passed with ${result.score}/${result.totalQuestions}. Keep this up and you'll ace the real test. Consider one more practice to lock in your confidence.`,
-    actionLabel: "Practice Again",
-    actionHref: "/practice",
-    urgency: "positive",
-  };
-}
 
 interface ResultsSummaryProps {
   result: QuizResult;
@@ -116,10 +57,57 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
   );
   const timeMinutes = Math.floor(result.timeUsed / 60);
   const timeSeconds = result.timeUsed % 60;
-  const recommendation = getRecommendation(result);
   const { profile } = useAuth();
   const { openModal } = useUpgradeModal();
+  const { t } = useT();
   const isFreeUser = profile.tier === 'free';
+
+  function getRecommendation(res: QuizResult) {
+    if (!res.valuesPassed) {
+      return {
+        emoji: "🎯",
+        title: t("results.rec_values_title", "Focus Area: Australian Values"),
+        message: t("results.rec_values_msg", "You scored {v}/5 on Australian Values. All 5 must be correct to pass the real test. This is the fastest way to improve your result.").replace("{v}", String(res.valuesScore)),
+        actionLabel: t("results.rec_values_action", "Study Australian Values"),
+        actionHref: "/study/australian-values",
+        urgency: "critical" as const,
+      };
+    }
+    if (!res.passed && res.score >= 12) {
+      const need = 15 - res.score;
+      return {
+        emoji: "💪",
+        title: t("results.rec_close_title", "Almost There!"),
+        message: t("results.rec_close_msg", "You need {n} more correct {p} to pass. One more focused practice session could push you over the line.").replace("{n}", String(need)).replace("{p}", need === 1 ? "answer" : "answers"),
+        actionLabel: t("results.rec_close_action", "Take Another Practice Test"),
+        actionHref: "/practice",
+        urgency: "warning" as const,
+      };
+    }
+    if (!res.passed) {
+      const weakest = [...res.topicBreakdown].sort(
+        (a, b) => a.percentage - b.percentage
+      )[0];
+      return {
+        emoji: "📚",
+        title: t("results.rec_weak_title", "Strengthen: {topic}").replace("{topic}", TOPIC_LABELS[weakest.topic]),
+        message: t("results.rec_weak_msg", "You scored {c}/{t} ({p}%) in this area. Studying this topic will have the biggest impact on your overall score.").replace("{c}", String(weakest.correct)).replace("{t}", String(weakest.total)).replace("{p}", String(weakest.percentage)),
+        actionLabel: t("results.rec_weak_action", "Study {topic}").replace("{topic}", TOPIC_LABELS[weakest.topic]),
+        actionHref: `/study/${weakest.topic}`,
+        urgency: "warning" as const,
+      };
+    }
+    return {
+      emoji: "🎉",
+      title: t("results.rec_ready_title", "You're Test-Ready!"),
+      message: t("results.rec_ready_msg", "Great result! You passed with {s}/{t}. Keep this up and you'll ace the real test. Consider one more practice to lock in your confidence.").replace("{s}", String(res.score)).replace("{t}", String(res.totalQuestions)),
+      actionLabel: t("results.rec_ready_action", "Practice Again"),
+      actionHref: "/practice",
+      urgency: "positive" as const,
+    };
+  }
+
+  const recommendation = getRecommendation(result);
 
   return (
     <motion.div
@@ -153,7 +141,6 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
         </div>
 
         <div className="relative z-10 p-8 sm:p-12">
-          {/* Decorative background pattern (kept for extra texture) */}
           <div className="absolute inset-0 opacity-[0.04] pointer-events-none">
             <div className="absolute top-8 left-12 w-24 h-24 rounded-full border-4 border-current" />
             <div className="absolute bottom-6 right-16 w-16 h-16 rounded-full border-4 border-current" />
@@ -183,7 +170,7 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
           transition={{ delay: 0.5 }}
           className={`text-3xl sm:text-4xl font-heading font-extrabold mb-3 ${result.passed ? "text-emerald-800" : "text-amber-800"}`}
         >
-          {result.passed ? "You passed, mate!" : "Almost there, mate!"}
+          {result.passed ? t("results.passed_title", "You passed, mate!") : t("results.failed_title", "Almost there, mate!")}
         </motion.h1>
 
           <motion.p
@@ -193,8 +180,8 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
             className={`text-lg sm:text-xl max-w-lg mx-auto ${result.passed ? "text-emerald-800" : "text-amber-800"} drop-shadow-sm font-medium`}
           >
             {result.passed
-              ? `Brilliant work! You scored ${result.score}/${result.totalQuestions} — you're well on your way to becoming an Australian citizen.`
-              : `You've already mastered ${percentage}% of what you need. Focus on the areas below and you'll be ready in no time.`}
+              ? t("results.passed_desc", "Brilliant work! You scored {s}/{t} — you're well on your way to becoming an Australian citizen.").replace("{s}", String(result.score)).replace("{t}", String(result.totalQuestions))
+              : t("results.failed_desc", "You've already mastered {p}% of what you need. Focus on the areas below and you'll be ready in no time.").replace("{p}", String(percentage))}
           </motion.p>
         </div>
       </motion.div>
@@ -212,7 +199,7 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
             <Trophy className="w-5 h-5" />
           </div>
           <div className="text-sm font-medium text-cm-slate-500 mb-2">
-            Overall Score
+            {t("results.overall_score", "Overall Score")}
           </div>
           <div className="text-4xl font-heading font-extrabold text-cm-teal">
             {result.score}
@@ -221,7 +208,7 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
             </span>
           </div>
           <div className="text-sm text-cm-slate-500 mt-1">
-            {percentage}% · Need 75% to pass
+            {t("results.need_to_pass", "{p}% · Need 75% to pass").replace("{p}", String(percentage))}
           </div>
           <div
             className={`mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold ${result.score >= 15 ? "bg-emerald-100 text-emerald-700" : "bg-red-100 text-red-700"}`}
@@ -231,7 +218,7 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
             ) : (
               <XCircle className="w-3.5 h-3.5" />
             )}
-            {result.score >= 15 ? "Passed" : "Need ≥15"}
+            {result.score >= 15 ? t("results.passed", "Passed") : t("results.need_15", "Need ≥15")}
           </div>
         </motion.div>
 
@@ -246,14 +233,14 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
             <Heart className="w-5 h-5" />
           </div>
           <div className="text-sm font-medium text-cm-slate-500 mb-2">
-            Australian Values
+            {t("results.australian_values", "Australian Values")}
           </div>
           <div className="text-4xl font-heading font-extrabold text-cm-teal">
             {result.valuesScore}
             <span className="text-xl text-cm-slate-400">/5</span>
           </div>
           <div className="text-sm text-cm-slate-500 mt-1">
-            Must get all 5 correct
+            {t("results.must_get_all_5", "Must get all 5 correct")}
           </div>
           <div
             className={`mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold ${result.valuesPassed ? "bg-emerald-100 text-emerald-700" : "bg-red-100 text-red-700"}`}
@@ -263,7 +250,7 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
             ) : (
               <XCircle className="w-3.5 h-3.5" />
             )}
-            {result.valuesPassed ? "All correct" : "Must be 5/5"}
+            {result.valuesPassed ? t("results.all_correct", "All correct") : t("results.must_be_5of5", "Must be 5/5")}
           </div>
         </motion.div>
 
@@ -278,7 +265,7 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
             <Clock className="w-5 h-5" />
           </div>
           <div className="text-sm font-medium text-cm-slate-500 mb-2">
-            Time Used
+            {t("results.time_used", "Time Used")}
           </div>
           <div className="text-4xl font-heading font-extrabold text-cm-teal">
             {timeMinutes}
@@ -287,7 +274,7 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
             <span className="text-xl text-cm-slate-400">s</span>
           </div>
           <div className="text-sm text-cm-slate-500 mt-1">
-            of 45 minutes allowed
+            {t("results.of_45_min", "of 45 minutes allowed")}
           </div>
         </motion.div>
       </div>
@@ -301,7 +288,7 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
         <div className="flex items-center gap-2 mb-5">
           <TrendingUp className="w-5 h-5 text-cm-teal" />
           <h3 className="text-lg font-heading font-bold text-cm-slate-900">
-            Topic Mastery
+            {t("results.topic_mastery", "Topic Mastery")}
           </h3>
         </div>
         <div className="space-y-5">
@@ -359,10 +346,10 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
             </div>
             <div className="flex-1 min-w-0">
               <h4 className="text-base font-heading font-bold mb-1">
-                Need targeted help?
+                {t("results.need_targeted_help", "Need targeted help?")}
               </h4>
               <p className="text-sm text-white/70 leading-relaxed mb-4">
-                Unlock CitizenMate Pro for targeted weak-area quizzes, unlimited AI tutor Q&A, and a personalised study plan matched to your test date.
+                {t("results.premium_upsell_desc", "Unlock CitizenMate Pro for targeted weak-area quizzes, unlimited AI tutor Q&A, and a personalised study plan matched to your test date.")}
               </p>
               <motion.button
                 whileHover={{ scale: 1.04 }}
@@ -370,7 +357,7 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
                 onClick={() => openModal("weak_area_results")}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-heading font-semibold bg-cm-gold text-cm-navy hover:bg-cm-gold-light transition-colors cursor-pointer"
               >
-                Upgrade to Pro
+                {t("results.upgrade_to_pro", "Upgrade to Pro")}
                 <ArrowRight className="w-4 h-4" />
               </motion.button>
             </div>
@@ -410,7 +397,7 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
             <div className="flex items-center gap-2 mb-1.5">
               <Sparkles className="w-3.5 h-3.5 text-cm-gold" />
               <span className="text-[10px] font-bold text-cm-gold uppercase tracking-wider">
-                AI Recommendation
+                {t("results.ai_recommendation", "AI Recommendation")}
               </span>
             </div>
             <h4 className="text-base font-heading font-bold text-cm-slate-900 mb-1">

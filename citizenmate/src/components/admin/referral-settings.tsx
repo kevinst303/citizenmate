@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Save, Loader2, CheckCircle2, Info, AlertTriangle } from "lucide-react";
+import { Save, Loader2, CheckCircle2, Info, AlertTriangle, ToggleLeft, Gift, CheckSquare } from "lucide-react";
 import type { ReferralConfig } from "./referral-dashboard";
 
 // ===== Settings Tab =====
@@ -50,7 +50,7 @@ export function ReferralSettings({ config, onSave }: Props) {
   return (
     <div className="max-w-2xl space-y-6">
       {/* Program Status */}
-      <SettingsCard title="Program Status" icon="🟢">
+      <SettingsCard title="Program Status" icon={<ToggleLeft className="w-4 h-4 text-cm-sky" />}>
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm font-medium text-cm-slate-800">
@@ -68,7 +68,7 @@ export function ReferralSettings({ config, onSave }: Props) {
       </SettingsCard>
 
       {/* Reward Configuration */}
-      <SettingsCard title="Reward Configuration" icon="🎁">
+      <SettingsCard title="Reward Configuration" icon={<Gift className="w-4 h-4 text-cm-gold" />}>
         <div className="space-y-5">
           <NumberInput
             label="Friend Discount"
@@ -103,7 +103,7 @@ export function ReferralSettings({ config, onSave }: Props) {
       </SettingsCard>
 
       {/* Qualification Rules */}
-      <SettingsCard title="Qualification Rules" icon="✅">
+      <SettingsCard title="Qualification Rules" icon={<CheckSquare className="w-4 h-4 text-cm-eucalyptus" />}>
         <div className="space-y-4">
           <div className="bg-cm-sky/5 border border-cm-sky/20 rounded-xl p-3 flex items-start gap-2.5">
             <Info className="w-4 h-4 text-cm-sky mt-0.5 shrink-0" />
@@ -130,7 +130,7 @@ export function ReferralSettings({ config, onSave }: Props) {
             />
           </div>
 
-          <div className="border-t border-[#E9ECEF]" />
+          <div className="border-t border-cm-slate-200" />
 
           <div className="flex items-center justify-between py-2">
             <div>
@@ -189,7 +189,7 @@ export function ReferralSettings({ config, onSave }: Props) {
       </div>
 
       {/* Info Footer */}
-      <div className="bg-cm-slate-50 rounded-xl p-4 mt-4">
+      <div className="bg-cm-slate-50 rounded-xl p-4 mt-4 border border-cm-slate-200">
         <p className="text-xs text-cm-slate-500 leading-relaxed">
           <strong>Note:</strong> Changing the discount percentage here updates the database config.
           To update the actual Stripe coupon, you&apos;ll need to create a new coupon in the{" "}
@@ -215,17 +215,16 @@ function SettingsCard({
   children,
 }: {
   title: string;
-  icon: string;
+  icon: React.ReactNode;
   children: React.ReactNode;
 }) {
   return (
     <div
-      className="bg-white rounded-2xl border border-[#E9ECEF] overflow-hidden"
-      style={{ boxShadow: "rgba(0,0,0,0.02) 0px 4px 12px" }}
+      className="bg-white rounded-2xl border border-cm-slate-200 overflow-hidden card-conseil"
     >
-      <div className="px-6 py-4 border-b border-[#E9ECEF] bg-cm-slate-50/50">
+      <div className="px-6 py-4 border-b border-cm-slate-200 bg-cm-slate-50/50">
         <h3 className="text-sm font-bold text-cm-slate-900 uppercase tracking-wider flex items-center gap-2">
-          <span>{icon}</span>
+          {icon}
           {title}
         </h3>
       </div>
@@ -263,7 +262,7 @@ function NumberInput({
           min={min}
           max={max}
           onChange={(e) => onChange(parseInt(e.target.value) || min)}
-          className="w-24 px-3 py-2 text-sm border border-[#E9ECEF] rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-cm-sky/20 focus:border-cm-sky transition-colors text-center font-medium"
+          className="w-24 px-3 py-2 text-sm border border-cm-slate-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-cm-sky/20 focus:border-cm-sky transition-colors text-center font-medium"
         />
         <span className="text-sm text-cm-slate-500">{suffix}</span>
       </div>

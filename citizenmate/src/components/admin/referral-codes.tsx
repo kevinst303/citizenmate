@@ -87,7 +87,7 @@ export function ReferralCodes() {
             placeholder="Search by code, name, or email..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 text-sm border border-[#E9ECEF] rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-cm-sky/20 focus:border-cm-sky transition-colors"
+            className="w-full pl-10 pr-4 py-2.5 text-sm border border-cm-slate-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-cm-sky/20 focus:border-cm-sky transition-colors"
           />
         </div>
         <div className="flex items-center gap-2 text-sm text-cm-slate-500">
@@ -106,12 +106,11 @@ export function ReferralCodes() {
         </div>
       ) : (
         <div
-          className="bg-white rounded-2xl border border-[#E9ECEF] overflow-hidden"
-          style={{ boxShadow: "rgba(0,0,0,0.02) 0px 4px 12px" }}
+          className="bg-white rounded-2xl border border-cm-slate-200 overflow-hidden card-conseil"
         >
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm text-cm-slate-600">
-              <thead className="bg-cm-slate-50 border-b border-[#E9ECEF] text-xs uppercase font-semibold text-cm-slate-500">
+              <thead className="bg-cm-slate-50 border-b border-cm-slate-200 text-xs uppercase font-semibold text-cm-slate-500">
                 <tr>
                   <th className="px-5 py-3.5">User</th>
                   <th className="px-5 py-3.5">Promo Code</th>

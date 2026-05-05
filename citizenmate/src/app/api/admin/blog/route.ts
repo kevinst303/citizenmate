@@ -2,6 +2,25 @@ import { NextResponse } from 'next/server';
 import { verifyAdmin } from '@/lib/admin-auth';
 import { createSupabaseServerClient } from '@/lib/supabase-server';
 
+export async function GET() {
+  const admin = await verifyAdmin();
+  if (!admin) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from('blog_posts')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  return NextResponse.json({ posts: data });
+}
+
 export async function POST(req: Request) {
   const admin = await verifyAdmin();
   if (!admin) {
@@ -76,6 +95,34 @@ export async function PUT(req: Request) {
     }
 
     return NextResponse.json({ post: data });
+  } catch (err) {
+    return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
+  }
+}
+
+export async function DELETE(req: Request) {
+  const admin = await verifyAdmin();
+  if (!admin) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+  }
+
+  try {
+    const { id } = await req.json();
+    if (!id) {
+      return NextResponse.json({ error: 'Post ID is required' }, { status: 400 });
+    }
+
+    const supabase = await createSupabaseServerClient();
+    const { error } = await supabase
+      .from('blog_posts')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ success: true });
   } catch (err) {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
   }

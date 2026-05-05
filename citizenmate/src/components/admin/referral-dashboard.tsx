@@ -128,7 +128,7 @@ export function ReferralAdminDashboard() {
         <button
           onClick={fetchData}
           disabled={loading}
-          className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-cm-slate-600 bg-white border border-[#E9ECEF] rounded-xl hover:bg-cm-slate-50 transition-colors disabled:opacity-50"
+          className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-cm-slate-600 bg-white border border-cm-slate-200 rounded-xl hover:bg-cm-slate-50 transition-colors disabled:opacity-50"
         >
           <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
           Refresh
@@ -177,7 +177,7 @@ export function ReferralAdminDashboard() {
       )}
 
       {/* Tab Navigation */}
-      <div className="border-b border-[#E9ECEF]">
+      <div className="border-b border-cm-slate-200">
         <nav className="flex gap-1 -mb-px">
           {TABS.map((tab) => {
             const Icon = tab.icon;
@@ -264,8 +264,7 @@ function KPICard({
 
   return (
     <div
-      className="bg-white rounded-2xl p-5 border border-[#E9ECEF]"
-      style={{ boxShadow: "rgba(0,0,0,0.02) 0px 4px 12px" }}
+      className="bg-white rounded-2xl p-5 border border-cm-slate-200 card-conseil"
     >
       <div className="flex items-center gap-4">
         <div
