@@ -43,7 +43,7 @@ const DesktopMenuItem = ({ label, children }: { label: string; children: React.R
             transition={{ duration: 0.2, ease: "easeOut" }}
             className="absolute top-full left-0 pt-3"
           >
-            <div className="w-[300px] p-2.5 bg-white/95 backdrop-blur-xl border border-cm-slate-100/50 shadow-xl shadow-black/5 ring-1 ring-black/5 rounded-2xl flex flex-col gap-1">
+            <div className="w-[300px] p-2.5 bg-white border border-cm-slate-100 shadow-[0_16px_40px_rgba(0,0,0,0.08)] rounded-2xl flex flex-col gap-1">
               {children}
             </div>
           </motion.div>
@@ -54,12 +54,12 @@ const DesktopMenuItem = ({ label, children }: { label: string; children: React.R
 };
 
 const MegaMenuLink = ({ href, icon: Icon, title, desc }: any) => (
-  <Link href={href} className="flex items-start gap-3 p-3 rounded-xl hover:bg-cm-teal-50 group/link transition-all duration-200 cursor-pointer">
-    <div className="mt-0.5 flex shrink-0 items-center justify-center size-9 rounded-lg bg-cm-teal/10 text-cm-teal group-hover/link:bg-cm-teal group-hover/link:text-white transition-colors duration-200 shadow-sm">
+  <Link href={href} className="flex items-start gap-3 p-3 rounded-xl hover:bg-cm-teal-50 group/link transition-colors cursor-pointer">
+    <div className="mt-0.5 flex shrink-0 items-center justify-center size-9 rounded-lg bg-cm-teal/10 text-cm-teal group-hover/link:bg-cm-teal group-hover/link:text-white transition-colors shadow-sm">
       <Icon className="size-4" />
     </div>
     <div>
-      <div className="text-[0.95rem] font-semibold text-foreground group-hover/link:text-cm-teal transition-colors duration-200 leading-none mb-1">{title}</div>
+      <div className="text-[0.95rem] font-semibold text-foreground group-hover/link:text-cm-teal transition-colors leading-none mb-1">{title}</div>
       <div className="text-[0.8rem] text-muted-foreground leading-snug">{desc}</div>
     </div>
   </Link>
@@ -109,7 +109,7 @@ export function Navbar() {
       {/* Top utility bar — Australian branding message */}
       <div 
         className={cn(
-          "hidden md:block bg-gradient-to-r from-cm-dark via-cm-dark/95 to-cm-dark text-white/80 text-xs fixed top-0 inset-x-0 z-[60] transition-transform duration-500 ease-in-out",
+          "hidden md:block bg-cm-dark text-white/80 text-xs fixed top-0 inset-x-0 z-[60] transition-transform duration-500 ease-in-out",
           scrolled ? "-translate-y-full" : "translate-y-0"
         )}
       >
@@ -125,11 +125,11 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Main navigation — NAV-01, NAV-02: premium glassmorphism bar; scroll transition cubic-bezier(0.165,0.84,0.44,1) 0.2s */}
+      {/* Main navigation — NAV-01, NAV-02: solid white fixed 66px bar; scroll transition cubic-bezier(0.165,0.84,0.44,1) 0.2s, no shadow on scroll */}
       <header
         className={cn(
-          "fixed inset-x-0 z-[6050] bg-white/85 backdrop-blur-md supports-[backdrop-filter]:bg-white/75 border-b border-border",
-          scrolled ? "top-0 shadow-sm" : "top-0 md:top-9"
+          "fixed inset-x-0 z-[6050] bg-white border-b border-border",
+          scrolled ? "top-0" : "top-0 md:top-9"
         )}
         style={{ transition: 'top 0.2s cubic-bezier(0.165,0.84,0.44,1)' }}
       >
@@ -239,7 +239,7 @@ export function Navbar() {
               >
                 <Menu className="size-5 text-foreground" />
               </SheetTrigger>
-              <SheetContent side="right" className="w-[85vw] max-w-[320px] bg-white/95 backdrop-blur-xl supports-[backdrop-filter]:bg-white/85 flex flex-col p-0 border-l border-border/50">
+              <SheetContent side="right" className="w-[85vw] max-w-[320px] bg-white flex flex-col p-0">
                 <div className="p-4 border-b border-border shadow-sm">
                   <SheetTitle className="font-heading text-xl font-bold flex items-center gap-2">
                     <div className="flex items-center justify-center w-8 h-8">

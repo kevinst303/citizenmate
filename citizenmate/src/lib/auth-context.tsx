@@ -33,7 +33,6 @@ interface AuthContextValue {
   signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signUp: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signInWithGoogle: (redirectTo?: string) => Promise<{ error: AuthError | null }>;
-  signInWithGoogleIdToken: (idToken: string) => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<void>;
   refreshPremiumStatus: () => Promise<void>;
   startCheckout: (tier?: string, interval?: string) => Promise<void>;
@@ -246,18 +245,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error };
   }, []);
 
-  const signInWithGoogleIdToken = useCallback(async (idToken: string) => {
-    if (!isSupabaseConfigured()) {
-      return { error: { message: "Supabase not configured" } as AuthError };
-    }
-    const supabase = getSupabaseBrowserClient();
-    const { error } = await supabase.auth.signInWithIdToken({
-      provider: "google",
-      token: idToken,
-    });
-    return { error };
-  }, []);
-
   const signOut = useCallback(async () => {
     if (!isSupabaseConfigured()) return;
     const supabase = getSupabaseBrowserClient();
@@ -317,7 +304,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         signIn,
         signUp,
         signInWithGoogle,
-        signInWithGoogleIdToken,
         signOut,
         refreshPremiumStatus,
         startCheckout,
