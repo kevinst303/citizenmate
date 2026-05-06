@@ -5,52 +5,54 @@ import { useRef, useState } from "react";
 import { Check, X, Zap, Loader2, ArrowRight, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth-context";
-
-const plans = [
-  {
-    name: "Free",
-    price: "A$0",
-    period: "forever",
-    description: "Try CitizenMate and see where you stand.",
-    cta: "Start Free",
-    popular: false,
-    features: [
-      { text: "1 full mock test + results", included: true },
-      { text: "Basic study content (1 chapter)", included: true },
-      { text: "3 AI tutor questions per day", included: true },
-      { text: "20 practice questions", included: true },
-      { text: "All 15 mock tests", included: false },
-      { text: "Full bilingual study mode", included: false },
-      { text: "Unlimited AI tutor", included: false },
-      { text: "Readiness score & analytics", included: false },
-    ],
-  },
-  {
-    name: "Exam Sprint Pass",
-    price: "A$29.99",
-    period: "60 days",
-    description: "Everything you need to pass — designed for your study window.",
-    cta: "Get Sprint Pass",
-    popular: true,
-    badge: "Most Popular",
-    features: [
-      { text: "All 15 mock tests + unlimited retakes", included: true },
-      { text: "Complete bilingual study mode", included: true },
-      { text: "Unlimited AI tutor explanations", included: true },
-      { text: "500+ practice questions", included: true },
-      { text: "Readiness score & analytics", included: true },
-      { text: "Spaced repetition system", included: true },
-      { text: "Test-date study plan", included: true },
-      { text: "Ad-free experience", included: true },
-    ],
-  },
-];
+import { useT } from "@/i18n/i18n-context";
 
 export function PricingPreview() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const { startCheckout, profile: premium } = useAuth();
   const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const { t } = useT();
+
+  const plans = [
+    {
+      name: t("landing.pricing_free_name", "Free"),
+      price: "A$0",
+      period: t("landing.pricing_free_period", "forever"),
+      description: t("landing.pricing_free_desc", "Try CitizenMate and see where you stand."),
+      cta: t("landing.pricing_free_cta", "Start Free"),
+      popular: false,
+      features: [
+        { text: t("landing.pricing_free_f1", "1 full mock test + results"), included: true },
+        { text: t("landing.pricing_free_f2", "Basic study content (1 chapter)"), included: true },
+        { text: t("landing.pricing_free_f3", "3 AI tutor questions per day"), included: true },
+        { text: t("landing.pricing_free_f4", "20 practice questions"), included: true },
+        { text: t("landing.pricing_free_f5", "All 15 mock tests"), included: false },
+        { text: t("landing.pricing_free_f6", "Full bilingual study mode"), included: false },
+        { text: t("landing.pricing_free_f7", "Unlimited AI tutor"), included: false },
+        { text: t("landing.pricing_free_f8", "Readiness score & analytics"), included: false },
+      ],
+    },
+    {
+      name: t("landing.pricing_sprint_name", "Exam Sprint Pass"),
+      price: "A$29.99",
+      period: t("landing.pricing_sprint_period", "60 days"),
+      description: t("landing.pricing_sprint_desc", "Everything you need to pass — designed for your study window."),
+      cta: t("landing.pricing_sprint_cta", "Get Sprint Pass"),
+      popular: true,
+      badge: t("landing.pricing_most_popular", "Most Popular"),
+      features: [
+        { text: t("landing.pricing_sprint_f1", "All 15 mock tests + unlimited retakes"), included: true },
+        { text: t("landing.pricing_sprint_f2", "Complete bilingual study mode"), included: true },
+        { text: t("landing.pricing_sprint_f3", "Unlimited AI tutor explanations"), included: true },
+        { text: t("landing.pricing_sprint_f4", "500+ practice questions"), included: true },
+        { text: t("landing.pricing_sprint_f5", "Readiness score & analytics"), included: true },
+        { text: t("landing.pricing_sprint_f6", "Spaced repetition system"), included: true },
+        { text: t("landing.pricing_sprint_f7", "Test-date study plan"), included: true },
+        { text: t("landing.pricing_sprint_f8", "Ad-free experience"), included: true },
+      ],
+    },
+  ];
 
   const handleGetSprintPass = async () => {
     setCheckoutLoading(true);
@@ -75,7 +77,7 @@ export function PricingPreview() {
           >
             <span className="badge-pill badge-pill-teal">
               <span className="w-1.5 h-1.5 rounded-full bg-cm-teal" />
-              Simple Pricing
+              {t("landing.pricing_badge", "Simple Pricing")}
             </span>
           </motion.div>
           <motion.h2
@@ -85,7 +87,7 @@ export function PricingPreview() {
             transition={{ duration: 0.4, delay: 0.1 }}
             className="font-heading text-3xl sm:text-4xl md:text-[2.65rem] font-extrabold tracking-tight text-balance"
           >
-            Start free, upgrade when you&apos;re ready
+            {t("landing.pricing_title", "Start free, upgrade when you&apos;re ready")}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 10 }}
@@ -94,8 +96,7 @@ export function PricingPreview() {
             transition={{ duration: 0.4, delay: 0.2 }}
             className="mt-4 text-lg text-muted-foreground leading-relaxed"
           >
-            Most users pass within 60 days. One payment, no subscriptions, no
-            surprises.
+            {t("landing.pricing_desc", "Most users pass within 60 days. One payment, no subscriptions, no surprises.")}
           </motion.p>
         </div>
 
@@ -197,12 +198,12 @@ export function PricingPreview() {
                       {premium.isPremium ? (
                         <>
                           <Check className="w-4 h-4 mr-2" />
-                          You have Sprint Pass ✅
+                          {t("landing.pricing_already_have", "You have Sprint Pass ✓")}
                         </>
                       ) : checkoutLoading ? (
                         <>
                           <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                          Redirecting to checkout...
+                          {t("landing.pricing_redirecting", "Redirecting to checkout...")}
                         </>
                       ) : (
                         <>
@@ -269,7 +270,7 @@ export function PricingPreview() {
         >
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Shield className="size-4 text-cm-teal" />
-            <span>One-time payment · No recurring charges · 60 days of full access</span>
+            <span>{t("landing.pricing_trust", "One-time payment · No recurring charges · 60 days of full access")}</span>
           </div>
         </motion.div>
       </div>

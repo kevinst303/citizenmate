@@ -3,28 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-
-const footerLinks = {
-  Product: [
-    { label: "Features", href: "#features" },
-    { label: "Pricing", href: "#pricing" },
-    { label: "Mock Tests", href: "/practice" },
-    { label: "Study Mode", href: "/study" },
-  ],
-  Company: [
-    { label: "FAQ", href: "#faq" },
-    { label: "About & Contact", href: "/about" },
-    { label: "Blog", href: "/blog" },
-    { label: "Privacy Policy", href: "/privacy" },
-    { label: "Terms of Service", href: "/terms" },
-  ],
-  Australia: [
-    { label: "Dept. of Home Affairs", href: "https://immi.homeaffairs.gov.au" },
-    { label: "IELTS Australia", href: "https://www.ielts.org/en-au" },
-    { label: "Our Common Bond", href: "https://immi.homeaffairs.gov.au/citizenship-subsite/files/our-common-bond.pdf" },
-    { label: "Citizenship Test Info", href: "https://immi.homeaffairs.gov.au/citizenship-subsite/pages/prepare-for-test" },
-  ],
-};
+import { useT } from "@/i18n/i18n-context";
 
 const columnVariant = {
   hidden: { opacity: 0, y: 20 },
@@ -41,6 +20,30 @@ const columnVariant = {
 };
 
 export function Footer() {
+  const { t } = useT();
+
+  const footerLinks = {
+    [t("landing.footer_product", "Product")]: [
+      { label: t("landing.footer_features", "Features"), href: "#features" },
+      { label: t("landing.footer_pricing", "Pricing"), href: "#pricing" },
+      { label: t("landing.footer_mock_tests", "Mock Tests"), href: "/practice" },
+      { label: t("landing.footer_study_mode", "Study Mode"), href: "/study" },
+    ],
+    [t("landing.footer_company", "Company")]: [
+      { label: t("landing.footer_faq", "FAQ"), href: "#faq" },
+      { label: t("landing.footer_about", "About & Contact"), href: "/about" },
+      { label: t("landing.footer_blog", "Blog"), href: "/blog" },
+      { label: t("landing.footer_privacy", "Privacy Policy"), href: "/privacy" },
+      { label: t("landing.footer_terms", "Terms of Service"), href: "/terms" },
+    ],
+    [t("landing.footer_australia", "Australia")]: [
+      { label: t("landing.footer_home_affairs", "Dept. of Home Affairs"), href: "https://immi.homeaffairs.gov.au" },
+      { label: t("landing.footer_ielts", "IELTS Australia"), href: "https://www.ielts.org/en-au" },
+      { label: t("landing.footer_common_bond", "Our Common Bond"), href: "https://immi.homeaffairs.gov.au/citizenship-subsite/files/our-common-bond.pdf" },
+      { label: t("landing.footer_test_info", "Citizenship Test Info"), href: "https://immi.homeaffairs.gov.au/citizenship-subsite/pages/prepare-for-test" },
+    ],
+  };
+
   return (
     <footer className="bg-white border-t border-border">
       <div className="mx-auto max-w-[1140px] px-4 sm:px-6 lg:px-8 py-16">
@@ -62,8 +65,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
-              Your mate for the citizenship test. Study in your language,
-              practice with AI, and pass with confidence.
+              {t("landing.footer_desc", "Your mate for the citizenship test. Study in your language, practice with AI, and pass with confidence.")}
             </p>
 
             {/* Social links */}
@@ -138,12 +140,10 @@ export function Footer() {
         >
           <div className="space-y-2">
             <p className="text-xs text-zinc-400">
-              CitizenMate is independent from the Australian Government. Not
-              affiliated with or endorsed by the Department of Home Affairs.
+              {t("landing.footer_disclaimer", "CitizenMate is independent from the Australian Government. Not affiliated with or endorsed by the Department of Home Affairs.")}
             </p>
             <p className="text-xs text-zinc-400">
-              Content based on &ldquo;Our Common Bond&rdquo; booklet — March
-              2026 edition.
+              {t("landing.footer_content_note", 'Content based on "Our Common Bond" booklet — March 2026 edition.')}
             </p>
           </div>
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 shrink-0">
@@ -160,7 +160,7 @@ export function Footer() {
               ))}
             </div>
             <p className="text-xs text-zinc-400" suppressHydrationWarning>
-              © {new Date().getFullYear()} CitizenMate. All rights reserved.
+              {t("landing.footer_copyright", "© {year} CitizenMate. All rights reserved.").replace("{year}", String(new Date().getFullYear()))}
             </p>
           </div>
         </motion.div>

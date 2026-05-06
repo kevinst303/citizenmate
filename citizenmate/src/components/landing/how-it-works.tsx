@@ -3,26 +3,34 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-
-const steps = [
-  {
-    number: "01",
-    title: "Take a free diagnostic test",
-    description: "Start with 10 quick questions to discover where you stand.",
-  },
-  {
-    number: "02",
-    title: "Study with your personalised plan",
-    description: "Tailored study based on your gaps, in your language.",
-  },
-  {
-    number: "03",
-    title: "Practice until you're ready",
-    description: "Full mock tests, progress tracking, and AI explanations.",
-  },
-];
+import { useT } from "@/i18n/i18n-context";
 
 export function HowItWorks() {
+  const { t } = useT();
+
+  const steps = [
+    {
+      number: "01",
+      titleKey: "landing.hiw_step_1_title",
+      titleFallback: "Take a free diagnostic test",
+      descKey: "landing.hiw_step_1_desc",
+      descFallback: "Start with 10 quick questions to discover where you stand.",
+    },
+    {
+      number: "02",
+      titleKey: "landing.hiw_step_2_title",
+      titleFallback: "Study with your personalised plan",
+      descKey: "landing.hiw_step_2_desc",
+      descFallback: "Tailored study based on your gaps, in your language.",
+    },
+    {
+      number: "03",
+      titleKey: "landing.hiw_step_3_title",
+      titleFallback: "Practice until you're ready",
+      descKey: "landing.hiw_step_3_desc",
+      descFallback: "Full mock tests, progress tracking, and AI explanations.",
+    },
+  ];
   return (
     <section id="how-it-works" className="py-[100px] section-alt-bg">
       <div className="mx-auto max-w-[1140px] px-4 sm:px-6 lg:px-8">
@@ -37,7 +45,7 @@ export function HowItWorks() {
           >
             <span className="badge-pill">
               <span className="w-1.5 h-1.5 rounded-full bg-cm-teal" />
-              How It Works
+              {t("landing.hiw_badge", "How It Works")}
             </span>
           </motion.div>
           <motion.h2
@@ -47,7 +55,7 @@ export function HowItWorks() {
             transition={{ duration: 0.4, delay: 0.1 }}
             className="font-heading text-3xl sm:text-4xl md:text-[2.65rem] font-extrabold tracking-tight text-balance leading-tight"
           >
-            Three steps to citizenship
+            {t("landing.hiw_title", "Three steps to citizenship")}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 10 }}
@@ -56,8 +64,7 @@ export function HowItWorks() {
             transition={{ duration: 0.4, delay: 0.2 }}
             className="mt-4 text-lg text-muted-foreground leading-relaxed"
           >
-            From first practice to test day — CitizenMate guides you the whole
-            way.
+            {t("landing.hiw_desc", "From first practice to test day — CitizenMate guides you the whole way.")}
           </motion.p>
         </div>
 
@@ -83,15 +90,13 @@ export function HowItWorks() {
               style={{ borderRadius: "var(--radius-card, 24px) 0 0 var(--radius-card, 24px)" }}
             >
               <h3 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-4">
-                Everything you need to pass
+                {t("landing.hiw_heading", "Everything you need to pass")}
               </h3>
               <p className="text-foreground/70 text-base md:text-lg mb-8 leading-relaxed">
-                Start with a diagnostic, study at your own pace with bilingual
-                support, then take full mock tests until you're confident. No
-                fluff — just the three steps that work.
+                {t("landing.hiw_body", "Start with a diagnostic, study at your own pace with bilingual support, then take full mock tests until you're confident. No fluff — just the three steps that work.")}
               </p>
               <Button render={<a href="/practice" />} className="self-start">
-                Start practising
+                {t("landing.hiw_cta", "Start practising")}
               </Button>
             </div>
             {/* Right image panel */}
@@ -124,10 +129,10 @@ export function HowItWorks() {
                 {step.number}
               </span>
               <h4 className="font-heading font-bold text-base mt-2 mb-2">
-                {step.title}
+                {t(step.titleKey, step.titleFallback || "")}
               </h4>
               <p className="text-sm text-foreground/70 leading-relaxed">
-                {step.description}
+                {t(step.descKey, step.descFallback || "")}
               </p>
             </motion.div>
           ))}

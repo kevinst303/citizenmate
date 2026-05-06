@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Star, ChevronRight, ArrowRight } from "lucide-react";
 import Image from "next/image";
+import { useT } from "@/i18n/i18n-context";
 
 const container = {
   hidden: { opacity: 0 },
@@ -18,14 +19,15 @@ const item = {
   show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] as const } },
 };
 
-const trustedLogos = [
-  "500+ Practice Questions",
-  "Bilingual Study Mode",
-  "Real Test Format",
-  "AI-Powered Learning",
-];
-
 export function Hero() {
+  const { t } = useT();
+  const trustedLogos = [
+    t("landing.hero_marquee_1", "500+ Practice Questions"),
+    t("landing.hero_marquee_2", "Bilingual Study Mode"),
+    t("landing.hero_marquee_3", "Real Test Format"),
+    t("landing.hero_marquee_4", "AI-Powered Learning"),
+  ];
+
   return (
     <section className="relative min-h-[85vh] flex items-center overflow-hidden">
       {/* Background image with Conseil-style overlay */}
@@ -56,7 +58,7 @@ export function Hero() {
                   <Star key={i} className="size-3.5 fill-yellow-400 text-yellow-400" />
                 ))}
               </div>
-              <span className="opacity-90">Top Rated Citizenship Test Prep</span>
+              <span className="opacity-90">{t("landing.hero_badge", "Top Rated Citizenship Test Prep")}</span>
             </div>
           </motion.div>
 
@@ -65,7 +67,7 @@ export function Hero() {
             variants={item}
             className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-[4rem] font-extrabold text-white leading-[1.1] tracking-tight text-balance"
           >
-            Pass your Australian Citizenship Test — guaranteed.
+            {t("landing.hero_title", "Pass your Australian Citizenship Test — guaranteed.")}
           </motion.h1>
 
           {/* Subheading */}
@@ -73,8 +75,7 @@ export function Hero() {
             variants={item}
             className="mt-6 text-lg sm:text-xl text-white/85 max-w-2xl leading-relaxed"
           >
-            Your mate for the journey. Study in your language. Practice with
-            real test format questions. Know when you&apos;re ready with AI-powered analytics.
+            {t("landing.hero_desc", "Your mate for the journey. Study in your language. Practice with real test format questions. Know when you&apos;re ready with AI-powered analytics.")}
           </motion.p>
 
           {/* CTA row — Conseil style: avatar group + buttons */}
@@ -93,7 +94,7 @@ export function Hero() {
                 size="lg"
                 className="bg-white text-cm-teal font-heading font-bold border-none shadow-lg shadow-black/10 hover:bg-white/95"
               >
-                Start Free Practice
+                {t("landing.hero_cta_primary", "Start Free Practice")}
                 <ChevronRight className="size-4 ml-1" />
               </Button>
             </motion.div>
@@ -110,7 +111,7 @@ export function Hero() {
                 variant="outline"
                 className="bg-transparent text-white border-2 border-white/30 font-heading hover:bg-white/10 hover:border-white/50 hover:text-white"
               >
-                See How It Works
+                {t("landing.hero_cta_secondary", "See How It Works")}
               </Button>
             </motion.div>
           </motion.div>
@@ -146,8 +147,8 @@ export function Hero() {
               ))}
             </div>
             <div className="text-sm text-white/80">
-              <span className="font-bold text-white">1 in 3</span> people fail the citizenship test.{" "}
-              <span className="font-bold text-yellow-300">CitizenMate users don&apos;t.</span>
+              <span className="font-bold text-white">{t("landing.hero_stat_1in3", "1 in 3")}</span> {t("landing.hero_stat_fail", "people fail the citizenship test.")}{" "}
+              <span className="font-bold text-yellow-300">{t("landing.hero_stat_dont", "CitizenMate users don't.")}</span>
             </div>
           </motion.div>
         </motion.div>
