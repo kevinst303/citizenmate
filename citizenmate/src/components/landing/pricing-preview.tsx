@@ -6,6 +6,7 @@ import { Check, X, Zap, Loader2, ArrowRight, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth-context";
 import { useT } from "@/i18n/i18n-context";
+import { useLocalizedPath } from "@/lib/use-localized-path";
 
 export function PricingPreview() {
   const ref = useRef(null);
@@ -13,6 +14,7 @@ export function PricingPreview() {
   const { startCheckout, profile: premium } = useAuth();
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const { t } = useT();
+  const { getUrl } = useLocalizedPath();
 
   const plans = [
     {
@@ -57,7 +59,7 @@ export function PricingPreview() {
   const handleGetSprintPass = async () => {
     setCheckoutLoading(true);
     try {
-      await startCheckout();
+      await startCheckout('sprint_pass', 'one_time');
     } finally {
       setTimeout(() => setCheckoutLoading(false), 3000);
     }
@@ -214,7 +216,7 @@ export function PricingPreview() {
                     </Button>
                   ) : (
                     <Button
-                      render={<a href="/practice" />}
+                      render={<a href={getUrl("/practice")} />}
                       variant="outline"
                       className="w-full h-12 text-sm font-bold"
                     >
