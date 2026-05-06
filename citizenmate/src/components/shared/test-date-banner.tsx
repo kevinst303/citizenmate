@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Calendar, Clock, ChevronRight } from "lucide-react";
 import { useTestDate, type UrgencyLevel } from "@/lib/test-date-context";
+import { useT } from "@/i18n/i18n-context";
 
 const URGENCY_STYLES: Record<
   Exclude<UrgencyLevel, "none">,
@@ -44,14 +45,15 @@ function formatTestDate(dateStr: string): string {
   });
 }
 
-function getDaysLabel(days: number): string {
-  if (days === 0) return "Today!";
-  if (days === 1) return "Tomorrow!";
-  return `${days} days`;
-}
-
 export function TestDateBanner() {
   const { testDate, daysUntilTest, urgencyLevel, openModal } = useTestDate();
+  const { t } = useT();
+
+  function getDaysLabel(days: number): string {
+    if (days === 0) return t("test_date.today");
+    if (days === 1) return t("test_date.tomorrow");
+    return `${days} ${t("test_date.days_label")}`;
+  }
 
   // No date set — show prompt
   if (!testDate || daysUntilTest === null || urgencyLevel === "none") {
@@ -68,7 +70,7 @@ export function TestDateBanner() {
             className="w-full flex items-center justify-center gap-2 py-2.5 text-sm text-cm-navy font-medium hover:text-cm-navy-light transition-colors cursor-pointer group"
           >
             <Calendar className="w-4 h-4" />
-            <span>Set your test date to get a personalised countdown</span>
+            <span>{t("test_date.set_prompt")}</span>
             <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
           </button>
         </div>
@@ -98,7 +100,7 @@ export function TestDateBanner() {
           <Clock className={`w-4 h-4 ${styles.icon}`} />
           <span className={`text-sm font-medium ${styles.text}`}>
             <span className="font-bold">{getDaysLabel(daysUntilTest)}</span>
-            {daysUntilTest > 1 && " until your test"}
+            {daysUntilTest > 1 && ` ${t("test_date.countdown_suffix")}`}
             <span className="hidden sm:inline text-opacity-70" suppressHydrationWarning>
               {" "}
               · {formatTestDate(testDate)}

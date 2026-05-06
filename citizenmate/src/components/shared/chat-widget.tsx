@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { toast } from "@/lib/toast";
 import { usePremium } from "@/lib/auth-context";
+import { useT } from "@/i18n/i18n-context";
 
 // ─── Rate Limiting ───────────────────────────────────────────
 
@@ -56,19 +57,19 @@ function incrementUsage(): DailyUsage {
 
 const SUGGESTIONS = [
   {
-    text: "What are Australian values?",
+    text: "chat.suggestion_1",
     icon: Heart,
   },
   {
-    text: "Explain the three levels of government",
+    text: "chat.suggestion_2",
     icon: Landmark,
   },
   {
-    text: "Tell me about Indigenous heritage",
+    text: "chat.suggestion_3",
     icon: BookOpen,
   },
   {
-    text: "What freedoms do Australians have?",
+    text: "chat.suggestion_4",
     icon: Scale,
   },
 ];
@@ -76,22 +77,23 @@ const SUGGESTIONS = [
 // ─── Follow-up Suggestions (shown after AI responds) ────────
 
 const FOLLOW_UP_SUGGESTIONS = [
-  { text: "Tell me more", icon: MessageCircle },
-  { text: "Quiz me on this", icon: HelpCircle },
-  { text: "Why is this important?", icon: Lightbulb },
+  { text: "chat.follow_up_tell_more", icon: MessageCircle },
+  { text: "chat.follow_up_quiz_me", icon: HelpCircle },
+  { text: "chat.follow_up_why_important", icon: Lightbulb },
 ];
 
 // ─── Thinking stage labels ───────────────────────────────────
 
 const THINKING_STAGES = [
-  "Reading your question…",
-  "Searching my notes…",
-  "Composing answer…",
+  "chat.thinking_reading",
+  "chat.thinking_searching",
+  "chat.thinking_composing",
 ];
 
 // ─── Chat Widget ─────────────────────────────────────────────
 
 export function ChatWidget() {
+  const { t } = useT();
   const { isPremium, upgrade } = usePremium();
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
@@ -121,15 +123,15 @@ export function ChatWidget() {
       setDailyUsage(newUsage);
       if (newUsage.count >= MAX_DAILY_QUESTIONS) {
         toast.warning(
-          "Daily AI questions reached",
-          "Unlock unlimited questions with CitizenMate Pro",
+          t("chat.daily_limit_title"),
+          t("chat.daily_limit_desc"),
           { timing: { displayDuration: 5000 } }
         );
         setTimeout(() => upgrade(), 1200);
       } else if (newUsage.count === MAX_DAILY_QUESTIONS - 1) {
         toast.info(
-          "Last question for today",
-          "Make it a good one, mate!"
+          t("chat.last_question_title"),
+          t("chat.last_question_desc")
         );
       }
     },
@@ -205,7 +207,7 @@ export function ChatWidget() {
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(true)}
             className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-cm-navy text-white shadow-xl flex items-center justify-center cursor-pointer hover:bg-cm-navy-light transition-colors"
-            aria-label="Open study tutor"
+            aria-label={t("chat.open_tutor")}
           >
             <GraduationCap className="w-6 h-6" />
             {/* Online dot */}
@@ -238,17 +240,17 @@ export function ChatWidget() {
                 </div>
                 <div>
                   <h3 className="text-white font-heading font-bold text-sm">
-                    CitizenMate Tutor
+                    {t("chat.tutor_name")}
                   </h3>
                   <p className="text-white/60 text-xs">
-                    Your study buddy
+                    {t("chat.tutor_subtitle")}
                   </p>
                 </div>
               </div>
               <button
                 onClick={handleClose}
                 className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors cursor-pointer"
-                aria-label="Close chat"
+                aria-label={t("chat.close_chat")}
               >
                 <X className="w-4 h-4 text-white/80" />
               </button>
@@ -271,9 +273,7 @@ export function ChatWidget() {
                     </div>
                     <div className="bg-cm-slate-50 rounded-2xl rounded-tl-sm px-4 py-3 max-w-[85%]">
                       <p className="text-sm text-cm-slate-700 leading-relaxed">
-                        G&apos;day! 🇦🇺 I&apos;m your CitizenMate Tutor. Ask me
-                        anything about the Australian citizenship test — values,
-                        history, government, you name it!
+                        {t("chat.greeting")}
                       </p>
                     </div>
                   </div>
@@ -283,12 +283,12 @@ export function ChatWidget() {
                     {SUGGESTIONS.map((s) => (
                       <button
                         key={s.text}
-                        onClick={() => handleSend(s.text)}
+                        onClick={() => handleSend(t(s.text))}
                         disabled={isLimitReached}
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-cm-slate-200 text-xs text-cm-slate-600 font-medium hover:bg-cm-slate-50 hover:border-cm-slate-300 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         <s.icon className="w-3 h-3" />
-                        {s.text}
+                        {t(s.text)}
                       </button>
                     ))}
                   </div>
@@ -335,7 +335,7 @@ export function ChatWidget() {
                       <div className="source-label mt-1.5 ml-1 flex items-center gap-1">
                         <BookOpen className="w-3 h-3 text-cm-slate-300" />
                         <span className="text-[10px] text-cm-slate-400">
-                          Source: Our Aussie Citizenship Guide
+                          {t("chat.source_label")}
                         </span>
                       </div>
                     )}
@@ -375,7 +375,7 @@ export function ChatWidget() {
                           transition={{ duration: 0.25 }}
                           className="text-xs text-cm-slate-400 font-medium"
                         >
-                          {THINKING_STAGES[thinkingStage]}
+                          {t(THINKING_STAGES[thinkingStage])}
                         </motion.span>
                       </AnimatePresence>
                     </div>
@@ -397,11 +397,11 @@ export function ChatWidget() {
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: 0.4 + i * 0.1 }}
-                      onClick={() => handleSend(s.text)}
+                      onClick={() => handleSend(t(s.text))}
                       className="follow-up-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cm-navy-50 border border-cm-navy-100 text-xs text-cm-navy font-medium hover:bg-cm-navy-100 cursor-pointer"
                     >
                       <s.icon className="w-3 h-3" />
-                      {s.text}
+                      {t(s.text)}
                     </motion.button>
                   ))}
                 </motion.div>
@@ -415,10 +415,10 @@ export function ChatWidget() {
               <div className="mx-4 mb-2 px-3 py-3 bg-cm-gold-light/40 border border-cm-gold rounded-xl flex flex-col items-center text-center gap-2">
                 <div>
                   <p className="text-sm text-cm-navy font-bold">
-                    Daily limit reached
+                    {t("chat.daily_limit_banner")}
                   </p>
                   <p className="text-xs text-cm-slate-600 mt-0.5 max-w-[250px] mx-auto">
-                    You've reached your free 3 questions for today.
+                    {t("chat.daily_limit_banner_desc")}
                   </p>
                 </div>
                 <button
@@ -426,7 +426,7 @@ export function ChatWidget() {
                   className="w-full mt-1 bg-cm-red hover:bg-cm-red-dark text-white text-xs font-semibold py-2 rounded-lg flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                 >
                   <Sparkles className="w-3.5 h-3.5" />
-                  Unlock Unlimited Tutor Access
+                  {t("chat.unlock_unlimited")}
                 </button>
               </div>
             )}
@@ -443,8 +443,8 @@ export function ChatWidget() {
                 onChange={(e) => setInputValue(e.target.value)}
                 placeholder={
                   isLimitReached
-                    ? "Daily limit reached..."
-                    : "Ask about the citizenship test..."
+                    ? t("chat.placeholder_limit")
+                    : t("chat.placeholder_default")
                 }
                 disabled={isLimitReached || isStreaming}
                 className="flex-1 bg-cm-slate-50 rounded-xl px-4 py-2.5 text-sm text-cm-slate-800 placeholder:text-cm-slate-400 border border-cm-slate-200 focus:outline-none focus:border-cm-navy focus:ring-1 focus:ring-cm-navy/20 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -453,7 +453,7 @@ export function ChatWidget() {
                 type="submit"
                 disabled={!inputValue.trim() || isStreaming || isLimitReached}
                 className="w-10 h-10 rounded-xl bg-cm-navy text-white flex items-center justify-center shrink-0 hover:bg-cm-navy-light transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
-                aria-label="Send message"
+                aria-label={t("chat.send_message")}
               >
                 <Send className="w-4 h-4" />
               </button>
@@ -463,8 +463,7 @@ export function ChatWidget() {
             {!isPremium && !isLimitReached && dailyUsage.count > 0 && (
               <div className="px-4 pb-2">
                 <p className="text-[11px] text-cm-slate-400 text-center">
-                  {remaining} question{remaining !== 1 ? "s" : ""} remaining
-                  today
+                  {remaining} {remaining === 1 ? t("chat.questions_remaining_singular") : t("chat.questions_remaining")}
                 </p>
               </div>
             )}

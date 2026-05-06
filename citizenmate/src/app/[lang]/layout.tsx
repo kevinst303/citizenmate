@@ -121,6 +121,7 @@ export default async function RootLayout({
   return (
     <html
       lang={lang}
+      dir={lang === 'ar' ? 'rtl' : 'ltr'}
       suppressHydrationWarning
       data-scroll-behavior="smooth"
       className={`${poppinsHeading.variable} ${interBody.variable} h-full antialiased`}

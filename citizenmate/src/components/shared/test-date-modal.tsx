@@ -6,10 +6,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, X, Sparkles } from "lucide-react";
 import { useTestDate } from "@/lib/test-date-context";
 import { toast } from "@/lib/toast";
+import { useT } from "@/i18n/i18n-context";
 
 export function TestDateModal() {
   const { testDate, setTestDate, clearTestDate, isModalOpen, closeModal } =
     useTestDate();
+  const { t } = useT();
   const [inputDate, setInputDate] = useState(testDate ?? "");
   const [error, setError] = useState("");
 
@@ -21,7 +23,7 @@ export function TestDateModal() {
 
   const handleSave = () => {
     if (!inputDate) {
-      setError("Please select a date.");
+      setError(t("test_date.please_select_date"));
       return;
     }
 
@@ -30,7 +32,7 @@ export function TestDateModal() {
     today.setHours(0, 0, 0, 0);
 
     if (selected < today) {
-      setError("Please choose a future date.");
+      setError(t("test_date.future_date_only"));
       return;
     }
 
@@ -45,10 +47,10 @@ export function TestDateModal() {
       (savedDate.getTime() - now2.getTime()) / (1000 * 60 * 60 * 24)
     );
     toast.success(
-      "Test date saved! 📅",
+      t("test_date.saved_toast"),
       daysAway === 1
-        ? "1 day to go — you've got this, mate!"
-        : `${daysAway} days to go — let's make them count!`
+        ? t("test_date.one_day_to_go")
+        : `${daysAway} ${t("test_date.days_to_go")}`
     );
   };
 
@@ -56,7 +58,7 @@ export function TestDateModal() {
     clearTestDate();
     setInputDate("");
     closeModal();
-    toast.info("Test date cleared", "You can set a new one anytime.");
+    toast.info(t("test_date.cleared_toast"), t("test_date.set_new_anytime"));
   };
 
   // Get today's date in YYYY-MM-DD for min attribute
@@ -75,12 +77,12 @@ export function TestDateModal() {
 
     if (days <= 0) return null;
     if (days <= 7)
-      return "That's really soon — let's make every study session count! 💪";
+      return t("test_date.really_soon");
     if (days <= 14)
-      return "Two weeks is a solid study window. You've got this, mate!";
+      return t("test_date.two_weeks");
     if (days <= 30)
-      return "Great timing — one month is perfect for focused preparation.";
-    return "Plenty of time to prepare thoroughly. Let's build your confidence!";
+      return t("test_date.one_month");
+    return t("test_date.plenty_of_time");
   };
 
   return (
@@ -110,7 +112,7 @@ export function TestDateModal() {
                 <div className="absolute inset-0 z-0">
                   <Image
                     src="/generated/modal-test-date.webp"
-                    alt="A marked calendar"
+                    alt={t("test_date.calendar_alt")}
                     fill
                     className="object-cover opacity-50 mix-blend-screen"
                     sizes="(max-width: 768px) 100vw, 400px"
@@ -126,10 +128,10 @@ export function TestDateModal() {
                       </div>
                       <div>
                         <h2 className="font-heading font-bold text-lg drop-shadow-sm">
-                          Set Your Test Date
+                          {t("test_date.modal_title")}
                         </h2>
                         <p className="text-sm text-white/90 drop-shadow-sm font-medium">
-                          We&apos;ll build your study plan around it
+                          {t("test_date.modal_subtitle")}
                         </p>
                       </div>
                     </div>
@@ -148,7 +150,7 @@ export function TestDateModal() {
                 {/* Date picker */}
                 <div>
                   <label className="block text-sm font-medium text-cm-slate-700 mb-2">
-                    When is your citizenship test?
+                    {t("test_date.date_label")}
                   </label>
                   <input
                     type="date"
@@ -185,14 +187,14 @@ export function TestDateModal() {
                     onClick={handleSave}
                     className="flex-1 py-3 bg-cm-navy text-white font-heading font-semibold rounded-xl hover:bg-cm-navy-light transition-colors cursor-pointer"
                   >
-                    Save Date
+                    {t("test_date.save_date")}
                   </button>
                   {testDate && (
                     <button
                       onClick={handleClear}
                       className="px-4 py-3 text-cm-slate-500 font-medium rounded-xl border-2 border-cm-slate-200 hover:border-cm-red/30 hover:text-cm-red transition-colors cursor-pointer"
                     >
-                      Remove
+                      {t("test_date.remove_date")}
                     </button>
                   )}
                 </div>
@@ -205,7 +207,7 @@ export function TestDateModal() {
                   }}
                   className="w-full text-center text-sm text-cm-slate-400 hover:text-cm-navy transition-colors cursor-pointer py-1"
                 >
-                  I haven&apos;t booked my test yet
+                  {t("test_date.not_booked")}
                 </button>
               </div>
             </div>

@@ -22,6 +22,7 @@ import type { TopicCategory } from "@/lib/types";
 import { toast } from "@/lib/toast";
 import { usePremium } from "@/lib/auth-context";
 import { useT } from "@/i18n/i18n-context";
+import { useLocalizedPath } from "@/lib/use-localized-path";
 
 const TOPIC_ICONS: Record<TopicCategory, typeof Globe> = {
   "australia-people": Globe,
@@ -39,6 +40,7 @@ export default function TopicStudyPage({
   const router = useRouter();
   const { isPremium, premiumLoading, upgrade } = usePremium();
   const { t } = useT();
+  const { getUrl } = useLocalizedPath();
   const {
     language,
     setLanguage,
@@ -84,7 +86,7 @@ export default function TopicStudyPage({
           {/* Breadcrumb */}
           <div className="flex items-center gap-1.5 text-xs text-cm-slate-400 mb-3">
             <Link
-              href="/study"
+              href={getUrl("/study")}
               className="hover:text-cm-teal transition-colors cursor-pointer"
             >
               {t("study.hero_breadcrumb_guide", "Study")}
@@ -208,7 +210,7 @@ export default function TopicStudyPage({
             </Link>
           ) : (
             <Link
-              href="/study"
+              href={getUrl("/study")}
               className="flex items-center gap-2 px-4 py-3 bg-cm-teal text-white rounded-[15px] hover:opacity-90 transition-all duration-200 cursor-pointer font-heading font-semibold text-sm"
             >
               {t("study.back_to_study_guide", "Back to Study Guide")}

@@ -4,9 +4,11 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useT } from "@/i18n/i18n-context";
+import { useLocalizedPath } from "@/lib/use-localized-path";
 
 export function HowItWorks() {
   const { t } = useT();
+  const { getUrl } = useLocalizedPath();
 
   const steps = [
     {
@@ -95,7 +97,7 @@ export function HowItWorks() {
               <p className="text-foreground/70 text-base md:text-lg mb-8 leading-relaxed">
                 {t("landing.hiw_body", "Start with a diagnostic, study at your own pace with bilingual support, then take full mock tests until you're confident. No fluff — just the three steps that work.")}
               </p>
-              <Button render={<a href="/practice" />} className="self-start">
+              <Button render={<a href={getUrl("/practice")} />} className="self-start">
                 {t("landing.hiw_cta", "Start practising")}
               </Button>
             </div>
@@ -108,7 +110,7 @@ export function HowItWorks() {
                 src="/images/conseil/feature-split.webp"
                 fill
                 className="object-cover"
-                alt="CitizenMate study interface"
+                alt={t("landing.hiw_image_alt")}
               />
             </div>
           </div>

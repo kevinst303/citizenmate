@@ -45,3 +45,13 @@ Plans:
 - [x] 02 — Dashboard insights + users table + blog list (executed)
 - [x] 03 — Referral management dashboard (executed)
 - [x] 04 — UI refinement: analytics hub, user CRUD modals, Conseil alignment, pagination, confirmation dialogs (completed 2026-05-06)
+
+### Phase 9: Audit stripe integration and check all CTA
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 8
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd-plan-phase 9 to break down)

@@ -1,11 +1,13 @@
 "use client";
 
 import { useT } from "@/i18n/i18n-context";
+import { useLocalizedPath } from "@/lib/use-localized-path";
 import Link from "next/link";
 import { CheckCircle2, BookOpen, GraduationCap, ArrowRight } from "lucide-react";
 
 export default function CheckoutSuccessPage() {
   const { t } = useT();
+  const { getUrl } = useLocalizedPath();
 
   return (
     <div className="min-h-screen bg-cm-ice flex items-center justify-center px-4 py-16">
@@ -67,15 +69,14 @@ export default function CheckoutSuccessPage() {
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
-            href="/dashboard"
+            href={getUrl("/dashboard")}
             className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-cm-teal text-white font-heading font-bold rounded-full hover:bg-cm-teal/90 transition-colors duration-200"
           >
             {t("checkout.success_go_dashboard", "Go to Dashboard")}
             <ArrowRight className="w-4 h-4" />
           </Link>
           <Link
-            href="/practice"
-            className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-white border border-cm-slate-200 text-cm-slate-700 font-heading font-semibold rounded-full hover:bg-cm-slate-50 transition-colors duration-200"
+            href={getUrl("/practice")}            className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-white border border-cm-slate-200 text-cm-slate-700 font-heading font-semibold rounded-full hover:bg-cm-slate-50 transition-colors duration-200"
           >
             {t("checkout.success_start_test", "Start a Mock Test")}
           </Link>

@@ -17,6 +17,7 @@ import { useAuth } from "@/lib/auth-context";
 import { useTestDate } from "@/lib/test-date-context";
 import { useUpgradeModal } from "@/lib/store/useUpgradeModal";
 import { SubpageHero } from "@/components/shared/subpage-hero";
+import { useT } from "@/i18n/i18n-context";
 import { useRouter } from "next/navigation";
 
 const container = {
@@ -36,6 +37,7 @@ export default function SettingsPage() {
   const { user, profile, loading: authLoading, signOut } = useAuth();
   const { testDate, openModal: openTestDateModal } = useTestDate();
   const { openModal: openUpgradeModal } = useUpgradeModal();
+  const { t } = useT();
   const router = useRouter();
   
   const [imageError, setImageError] = useState(false);
@@ -74,14 +76,14 @@ export default function SettingsPage() {
     <div className="min-h-screen bg-cm-ice">
       {/* ===== Hero ===== */}
       <SubpageHero
-        title="Profile Settings"
+        title={t("settings.hero_title")}
         breadcrumbs={[
-          { label: "Home", href: "/" },
-          { label: "Settings" },
+          { label: t("settings.hero_breadcrumb_home"), href: "/" },
+          { label: t("settings.hero_breadcrumb_settings") },
         ]}
-        description="Manage your account, subscription, and study preferences."
+        description={t("settings.hero_desc")}
         bgImage="/generated/dash-welcome.webp"
-        badge="Account"
+        badge={t("settings.hero_badge")}
         curveColorClass="text-cm-ice"
       />
 
@@ -100,7 +102,7 @@ export default function SettingsPage() {
                 <User className="w-5 h-5" />
               </div>
               <h2 className="font-heading font-bold text-xl text-cm-slate-900">
-                Personal Information
+                {t("settings.personal_info")}
               </h2>
             </div>
             
@@ -123,7 +125,7 @@ export default function SettingsPage() {
               
               <div className="flex-1 space-y-4 w-full">
                 <div>
-                  <label className="text-xs font-semibold text-cm-slate-500 uppercase tracking-wider mb-1 block">Full Name</label>
+                  <label className="text-xs font-semibold text-cm-slate-500 uppercase tracking-wider mb-1 block">{t("settings.full_name")}</label>
                   <div className="flex items-center gap-3 px-4 py-3 bg-cm-slate-50 rounded-xl border border-cm-slate-100">
                     <User className="w-4 h-4 text-cm-slate-400" />
                     <span className="text-sm font-medium text-cm-slate-800">{displayName}</span>
@@ -131,7 +133,7 @@ export default function SettingsPage() {
                 </div>
                 
                 <div>
-                  <label className="text-xs font-semibold text-cm-slate-500 uppercase tracking-wider mb-1 block">Email Address</label>
+                  <label className="text-xs font-semibold text-cm-slate-500 uppercase tracking-wider mb-1 block">{t("settings.email_address")}</label>
                   <div className="flex items-center gap-3 px-4 py-3 bg-cm-slate-50 rounded-xl border border-cm-slate-100">
                     <Mail className="w-4 h-4 text-cm-slate-400" />
                     <span className="text-sm font-medium text-cm-slate-800">{user.email}</span>
@@ -143,9 +145,9 @@ export default function SettingsPage() {
             <div className="mt-6 pt-5 border-t border-cm-slate-100 flex items-start gap-3 bg-amber-50/50 p-4 rounded-xl border border-amber-100/50">
               <Shield className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
               <div>
-                <p className="text-sm font-medium text-amber-800 mb-1">Authenticated via Google</p>
+                <p className="text-sm font-medium text-amber-800 mb-1">{t("settings.auth_google")}</p>
                 <p className="text-xs text-amber-700/80">
-                  Your profile information is synced securely from your Google account. To change your name or avatar, please update your Google profile.
+                  {t("settings.auth_google_desc")}
                 </p>
               </div>
             </div>
@@ -160,16 +162,16 @@ export default function SettingsPage() {
                 </div>
                 <div>
                   <h2 className="font-heading font-bold text-xl text-cm-slate-900">
-                    Test Schedule
+                    {t("settings.test_schedule")}
                   </h2>
-                  <p className="text-sm text-cm-slate-500 mt-0.5">Manage your citizenship test date</p>
+                  <p className="text-sm text-cm-slate-500 mt-0.5">{t("settings.manage_test_date")}</p>
                 </div>
               </div>
               <button
                 onClick={openTestDateModal}
                 className="px-4 py-2 bg-cm-slate-100 text-cm-slate-700 font-semibold text-sm rounded-xl hover:bg-cm-slate-200 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cm-navy focus-visible:ring-offset-2"
               >
-                Change Date
+                {t("settings.change_date")}
               </button>
             </div>
             
@@ -178,7 +180,7 @@ export default function SettingsPage() {
                 <Calendar className="w-5 h-5" />
               </div>
               <div>
-                <p className="text-xs font-semibold text-cm-slate-500 uppercase tracking-wider mb-1">Current Test Date</p>
+                <p className="text-xs font-semibold text-cm-slate-500 uppercase tracking-wider mb-1">{t("settings.current_test_date")}</p>
                 {testDate ? (
                   <p className="text-base font-bold text-cm-slate-900">
                     {new Date(testDate).toLocaleDateString("en-AU", {
@@ -190,7 +192,7 @@ export default function SettingsPage() {
                   </p>
                 ) : (
                   <p className="text-base font-medium text-cm-slate-600 italic">
-                    Not set yet
+                    {t("settings.not_set")}
                   </p>
                 )}
               </div>
@@ -208,9 +210,9 @@ export default function SettingsPage() {
                 </div>
                 <div>
                   <h2 className="font-heading font-bold text-xl text-cm-slate-900">
-                    Subscription
+                    {t("settings.subscription")}
                   </h2>
-                  <p className="text-sm text-cm-slate-500 mt-0.5">Manage your plan and billing</p>
+                  <p className="text-sm text-cm-slate-500 mt-0.5">{t("settings.manage_plan")}</p>
                 </div>
               </div>
               
@@ -220,7 +222,7 @@ export default function SettingsPage() {
                   className="px-5 py-2.5 bg-cm-navy text-white font-bold text-sm rounded-xl hover:bg-cm-navy-light transition-colors shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cm-navy focus-visible:ring-offset-2 flex items-center gap-2 justify-center"
                 >
                   <Crown className="w-4 h-4" />
-                  Upgrade to Premium
+                  {t("settings.upgrade_to_premium")}
                 </button>
               )}
             </div>
@@ -229,13 +231,13 @@ export default function SettingsPage() {
               <div className="flex justify-between items-start mb-4">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <p className="text-xs font-semibold text-cm-slate-500 uppercase tracking-wider">Current Plan</p>
+                    <p className="text-xs font-semibold text-cm-slate-500 uppercase tracking-wider">{t("settings.current_plan")}</p>
                     {profile.isPremium && (
-                      <span className="px-2 py-0.5 bg-cm-gold text-white text-[10px] font-bold uppercase tracking-wider rounded-md">Active</span>
+                      <span className="px-2 py-0.5 bg-cm-gold text-white text-[10px] font-bold uppercase tracking-wider rounded-md">{t("settings.plan_active")}</span>
                     )}
                   </div>
                   <p className="text-2xl font-heading font-extrabold text-cm-slate-900 capitalize">
-                    {profile.tier === 'free' ? 'Sprint Pass (Free)' : profile.tier}
+                    {profile.tier === 'free' ? t("settings.plan_sprint_pass_free") : profile.tier}
                   </p>
                 </div>
               </div>
@@ -244,17 +246,17 @@ export default function SettingsPage() {
                 {profile.isPremium ? (
                   <>
                     <p className="text-sm font-medium text-cm-slate-700">
-                      You have full access to all premium features, including AI Tutor and unlimited mock tests.
+                      {t("settings.plan_premium_access")}
                     </p>
                     {profile.expiresAt && (
                       <p className="text-xs text-cm-slate-500 mt-2">
-                        Your access expires on {new Date(profile.expiresAt).toLocaleDateString("en-AU")}
+                        {t("settings.plan_expires_on")} {new Date(profile.expiresAt).toLocaleDateString("en-AU")}
                       </p>
                     )}
                   </>
                 ) : (
                   <p className="text-sm font-medium text-cm-slate-600">
-                    You are currently on the free Sprint Pass. Upgrade to unlock the full potential of CitizenMate and ensure you pass on your first try.
+                    {t("settings.plan_free_tier")}
                   </p>
                 )}
               </div>
@@ -268,15 +270,15 @@ export default function SettingsPage() {
                 <AlertTriangle className="w-5 h-5" />
               </div>
               <h2 className="font-heading font-bold text-xl text-cm-slate-900">
-                Danger Zone
+                {t("settings.danger_zone")}
               </h2>
             </div>
             
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 bg-red-50/50 rounded-xl border border-red-100 gap-4">
               <div>
-                <h3 className="font-semibold text-cm-slate-800 mb-1">Sign Out of CitizenMate</h3>
+                <h3 className="font-semibold text-cm-slate-800 mb-1">{t("settings.sign_out_title")}</h3>
                 <p className="text-sm text-cm-slate-500">
-                  End your current session on this device. You will need to sign in again to access your progress.
+                  {t("settings.sign_out_desc")}
                 </p>
               </div>
               <button
@@ -284,7 +286,7 @@ export default function SettingsPage() {
                 className="flex-shrink-0 flex items-center justify-center gap-2 px-5 py-2.5 bg-white border border-red-200 text-cm-red font-bold text-sm rounded-xl hover:bg-red-50 hover:border-red-300 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cm-red focus-visible:ring-offset-2 w-full sm:w-auto"
               >
                 <LogOut className="w-4 h-4" />
-                Sign Out
+                {t("settings.sign_out_button")}
               </button>
             </div>
           </motion.div>

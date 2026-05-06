@@ -10,6 +10,7 @@ import type { QuizResult } from "@/lib/types";
 import { usePremium } from "@/lib/auth-context";
 import { PremiumBadge } from "@/components/shared/premium-gate";
 import { SubpageHero } from "@/components/shared/subpage-hero";
+import { useT } from "@/i18n/i18n-context";
 import {
   FileText,
   Clock,
@@ -44,6 +45,7 @@ const FREE_TEST_COUNT = 1;
 
 export default function PracticePage() {
   const { isPremium, upgrade } = usePremium();
+  const { t } = useT();
   const [attempts, setAttempts] = useState<
     Array<{ testId: string; result: QuizResult; completedAt: string }>
   >([]);
@@ -65,14 +67,13 @@ export default function PracticePage() {
     <div className="min-h-screen bg-cm-ice">
       {/* Hero */}
       <SubpageHero
-        title="Practice for the Real Test"
+        title={t("practice.hero_title")}
         breadcrumbs={[
-          { label: "Home", href: "/" },
-          { label: "Practice" },
+          { label: t("practice.hero_breadcrumb"), href: "/" },
         ]}
-        description="20 questions. 45 minutes. Just like the real Australian citizenship test. See where you stand, mate."
+        description={t("practice.hero_desc")}
         bgImage="/generated/test-start.webp"
-        badge="Practice Tests"
+        badge={t("practice.hero_badge")}
         curveColorClass="text-cm-ice"
       />
 
@@ -86,10 +87,10 @@ export default function PracticePage() {
         >
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
-              { icon: FileText, value: "20", label: "Questions" },
-              { icon: Clock, value: "45 min", label: "Time Limit" },
-              { icon: Target, value: "75%", label: "Pass Mark (15/20)" },
-              { icon: Heart, value: "5/5", label: "Values Required" },
+              { icon: FileText, value: "20", label: t("practice.stats_questions") },
+              { icon: Clock, value: "45 min", label: t("practice.stats_time") },
+              { icon: Target, value: "75%", label: t("practice.stats_pass_mark") },
+              { icon: Heart, value: "5/5", label: t("practice.stats_values") },
             ].map((stat, idx) => (
               <motion.div
                 key={stat.label}
@@ -138,16 +139,15 @@ export default function PracticePage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     <h3 className="text-lg font-heading font-bold text-white">
-                      Smart Practice
+                      {t("practice.smart_title")}
                     </h3>
                     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/20 text-white/90 text-xs font-medium">
                       <Sparkles className="w-3 h-3" />
-                      AI-Powered
+                      {t("practice.smart_badge")}
                     </span>
                   </div>
                   <p className="text-sm text-white/75">
-                    Questions ordered by your weak areas — powered by spaced
-                    repetition. Instant feedback, no timer.
+                    {t("practice.smart_desc")}
                   </p>
                 </div>
                 <ArrowRight className="w-5 h-5 text-white/60 group-hover:text-white group-hover:translate-x-1 transition-all flex-shrink-0" />
@@ -166,16 +166,15 @@ export default function PracticePage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     <h3 className="text-lg font-heading font-bold text-white">
-                      Smart Practice
+                      {t("practice.smart_premium_title")}
                     </h3>
                     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/20 text-white/90 text-xs font-medium">
                       <Lock className="w-3 h-3" />
-                      Premium
+                      {t("practice.smart_premium_badge")}
                     </span>
                   </div>
                   <p className="text-sm text-white/75">
-                    Upgrade to Sprint Pass to unlock AI-powered spaced repetition
-                    practice.
+                    {t("practice.smart_premium_desc")}
                   </p>
                 </div>
                 <ArrowRight className="w-5 h-5 text-white/60 flex-shrink-0" />
@@ -193,7 +192,7 @@ export default function PracticePage() {
           transition={{ delay: 0.5 }}
           className="text-2xl font-heading font-bold text-cm-slate-900 mb-8"
         >
-          Choose a Practice Test
+          {t("practice.choose_test")}
         </motion.h2>
 
         <motion.div
@@ -241,7 +240,7 @@ export default function PracticePage() {
                       </p>
                       <div className="mt-auto flex items-center justify-center gap-2 w-full py-3 font-heading font-semibold rounded-xl bg-cm-red/10 text-cm-red transition-all duration-200">
                         <Lock className="w-4 h-4" />
-                        Unlock with Sprint Pass
+                        {t("practice.unlock_sprint")}
                       </div>
                     </button>
                   ) : (
@@ -283,17 +282,17 @@ export default function PracticePage() {
                     <div className="flex items-center gap-3 text-xs text-cm-slate-400 mb-5">
                       <span className="flex items-center gap-1">
                         <FileText className="w-3 h-3" />
-                        {test.totalQuestions} questions
+                        {test.totalQuestions} {t("practice.card_questions")}
                       </span>
                       <span className="flex items-center gap-1">
                         <Clock className="w-3 h-3" />
-                        {test.timeLimit / 60} min
+                        {test.timeLimit / 60} {t("practice.card_min")}
                       </span>
                       {attemptCount > 0 && (
                         <span className="flex items-center gap-1">
                           <RefreshCw className="w-3 h-3" />
                           {attemptCount}{" "}
-                          {attemptCount === 1 ? "attempt" : "attempts"}
+                          {attemptCount === 1 ? t("practice.card_attempt") : t("practice.card_attempts")}
                         </span>
                       )}
                     </div>
@@ -307,11 +306,11 @@ export default function PracticePage() {
                       {attemptCount > 0 ? (
                         <>
                           <RefreshCw className="w-4 h-4 transition-transform duration-200 group-hover:rotate-45" />
-                          Try Again
+                          {t("practice.try_again")}
                         </>
                       ) : (
                         <>
-                          Start Test
+                          {t("practice.start_test")}
                           <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
                         </>
                       )}
@@ -346,41 +345,19 @@ export default function PracticePage() {
             {[
               {
                 icon: Heart,
-                text: (
-                  <>
-                    <strong>All 5 values questions</strong> must be answered
-                    correctly — even if you score well on other sections. Pay
-                    special attention to questions with the Values badge.
-                  </>
-                ),
+                text: t("practice.tip_1_full"),
               },
               {
                 icon: Target,
-                text: (
-                  <>
-                    You need <strong>at least 15 out of 20</strong> correct
-                    overall (75%) to pass.
-                  </>
-                ),
+                text: t("practice.tip_2_full"),
               },
               {
                 icon: Clock,
-                text: (
-                  <>
-                    You have <strong>45 minutes</strong> — that&apos;s about 2
-                    minutes per question. Don&apos;t rush, but don&apos;t dwell
-                    on difficult questions.
-                  </>
-                ),
+                text: t("practice.tip_3_full"),
               },
               {
                 icon: Flag,
-                text: (
-                  <>
-                    <strong>Flag questions</strong> you&apos;re unsure about and
-                    come back to them.
-                  </>
-                ),
+                text: t("practice.tip_4_full"),
               },
             ].map((tip, idx) => (
               <motion.li

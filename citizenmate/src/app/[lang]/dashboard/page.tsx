@@ -108,14 +108,14 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-cm-ice">
       {/* ===== Hero ===== */}
       <SubpageHero
-        title="Your Readiness Score"
+        title={t("dashboard.hero_title")}
         breadcrumbs={[
-          { label: "Home", href: "/" },
-          { label: "Dashboard" },
+          { label: t("dashboard.hero_breadcrumb_home"), href: "/" },
+          { label: t("dashboard.hero_breadcrumb_dashboard") },
         ]}
-        description={readiness.message}
+        description={readiness.messageKey ? t(readiness.messageKey as Parameters<typeof t>[0], readiness.message) : readiness.message}
         bgImage="/generated/dash-welcome.webp"
-        badge="Your Dashboard"
+        badge={t("dashboard.hero_badge")}
         curveColorClass="text-cm-ice"
       />
 
@@ -141,8 +141,8 @@ export default function DashboardPage() {
                   <Lock className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-white mb-0.5 tracking-tight">Unlock Premium Features</h3>
-                  <p className="text-sm text-cm-slate-200">Get unlimited mock tests, AI tutor access, and advanced analytics.</p>
+                  <h3 className="text-base font-bold text-white mb-0.5 tracking-tight">{t("dashboard.unlock_premium")}</h3>
+                  <p className="text-sm text-cm-slate-200">{t("dashboard.unlock_premium_desc")}</p>
                 </div>
               </div>
               <div className="relative z-10 flex items-center gap-3 self-end sm:self-auto">
@@ -150,12 +150,12 @@ export default function DashboardPage() {
                   onClick={() => openUpgradeModal("dashboard_banner")}
                   className="px-5 py-2.5 bg-white text-cm-navy-darker text-sm font-bold rounded-xl hover:bg-cm-ice transition-colors shadow-lg shadow-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-cm-slate-900"
                 >
-                  Upgrade Now
+                  {t("dashboard.upgrade_now")}
                 </button>
                 <button
                   onClick={() => setShowBanner(false)}
                   className="p-2 text-cm-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-cm-slate-900"
-                  aria-label="Dismiss upgrade banner"
+                  aria-label={t("dashboard.dismiss_banner")}
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -193,7 +193,7 @@ export default function DashboardPage() {
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-0.5">
                 <span className="text-[10px] font-bold text-cm-gold uppercase tracking-wider">
-                  AI Insight
+                  {t("dashboard.ai_insight")}
                 </span>
               </div>
               <p className="text-sm text-cm-slate-700 leading-relaxed">
@@ -201,7 +201,7 @@ export default function DashboardPage() {
                   const Icon = INSIGHT_ICONS[aiInsight.iconName];
                   return Icon ? <Icon className="w-4 h-4 inline-block mr-1.5 -mt-0.5 text-cm-slate-500" /> : null;
                 })()}
-                {aiInsight.message}
+                {aiInsight.messageKey ? t(aiInsight.messageKey as Parameters<typeof t>[0], aiInsight.message) : aiInsight.message}
               </p>
             </div>
           </motion.div>
@@ -228,7 +228,7 @@ export default function DashboardPage() {
                     <ReadinessIcon className="w-4 h-4 inline-block mr-1 text-cm-slate-400" />
                   ) : null;
                 })()}
-                {readiness.message}
+                {readiness.messageKey ? t(readiness.messageKey as Parameters<typeof t>[0], readiness.message) : readiness.message}
               </motion.p>
 
               {/* Stat pills */}
@@ -359,18 +359,17 @@ export default function DashboardPage() {
               <AlertTriangle className="w-5 h-5 text-cm-red flex-shrink-0 animate-icon-pulse" />
               <div>
                 <p className="text-sm font-semibold text-cm-red-dark">
-                  Australian Values — Not Yet Ready
+                  {t("dashboard.values_not_ready")}
                 </p>
                 <p className="text-xs text-cm-red-dark/80 mt-0.5">
-                  All 5 values questions must be answered correctly to pass.
-                  Focus on studying this section thoroughly.
+                  {t("dashboard.values_not_ready_desc")}
                 </p>
               </div>
               <Link
                 href="/study/australian-values"
                 className="flex-shrink-0 px-3 py-1.5 bg-cm-red text-white text-xs font-semibold rounded-lg hover:bg-cm-red/90 transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cm-red focus-visible:ring-offset-2 shadow-sm"
               >
-                Study Now
+                {t("dashboard.study_values_now")}
               </Link>
             </motion.div>
           )}
@@ -385,7 +384,7 @@ export default function DashboardPage() {
                 <TrendingUp className="w-4.5 h-4.5" />
               </div>
               <h2 className="font-heading font-bold text-cm-slate-900">
-                Topic Mastery
+                {t("dashboard.topic_mastery")}
               </h2>
             </div>
 
@@ -411,7 +410,7 @@ export default function DashboardPage() {
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between mb-1.5">
                               <h3 className="text-sm font-semibold text-cm-slate-800">
-                                {topic.label}
+                                {t(topic.labelKey as Parameters<typeof t>[0], topic.label)}
                               </h3>
                               <span className="text-sm font-bold text-cm-slate-700">
                                 {topic.overallMastery}%
@@ -424,8 +423,8 @@ export default function DashboardPage() {
                               size="sm"
                             />
                             <div className="flex gap-4 mt-1.5 text-xs text-cm-slate-500">
-                              <span>Quiz: {topic.quizAccuracy}%</span>
-                              <span>Study: {topic.studyCompletion}%</span>
+                              <span>{t("dashboard.quiz_label")}: {topic.quizAccuracy}%</span>
+                              <span>{t("dashboard.study_label")}: {topic.studyCompletion}%</span>
                             </div>
                           </div>
                           <ArrowRight className="w-4 h-4 text-cm-slate-300 flex-shrink-0" />
@@ -433,18 +432,18 @@ export default function DashboardPage() {
                       );
                     })}
                   </div>
-                  
+                   
                   <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-gradient-to-b from-transparent via-white/80 to-white pt-10">
                     <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-cm-gold to-amber-500 text-white flex items-center justify-center mb-4 shadow-lg shadow-amber-500/20">
                       <Lock className="w-6 h-6" />
                     </div>
-                    <h3 className="text-xl font-heading font-bold text-cm-slate-900 mb-2 text-center drop-shadow-sm">Detailed Analytics Locked</h3>
-                    <p className="text-sm text-cm-slate-600 font-medium mb-6 text-center max-w-[250px] drop-shadow-sm">Upgrade to Premium to see your detailed strengths and weaknesses.</p>
+                    <h3 className="text-xl font-heading font-bold text-cm-slate-900 mb-2 text-center drop-shadow-sm">{t("dashboard.analytics_locked")}</h3>
+                    <p className="text-sm text-cm-slate-600 font-medium mb-6 text-center max-w-[250px] drop-shadow-sm">{t("dashboard.analytics_locked_desc")}</p>
                     <button
                       onClick={() => openUpgradeModal("topic_mastery")}
                       className="px-6 py-2.5 bg-cm-navy text-white text-sm font-bold rounded-xl hover:bg-cm-navy-light transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cm-navy focus-visible:ring-offset-2"
                     >
-                      Unlock Analytics
+                      {t("dashboard.unlock_analytics")}
                     </button>
                   </div>
                 </div>
@@ -475,7 +474,7 @@ export default function DashboardPage() {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between mb-1.5">
                             <h3 className="text-sm font-semibold text-cm-slate-800 group-hover:text-cm-navy transition-colors duration-200">
-                              {topic.label}
+                              {t(topic.labelKey as Parameters<typeof t>[0], topic.label)}
                             </h3>
                             <span className="text-sm font-bold text-cm-slate-700">
                               {topic.overallMastery}%
@@ -488,8 +487,8 @@ export default function DashboardPage() {
                             size="sm"
                           />
                           <div className="flex gap-4 mt-1.5 text-xs text-cm-slate-500">
-                            <span>Quiz: {topic.quizAccuracy}%</span>
-                            <span>Study: {topic.studyCompletion}%</span>
+                            <span>{t("dashboard.quiz_label")}: {topic.quizAccuracy}%</span>
+                            <span>{t("dashboard.study_label")}: {topic.studyCompletion}%</span>
                           </div>
                         </div>
                         <ArrowRight className="w-4 h-4 text-cm-slate-300 group-hover:text-cm-navy group-hover:translate-x-1 transition-all duration-200 flex-shrink-0" />
@@ -508,15 +507,15 @@ export default function DashboardPage() {
                 <Zap className="w-4.5 h-4.5" />
               </div>
               <h2 className="font-heading font-bold text-cm-slate-900 text-lg">
-                Quick Actions
+                {t("dashboard.quick_actions")}
               </h2>
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {[
                 {
                   icon: Brain,
-                  title: "Smart Practice",
-                  desc: "AI-powered weak area focus",
+                  title: t("dashboard.action_smart_practice"),
+                  desc: t("dashboard.action_smart_practice_desc"),
                   href: "/practice/smart",
                   color: "text-purple-600",
                   bgIcon: "bg-purple-100/80",
@@ -524,8 +523,8 @@ export default function DashboardPage() {
                 },
                 {
                   icon: ClipboardCheck,
-                  title: "Take a Mock Test",
-                  desc: "20 questions, 45 minutes",
+                  title: t("dashboard.action_mock_test"),
+                  desc: t("dashboard.action_mock_test_desc"),
                   href: "/practice",
                   color: "text-blue-600",
                   bgIcon: "bg-blue-100/80",
@@ -533,8 +532,8 @@ export default function DashboardPage() {
                 },
                 {
                   icon: BookOpen,
-                  title: "Continue Studying",
-                  desc: "Pick up where you left off",
+                  title: t("dashboard.action_continue_study"),
+                  desc: t("dashboard.action_continue_study_desc"),
                   href: "/study",
                   color: "text-emerald-600",
                   bgIcon: "bg-emerald-100/80",
@@ -542,8 +541,8 @@ export default function DashboardPage() {
                 },
                 {
                   icon: Heart,
-                  title: "Review Values",
-                  desc: "Must pass 5/5 to succeed",
+                  title: t("dashboard.action_review_values"),
+                  desc: t("dashboard.action_review_values_desc"),
                   href: "/study/australian-values",
                   color: "text-red-600",
                   bgIcon: "bg-red-100/80",
@@ -564,7 +563,7 @@ export default function DashboardPage() {
                     {action.title === aiInsight.recommendedAction && (
                       <span className="absolute top-2.5 right-2.5 recommended-pulse inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-cm-gold text-white text-[10px] font-bold shadow-sm z-10">
                         <Sparkles className="w-2.5 h-2.5" />
-                        Recommended
+                        {t("dashboard.recommended")}
                       </span>
                     )}
                     
@@ -596,14 +595,14 @@ export default function DashboardPage() {
                 <Gauge className="w-4.5 h-4.5" />
               </div>
               <h2 className="font-heading font-bold text-cm-slate-900 text-lg">
-                Your Stats
+                {t("dashboard.your_stats")}
               </h2>
             </div>
             <div className="grid gap-4 grid-cols-2 sm:grid-cols-4">
               {[
                 {
                   icon: ClipboardCheck,
-                  label: "Tests Taken",
+                  label: t("dashboard.stat_tests_taken"),
                   value: readiness.totalQuizzesTaken,
                   bg: "bg-cm-navy-50",
                   iconColor: "text-cm-navy",
@@ -611,7 +610,7 @@ export default function DashboardPage() {
                 },
                 {
                   icon: Trophy,
-                  label: "Best Score",
+                  label: t("dashboard.stat_best_score"),
                   value: readiness.bestQuizScore
                     ? `${readiness.bestQuizScore.score}/${readiness.bestQuizScore.total}`
                     : "—",
@@ -621,7 +620,7 @@ export default function DashboardPage() {
                 },
                 {
                   icon: BookOpen,
-                  label: "Study Progress",
+                  label: t("dashboard.stat_study_progress"),
                   value: `${readiness.studyComponent}%`,
                   bg: "bg-cm-eucalyptus-light",
                   iconColor: "text-cm-eucalyptus",
@@ -629,7 +628,7 @@ export default function DashboardPage() {
                 },
                 {
                   icon: Sparkles,
-                  label: "Readiness",
+                  label: t("dashboard.stat_readiness"),
                   value: `${readiness.score}%`,
                   bg: "bg-cm-sky-light",
                   iconColor: "text-cm-sky",

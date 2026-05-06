@@ -5,6 +5,7 @@ import Link from "next/link";
 import { AlertTriangle, Home, RefreshCw } from "lucide-react";
 import * as Sentry from "@sentry/nextjs";
 import { useT } from "@/i18n/i18n-context";
+import { useLocalizedPath } from "@/lib/use-localized-path";
 
 export default function GlobalError({
   error,
@@ -14,6 +15,7 @@ export default function GlobalError({
   reset: () => void;
 }) {
   const { t } = useT();
+  const { getUrl } = useLocalizedPath();
 
   useEffect(() => {
     console.error("[CitizenMate] Unhandled error:", error);
@@ -46,7 +48,7 @@ export default function GlobalError({
             {t("errors.try_again", "Try Again")}
           </button>
           <Link
-            href="/dashboard"
+            href={getUrl("/dashboard")}
             className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white border border-cm-slate-200 text-cm-slate-700 font-heading font-semibold rounded-xl hover:bg-cm-slate-50 transition-colors duration-200"
           >
             <Home className="w-4 h-4" />

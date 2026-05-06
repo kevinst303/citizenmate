@@ -156,7 +156,7 @@ export function UpgradeModal() {
                   >
                     {loadingTier === tier.name
                       ? t("upgrade.processing", "Processing...")
-                      : `${t("upgrade.get_" + tier.name.toLowerCase() + "_" + tier.name.toLowerCase(), "Get " + tier.name)}`}
+                      : tier.name === "Pro" ? t("upgrade.get_pro") : t("upgrade.get_premium")}
                   </Button>
                 </div>
               ))}

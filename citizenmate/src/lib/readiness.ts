@@ -20,11 +20,14 @@ export interface TopicMastery {
   studyCompletion: number; // 0-100
   overallMastery: number; // 0-100
   label: string;
+  labelKey: string;
 }
 
 export interface ReadinessData {
   score: number; // 0-100
   message: string;
+  messageKey: string;
+  messageParams?: Record<string, string | number>;
   iconName: string;
   quizComponent: number; // 0-100
   studyComponent: number; // 0-100
@@ -104,11 +107,11 @@ function getStudyCompletionForTopic(
   return Math.round((completed / total) * 100);
 }
 
-const TOPIC_LABELS: Record<TopicCategory, string> = {
-  "australia-people": "Australia & Its People",
-  "democratic-beliefs": "Democratic Beliefs",
-  "government-law": "Government & Law",
-  "australian-values": "Australian Values",
+const TOPIC_LABELS: Record<TopicCategory, { key: string; default: string }> = {
+  "australia-people": { key: "dashboard.topic_australia_people", default: "Australia & Its People" },
+  "democratic-beliefs": { key: "dashboard.topic_democratic_beliefs", default: "Democratic Beliefs" },
+  "government-law": { key: "dashboard.topic_government_law", default: "Government & Law" },
+  "australian-values": { key: "dashboard.topic_australian_values", default: "Australian Values" },
 };
 
 export function calculateTopicMastery(
@@ -130,7 +133,8 @@ export function calculateTopicMastery(
     quizAccuracy,
     studyCompletion,
     overallMastery,
-    label: TOPIC_LABELS[topicId],
+    label: TOPIC_LABELS[topicId].default,
+    labelKey: TOPIC_LABELS[topicId].key,
   };
 }
 
@@ -177,11 +181,13 @@ export function calculateReadiness(
     : false;
 
   // Anxiety-reducing messaging
-  const { message, iconName } = getReadinessMessage(score, hasQuizData, valuesReady);
+  const { message, messageKey, messageParams, iconName } = getReadinessMessage(score, hasQuizData, valuesReady);
 
   return {
     score,
     message,
+    messageKey,
+    messageParams,
     iconName,
     quizComponent,
     studyComponent,
@@ -198,10 +204,11 @@ function getReadinessMessage(
   score: number,
   hasQuizData: boolean,
   valuesReady: boolean
-): { message: string; iconName: string } {
+): { message: string; messageKey: string; messageParams?: Record<string, string | number>; iconName: string } {
   if (!hasQuizData && score === 0) {
     return {
       message: "Start studying or take a mock test to see your readiness, mate.",
+      messageKey: "readiness.no_activity",
       iconName: "hand",
     };
   }
@@ -210,6 +217,7 @@ function getReadinessMessage(
     return {
       message:
         "You're just getting started — keep going and you'll build momentum fast!",
+      messageKey: "readiness.just_started",
       iconName: "seedling",
     };
   }
@@ -217,6 +225,8 @@ function getReadinessMessage(
   if (score < 50) {
     return {
       message: `You've already mastered ${score}% of what you need, mate. Keep it up!`,
+      messageKey: "readiness.progress_made",
+      messageParams: { pct: score },
       iconName: "dumbbell",
     };
   }
@@ -224,6 +234,8 @@ function getReadinessMessage(
   if (score < 75) {
     return {
       message: `Great progress — ${score}% ready! Focus on your weak areas and you'll be there.`,
+      messageKey: "readiness.great_progress",
+      messageParams: { pct: score },
       iconName: "flame",
     };
   }
@@ -232,11 +244,15 @@ function getReadinessMessage(
     if (!valuesReady) {
       return {
         message: `${score}% ready — almost there! Make sure you nail the Australian Values section.`,
+        messageKey: "readiness.almost_there_values",
+        messageParams: { pct: score },
         iconName: "zap",
       };
     }
     return {
       message: `${score}% ready — you're on track to pass! Keep practising, mate.`,
+      messageKey: "readiness.on_track",
+      messageParams: { pct: score },
       iconName: "star",
     };
   }
@@ -244,6 +260,7 @@ function getReadinessMessage(
   return {
     message:
       "You're looking ready to pass, mate! Consider booking your test if you haven't already.",
+    messageKey: "readiness.ready_to_pass",
     iconName: "party-popper",
   };
 }

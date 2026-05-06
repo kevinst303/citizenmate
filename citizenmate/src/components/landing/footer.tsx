@@ -58,7 +58,7 @@ export function Footer() {
           >
             <Link href="/" className="flex items-center gap-2.5">
               <div className="flex items-center justify-center">
-                <Image src="/logo.svg" alt="CitizenMate Logo" width={36} height={36} />
+                <Image src="/logo.svg" alt={t("landing.footer_logo_alt")} width={36} height={36} />
               </div>
               <span className="font-heading text-xl font-bold text-foreground">
                 Citizen<span className="text-cm-teal">Mate</span>
@@ -70,14 +70,18 @@ export function Footer() {
 
             {/* Social links */}
             <div className="flex items-center gap-3 mt-6">
-              {["Facebook", "Twitter", "Instagram"].map((social) => (
+              {[
+                { key: "landing.footer_social_facebook", label: "Facebook" },
+                { key: "landing.footer_social_twitter", label: "Twitter" },
+                { key: "landing.footer_social_instagram", label: "Instagram" },
+              ].map((social) => (
                 <a
-                  key={social}
+                  key={social.key}
                   href="#"
                   className="w-9 h-9 rounded-full bg-zinc-100 hover:bg-cm-teal flex items-center justify-center text-zinc-500 hover:text-white transition-all duration-200 text-xs font-bold"
-                  aria-label={social}
+                  aria-label={t(social.key, social.label)}
                 >
-                  {social.charAt(0)}
+                  {t(social.key, social.label).charAt(0)}
                 </a>
               ))}
             </div>
@@ -102,12 +106,17 @@ export function Footer() {
                   
                   if (isPdf) {
                     return (
-                      <li
-                        key={link.label}
-                        dangerouslySetInnerHTML={{
-                          __html: `<a href="${link.href}" class="text-sm text-zinc-500 hover:text-foreground transition-colors duration-200 cursor-pointer" target="_blank" rel="noopener noreferrer">${link.label}</a>`
-                        }}
-                      />
+                      <li key={link.label} suppressHydrationWarning>
+                        <a
+                          href={link.href}
+                          className="text-sm text-zinc-500 hover:text-foreground transition-colors duration-200 cursor-pointer"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          suppressHydrationWarning
+                        >
+                          {link.label}
+                        </a>
+                      </li>
                     );
                   }
 
@@ -148,14 +157,18 @@ export function Footer() {
           </div>
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 shrink-0">
             <div className="flex items-center gap-3">
-              {["Facebook", "Twitter", "Instagram"].map((social) => (
+              {[
+                { key: "landing.footer_social_facebook", label: "Facebook" },
+                { key: "landing.footer_social_twitter", label: "Twitter" },
+                { key: "landing.footer_social_instagram", label: "Instagram" },
+              ].map((social) => (
                 <a
-                  key={social}
+                  key={social.key}
                   href="#"
                   className="w-8 h-8 rounded-full bg-zinc-100 hover:bg-cm-teal flex items-center justify-center text-zinc-500 hover:text-white transition-all duration-200 text-xs font-bold"
-                  aria-label={social}
+                  aria-label={t(social.key, social.label)}
                 >
-                  {social.charAt(0)}
+                  {t(social.key, social.label).charAt(0)}
                 </a>
               ))}
             </div>

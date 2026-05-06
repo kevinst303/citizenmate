@@ -26,7 +26,8 @@ export async function deepseekChat({
   maxTokens = 4000,
   jsonMode = false,
 }: DeepSeekChatParams): Promise<string> {
-  const completion = await deepseek.chat.completions.create({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const params: any = {
     model: 'deepseek-v4-flash',
     messages: [
       { role: 'system', content: systemPrompt },
@@ -35,8 +36,11 @@ export async function deepseekChat({
     thinking: { type: 'disabled' },
     temperature,
     max_tokens: maxTokens,
-    ...(jsonMode ? { response_format: { type: 'json_object' } } : {}),
-  });
+  };
+  if (jsonMode) {
+    params.response_format = { type: 'json_object' };
+  }
+  const completion = await deepseek.chat.completions.create(params);
 
   return completion.choices[0]?.message?.content || '';
 }

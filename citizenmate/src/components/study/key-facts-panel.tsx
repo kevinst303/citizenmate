@@ -3,6 +3,7 @@
 import { Lightbulb } from "lucide-react";
 import { motion } from "framer-motion";
 import type { StudyLanguage } from "@/lib/study-context";
+import { useT } from "@/i18n/i18n-context";
 
 interface KeyFactsPanelProps {
   facts: string[];
@@ -11,6 +12,7 @@ interface KeyFactsPanelProps {
 }
 
 export function KeyFactsPanel({ facts, factsZh, language }: KeyFactsPanelProps) {
+  const { t } = useT();
   const displayFacts = language === "zh" ? factsZh : facts;
   const showBoth = language === "both";
 
@@ -31,7 +33,7 @@ export function KeyFactsPanel({ facts, factsZh, language }: KeyFactsPanelProps) 
           <Lightbulb className="w-4 h-4 text-cm-teal" />
         </motion.div>
         <span className="text-sm font-heading font-bold text-cm-slate-800">
-          {language === "zh" ? "关键事实" : "Key Facts"}
+          {language === "zh" ? t("study.key_facts_zh") : t("study.key_facts")}
         </span>
       </div>
       <ul className="space-y-2">

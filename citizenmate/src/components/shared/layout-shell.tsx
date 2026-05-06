@@ -22,10 +22,10 @@ export function LayoutShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   // Hide navbar/footer when user is actively taking a quiz or in the admin dashboard
-  // Match: /practice/mock-test-1, /practice/mock-test-2, etc.
+  // Match: /en/practice/mock-test-1, /practice/mock-test-1, etc.
   // Don't match: /practice (dashboard) or /practice/mock-test-1/results (results page)
   const isActiveQuiz =
-    /^\/practice\/[^/]+$/.test(pathname) &&
+    /^\/(?:[a-z]{2}\/)?practice\/[^/]+$/.test(pathname) &&
     !pathname.endsWith("/results");
 
   const isAdminRoute = pathname.startsWith("/admin") || /^\/[a-zA-Z-]+\/admin/.test(pathname);

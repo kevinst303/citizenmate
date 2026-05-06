@@ -2,9 +2,11 @@
 
 import { LegalLayout } from "@/components/shared/legal-layout";
 import { useT } from "@/i18n/i18n-context";
+import { useLocalizedPath } from "@/lib/use-localized-path";
 
 export default function PrivacyPage() {
   const { t } = useT();
+  const { getUrl } = useLocalizedPath();
 
   const sections = [
     { id: "overview", title: t("legal.privacy_section_overview", "Overview") },
@@ -72,7 +74,7 @@ export default function PrivacyPage() {
         </li>
         <li>
           <strong>{t("legal.privacy_info_collect_auto_li3_prefix", "Cookies:")}</strong>{" "}
-          <a href="/cookies">{t("legal.privacy_info_collect_auto_li3_link", "Cookie Policy")}</a>
+          <a href={getUrl("/cookies")}>{t("legal.privacy_info_collect_auto_li3_link", "Cookie Policy")}</a>
           {t("legal.privacy_info_collect_auto_li3_suffix", " for details.")}
         </li>
       </ul>
@@ -188,7 +190,7 @@ export default function PrivacyPage() {
       <h2 id="cookies">{t("legal.privacy_section_cookies", "Cookies")}</h2>
       <p>
         {t("legal.privacy_cookies_p1_prefix", "We use cookies and similar technologies to enhance your experience. For full details, please see our")}{" "}
-        <a href="/cookies">{t("legal.privacy_cookies_p1_link", "Cookie Policy")}</a>.
+        <a href={getUrl("/cookies")}>{t("legal.privacy_cookies_p1_link", "Cookie Policy")}</a>.
       </p>
 
       <h2 id="children">{t("legal.privacy_section_children", "Children's Privacy")}</h2>

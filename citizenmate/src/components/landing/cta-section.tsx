@@ -6,11 +6,13 @@ import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useT } from "@/i18n/i18n-context";
+import { useLocalizedPath } from "@/lib/use-localized-path";
 
 export function CTASection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
   const { t } = useT();
+  const { getUrl } = useLocalizedPath();
 
   return (
     <section className="py-[100px] relative overflow-hidden">
@@ -67,7 +69,7 @@ export function CTASection() {
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
               <Button
-                render={<a href="/practice" />}
+                render={<a href={getUrl("/practice")} />}
                 size="lg"
                 className="bg-white text-cm-teal font-heading font-bold border-none shadow-lg shadow-black/10 hover:bg-white/95"
               >

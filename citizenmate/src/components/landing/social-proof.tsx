@@ -3,87 +3,84 @@
 import { motion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const testimonials = [
-  {
-    name: "Priya Sharma",
-    role: "New citizen from India",
-    review:
-      "The bilingual mode was a game-changer for me. I could study complex topics in Hindi first, then switch to English for the test. Passed on my first try!",
-    rating: 5,
-    avatar: "PS",
-    gradient: "from-teal-400 to-teal-600",
-  },
-  {
-    name: "Wei Chen",
-    role: "New citizen from China",
-    review:
-      "The mock tests are exactly like the real thing. After my third practice test, I knew I was ready. The AI explanations helped me understand not just the answers, but the 'why'.",
-    rating: 5,
-    avatar: "WC",
-    gradient: "from-emerald-400 to-emerald-600",
-  },
-  {
-    name: "Ahmed Al-Rashid",
-    role: "New citizen from Iraq",
-    review:
-      "I was so nervous about the test. CitizenMate's progress tracking showed me exactly which chapters needed more work. By test day, I felt completely prepared.",
-    rating: 5,
-    avatar: "AA",
-    gradient: "from-violet-400 to-violet-600",
-  },
-  {
-    name: "Elena Rodriguez",
-    role: "New citizen from Colombia",
-    review:
-      "The simulated exams were a lifesaver! I was able to familiarize myself with the question format. By the time I took the actual test, it felt just like another practice run.",
-    rating: 5,
-    avatar: "ER",
-    gradient: "from-rose-400 to-rose-600",
-  },
-  {
-    name: "Kwame Osei",
-    role: "New citizen from Ghana",
-    review:
-      "The bite-sized lessons made it so easy to study during my daily commute. I never felt overwhelmed, and the progress tracker kept me motivated. Highly recommended!",
-    rating: 5,
-    avatar: "KO",
-    gradient: "from-blue-400 to-blue-600",
-  },
-  {
-    name: "Mateo Silva",
-    role: "New citizen from Brazil",
-    review:
-      "I struggled with the 'Democratic beliefs and rights' section initially. The detailed explanations after every wrong answer finally made it click for me.",
-    rating: 4,
-    avatar: "MS",
-    gradient: "from-amber-400 to-amber-600",
-  },
-  {
-    name: "Yuki Tanaka",
-    role: "New citizen from Japan",
-    review:
-      "English is not my first language, so the simple, clear wording of the study materials was fantastic. Passed with 100% on my first attempt!",
-    rating: 5,
-    avatar: "YT",
-    gradient: "from-fuchsia-400 to-fuchsia-600",
-  },
-  {
-    name: "Samir Patel",
-    role: "New citizen from UK",
-    review:
-      "Even as a native English speaker, the history and government sections were daunting. CitizenMate broke it all down beautifully. Worth every penny.",
-    rating: 5,
-    avatar: "SP",
-    gradient: "from-sky-400 to-sky-600",
-  }
-];
+import { useLocalizedPath } from "@/lib/use-localized-path";
+import { useT } from "@/i18n/i18n-context";
 
 // SOCP-01, SOCP-02, SOCP-03: verified
 // SOCP-01: section-alt-bg on section wrapper
 // SOCP-02: each card has initials avatar, name, star rating, and quote
 // SOCP-03: badge-pill-teal + h2 heading above grid; dual CTA buttons at bottom
 export function SocialProof() {
+  const { getUrl } = useLocalizedPath();
+  const { t } = useT();
+
+  const testimonials = [
+    {
+      name: t("landing.testimonial_1_name"),
+      role: t("landing.testimonial_1_role"),
+      review: t("landing.testimonial_1_text"),
+      rating: 5,
+      avatar: "PS",
+      gradient: "from-teal-400 to-teal-600",
+    },
+    {
+      name: t("landing.testimonial_2_name"),
+      role: t("landing.testimonial_2_role"),
+      review: t("landing.testimonial_2_text"),
+      rating: 5,
+      avatar: "WC",
+      gradient: "from-emerald-400 to-emerald-600",
+    },
+    {
+      name: t("landing.testimonial_3_name"),
+      role: t("landing.testimonial_3_role"),
+      review: t("landing.testimonial_3_text"),
+      rating: 5,
+      avatar: "AA",
+      gradient: "from-violet-400 to-violet-600",
+    },
+    {
+      name: t("landing.testimonial_4_name"),
+      role: t("landing.testimonial_4_role"),
+      review: t("landing.testimonial_4_text"),
+      rating: 5,
+      avatar: "ER",
+      gradient: "from-rose-400 to-rose-600",
+    },
+    {
+      name: t("landing.testimonial_5_name"),
+      role: t("landing.testimonial_5_role"),
+      review: t("landing.testimonial_5_text"),
+      rating: 5,
+      avatar: "KO",
+      gradient: "from-blue-400 to-blue-600",
+    },
+    {
+      name: t("landing.testimonial_6_name"),
+      role: t("landing.testimonial_6_role"),
+      review: t("landing.testimonial_6_text"),
+      rating: 4,
+      avatar: "MS",
+      gradient: "from-amber-400 to-amber-600",
+    },
+    {
+      name: t("landing.testimonial_7_name"),
+      role: t("landing.testimonial_7_role"),
+      review: t("landing.testimonial_7_text"),
+      rating: 5,
+      avatar: "YT",
+      gradient: "from-fuchsia-400 to-fuchsia-600",
+    },
+    {
+      name: t("landing.testimonial_8_name"),
+      role: t("landing.testimonial_8_role"),
+      review: t("landing.testimonial_8_text"),
+      rating: 5,
+      avatar: "SP",
+      gradient: "from-sky-400 to-sky-600",
+    },
+  ];
+
   return (
     <section className="py-20 sm:py-28 section-alt-bg overflow-hidden relative">
       <div className="mx-auto max-w-[1140px] px-4 sm:px-6 lg:px-8 relative mb-16">
@@ -98,7 +95,7 @@ export function SocialProof() {
           >
             <span className="badge-pill badge-pill-teal">
               <span className="w-1.5 h-1.5 rounded-full bg-cm-teal" />
-              Testimonials
+              {t("landing.testimonials_badge")}
             </span>
           </motion.div>
           <motion.h2
@@ -108,7 +105,7 @@ export function SocialProof() {
             transition={{ duration: 0.4, delay: 0.1 }}
             className="font-heading text-3xl sm:text-4xl md:text-[2.65rem] font-extrabold tracking-tight text-balance"
           >
-            Loved by new Australians
+            {t("landing.testimonials_title")}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 10 }}
@@ -117,7 +114,7 @@ export function SocialProof() {
             transition={{ duration: 0.4, delay: 0.2 }}
             className="mt-4 text-lg text-muted-foreground leading-relaxed"
           >
-            Join thousands of people who passed their citizenship test with confidence.
+            {t("landing.testimonials_subtitle")}
           </motion.p>
         </div>
       </div>
@@ -190,9 +187,9 @@ export function SocialProof() {
           className="mt-14 p-6 sm:p-8 rounded-2xl bg-cm-teal-50 border border-cm-teal-100/50 flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-16"
         >
           {[
-            { value: "4.9/5", label: "Average rating" },
-            { value: "10K+", label: "Students helped" },
-            { value: "97%", label: "Pass rate" },
+            { value: "4.9/5", label: t("landing.testimonials_rating") },
+            { value: "10K+", label: t("landing.testimonials_students") },
+            { value: "97%", label: t("landing.testimonials_pass_rate") },
           ].map((stat) => (
             <div key={stat.label} className="text-center">
               <span className="font-heading text-3xl font-extrabold text-cm-teal">
@@ -211,11 +208,11 @@ export function SocialProof() {
           transition={{ delay: 0.7 }}
           className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <Button render={<a href="/practice" />}>
-            Start Free Practice
+          <Button render={<a href={getUrl("/practice")} />}>
+            {t("landing.testimonials_cta_practice")}
           </Button>
           <Button render={<a href="/#pricing" />} variant="outline">
-            View Pricing
+            {t("landing.testimonials_cta_pricing")}
           </Button>
         </motion.div>
       </div>

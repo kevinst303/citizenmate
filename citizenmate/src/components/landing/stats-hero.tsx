@@ -3,14 +3,18 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { CheckCircle2, Sparkles } from "lucide-react";
-
-const checklist = [
-  "97% first-attempt pass rate",
-  "Official test format questions",
-  "AI-powered study guidance",
-];
+import { useLocalizedPath } from "@/lib/use-localized-path";
+import { useT } from "@/i18n/i18n-context";
 
 export function StatsHero() {
+  const { getUrl } = useLocalizedPath();
+  const { t } = useT();
+
+  const checklist = [
+    t("landing.stats_hero_stat_1"),
+    t("landing.stats_hero_stat_2"),
+    t("landing.stats_hero_stat_3"),
+  ];
   return (
     <section className="py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -26,12 +30,12 @@ export function StatsHero() {
             <div className="p-8 sm:p-12 lg:p-14 flex flex-col justify-center">
               {/* CTA button at top */}
               <motion.a
-                href="/practice"
+                href={getUrl("/practice")}
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
                 className="inline-flex items-center gap-2 self-start px-6 py-3 rounded-xl bg-cm-teal text-white font-heading font-semibold text-sm hover:bg-cm-teal-dark transition-colors mb-10"
               >
-                Discover More
+                {t("landing.stats_hero_cta")}
                 <svg
                   className="size-4"
                   viewBox="0 0 24 24"
@@ -57,7 +61,7 @@ export function StatsHero() {
                     10K+
                   </span>
                   <span className="block mt-2 text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground">
-                    Students helped since 2024
+                    {t("landing.stats_hero_students_label")}
                   </span>
                 </div>
 
@@ -68,11 +72,10 @@ export function StatsHero() {
                   </div>
                   <div>
                     <h4 className="font-heading font-bold text-[0.95rem]">
-                      Study with Confidence
+                      {t("landing.stats_hero_title")}
                     </h4>
                     <p className="text-sm text-muted-foreground leading-relaxed mt-1">
-                      Our AI-powered platform adapts to your learning style,
-                      helping you master every topic.
+                      {t("landing.stats_hero_desc")}
                     </p>
                   </div>
                 </div>
@@ -83,7 +86,7 @@ export function StatsHero() {
             <div className="relative min-h-[300px] lg:min-h-0">
               <Image
                 src="/generated/hero-study.webp"
-                alt="Students studying together for the Australian citizenship test"
+                alt={t("landing.stats_hero_image_alt")}
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
@@ -95,7 +98,7 @@ export function StatsHero() {
               <div className="relative z-10 p-8 sm:p-12 lg:p-14 flex flex-col justify-center h-full">
                 {/* Badge */}
                 <span className="inline-flex items-center self-start px-4 py-1.5 rounded-full bg-white/12 backdrop-blur-sm text-white text-xs font-semibold mb-6">
-                  Proven Results
+                  {t("landing.stats_hero_badge")}
                 </span>
 
                 {/* Checklist */}
@@ -125,11 +128,10 @@ export function StatsHero() {
         >
           <div>
             <h3 className="font-heading text-xl sm:text-2xl font-bold tracking-tight">
-              Have a question?
+              {t("landing.stats_hero_question_title")}
             </h3>
             <p className="mt-1 text-muted-foreground text-[0.95rem]">
-              We value your time, so we strive to provide fast and helpful
-              support to all aspiring citizens.
+              {t("landing.stats_hero_question_desc")}
             </p>
           </div>
           <motion.a
@@ -138,7 +140,7 @@ export function StatsHero() {
             whileTap={{ scale: 0.97 }}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-cm-teal text-white font-heading font-semibold text-sm hover:bg-cm-teal-dark transition-colors shrink-0"
           >
-            Get in Touch
+            {t("landing.stats_hero_question_cta")}
             <svg
               className="size-4"
               viewBox="0 0 24 24"

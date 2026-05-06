@@ -6,6 +6,7 @@ import { X, Mail, Lock, Loader2, AlertCircle } from "lucide-react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import { toast } from "@/lib/toast";
+import { useT } from "@/i18n/i18n-context";
 
 // ===== Auth Modal =====
 // Sign in / Sign up modal with email+password and Google OAuth.
@@ -23,6 +24,7 @@ export function AuthModal() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const redirectPath = searchParams?.get("redirect");
+  const { t } = useT();
 
   const resetForm = () => {
     setEmail("");
@@ -54,9 +56,9 @@ export function AuthModal() {
         const { error: authError } = await signIn(email, password);
         if (authError) {
           setError(authError.message);
-          toast.error("Sign-in failed", authError.message);
+          toast.error(t("auth.sign_in_failed"), t("auth.something_wrong"));
         } else {
-          toast.success("Welcome back, mate! 🇦🇺", "Your progress is synced.");
+          toast.success(t("auth.welcome_back_toast"), t("auth.progress_synced"));
           if (redirectPath) {
             router.push(redirectPath);
           }
@@ -65,17 +67,17 @@ export function AuthModal() {
         const { error: authError } = await signUp(email, password);
         if (authError) {
           setError(authError.message);
-          toast.error("Sign-up failed", authError.message);
+          toast.error(t("auth.sign_up_failed"), t("auth.something_wrong"));
         } else {
           setSuccessMessage(
-            "Check your email to confirm your account, mate! 📧"
+            t("auth.check_email")
           );
-          toast.info("Check your email! 📧", "Confirm your account to get started.");
+          toast.info(t("auth.check_email_toast"), t("auth.confirm_account"));
         }
       }
     } catch {
-      setError("Something went wrong. Please try again.");
-      toast.error("Something went wrong", "Please try again, mate.");
+      setError(t("auth.something_wrong"));
+      toast.error(t("auth.something_wrong"), t("auth.something_wrong"));
     } finally {
       setLoading(false);
     }
@@ -92,7 +94,7 @@ export function AuthModal() {
       }
       // Don't set loading false — Google redirects away
     } catch {
-      setError("Google sign-in failed. Please try again.");
+      setError(t("auth.google_sign_in_failed"));
       setLoading(false);
     }
   };
@@ -132,12 +134,12 @@ export function AuthModal() {
                   <X className="w-4 h-4" />
                 </button>
                 <h2 className="text-2xl font-heading font-bold">
-                  {mode === "sign-in" ? "Welcome back, mate!" : "Join CitizenMate"}
+                  {mode === "sign-in" ? t("auth.title_sign_in") : t("auth.title_sign_up")}
                 </h2>
                 <p className="text-sm text-white/70 mt-1">
                   {mode === "sign-in"
-                    ? "Sign in to sync your progress across devices"
-                    : "Create an account to save your progress"}
+                    ? t("auth.subtitle_sign_in")
+                    : t("auth.subtitle_sign_up")}
                 </p>
               </div>
 
@@ -167,7 +169,7 @@ export function AuthModal() {
                       fill="#EA4335"
                     />
                   </svg>
-                  Continue with Google
+                  {t("auth.continue_google")}
                 </button>
 
                 {/* Divider */}
@@ -177,7 +179,7 @@ export function AuthModal() {
                   </div>
                   <div className="relative flex justify-center">
                     <span className="bg-white px-3 text-xs text-cm-slate-500">
-                      or continue with email
+                      {t("auth.divider_label")}
                     </span>
                   </div>
                 </div>
@@ -188,8 +190,8 @@ export function AuthModal() {
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cm-slate-400" />
                     <input
                       type="email"
-                      aria-label="Email address"
-                      placeholder="Email address"
+                      aria-label={t("auth.email_label")}
+                      placeholder={t("auth.email_placeholder")}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
@@ -201,8 +203,8 @@ export function AuthModal() {
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cm-slate-400" />
                     <input
                       type="password"
-                      aria-label="Password"
-                      placeholder="Password"
+                      aria-label={t("auth.password_label")}
+                      placeholder={t("auth.password_placeholder")}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
@@ -241,20 +243,20 @@ export function AuthModal() {
                     className="w-full py-3 bg-cm-teal text-white font-heading font-semibold text-sm rounded-xl hover:bg-cm-teal-light disabled:opacity-60 transition-colors cursor-pointer flex items-center justify-center gap-2"
                   >
                     {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-                    {mode === "sign-in" ? "Sign In" : "Create Account"}
+                    {mode === "sign-in" ? t("auth.sign_in_button") : t("auth.create_account_button")}
                   </button>
                 </form>
 
                 {/* Switch mode */}
                 <p className="text-center text-sm text-cm-slate-500 mt-4">
                   {mode === "sign-in"
-                    ? "Don't have an account? "
-                    : "Already have an account? "}
+                    ? t("auth.no_account") + " "
+                    : t("auth.have_account") + " "}
                   <button
                     onClick={switchMode}
                     className="text-cm-teal font-semibold hover:underline cursor-pointer"
                   >
-                    {mode === "sign-in" ? "Sign up" : "Sign in"}
+                    {mode === "sign-in" ? t("auth.sign_up_link") : t("auth.sign_in_link")}
                   </button>
                 </p>
               </div>

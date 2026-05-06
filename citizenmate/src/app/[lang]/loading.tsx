@@ -1,4 +1,9 @@
+"use client";
+
+import { useT } from "@/i18n/i18n-context";
+
 export default function Loading() {
+  const { t } = useT();
   return (
     <div className="min-h-screen bg-cm-ice flex items-center justify-center">
       <div className="flex flex-col items-center gap-4">
@@ -8,7 +13,7 @@ export default function Loading() {
           <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-cm-navy animate-spin" />
         </div>
         <p className="text-sm text-cm-slate-500 font-heading font-medium animate-pulse">
-          Loading…
+          {t("common.loading_ellipsis")}
         </p>
       </div>
     </div>

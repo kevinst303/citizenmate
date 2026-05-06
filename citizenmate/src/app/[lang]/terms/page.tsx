@@ -2,9 +2,11 @@
 
 import { LegalLayout } from "@/components/shared/legal-layout";
 import { useT } from "@/i18n/i18n-context";
+import { useLocalizedPath } from "@/lib/use-localized-path";
 
 export default function TermsPage() {
   const { t } = useT();
+  const { getUrl } = useLocalizedPath();
 
   const sections = [
     { id: "acceptance", title: t("legal.terms_section_acceptance", "Acceptance of Terms") },
@@ -155,7 +157,7 @@ export default function TermsPage() {
       </p>
       <p>
         {t("legal.terms_termination_p2_prefix", "You may delete your account at any time through your account settings. Upon deletion, your personal data will be removed in accordance with our")}{" "}
-        <a href="/privacy">{t("legal.terms_termination_p2_link", "Privacy Policy")}</a>
+        <a href={getUrl("/privacy")}>{t("legal.terms_termination_p2_link", "Privacy Policy")}</a>
         {t("legal.terms_termination_p2_suffix", ".")}
       </p>
 

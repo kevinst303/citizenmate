@@ -1,11 +1,13 @@
 "use client";
 
 import { useT } from "@/i18n/i18n-context";
+import { useLocalizedPath } from "@/lib/use-localized-path";
 import Link from "next/link";
 import { XCircle, ArrowLeft, HelpCircle, Shield } from "lucide-react";
 
 export default function CheckoutCancelPage() {
   const { t } = useT();
+  const { getUrl } = useLocalizedPath();
 
   return (
     <div className="min-h-screen bg-cm-ice flex items-center justify-center px-4 py-16">
@@ -52,7 +54,7 @@ export default function CheckoutCancelPage() {
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
-            href="/dashboard"
+            href={getUrl("/dashboard")}
             className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-cm-teal text-white font-heading font-bold rounded-full hover:bg-cm-teal/90 transition-colors duration-200"
           >
             <ArrowLeft className="w-4 h-4" />

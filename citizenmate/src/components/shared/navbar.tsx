@@ -149,7 +149,7 @@ export function Navbar() {
               transition={{ type: "spring", stiffness: 400, damping: 15 }}
               className="flex items-center justify-center"
             >
-              <Image src="/logo.svg" alt="CitizenMate Logo" width={36} height={36} />
+              <Image src="/logo.svg" alt={t("landing.footer_logo_alt")} width={36} height={36} />
             </motion.div>
             <span className="font-heading text-xl font-bold text-foreground tracking-tight">
               Citizen<span className="text-cm-teal">Mate</span>
@@ -250,7 +250,7 @@ export function Navbar() {
                 <div className="p-4 border-b border-border shadow-sm">
                   <SheetTitle className="font-heading text-xl font-bold flex items-center gap-2">
                     <div className="flex items-center justify-center w-8 h-8">
-                      <Image src="/logo.svg" alt="CitizenMate Logo" width={32} height={32} />
+                      <Image src="/logo.svg" alt={t("landing.footer_logo_alt")} width={32} height={32} />
                     </div>
                     <span>Citizen<span className="text-cm-teal">Mate</span></span>
                   </SheetTitle>

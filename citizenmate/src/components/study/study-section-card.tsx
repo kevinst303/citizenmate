@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2, Circle, ChevronDown, BookOpen } from "lucide-react";
 import type { StudySection } from "@/lib/types";
 import type { StudyLanguage } from "@/lib/study-context";
+import { useT } from "@/i18n/i18n-context";
 import { KeyFactsPanel } from "./key-facts-panel";
 
 interface StudySectionCardProps {
@@ -22,6 +23,7 @@ export function StudySectionCard({
   onToggleComplete,
   index,
 }: StudySectionCardProps) {
+  const { t } = useT();
   const [isExpanded, setIsExpanded] = useState(false);
 
   const title = language === "zh" ? section.titleZh : section.title;
@@ -55,7 +57,7 @@ export function StudySectionCard({
           whileTap={{ scale: 0.85 }}
           transition={{ type: "spring", stiffness: 400, damping: 15 }}
           className="flex-shrink-0 cursor-pointer"
-          aria-label={isComplete ? "Mark as incomplete" : "Mark as complete"}
+          aria-label={isComplete ? t("study.mark_incomplete") : t("study.mark_complete")}
         >
           <AnimatePresence mode="wait">
             {isComplete ? (
@@ -129,7 +131,7 @@ export function StudySectionCard({
                     >
                       <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-cm-teal/10 text-cm-teal text-xs font-semibold mb-3">
                         <BookOpen className="w-3 h-3" />
-                        English
+                        {t("study.english_label")}
                       </span>
                       <div className="space-y-3">
                         {contentEn.map((para, i) => (
@@ -202,8 +204,11 @@ export function StudySectionCard({
                     className="mt-4 pt-3 border-t border-cm-slate-100"
                   >
                     <p className="text-xs text-cm-slate-400">
-                      {section.relatedQuestionIds.length} related practice question
-                      {section.relatedQuestionIds.length === 1 ? "" : "s"} available
+                      {section.relatedQuestionIds.length}{" "}
+                      {section.relatedQuestionIds.length === 1
+                        ? t("study.related_question")
+                        : t("study.related_questions")}{" "}
+                      {t("study.available_suffix")}
                     </p>
                   </motion.div>
                 )}

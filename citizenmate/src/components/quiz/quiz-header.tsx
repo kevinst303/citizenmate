@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useQuiz } from "@/lib/quiz-context";
+import { useLocalizedPath } from "@/lib/use-localized-path";
 import { QuizTimer } from "./quiz-timer";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -19,6 +20,7 @@ export function QuizHeader() {
   const { state, submitQuiz, answeredCount } = useQuiz();
   const [showConfirm, setShowConfirm] = useState(false);
   const { t } = useT();
+  const { getUrl } = useLocalizedPath();
 
   if (!state.test) return null;
 
@@ -31,7 +33,7 @@ export function QuizHeader() {
           <div className="flex items-center justify-between h-14 sm:h-16">
             {/* Logo */}
             <Link
-              href="/practice"
+              href={getUrl("/practice")}
               className="flex items-center gap-2 text-cm-slate-500 hover:text-cm-navy transition-colors duration-200"
               onClick={(e) => {
                 if (state.status === "in-progress") {
@@ -68,7 +70,7 @@ export function QuizHeader() {
                 onClick={() => setShowConfirm(true)}
                 className="hidden sm:inline-flex items-center px-4 py-2 bg-cm-teal hover:bg-cm-teal/90 text-white text-sm font-heading font-semibold rounded-[10px] transition-colors duration-200 cursor-pointer"
               >
-                Submit Test
+                {t("quiz.submit_test_button")}
               </motion.button>
             </div>
           </div>
@@ -162,7 +164,7 @@ export function QuizHeader() {
                   onClick={() => setShowConfirm(false)}
                   className="flex-1 px-4 py-3 border-2 border-cm-slate-200 text-cm-slate-700 font-heading font-semibold rounded-xl hover:bg-cm-slate-50 transition-colors duration-200 cursor-pointer"
                 >
-                  Keep Going
+                  {t("quiz.keep_going", "Keep Going")}
                 </motion.button>
                 <motion.button
                   whileHover={{ scale: 1.02 }}
@@ -171,13 +173,13 @@ export function QuizHeader() {
                     setShowConfirm(false);
                     submitQuiz();
                     toast.default(
-                      "Test submitted! 📝",
-                      "Calculating your results…"
+                      t("quiz.toast_title"),
+                      t("quiz.toast_desc")
                     );
                   }}
                   className="flex-1 px-4 py-3 bg-cm-teal hover:bg-cm-teal/90 text-white font-heading font-semibold rounded-[10px] transition-colors duration-200 cursor-pointer"
                 >
-                {t("quiz.submit_test", "Submit Test")}
+                  {t("quiz.submit_test_button")}
                 </motion.button>
               </div>
             </motion.div>

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import type { QuizQuestion } from "@/lib/types";
+import { useT } from "@/i18n/i18n-context";
 import {
   CheckCircle2,
   XCircle,
@@ -23,6 +24,7 @@ export function QuestionReview({
 }: QuestionReviewProps) {
   const isCorrect = userAnswer === question.correctAnswer;
   const wasAnswered = userAnswer !== undefined;
+  const { t } = useT();
 
   return (
     <motion.div
@@ -63,7 +65,7 @@ export function QuestionReview({
             {question.isValuesQuestion && (
               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-cm-gold-light text-cm-gold text-xs font-semibold border border-amber-200/60">
                 <Heart className="w-2.5 h-2.5" />
-                Values
+                {t("question_review.values_badge")}
               </span>
             )}
           </div>
@@ -104,7 +106,7 @@ export function QuestionReview({
               )}
               {isUserChoice && !isCorrectOption && (
                 <span className="text-xs text-red-400 flex-shrink-0">
-                  your answer
+                  {t("question_review.your_answer")}
                 </span>
               )}
             </div>
@@ -117,14 +119,14 @@ export function QuestionReview({
         <div className="flex items-center gap-1.5 mb-1.5">
           <BookOpen className="w-3.5 h-3.5 text-cm-sky" />
           <span className="text-xs font-semibold text-cm-sky uppercase tracking-wide">
-            Explanation
+            {t("question_review.explanation")}
           </span>
         </div>
         <p className="text-sm text-cm-slate-700 leading-relaxed">
           {question.rationale}
         </p>
         <p className="text-xs text-cm-slate-400 mt-2 italic">
-          Reference: {question.bookReference}
+          {t("question_review.reference")}: {question.bookReference}
         </p>
       </div>
 
@@ -132,7 +134,7 @@ export function QuestionReview({
       {!wasAnswered && (
         <div className="mt-3 flex items-center gap-2 text-sm text-amber-600 font-medium">
           <AlertTriangle className="w-4 h-4" />
-          You didn&apos;t answer this question
+          {t("question_review.unanswered")}
         </div>
       )}
     </motion.div>

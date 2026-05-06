@@ -1,10 +1,9 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
-import type { Locale } from './config';
+import { defaultLocale, getDictionary, type Locale } from './config';
 
-type TranslationValue = string | Record<string, string>;
-type Dictionary = Record<string, TranslationValue>;
+type Dictionary = Record<string, string | Record<string, string>>;
 
 const I18nContext = createContext<{
   locale: Locale;
@@ -12,21 +11,7 @@ const I18nContext = createContext<{
   loading: boolean;
 } | null>(null);
 
-let cachedDicts: Partial<Record<Locale, Dictionary>> = {};
-
-function loadDictionary(locale: Locale): () => void {
-  const cleanupFns: Array<() => void> = [];
-  if (cachedDicts[locale]) return () => {};
-
-  import(`./dictionaries/${locale}.json`).then((mod) => {
-    cachedDicts[locale] = mod.default;
-    cleanupFns.forEach((fn) => fn());
-  });
-
-  return () => {
-    cleanupFns.push(() => {});
-  };
-}
+const cachedDicts = new Map<Locale, Dictionary>();
 
 function getNestedValue(obj: Record<string, unknown>, path: string): string {
   const keys = path.split('.');
@@ -48,27 +33,44 @@ export function I18nProvider({
   const [, forceUpdate] = useState(0);
 
   useEffect(() => {
-    const timeout = setTimeout(async () => {
+    let cancelled = false;
+
+    async function loadDict() {
       try {
-        const mod = await import(`./dictionaries/${locale}.json`);
-        cachedDicts[locale] = mod.default;
+        const dict = await getDictionary(locale);
+        if (cancelled) return;
+        cachedDicts.set(locale, dict);
         forceUpdate((n) => n + 1);
-      } catch {
-        // Fall back to English if locale dictionary fails
-        const mod = await import('./dictionaries/en.json');
-        cachedDicts[locale] = mod.default;
+      } catch (err) {
+        console.error(`[i18n] Failed to load dictionary for locale "${locale}":`, err);
+        if (cancelled) return;
+        if (locale !== defaultLocale) {
+          console.warn(`[i18n] Falling back to "${defaultLocale}" dictionary for locale "${locale}"`);
+          try {
+            const fallbackDict = await getDictionary(defaultLocale);
+            if (cancelled) return;
+            cachedDicts.set(locale, fallbackDict);
+          } catch (fallbackErr) {
+            console.error(`[i18n] Failed to load fallback dictionary:`, fallbackErr);
+          }
+        }
         forceUpdate((n) => n + 1);
       }
-    }, 0);
-    return () => clearTimeout(timeout);
+    }
+
+    loadDict();
+
+    return () => {
+      cancelled = true;
+    };
   }, [locale]);
 
-  const dict = cachedDicts[locale];
+  const dict = cachedDicts.get(locale);
   const loading = !dict;
 
   const t = (key: string, fallback?: string): string => {
     if (!dict) return fallback ?? key;
-    const value = getNestedValue(dict, key);
+    const value = getNestedValue(dict as Record<string, unknown>, key);
     return value || fallback || key;
   };
 

@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Download, X, Share, Plus } from "lucide-react";
 import { toast } from "@/lib/toast";
+import { useT } from "@/i18n/i18n-context";
 
 // Extend the global window with the beforeinstallprompt event
 interface BeforeInstallPromptEvent extends Event {
@@ -50,6 +51,7 @@ export function InstallPrompt() {
     useState<BeforeInstallPromptEvent | null>(null);
   const [showPrompt, setShowPrompt] = useState(false);
   const [showIOSInstructions, setShowIOSInstructions] = useState(false);
+  const { t } = useT();
 
   // Listen for the native install prompt event
   useEffect(() => {
@@ -112,8 +114,8 @@ export function InstallPrompt() {
     if (outcome === "accepted") {
       setShowPrompt(false);
       toast.success(
-        "CitizenMate installed! 🇦🇺",
-        "Launch from your home screen to study anytime."
+        t("install.installed_toast"),
+        t("install.installed_desc")
       );
     }
     setDeferredPrompt(null);
@@ -148,17 +150,17 @@ export function InstallPrompt() {
                   </div>
                   <div>
                     <h3 className="text-white font-heading font-bold text-base">
-                      Install CitizenMate
+                      {t("install.title")}
                     </h3>
                     <p className="text-white/70 text-xs">
-                      Add to your home screen
+                      {t("install.subtitle")}
                     </p>
                   </div>
                 </div>
                 <button
                   onClick={handleDismiss}
                   className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors cursor-pointer"
-                  aria-label="Dismiss install prompt"
+                  aria-label={t("install.dismiss")}
                 >
                   <X className="w-4 h-4 text-white/80" />
                 </button>
@@ -171,8 +173,7 @@ export function InstallPrompt() {
                 /* iOS-specific instructions */
                 <div>
                   <p className="text-sm text-cm-slate-600 mb-4">
-                    Get the full app experience — study offline, quick launch
-                    from your home screen!
+                    {t("install.desc_1")}
                   </p>
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
@@ -180,9 +181,7 @@ export function InstallPrompt() {
                         <Share className="w-4 h-4 text-cm-sky" />
                       </div>
                       <p className="text-sm text-cm-slate-700">
-                        Tap the{" "}
-                        <span className="font-semibold">Share</span> button
-                        in Safari
+                        {t("install.step_1")}
                       </p>
                     </div>
                     <div className="flex items-center gap-3">
@@ -190,10 +189,7 @@ export function InstallPrompt() {
                         <Plus className="w-4 h-4 text-cm-eucalyptus" />
                       </div>
                       <p className="text-sm text-cm-slate-700">
-                        Scroll down and tap{" "}
-                        <span className="font-semibold">
-                          Add to Home Screen
-                        </span>
+                        {t("install.step_2")}
                       </p>
                     </div>
                   </div>
@@ -201,15 +197,14 @@ export function InstallPrompt() {
                     onClick={handleDismiss}
                     className="mt-4 w-full py-2.5 text-sm font-heading font-semibold text-cm-slate-500 hover:text-cm-navy transition-colors cursor-pointer"
                   >
-                    Got it
+                    {t("install.got_it")}
                   </button>
                 </div>
               ) : (
                 /* Standard install prompt */
                 <div>
                   <p className="text-sm text-cm-slate-600 mb-4">
-                    Get the full app experience — study offline, quick launch
-                    from your home screen, and stay on track for your test!
+                    {t("install.desc_2")}
                   </p>
                   <div className="flex gap-3">
                     <button
@@ -217,13 +212,13 @@ export function InstallPrompt() {
                       className="flex-1 inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-cm-navy text-white font-heading font-semibold text-sm hover:bg-cm-navy-light transition-colors shadow-md cursor-pointer"
                     >
                       <Download className="w-4 h-4" />
-                      Install
+                      {t("install.install_button")}
                     </button>
                     <button
                       onClick={handleDismiss}
                       className="px-5 py-3 rounded-xl bg-cm-slate-50 text-cm-slate-600 font-heading font-semibold text-sm hover:bg-cm-slate-100 transition-colors cursor-pointer"
                     >
-                      Not now
+                      {t("install.not_now")}
                     </button>
                   </div>
                 </div>

@@ -20,6 +20,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useAuth } from "@/lib/auth-context";
+import { useT } from "@/i18n/i18n-context";
 
 interface ReferralStats {
   promoCode: string | null;
@@ -30,6 +31,7 @@ interface ReferralStats {
 }
 
 export function ReferralCard() {
+  const { t } = useT();
   const { user } = useAuth();
   const [copied, setCopied] = useState<"link" | "code" | null>(null);
   const [stats, setStats] = useState<ReferralStats | null>(null);
@@ -111,7 +113,7 @@ export function ReferralCard() {
 
   const handleShareGeneric = async () => {
     const shareData = {
-      title: "CitizenMate — Ace your Australian Citizenship Test",
+      title: t("referral.share_title"),
       text: stats?.promoCode
         ? `Use my code ${stats.promoCode} to get 20% off the Sprint Pass on CitizenMate! 🇦🇺`
         : "I'm using CitizenMate to study for my Australian citizenship test. Check it out!",
@@ -136,7 +138,7 @@ export function ReferralCard() {
 
   const progressText = stats
     ? `${stats.qualifiedReferred}/${stats.maxRewards} mates helped`
-    : "Loading...";
+    : t("common.loading");
 
   return (
     <Card className="relative overflow-hidden border-cm-teal/20 bg-gradient-to-br from-cm-teal/5 to-cm-ocean/5">
@@ -146,18 +148,15 @@ export function ReferralCard() {
       <CardHeader className="pb-3">
         <CardTitle className="text-lg flex items-center gap-2 text-cm-teal">
           <Gift className="w-5 h-5" />
-          Help a Mate
+          {t("referral.referral_help_title")}
           {stats && stats.qualifiedReferred >= stats.maxRewards && (
             <span className="ml-auto text-xs font-normal bg-cm-gold/20 text-cm-gold-dark px-2 py-0.5 rounded-full">
-              Max reached 🎉
+              {t("referral.max_reached")}
             </span>
           )}
         </CardTitle>
         <CardDescription className="text-sm leading-relaxed">
-          Share your code with a friend. They get{" "}
-          <strong className="text-cm-teal">20% off</strong> their Sprint Pass,
-          and you get <strong className="text-cm-teal">7 bonus premium days</strong> when they
-          qualify!
+          {t("referral.referral_help_desc")}
         </CardDescription>
       </CardHeader>
 
@@ -172,7 +171,7 @@ export function ReferralCard() {
               </span>
               {stats.qualifiedReferred > 0 && (
                 <span className="text-cm-teal font-medium">
-                  +{stats.qualifiedReferred * 7} days earned
+                  +{stats.qualifiedReferred * 7} {t("referral.days_earned")}
                 </span>
               )}
             </div>
@@ -185,7 +184,7 @@ export function ReferralCard() {
             {stats.qualifiedReferred >= 4 && stats.qualifiedReferred < stats.maxRewards && (
               <p className="text-xs text-cm-gold-dark flex items-center gap-1">
                 <Sparkles className="w-3 h-3" />
-                Almost there! 1 more mate and you&apos;ve maxed out your rewards!
+                {t("referral.max_reached_desc")}
               </p>
             )}
           </div>
@@ -199,7 +198,7 @@ export function ReferralCard() {
         ) : stats?.promoCode ? (
           <div className="space-y-2">
             <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-              Your Promo Code
+              {t("referral.code_label")}
             </label>
             <div className="flex items-center gap-2">
               <div className="flex-1 bg-background border-2 border-dashed border-cm-teal/30 rounded-lg px-4 py-2.5 text-center">
@@ -221,7 +220,7 @@ export function ReferralCard() {
               </Button>
             </div>
             <p className="text-xs text-muted-foreground text-center">
-              Friends use this code at checkout for 20% off
+              {t("referral.code_hint")}
             </p>
           </div>
         ) : (
@@ -234,12 +233,12 @@ export function ReferralCard() {
             {generating ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Generating code...
+                {t("referral.generating")}
               </>
             ) : (
               <>
                 <Sparkles className="w-4 h-4 mr-2" />
-                Generate Your Promo Code
+                {t("referral.generate")}
               </>
             )}
           </Button>
@@ -248,7 +247,7 @@ export function ReferralCard() {
         {/* ── Referral Link ── */}
         <div className="space-y-2">
           <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-            Referral Link
+            {t("referral.link_label")}
           </label>
           <div className="flex items-center gap-2">
             <div className="flex-1 bg-background border rounded-md px-3 py-2 text-sm text-muted-foreground truncate select-all">
@@ -272,7 +271,7 @@ export function ReferralCard() {
             onClick={handleShareWhatsApp}
           >
             <MessageCircle className="w-4 h-4 mr-1.5" />
-            WhatsApp
+            {t("referral.share_whatsapp")}
           </Button>
           <Button
             variant="outline"
@@ -280,7 +279,7 @@ export function ReferralCard() {
             onClick={handleShareGeneric}
           >
             <Share2 className="w-4 h-4 mr-1.5" />
-            Share
+            {t("referral.share_button")}
           </Button>
         </div>
       </CardContent>

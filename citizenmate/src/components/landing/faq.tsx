@@ -4,45 +4,14 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useLocalizedPath } from "@/lib/use-localized-path";
+import { useT } from "@/i18n/i18n-context";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-
-const faqs = [
-  {
-    question: "Is CitizenMate an official government app?",
-    answer:
-      "No. CitizenMate is an independent study tool and is not affiliated with or endorsed by the Australian Government or the Department of Home Affairs. All our practice content is based on the official 'Our Common Bond' booklet, but we always recommend referring to the official materials as the definitive source.",
-  },
-  {
-    question: "How is the real citizenship test structured?",
-    answer:
-      "The Australian citizenship test consists of 20 multiple-choice questions drawn from the 'Our Common Bond' booklet. You have 45 minutes to complete it. You need to answer at least 15 questions correctly (75%) to pass, AND you must answer all 5 Australian values questions correctly. The test is conducted only in English.",
-  },
-  {
-    question: "What languages does CitizenMate support?",
-    answer:
-      "We currently support English and Simplified Chinese in our bilingual study mode. This means you can read the study content side-by-side in English and Chinese, helping you understand concepts deeply before answering in English. We're adding more languages soon — including Arabic, Hindi, Vietnamese, and Tagalog.",
-  },
-  {
-    question: "How is CitizenMate different from other practice test sites?",
-    answer:
-      "Most citizenship test prep tools are basic quiz apps with outdated questions and no learning support. CitizenMate offers smart mock tests that mirror the real test experience, bilingual study mode, AI-powered explanations, a readiness score that tells you when you're actually prepared, and a study plan anchored to your test date.",
-  },
-  {
-    question: "What's included in the free tier?",
-    answer:
-      "The free tier includes 1 full mock test with results and explanations, access to the basic Australian Values study content, 3 AI tutor questions per day, and a topic mastery overview. It's enough to see where you stand and decide if you need more support.",
-  },
-  {
-    question: "What is the Exam Sprint Pass?",
-    answer:
-      "The Exam Sprint Pass ($29.99) gives you full CitizenMate Pro access for 60 days — designed to match the typical 2-3 month study window before the test. It includes all 500+ practice questions, complete bilingual study mode, unlimited AI tutor, readiness score, spaced repetition, and a personalised test-date study plan.",
-  },
-];
 
 const faqItem = {
   hidden: { opacity: 0, y: 20 },
@@ -59,6 +28,36 @@ const faqItem = {
 };
 
 export function FAQ() {
+  const { getUrl } = useLocalizedPath();
+  const { t } = useT();
+
+  const faqs = [
+    {
+      question: t("landing.faq_q1"),
+      answer: t("landing.faq_a1"),
+    },
+    {
+      question: t("landing.faq_q2"),
+      answer: t("landing.faq_a2"),
+    },
+    {
+      question: t("landing.faq_q3"),
+      answer: t("landing.faq_a3"),
+    },
+    {
+      question: t("landing.faq_q4"),
+      answer: t("landing.faq_a4"),
+    },
+    {
+      question: t("landing.faq_q5"),
+      answer: t("landing.faq_a5"),
+    },
+    {
+      question: t("landing.faq_q6"),
+      answer: t("landing.faq_a6"),
+    },
+  ];
+
   return (
     <section id="faq" className="py-20 sm:py-28">
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
@@ -73,7 +72,7 @@ export function FAQ() {
           >
             <span className="badge-pill">
               <span className="w-1.5 h-1.5 rounded-full bg-cm-teal" />
-              FAQ
+              {t("landing.faq_badge")}
             </span>
           </motion.div>
           <motion.h2
@@ -83,7 +82,7 @@ export function FAQ() {
             transition={{ duration: 0.4, delay: 0.1 }}
             className="font-heading text-3xl sm:text-4xl md:text-[2.65rem] font-extrabold tracking-tight text-balance"
           >
-            Frequently asked questions
+            {t("landing.faq_heading")}
           </motion.h2>
         </div>
 
@@ -121,16 +120,16 @@ export function FAQ() {
           className="mt-12 p-6 rounded-2xl bg-cm-teal-50 border border-cm-teal-100 flex flex-col sm:flex-row items-center justify-between gap-4"
         >
           <div>
-            <h3 className="font-heading font-bold text-lg">Still have questions?</h3>
+            <h3 className="font-heading font-bold text-lg">{t("landing.faq_contact_title")}</h3>
             <p className="text-sm text-muted-foreground mt-1">
-              We&apos;re here to help you on your citizenship journey.
+              {t("landing.faq_contact_desc")}
             </p>
           </div>
           <Button
-            render={<Link href="/about#contact" />}
+            render={<Link href={getUrl("/about#contact")} />}
             className="shrink-0"
           >
-            Contact Us
+            {t("landing.faq_contact_button")}
             <ArrowRight className="size-4 ml-1" />
           </Button>
         </motion.div>

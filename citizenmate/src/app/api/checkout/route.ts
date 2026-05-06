@@ -6,6 +6,12 @@ import * as Sentry from '@sentry/nextjs';
 
 export async function POST(req: Request) {
   try {
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://citizenmate.com.au';
+
+    // ── Extract locale from referer for Stripe redirect URLs ──
+    const referer = req.headers.get('referer') || '';
+    const locale = referer.match(/\/([a-z]{2})(?:\/|$)/)?.[1] || 'en';
+
     // ── Apply Rate Limiting ──
     // In serverless environments, x-forwarded-for is typically populated by the load balancer/CDN
     const ip = req.headers.get('x-forwarded-for') ?? '127.0.0.1';
@@ -74,8 +80,6 @@ export async function POST(req: Request) {
     const price = await stripe.prices.retrieve(priceId);
     const mode: Stripe.Checkout.SessionCreateParams.Mode = price.type === 'one_time' ? 'payment' : 'subscription';
 
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://citizenmate.com.au';
-
     // ── Look up Stripe Promotion Code if a promo code was provided ──
     const discounts: Stripe.Checkout.SessionCreateParams.Discount[] = [];
     let referralPromoCodeId: string | undefined;
@@ -118,8 +122,8 @@ export async function POST(req: Request) {
       // NOTE: No GST/tax applied — business is not yet GST-registered.
       // When registering, add automatic_tax: { enabled: true } and
       // set tax_behavior='inclusive' on the Stripe Price object.
-      success_url: `${siteUrl}/checkout/success`,
-      cancel_url: `${siteUrl}/checkout/cancel`,
+      success_url: `${siteUrl}/${locale}/checkout/success`,
+      cancel_url: `${siteUrl}/${locale}/checkout/cancel`,
       client_reference_id: user.id,
       customer_email: user.email,
       metadata: metadataPayload,

@@ -31,6 +31,7 @@ export function LanguageSwitcher() {
 
   const switchTo = (locale: string) => {
     const parts = pathname?.replace(/^\/[a-z]{2}(-[A-Z]{2})?/, `/${locale}`) || `/${locale}`;
+    document.cookie = `NEXT_LOCALE=${locale};path=/;max-age=31536000;SameSite=Lax`;
     router.push(parts);
     setOpen(false);
   };

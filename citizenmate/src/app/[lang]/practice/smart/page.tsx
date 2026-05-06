@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { usePremium } from "@/lib/auth-context";
 import { useT } from "@/i18n/i18n-context";
+import { useLocalizedPath } from "@/lib/use-localized-path";
 
 const RATE_KEY = "citizenmate-srs-usage";
 const MAX_DAILY_SESSIONS = 1;
@@ -109,6 +110,7 @@ export default function SmartPracticePage() {
   const { getStats, getTopicWeakness, getSmartQuestions } = useSRS();
   const { isPremium, upgrade } = usePremium();
   const { t } = useT();
+  const { getUrl } = useLocalizedPath();
   const [focusTopic, setFocusTopic] = useState<TopicCategory | null>(null);
   const [dailyUsage, setDailyUsage] = useState(() => ({
     date: getTodayString(),
@@ -501,7 +503,7 @@ export default function SmartPracticePage() {
           {/* Back to practice link */}
           <motion.div variants={item} className="text-center">
             <Link
-              href="/practice"
+              href={getUrl("/practice")}
               className="inline-flex items-center gap-2 text-sm text-cm-slate-500 hover:text-cm-navy transition-colors"
             >
               <ArrowRight className="w-4 h-4 rotate-180" />

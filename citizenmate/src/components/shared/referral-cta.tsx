@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Gift, X, ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth-context";
+import { useT } from "@/i18n/i18n-context";
 
 // ===== Referral CTA =====
 // Contextual referral prompt that appears at high-emotion moments:
@@ -36,35 +37,32 @@ const TRIGGER_CONTENT: Record<
 > = {
   mock_complete: {
     emoji: "🎉",
-    headline: "Smashed it! Know someone else preparing?",
-    subtext:
-      "Share your code and they'll get 20% off their Sprint Pass — plus you earn 7 bonus days!",
-    cta: "Share with a mate",
+    headline: "referral.cta_smashed_headline",
+    subtext: "referral.cta_smashed_subtext",
+    cta: "referral.cta_smashed_button",
   },
   readiness_jump: {
     emoji: "📈",
-    headline: "Your readiness is climbing! Help a mate start theirs.",
-    subtext:
-      "Refer a friend — they get 20% off, you get 7 extra premium days. Everyone wins.",
-    cta: "Invite a mate",
+    headline: "referral.cta_climbing_headline",
+    subtext: "referral.cta_climbing_subtext",
+    cta: "referral.cta_climbing_button",
   },
   first_quiz: {
     emoji: "✅",
-    headline: "First quiz done — nice one!",
-    subtext:
-      "Know someone else preparing for the citizenship test? Share your code for 20% off their Sprint Pass.",
-    cta: "Share your code",
+    headline: "referral.cta_first_quiz_headline",
+    subtext: "referral.cta_first_quiz_subtext",
+    cta: "referral.cta_first_quiz_button",
   },
   study_milestone: {
     emoji: "📚",
-    headline: "Great progress! Studying with a mate helps.",
-    subtext:
-      "Invite a friend to CitizenMate — they save 20% and you earn bonus premium days.",
-    cta: "Help a mate",
+    headline: "referral.cta_progress_headline",
+    subtext: "referral.cta_progress_subtext",
+    cta: "referral.cta_progress_button",
   },
 };
 
 export function ReferralCTA({ trigger, score, onDismiss }: ReferralCTAProps) {
+  const { t } = useT();
   const { user } = useAuth();
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(false);
@@ -123,13 +121,13 @@ export function ReferralCTA({ trigger, score, onDismiss }: ReferralCTAProps) {
 
     const link = `${window.location.origin}/?ref=${user?.id}`;
     const message = promoCode
-      ? `I'm using CitizenMate to study for the Australian citizenship test. Use my code ${promoCode} for 20% off! 🇦🇺 ${link}`
-      : `I'm using CitizenMate to study for the Australian citizenship test. Check it out! ${link}`;
+      ? t("referral.cta_share_template").replace("{code}", promoCode).replace("{url}", link)
+      : t("referral.cta_share_template").replace("{code}", "").replace("{url}", link);
 
     if (navigator.share) {
       try {
         await navigator.share({
-          title: "CitizenMate",
+          title: t("referral.cta_share_title"),
           text: message,
           url: link,
         });
@@ -159,7 +157,7 @@ export function ReferralCTA({ trigger, score, onDismiss }: ReferralCTAProps) {
           <button
             onClick={handleDismiss}
             className="absolute top-3 right-3 p-1 rounded-full hover:bg-muted transition-colors"
-            aria-label="Dismiss"
+            aria-label={t("referral.cta_dismiss")}
           >
             <X className="w-4 h-4 text-muted-foreground" />
           </button>
@@ -173,7 +171,7 @@ export function ReferralCTA({ trigger, score, onDismiss }: ReferralCTAProps) {
             {/* Content */}
             <div className="flex-1 min-w-0 space-y-2">
               <h4 className="font-heading font-bold text-foreground text-sm sm:text-base pr-6">
-                {content.headline}
+                {t(content.headline)}
                 {score !== undefined && score >= 80 && (
                   <span className="ml-1.5 text-cm-gold">
                     <Sparkles className="w-4 h-4 inline" />
@@ -181,7 +179,7 @@ export function ReferralCTA({ trigger, score, onDismiss }: ReferralCTAProps) {
                 )}
               </h4>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                {content.subtext}
+                {t(content.subtext)}
               </p>
 
               {/* Promo code preview */}
@@ -200,14 +198,14 @@ export function ReferralCTA({ trigger, score, onDismiss }: ReferralCTAProps) {
                   onClick={handleShare}
                   className="bg-cm-teal hover:bg-cm-teal/90 text-white rounded-full px-4"
                 >
-                  {content.cta}
+                  {t(content.cta)}
                   <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
                 </Button>
                 <button
                   onClick={handleDismiss}
                   className="text-xs text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  Maybe later
+                  {t("referral.cta_maybe_later")}
                 </button>
               </div>
             </div>

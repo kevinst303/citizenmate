@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Globe } from "lucide-react";
+import { useT } from "@/i18n/i18n-context";
 import { WeatherWidget } from "./weather-widget";
 import { CurrencyWidget } from "./currency-widget";
 import { CountryFactsWidget } from "./country-facts-widget";
@@ -18,6 +19,7 @@ function WidgetSkeleton() {
 }
 
 export function LifeInAustraliaSection() {
+  const { t } = useT();
   const [data, setData] = useState<AustraliaInsightsData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -49,8 +51,8 @@ export function LifeInAustraliaSection() {
           <Globe className="w-4.5 h-4.5" />
         </div>
         <div>
-          <h2 className="font-heading font-bold text-cm-slate-900 text-lg">Life in Australia</h2>
-          <p className="text-xs text-cm-slate-500">Live data to help you settle into your new home</p>
+          <h2 className="font-heading font-bold text-cm-slate-900 text-lg">{t("life_in_australia.title")}</h2>
+          <p className="text-xs text-cm-slate-500">{t("life_in_australia.subtitle")}</p>
         </div>
       </div>
 

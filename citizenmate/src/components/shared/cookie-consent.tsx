@@ -5,11 +5,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Shield, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useLocalizedPath } from "@/lib/use-localized-path";
+import { useT } from "@/i18n/i18n-context";
 
 const CONSENT_KEY = "cm-cookie-consent";
 
 export function CookieConsent() {
   const [visible, setVisible] = useState(false);
+  const { getUrl } = useLocalizedPath();
+  const { t } = useT();
 
   useEffect(() => {
     // Small delay so it doesn't block the paint
@@ -51,17 +55,15 @@ export function CookieConsent() {
 
               <div className="flex-1 min-w-0">
                 <p className="font-heading font-semibold text-sm text-cm-navy">
-                  We respect your privacy
+                  {t("cookie_consent.title")}
                 </p>
                 <p className="mt-1 text-sm text-cm-slate-500 leading-relaxed">
-                  We use essential cookies to make CitizenMate work. With your
-                  consent, we also use analytics cookies to understand how you
-                  use our site so we can improve it.{" "}
+                  {t("cookie_consent.description")}{" "}
                   <Link
-                    href="/cookies"
+                    href={getUrl("/cookies")}
                     className="text-cm-sky hover:underline font-medium"
                   >
-                    Learn more
+                    {t("cookie_consent.learn_more")}
                   </Link>
                 </p>
 
@@ -70,14 +72,14 @@ export function CookieConsent() {
                     onClick={accept}
                     className="bg-cm-navy hover:bg-cm-navy-light text-white rounded-xl px-5 h-9 text-sm font-heading font-semibold cursor-pointer"
                   >
-                    Accept all
+                    {t("cookie_consent.accept_all")}
                   </Button>
                   <Button
                     variant="outline"
                     onClick={decline}
                     className="rounded-xl px-5 h-9 text-sm font-heading font-semibold cursor-pointer"
                   >
-                    Essential only
+                    {t("cookie_consent.essential_only")}
                   </Button>
                 </div>
               </div>
@@ -85,7 +87,7 @@ export function CookieConsent() {
               <button
                 onClick={decline}
                 className="shrink-0 text-cm-slate-400 hover:text-cm-slate-600 transition-colors cursor-pointer"
-                aria-label="Close cookie banner"
+                aria-label={t("cookie_consent.close_banner")}
               >
                 <X className="size-5" />
               </button>

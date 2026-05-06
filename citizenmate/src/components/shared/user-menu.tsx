@@ -6,12 +6,14 @@ import { User, LogOut, LayoutDashboard, ChevronDown, Crown } from "lucide-react"
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
+import { useT } from "@/i18n/i18n-context";
 
 // ===== User Menu =====
 // Navbar component that shows "Sign In" when logged out, avatar+dropdown when logged in.
 
 export function UserMenu() {
   const { user, loading, openAuthModal, signOut, startCheckout } = useAuth();
+  const { t } = useT();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -43,7 +45,7 @@ export function UserMenu() {
         onClick={openAuthModal}
         className="px-4 py-2 bg-cm-teal text-white font-heading font-semibold text-sm rounded-xl hover:bg-cm-teal-dark transition-colors cursor-pointer"
       >
-        Sign In
+        {t("user_menu.sign_in")}
       </button>
     );
   }
@@ -118,7 +120,7 @@ export function UserMenu() {
                 className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-cm-slate-700 hover:bg-cm-slate-50 transition-colors text-left"
               >
                 <LayoutDashboard className="w-4 h-4 text-cm-slate-400" />
-                Dashboard
+                {t("user_menu.dashboard")}
               </button>
               <button
                 onClick={async () => {
@@ -132,14 +134,14 @@ export function UserMenu() {
                 className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-cm-teal hover:bg-cm-teal-50 transition-colors cursor-pointer text-left"
               >
                 <Crown className="w-4 h-4 text-cm-teal" />
-                Upgrade to Premium
+                {t("user_menu.upgrade_to_premium")}
               </button>
               <button
                 onClick={() => handleNavigation("/settings")}
                 className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-cm-slate-700 hover:bg-cm-slate-50 transition-colors text-left"
               >
                 <User className="w-4 h-4 text-cm-slate-400" />
-                Profile Settings
+                {t("user_menu.profile_settings")}
               </button>
             </div>
 
@@ -153,7 +155,7 @@ export function UserMenu() {
                 className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-cm-red hover:bg-cm-red-light transition-colors cursor-pointer text-left"
               >
                 <LogOut className="w-4 h-4" />
-                Sign Out
+                {t("user_menu.sign_out")}
               </button>
             </div>
           </motion.div>

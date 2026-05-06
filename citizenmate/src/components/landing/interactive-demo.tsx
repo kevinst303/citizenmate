@@ -11,6 +11,7 @@ import {
   ArrowRight,
   type LucideIcon,
 } from "lucide-react";
+import { useT } from "@/i18n/i18n-context";
 
 interface TabData {
   icon: LucideIcon;
@@ -26,65 +27,66 @@ interface TabData {
   imageAlt: string;
 }
 
-const tabs: TabData[] = [
-  {
-    icon: ClipboardCheck,
-    label: "Smart Practice Tests",
-    badge: "Real Test Format",
-    heading: "Practice with confidence",
-    description:
-      "20 questions, 45 minutes — just like the real Australian citizenship test. Get detailed explanations for every answer, powered by AI.",
-    cta: "Start Free Practice",
-    href: "/practice",
-    featureBadge: "AI-Powered",
-    checklist: [
-      "Official test format",
-      "Detailed explanations",
-      "Instant results",
-    ],
-    image: "/generated/feature-tests.webp",
-    imageAlt: "Student taking a practice test on a tablet",
-  },
-  {
-    icon: Languages,
-    label: "Bilingual Study Mode",
-    badge: "15+ Languages",
-    heading: "Study in your language",
-    description:
-      "Read the official Our Common Bond booklet with side-by-side translations. Understand concepts in your native language, answer in English.",
-    cta: "Start Studying",
-    href: "/study",
-    featureBadge: "Inclusive Learning",
-    checklist: [
-      "Side-by-side translations",
-      "15+ languages supported",
-      "Official content",
-    ],
-    image: "/generated/feature-bilingual.webp",
-    imageAlt: "Bilingual study interface showing content in two languages",
-  },
-  {
-    icon: BarChart3,
-    label: "Progress Analytics",
-    badge: "Know When You're Ready",
-    heading: "Track your readiness",
-    description:
-      "See your mastery level for each topic. AI-powered insights tell you exactly when you're ready to book your citizenship test.",
-    cta: "View Demo",
-    href: "/practice",
-    featureBadge: "Smart Insights",
-    checklist: [
-      "Topic-by-topic tracking",
-      "AI readiness score",
-      "Study recommendations",
-    ],
-    image: "/generated/feature-progress.webp",
-    imageAlt: "Dashboard showing progress tracking and readiness score",
-  },
-];
+
 
 export function InteractiveDemo() {
   const [activeTab, setActiveTab] = useState(0);
+  const { t } = useT();
+
+  const tabs: TabData[] = [
+    {
+      icon: ClipboardCheck,
+      label: t("landing.demo_tab_1_label"),
+      badge: t("landing.demo_tab_1_badge"),
+      heading: t("landing.demo_tab_1_title"),
+      description: t("landing.demo_tab_1_desc"),
+      cta: t("landing.demo_tab_1_cta"),
+      href: "/practice",
+      featureBadge: t("landing.demo_tab_1_feature_badge"),
+      checklist: [
+        t("landing.demo_tab_1_check_1"),
+        t("landing.demo_tab_1_check_2"),
+        t("landing.demo_tab_1_check_3"),
+      ],
+      image: "/generated/feature-tests.webp",
+      imageAlt: t("landing.demo_tab_1_image_alt"),
+    },
+    {
+      icon: Languages,
+      label: t("landing.demo_tab_2_label"),
+      badge: t("landing.demo_tab_2_badge"),
+      heading: t("landing.demo_tab_2_title"),
+      description: t("landing.demo_tab_2_desc"),
+      cta: t("landing.demo_tab_2_cta"),
+      href: "/study",
+      featureBadge: t("landing.demo_tab_2_feature_badge"),
+      checklist: [
+        t("landing.demo_tab_2_check_1"),
+        t("landing.demo_tab_2_check_2"),
+        t("landing.demo_tab_2_check_3"),
+      ],
+      image: "/generated/feature-bilingual.webp",
+      imageAlt: t("landing.demo_tab_2_image_alt"),
+    },
+    {
+      icon: BarChart3,
+      label: t("landing.demo_tab_3_label"),
+      badge: t("landing.demo_tab_3_badge"),
+      heading: t("landing.demo_tab_3_title"),
+      description: t("landing.demo_tab_3_desc"),
+      cta: t("landing.demo_tab_3_cta"),
+      href: "/practice",
+      featureBadge: t("landing.demo_tab_3_feature_badge"),
+      checklist: [
+        t("landing.demo_tab_3_check_1"),
+        t("landing.demo_tab_3_check_2"),
+        t("landing.demo_tab_3_check_3"),
+      ],
+      image: "/generated/feature-progress.webp",
+      imageAlt: t("landing.demo_tab_3_image_alt"),
+    },
+  ];
+
   const active = tabs[activeTab];
 
   return (
@@ -100,7 +102,7 @@ export function InteractiveDemo() {
               transition={{ duration: 0.5 }}
               className="font-heading text-3xl sm:text-4xl lg:text-[2.8rem] font-extrabold tracking-tight leading-[1.1] text-balance"
             >
-              Experience CitizenMate
+              {t("landing.demo_heading")}
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 10 }}
@@ -109,8 +111,7 @@ export function InteractiveDemo() {
               transition={{ duration: 0.4, delay: 0.1 }}
               className="mt-4 text-muted-foreground leading-relaxed"
             >
-              We believe every aspiring citizen is unique, and we pride
-              ourselves on delivering the most effective preparation tools.
+              {t("landing.demo_subtitle")}
             </motion.p>
 
             {/* Tab buttons */}

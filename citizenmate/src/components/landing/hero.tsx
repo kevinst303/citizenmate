@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Star, ChevronRight, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { useT } from "@/i18n/i18n-context";
+import { useLocalizedPath } from "@/lib/use-localized-path";
 
 const container = {
   hidden: { opacity: 0 },
@@ -21,6 +22,7 @@ const item = {
 
 export function Hero() {
   const { t } = useT();
+  const { getUrl } = useLocalizedPath();
   const trustedLogos = [
     t("landing.hero_marquee_1", "500+ Practice Questions"),
     t("landing.hero_marquee_2", "Bilingual Study Mode"),
@@ -34,7 +36,7 @@ export function Hero() {
       <div className="absolute inset-0 -z-10">
         <Image
           src="/images/conseil/hero-bg-new.webp"
-          alt="Diverse group of people studying together for the Australian citizenship test"
+            alt={t("landing.hero_image_alt")}
           fill
           priority
           className="object-cover"
@@ -90,7 +92,7 @@ export function Hero() {
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
               <Button
-                render={<a href="/practice" />}
+                render={<a href={getUrl("/practice")} />}
                 size="lg"
                 className="bg-white text-cm-teal font-heading font-bold border-none shadow-lg shadow-black/10 hover:bg-white/95"
               >

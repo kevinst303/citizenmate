@@ -26,6 +26,7 @@ import {
   Heart,
 } from "lucide-react";
 import { posthog } from "@/components/providers/posthog-provider";
+import { useLocalizedPath } from "@/lib/use-localized-path";
 
 const TOPIC_ICONS: Record<TopicCategory, typeof Globe> = {
   "australia-people": Globe,
@@ -43,6 +44,7 @@ interface SessionResult {
 export default function SmartSessionPage() {
   const router = useRouter();
   const { recordAnswer, getSmartQuestions } = useSRS();
+  const { getUrl } = useLocalizedPath();
 
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -332,7 +334,7 @@ export default function SmartSessionPage() {
                 Another Session
               </Link>
               <Link
-                href="/dashboard"
+                href={getUrl("/dashboard")}
                 className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white text-cm-slate-700 font-heading font-semibold rounded-xl border-2 border-cm-slate-200 hover:border-cm-slate-300 transition-all text-center"
               >
                 View Dashboard

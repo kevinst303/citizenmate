@@ -18,6 +18,7 @@ const features = [
     ctaFallback: "Start Practising",
     href: "/practice",
     image: "/generated/feature-tests.webp",
+    imageAltKey: "landing.features_smart_image_alt",
     imageAlt: "Confident woman taking a practice citizenship test on a tablet",
   },
   {
@@ -30,6 +31,7 @@ const features = [
     ctaFallback: "Start Studying",
     href: "/study",
     image: "/generated/feature-bilingual.webp",
+    imageAltKey: "landing.features_bilingual_image_alt",
     imageAlt: "Man studying with bilingual books in multiple languages at an Australian cafe",
     badgeKey: "landing.features_popular",
     badgeFallback: "Popular",
@@ -44,6 +46,7 @@ const features = [
     ctaFallback: "Track Progress",
     href: "/study",
     image: "/generated/feature-progress.webp",
+    imageAltKey: "landing.features_ready_image_alt",
     imageAlt: "Woman celebrating progress on her dashboard with achievement badges",
   },
 ];
@@ -120,7 +123,7 @@ export function Features() {
                 <div className="relative w-full h-44 rounded-[16px] overflow-hidden mb-6 -mt-0.5">
                   <Image
                     src={feature.image}
-                    alt={feature.imageAlt}
+                    alt={t(feature.imageAltKey, feature.imageAlt)}
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                     sizes="(max-width: 768px) 100vw, 33vw"

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Lock, Sparkles, ArrowRight } from "lucide-react";
 import { usePremium } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
+import { useT } from "@/i18n/i18n-context";
 
 // ===== Premium Gate =====
 // Shows a lock overlay when the user doesn't have premium access.
@@ -26,6 +27,7 @@ export function PremiumGate({
   badge = false,
 }: PremiumGateProps) {
   const { isPremium, premiumLoading, upgrade } = usePremium();
+  const { t } = useT();
 
   // While loading, show children normally (avoids flash)
   if (premiumLoading || isPremium) {
@@ -45,7 +47,7 @@ export function PremiumGate({
             className="inline-flex items-center gap-2 px-4 py-2 bg-cm-red text-white text-sm font-heading font-semibold rounded-full shadow-lg shadow-cm-red/20 cursor-pointer"
           >
             <Lock className="w-3.5 h-3.5" />
-            Unlock with Sprint Pass
+            {t("premium.unlock_with_sprint_pass")}
           </motion.button>
         </div>
       </div>
@@ -64,22 +66,21 @@ export function PremiumGate({
           <Sparkles className="w-8 h-8" />
         </div>
         <h3 className="text-xl font-heading font-bold text-cm-navy mb-2">
-          Unlock {feature}
+          {t("premium.unlock_heading").replace("{feature}", feature)}
         </h3>
         <p className="text-sm text-cm-slate-500 max-w-sm mb-6">
-          Get the Exam Sprint Pass for 60 days of full access — unlimited tests,
-          AI tutoring, bilingual study mode, and more.
+          {t("premium.gate_desc")}
         </p>
         <Button
           onClick={upgrade}
           className="bg-cm-red hover:bg-cm-red-dark text-white font-heading font-semibold px-6 py-3 rounded-xl shadow-lg shadow-cm-red/20 cursor-pointer"
         >
           <Sparkles className="w-4 h-4 mr-2" />
-          Get Sprint Pass — A$29.99
+            {t("premium.gate_cta_full")}
           <ArrowRight className="w-4 h-4 ml-2" />
         </Button>
         <p className="text-xs text-cm-slate-400 mt-3">
-          One-time payment · 60 days access · No subscription
+          {t("premium.gate_fineprint")}
         </p>
       </motion.div>
     );
@@ -102,18 +103,17 @@ export function PremiumGate({
             <Lock className="w-6 h-6" />
           </div>
           <h3 className="text-lg font-heading font-bold text-cm-navy mb-2">
-            Premium Feature
+            {t("premium.gate_title")}
           </h3>
           <p className="text-sm text-cm-slate-500 mb-5">
-            Upgrade to access {feature} and pass your citizenship test with
-            confidence.
+            {t("premium.gate_title_desc").replace("{feature}", feature)}
           </p>
           <Button
             onClick={upgrade}
             className="w-full bg-cm-red hover:bg-cm-red-dark text-white font-heading font-semibold py-3 rounded-xl shadow-lg shadow-cm-red/20 cursor-pointer"
           >
             <Sparkles className="w-4 h-4 mr-2" />
-            Get Sprint Pass — A$29.99
+          {t("premium.gate_cta_full")}
           </Button>
         </motion.div>
       </div>
@@ -125,10 +125,11 @@ export function PremiumGate({
 // Small inline badge indicating premium-only content
 
 export function PremiumBadge() {
+  const { t } = useT();
   return (
     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-cm-red/10 text-cm-red text-xs font-semibold">
       <Lock className="w-3 h-3" />
-      Premium
+      {t("premium.premium_badge")}
     </span>
   );
 }

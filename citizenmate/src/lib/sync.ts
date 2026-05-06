@@ -141,7 +141,7 @@ export async function syncLanguageToSupabase(
     const supabase = getSupabaseBrowserClient();
     await supabase
       .from("profiles")
-      .update({ preferred_language: language })
+      .update({ study_language: language })
       .eq("id", userId);
   } catch (err) {
     console.error("[sync] Failed to sync language:", err);
@@ -181,7 +181,7 @@ export async function pullFromSupabase(userId: string): Promise<void> {
     // Pull profile (test date + language)
     const { data: profile } = await supabase
       .from("profiles")
-      .select("test_date, preferred_language")
+      .select("test_date, study_language")
       .eq("id", userId)
       .single();
 
@@ -189,8 +189,8 @@ export async function pullFromSupabase(userId: string): Promise<void> {
       if (profile.test_date) {
         localStorage.setItem(TEST_DATE_KEY, profile.test_date);
       }
-      if (profile.preferred_language) {
-        localStorage.setItem(STUDY_LANG_KEY, profile.preferred_language);
+      if (profile.study_language) {
+        localStorage.setItem(STUDY_LANG_KEY, profile.study_language);
       }
     }
 

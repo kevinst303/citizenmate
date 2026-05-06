@@ -17,12 +17,14 @@ import {
   Clock,
 } from "lucide-react";
 import { useT } from "@/i18n/i18n-context";
+import { useLocalizedPath } from "@/lib/use-localized-path";
 
 export default function ResultsPage() {
   const params = useParams();
   const router = useRouter();
   const testId = params.testId as string;
   const { state, resetQuiz } = useQuiz();
+  const { getUrl } = useLocalizedPath();
   const [showQuestions, setShowQuestions] = useState(false);
   const { t } = useT();
 
@@ -45,7 +47,7 @@ export default function ResultsPage() {
             {t("quiz.no_results_desc", "Take a practice test first to see your results here.")}
           </p>
           <Link
-            href="/practice"
+            href={getUrl("/practice")}
             className="inline-flex items-center gap-2 px-6 py-3 bg-cm-navy hover:bg-cm-navy-light text-white font-heading font-semibold rounded-xl transition-colors duration-200 cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -65,7 +67,7 @@ export default function ResultsPage() {
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
           <div className="flex items-center justify-between h-14 sm:h-16">
             <Link
-              href="/practice"
+              href={getUrl("/practice")}
               className="flex items-center gap-2 hover:opacity-80 transition-opacity duration-200"
             >
               <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-cm-navy text-white font-heading font-bold text-sm">
@@ -111,7 +113,7 @@ export default function ResultsPage() {
           </motion.button>
           <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
             <Link
-              href="/practice"
+              href={getUrl("/practice")}
               className="flex-1 flex items-center justify-center gap-2 py-3.5 border-2 border-cm-slate-200 text-cm-slate-700 font-heading font-semibold rounded-xl hover:bg-cm-slate-50 transition-colors duration-200 cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
