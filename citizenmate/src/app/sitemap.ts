@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
 import { studyTopics } from "@/data/study-content";
 import { mockTests } from "@/data/tests";
-import { supabasePublic } from "@/lib/supabase-public";
+import { getSupabasePublic } from "@/lib/supabase-public";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://citizenmate.com.au";
@@ -32,7 +32,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Fetch blog slugs from Supabase for sitemap
   let blogRoutes: MetadataRoute.Sitemap = [];
   try {
-    const { data } = await supabasePublic
+    const supabase = getSupabasePublic();
+    const { data } = await supabase
       .from('blog_translations')
       .select('locale, slug, blog_post:blog_post_id!inner(published_at, updated_at, status)')
       .eq('blog_post.status', 'published')

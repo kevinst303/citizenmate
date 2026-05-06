@@ -1,15 +1,15 @@
 import OpenAI from 'openai';
 
-const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
-
-if (!DEEPSEEK_API_KEY) {
-  console.warn('DEEPSEEK_API_KEY not set — AI features will not work');
-}
-
-export const deepseek = new OpenAI({
-  baseURL: 'https://api.deepseek.com',
-  apiKey: DEEPSEEK_API_KEY || '',
-});
+export const getDeepSeekClient = () => {
+  const apiKey = process.env.DEEPSEEK_API_KEY;
+  if (!apiKey) {
+    throw new Error('DEEPSEEK_API_KEY environment variable is not set');
+  }
+  return new OpenAI({
+    baseURL: 'https://api.deepseek.com',
+    apiKey,
+  });
+};
 
 export interface DeepSeekChatParams {
   systemPrompt: string;
@@ -40,7 +40,7 @@ export async function deepseekChat({
   if (jsonMode) {
     params.response_format = { type: 'json_object' };
   }
-  const completion = await deepseek.chat.completions.create(params);
+  const completion = await getDeepSeekClient().chat.completions.create(params);
 
   return completion.choices[0]?.message?.content || '';
 }

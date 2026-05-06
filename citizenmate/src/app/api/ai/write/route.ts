@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { verifyAdmin } from '@/lib/admin-auth';
-import { deepseek } from '@/lib/deepseek';
+import { getDeepSeekClient } from '@/lib/deepseek';
 
 export async function POST(req: Request) {
   const admin = await verifyAdmin();
@@ -39,7 +39,7 @@ Tone: informative, approachable, and encouraging.`,
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const stream = (await deepseek.chat.completions.create(params)) as any;
+    const stream = (await getDeepSeekClient().chat.completions.create(params)) as any;
 
     const encoder = new TextEncoder();
     const readable = new ReadableStream({

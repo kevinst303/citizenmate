@@ -1,21 +1,31 @@
 import { notFound } from 'next/navigation';
 import { getPostBySlug } from '@/lib/blog-db';
-import { supabasePublic } from '@/lib/supabase-public';
+import { getSupabasePublic } from '@/lib/supabase-public';
 import { BlogHtmlContent } from '@/components/blog-html-content';
 import { SubpageHero } from '@/components/shared/subpage-hero';
 import type { Metadata } from 'next';
 
 export const dynamicParams = true;
+export const dynamic = 'force-dynamic';
+
+interface BlogTranslationRow {
+  locale: string;
+  slug: string;
+}
 
 export async function generateStaticParams() {
-  const { data } = await supabasePublic
-    .from('blog_translations')
-    .select('locale, slug');
+  try {
+    const { data } = await getSupabasePublic()
+      .from('blog_translations')
+      .select('locale, slug') as { data: BlogTranslationRow[] | null };
 
-  return (data || []).map((row) => ({
-    lang: row.locale,
-    slug: row.slug,
-  }));
+    return (data || []).map((row) => ({
+      lang: row.locale,
+      slug: row.slug,
+    }));
+  } catch {
+    return [];
+  }
 }
 
 export async function generateMetadata({
