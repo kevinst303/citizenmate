@@ -19,6 +19,7 @@ import { usePremium } from "@/lib/auth-context";
 import { PremiumBadge } from "@/components/shared/premium-gate";
 import { StudyProgressBar } from "@/components/study/study-progress-bar";
 import type { TopicCategory } from "@/lib/types";
+import { useT } from "@/i18n/i18n-context";
 
 import { SubpageHero } from "@/components/shared/subpage-hero";
 
@@ -80,19 +81,20 @@ export default function StudyPage() {
   const { getTopicProgress, getOverallProgress } = useStudy();
   const { isPremium, upgrade } = usePremium();
   const overall = getOverallProgress();
+  const { t } = useT();
 
   return (
     <div className="min-h-screen bg-white">
       {/* Hero */}
       <SubpageHero
-        title="Study Our Common Bond"
+        title={t("study.hero_title", "Study Our Common Bond")}
         breadcrumbs={[
-          { label: "Home", href: "/" },
-          { label: "Study Guide" },
+          { label: t("study.hero_breadcrumb_home", "Home"), href: "/" },
+          { label: t("study.hero_breadcrumb_guide", "Study Guide") },
         ]}
-        description="Browse the official study content in English and Chinese. Track your progress topic by topic, mate."
+        description={t("study.hero_desc", "Browse the official study content in English and Chinese. Track your progress topic by topic, mate.")}
         bgImage="/generated/study-header.webp"
-        badge="Study Guide"
+        badge={t("study.hero_badge", "Study Guide")}
       />
 
       {/* Overall progress card */}
@@ -112,10 +114,10 @@ export default function StudyPage() {
               </div>
               <div>
                 <h2 className="text-base font-heading font-bold text-cm-slate-900">
-                  Overall Progress
+                  {t("study.overall_progress", "Overall Progress")}
                 </h2>
                 <p className="text-xs text-cm-slate-500">
-                  {overall.completed} of {overall.total} sections completed
+                  {t("study.sections_completed", "{completed} of {total} sections completed").replace("{completed}", String(overall.completed)).replace("{total}", String(overall.total))}
                 </p>
               </div>
             </div>
@@ -139,7 +141,7 @@ export default function StudyPage() {
           transition={{ delay: 0.5 }}
           className="text-2xl font-heading font-bold text-cm-slate-900 mb-8"
         >
-          Choose a Topic
+          {t("study.choose_topic", "Choose a Topic")}
         </motion.h2>
 
         <motion.div
@@ -195,7 +197,7 @@ export default function StudyPage() {
                       </p>
                       <div className="mt-auto flex items-center justify-center gap-2 w-full py-3 font-heading font-semibold rounded-xl bg-cm-red/10 text-cm-red transition-all duration-200">
                         <Lock className="w-4 h-4" />
-                        Unlock with Sprint Pass
+                        {t("study.unlock_with_sprint", "Unlock with Sprint Pass")}
                       </div>
                     </div>
                   </button>
@@ -221,7 +223,7 @@ export default function StudyPage() {
                       <div className="absolute top-4 right-4 z-10">
                         <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-cm-red/90 text-white backdrop-blur-sm text-xs font-semibold shadow-sm">
                           <Heart className="w-3 h-3" />
-                          Must pass 5/5
+                          {t("study.must_pass_5of5", "Must pass 5/5")}
                         </span>
                       </div>
                     )}
@@ -249,14 +251,14 @@ export default function StudyPage() {
                   <StudyProgressBar
                     completed={progress.completed}
                     total={progress.total}
-                    label={`${topic.sections.length} sections`}
+                    label={`${topic.sections.length} ${t("study.sections_label", "{count} sections").replace("{count}", String(topic.sections.length))}`}
                     colorClass={colors.bar}
                     size="sm"
                   />
 
                   {/* CTA */}
                   <div className="flex items-center justify-center gap-2 w-full mt-5 py-3 bg-cm-teal text-white font-heading font-semibold rounded-xl hover:opacity-90 transition-all duration-200 group-hover:gap-3">
-                    {progress.completed > 0 ? "Continue Studying" : "Start Studying"}
+                    {progress.completed > 0 ? t("study.continue_studying", "Continue Studying") : t("study.start_studying", "Start Studying")}
                     <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
                   </div>
                   </div>
@@ -283,47 +285,38 @@ export default function StudyPage() {
               <BookOpen className="w-4 h-4" />
             </div>
             <h3 className="text-lg font-heading font-bold text-cm-teal">
-              Study Tips
+              {t("study.study_tips", "Study Tips")}
             </h3>
           </div>
           <ul className="space-y-3.5 text-sm text-cm-slate-600">
             {[
               {
                 icon: Heart,
-                text: (
-                  <>
-                    <strong>Focus on Australian Values</strong> — all 5 values
-                    questions must be correct to pass. Study this topic
-                    thoroughly.
-                  </>
-                ),
+                titleKey: "study.tip_values_title",
+                titleFallback: "Focus on Australian Values",
+                descKey: "study.tip_values_desc",
+                descFallback: "all 5 values questions must be correct to pass. Study this topic thoroughly.",
               },
               {
                 icon: Globe,
-                text: (
-                  <>
-                    <strong>Use bilingual mode</strong> — toggle between English
-                    and Chinese to understand concepts in both languages.
-                  </>
-                ),
+                titleKey: "study.tip_bilingual_title",
+                titleFallback: "Use bilingual mode",
+                descKey: "study.tip_bilingual_desc",
+                descFallback: "toggle between English and Chinese to understand concepts in both languages.",
               },
               {
                 icon: BookOpen,
-                text: (
-                  <>
-                    <strong>Review key facts</strong> — each section highlights
-                    the most important points you need to remember.
-                  </>
-                ),
+                titleKey: "study.tip_review_title",
+                titleFallback: "Review key facts",
+                descKey: "study.tip_review_desc",
+                descFallback: "each section highlights the most important points you need to remember.",
               },
               {
                 icon: Sparkles,
-                text: (
-                  <>
-                    <strong>Track your progress</strong> — mark sections as
-                    complete to see your overall readiness.
-                  </>
-                ),
+                titleKey: "study.tip_progress_title",
+                titleFallback: "Track your progress",
+                descKey: "study.tip_progress_desc",
+                descFallback: "mark sections as complete to see your overall readiness.",
               },
             ].map((tip, idx) => (
               <motion.li
@@ -337,7 +330,9 @@ export default function StudyPage() {
                 <span className="flex-shrink-0 inline-flex items-center justify-center w-6 h-6 rounded-md bg-cm-teal/10 text-cm-teal mt-0.5">
                   <tip.icon className="w-3.5 h-3.5" />
                 </span>
-                <span>{tip.text}</span>
+                <span>
+                  <strong>{t(tip.titleKey, tip.titleFallback)}</strong> &mdash; {t(tip.descKey, tip.descFallback)}
+                </span>
               </motion.li>
             ))}
           </ul>

@@ -48,4 +48,7 @@ Last activity: 2026-05-03 -- Phase 06 execution started
 ### Roadmap Evolution
 
 - Phase 8 added: Super Admin Dashboard
-- Phase 08-04 planned: Admin Dashboard UI Refinement — analytics hub (recharts), user CRUD modals, Conseil alignment, pagination, confirmation dialogs. See `.planning/phases/08-super-admin-dashboard/08-04-PLAN.md`
+- Phase 08-04 completed: Admin Dashboard UI Refinement — analytics hub (recharts), user CRUD modals, Conseil alignment, pagination, confirmation dialogs. See `.planning/phases/08-super-admin-dashboard/08-04-SUMMARY.md`
+- Blog: 25 posts seeded from MDX into Supabase via `scripts/seed-blog-posts.ts`
+- Blog RLS: 5 policies applied (`20260506000000_blog_posts_rls_policies.sql`)
+- Auth: `@supabase/ssr` restored; `getSession()` fallbacks in verifyAdmin + admin layout; lock contention warnings are harmless

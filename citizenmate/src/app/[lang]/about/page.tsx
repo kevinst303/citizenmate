@@ -1,22 +1,20 @@
+"use client";
+
 import { SubpageHero } from "@/components/shared/subpage-hero";
 import { Button } from "@/components/ui/button";
 import { Mail, MapPin, Phone } from "lucide-react";
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "About Us | CitizenMate",
-  description: "Learn more about CitizenMate and contact our team.",
-};
+import { useT } from "@/i18n/i18n-context";
 
 export default function AboutPage() {
+  const { t } = useT();
   return (
     <main className="min-h-screen bg-cm-slate-50">
       <SubpageHero
-        title="About Us"
-        description="We're on a mission to help everyone pass their Australian citizenship test with confidence."
+        title={t("legal.about_title", "About Us")}
+        description={t("legal.about_subtitle", "We're on a mission to help everyone pass their Australian citizenship test with confidence.")}
         breadcrumbs={[
-          { label: "Home", href: "/" },
-          { label: "About Us" },
+          { label: t("legal.breadcrumb_home", "Home"), href: "/" },
+          { label: t("legal.about_title", "About Us") },
         ]}
         curveColorClass="text-cm-slate-50"
       />
@@ -29,20 +27,20 @@ export default function AboutPage() {
             <div>
               <span className="badge-pill mb-6">
                 <span className="w-1.5 h-1.5 rounded-full bg-cm-teal" />
-                Our Story
+                {t("legal.about_story_badge", "Our Story")}
               </span>
               <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-6">
-                Empowering your journey to Australian citizenship.
+                {t("legal.about_mission", "Empowering your journey to Australian citizenship.")}
               </h2>
               <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
                 <p>
-                  CitizenMate was born out of a simple observation: preparing for the Australian citizenship test shouldn&apos;t be stressful, confusing, or limited by language barriers.
+                  {t("legal.about_para_1", "CitizenMate was born out of a simple observation: preparing for the Australian citizenship test shouldn't be stressful, confusing, or limited by language barriers.")}
                 </p>
                 <p>
-                  We realised that the official materials, while comprehensive, can be overwhelming. We wanted to create a modern, AI-powered platform that doesn&apos;t just throw practice questions at you, but actually helps you understand the &ldquo;Our Common Bond&rdquo; material deeply.
+                  {t("legal.about_para_2", "We realised that the official materials, while comprehensive, can be overwhelming. We wanted to create a modern, AI-powered platform that doesn't just throw practice questions at you, but actually helps you understand the \u201cOur Common Bond\u201d material deeply.")}
                 </p>
                 <p>
-                  Our bilingual study modes, smart mock tests, and personalised study plans are all designed with one goal in mind: to get you ready for your test day as efficiently as possible, so you can celebrate becoming an Australian citizen.
+                  {t("legal.about_para_3", "Our bilingual study modes, smart mock tests, and personalised study plans are all designed with one goal in mind: to get you ready for your test day as efficiently as possible, so you can celebrate becoming an Australian citizen.")}
                 </p>
               </div>
 
@@ -52,7 +50,7 @@ export default function AboutPage() {
                     <Mail className="w-6 h-6" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-foreground">Email Us</h4>
+                    <h4 className="font-semibold text-foreground">{t("legal.about_email_label", "Email Us")}</h4>
                     <a href="mailto:hello@citizenmate.com.au" className="text-muted-foreground hover:text-cm-teal transition-colors">
                       hello@citizenmate.com.au
                     </a>
@@ -63,9 +61,9 @@ export default function AboutPage() {
                     <MapPin className="w-6 h-6" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-foreground">Location</h4>
+                    <h4 className="font-semibold text-foreground">{t("legal.about_location_label", "Location")}</h4>
                     <p className="text-muted-foreground">
-                      Sydney, Australia
+                      {t("legal.about_location_value", "Sydney, Australia")}
                     </p>
                   </div>
                 </div>
@@ -78,16 +76,16 @@ export default function AboutPage() {
               
               <div className="relative z-10">
                 <h3 className="font-heading text-2xl font-bold text-foreground mb-2">
-                  Get in Touch
+                  {t("legal.about_contact_title", "Get in Touch")}
                 </h3>
                 <p className="text-muted-foreground mb-8">
-                  Have a question or need support? Fill out the form below and our team will get back to you shortly.
+                  {t("legal.about_contact_desc", "Have a question or need support? Fill out the form below and our team will get back to you shortly.")}
                 </p>
 
                 <form className="space-y-6">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label htmlFor="firstName" className="text-sm font-semibold text-foreground">First Name</label>
+                      <label htmlFor="firstName" className="text-sm font-semibold text-foreground">{t("legal.about_field_first_name", "First Name")}</label>
                       <input 
                         type="text" 
                         id="firstName" 
@@ -97,7 +95,7 @@ export default function AboutPage() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <label htmlFor="lastName" className="text-sm font-semibold text-foreground">Last Name</label>
+                      <label htmlFor="lastName" className="text-sm font-semibold text-foreground">{t("legal.about_field_last_name", "Last Name")}</label>
                       <input 
                         type="text" 
                         id="lastName" 
@@ -109,7 +107,7 @@ export default function AboutPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <label htmlFor="email" className="text-sm font-semibold text-foreground">Email Address</label>
+                    <label htmlFor="email" className="text-sm font-semibold text-foreground">{t("legal.about_field_email", "Email Address")}</label>
                     <input 
                       type="email" 
                       id="email" 
@@ -120,16 +118,16 @@ export default function AboutPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <label htmlFor="subject" className="text-sm font-semibold text-foreground">Subject</label>
+                    <label htmlFor="subject" className="text-sm font-semibold text-foreground">{t("legal.about_field_subject", "Subject")}</label>
                     <div className="relative">
                       <select 
                         id="subject" 
                         className="w-full px-4 py-3 rounded-xl border border-input bg-background focus:outline-none focus:ring-2 focus:ring-cm-teal/20 focus:border-cm-teal transition-all appearance-none pr-10"
                       >
-                        <option value="support">General Support</option>
-                        <option value="billing">Billing & Subscriptions</option>
-                        <option value="feedback">Feedback</option>
-                        <option value="other">Other</option>
+                        <option value="support">{t("legal.about_option_support", "General Support")}</option>
+                        <option value="billing">{t("legal.about_option_billing", "Billing & Subscriptions")}</option>
+                        <option value="feedback">{t("legal.about_option_feedback", "Feedback")}</option>
+                        <option value="other">{t("legal.about_option_other", "Other")}</option>
                       </select>
                       <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none">
                         <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -140,7 +138,7 @@ export default function AboutPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <label htmlFor="message" className="text-sm font-semibold text-foreground">Message</label>
+                    <label htmlFor="message" className="text-sm font-semibold text-foreground">{t("legal.about_field_message", "Message")}</label>
                     <textarea 
                       id="message" 
                       rows={4}
@@ -155,10 +153,10 @@ export default function AboutPage() {
                     size="lg"
                     className="w-full py-4 text-[1rem] font-semibold"
                   >
-                    Send Message
+                    {t("legal.about_send_button", "Send Message")}
                   </Button>
                   <p className="text-xs text-center text-muted-foreground mt-4">
-                    By submitting this form, you agree to our privacy policy.
+                    {t("legal.about_privacy_note", "By submitting this form, you agree to our privacy policy.")}
                   </p>
                 </form>
               </div>

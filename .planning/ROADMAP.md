@@ -44,4 +44,4 @@ Plans:
 - [x] 01 — Schema, auth guard, admin layout shell (executed)
 - [x] 02 — Dashboard insights + users table + blog list (executed)
 - [x] 03 — Referral management dashboard (executed)
-- [ ] 04 — UI refinement: analytics hub, user CRUD modals, Conseil alignment, pagination, confirmation dialogs
+- [x] 04 — UI refinement: analytics hub, user CRUD modals, Conseil alignment, pagination, confirmation dialogs (completed 2026-05-06)

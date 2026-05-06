@@ -3,9 +3,11 @@
 import { useQuiz } from "@/lib/quiz-context";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart } from "lucide-react";
+import { useT } from "@/i18n/i18n-context";
 
 export function QuizCard() {
   const { state, currentQuestion, selectAnswer } = useQuiz();
+  const { t } = useT();
 
   if (!currentQuestion || !state.test) return null;
 
@@ -43,7 +45,7 @@ export function QuizCard() {
                 className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cm-gold-light text-cm-gold text-xs font-semibold border border-amber-200/60"
               >
                 <Heart className="w-3 h-3" />
-                Australian Values
+                {t("quiz.australian_values", "Australian Values")}
               </motion.span>
             )}
           </div>

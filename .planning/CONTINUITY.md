@@ -1,11 +1,33 @@
 ---
 type: continuity
 last_updated: "2026-05-06"
-sessions: 8
+sessions: 9
 ---
 # Continuity Summary — CitizenMate v1.1
 
-## Latest: Session 7 — i18n Translation Pipeline
+## Latest: Session 8 — Phase C: All Remaining Components Wired + Full Translation
+
+### Session 8 — i18n Phase C: Wire All Remaining Pages ✅ COMPLETE
+
+**16 components wired with useT():**
+
+**Quiz components**: quiz-header (18), quiz-card (1), quiz-progress (9), practice/[testId]/page (10), practice/[testId]/results (10)
+
+**Study pages**: study/page (30), study/[topicId]/page (15)
+
+**Legal pages**: legal-layout (5), about (22), terms (~63), privacy (~56), cookies (~36)
+
+**Checkout + Errors**: checkout/success (13), checkout/cancel (9), error.tsx (5), not-found.tsx (5)
+
+**en.json expanded**: +5 sections (quiz 46 keys, study 32, legal ~255, checkout 23, errors 10)
+
+**All 4 non-English dictionaries translated** via parallel task agents. Validated: 0% drift, 0 token mismatches.
+
+**Build**: PASS. **Tests**: 15/15 PASS. **~40 components now use useT().**
+
+**Remaining hardcoded**: Admin pages, blog pages, chat widget (internal/low-priority)
+
+### Session 8 — i18n Translation Pipeline (Phase A + B)
 
 ### Created Files
 - `scripts/translate.ts` — DeepL auto-translation script with token protection ({variable}), batch support (50/texts), `--check-only` and `--diff` modes

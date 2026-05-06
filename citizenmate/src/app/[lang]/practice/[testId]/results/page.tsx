@@ -16,6 +16,7 @@ import {
   ChevronUp,
   Clock,
 } from "lucide-react";
+import { useT } from "@/i18n/i18n-context";
 
 export default function ResultsPage() {
   const params = useParams();
@@ -23,6 +24,7 @@ export default function ResultsPage() {
   const testId = params.testId as string;
   const { state, resetQuiz } = useQuiz();
   const [showQuestions, setShowQuestions] = useState(false);
+  const { t } = useT();
 
   // If no result available, redirect to practice
   if (!state.result || !state.test) {
@@ -37,17 +39,17 @@ export default function ResultsPage() {
             <FileText className="w-8 h-8" />
           </div>
           <h2 className="text-xl font-heading font-bold text-cm-slate-900 mb-2">
-            No results to show
+            {t("quiz.no_results", "No results to show")}
           </h2>
           <p className="text-cm-slate-500 mb-6">
-            Take a practice test first to see your results here.
+            {t("quiz.no_results_desc", "Take a practice test first to see your results here.")}
           </p>
           <Link
             href="/practice"
             className="inline-flex items-center gap-2 px-6 py-3 bg-cm-navy hover:bg-cm-navy-light text-white font-heading font-semibold rounded-xl transition-colors duration-200 cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
-            Go to Practice Tests
+            {t("quiz.go_to_practice", "Go to Practice Tests")}
           </Link>
         </motion.div>
       </div>
@@ -70,14 +72,14 @@ export default function ResultsPage() {
                 CM
               </div>
               <span className="font-heading text-sm font-semibold text-cm-slate-600">
-                {test.title} — Results
+                {test.title}{t("quiz.results_suffix", " — Results")}
               </span>
             </Link>
 
             {state.status === "timed-out" && (
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-semibold">
                 <Clock className="w-3 h-3" />
-                Time expired
+                {t("quiz.time_expired", "Time expired")}
               </span>
             )}
           </div>
@@ -105,7 +107,7 @@ export default function ResultsPage() {
             className="flex-1 flex items-center justify-center gap-2 py-3.5 bg-cm-navy hover:bg-cm-navy-light text-white font-heading font-semibold rounded-xl transition-colors duration-200 cursor-pointer"
           >
             <RefreshCw className="w-4 h-4" />
-            Try Again
+            {t("quiz.try_again", "Try Again")}
           </motion.button>
           <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
             <Link
@@ -113,7 +115,7 @@ export default function ResultsPage() {
               className="flex-1 flex items-center justify-center gap-2 py-3.5 border-2 border-cm-slate-200 text-cm-slate-700 font-heading font-semibold rounded-xl hover:bg-cm-slate-50 transition-colors duration-200 cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
-              Back to Practice
+              {t("quiz.back_to_practice", "Back to Practice")}
             </Link>
           </motion.div>
         </motion.div>
@@ -133,7 +135,7 @@ export default function ResultsPage() {
           >
             <span className="flex items-center gap-2.5 font-heading font-bold text-cm-slate-900">
               <BookOpen className="w-5 h-5 text-cm-navy" />
-              Review All Questions & Answers
+              {t("quiz.review_all", "Review All Questions & Answers")}
             </span>
             <span className="text-cm-slate-400">
               {showQuestions ? (
@@ -177,8 +179,8 @@ export default function ResultsPage() {
         >
           <p className="text-cm-slate-400 text-sm italic">
             {result.passed
-              ? "\"G'day mate, you're ready! 🇦🇺\""
-              : "\"No worries, mate — every practice test makes you stronger. You've got this. 🇦🇺\""}
+              ? t("quiz.encouragement_pass", "\"G'day mate, you're ready! 🇦🇺\"")
+              : t("quiz.encouragement_fail", "\"No worries, mate — every practice test makes you stronger. You've got this. 🇦🇺\"")}
           </p>
         </motion.div>
       </div>

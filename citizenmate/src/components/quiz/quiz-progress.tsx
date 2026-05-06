@@ -2,9 +2,11 @@
 
 import { motion } from "framer-motion";
 import { useQuiz } from "@/lib/quiz-context";
+import { useT } from "@/i18n/i18n-context";
 
 export function QuizProgress() {
   const { state, navigateTo } = useQuiz();
+  const { t } = useT();
 
   if (!state.test) return null;
 
@@ -13,11 +15,11 @@ export function QuizProgress() {
       <div className="flex items-center justify-between mb-3">
         <span className="text-sm font-medium text-cm-slate-500">
           {Object.keys(state.answers).length} of {state.test.questions.length}{" "}
-          answered
+          {t("quiz.answered_status", " answered")}
         </span>
         <span className="text-sm font-medium text-cm-slate-500">
           {state.flaggedQuestions.size > 0 &&
-            `${state.flaggedQuestions.size} flagged`}
+            `${state.flaggedQuestions.size} ${t("quiz.flagged_status", " flagged")}`}
         </span>
       </div>
 
@@ -63,7 +65,7 @@ export function QuizProgress() {
                 transition-colors duration-150 cursor-pointer
                 ${bgClass}
               `}
-              title={`Question ${index + 1}${isFlagged ? " (flagged)" : ""}${isAnswered ? " (answered)" : ""}`}
+              title={t("quiz.tooltip_question", "Question ") + (index + 1) + (isFlagged ? t("quiz.tooltip_flagged", " (flagged)") : "") + (isAnswered ? t("quiz.tooltip_answered", " (answered)") : "")}
             >
               {index + 1}
               {isFlagged && (
@@ -84,19 +86,19 @@ export function QuizProgress() {
       {/* Legend */}
       <div className="flex items-center gap-4 mt-3 text-xs text-cm-slate-400">
         <span className="flex items-center gap-1.5">
-          <span className="w-3 h-3 rounded bg-cm-teal inline-block" /> Current
+          <span className="w-3 h-3 rounded bg-cm-teal inline-block" /> {t("quiz.legend_current", "Current")}
         </span>
         <span className="flex items-center gap-1.5">
           <span className="w-3 h-3 rounded bg-cm-teal/20 inline-block" />{" "}
-          Answered
+          {t("quiz.legend_answered", "Answered")}
         </span>
         <span className="flex items-center gap-1.5">
           <span className="w-3 h-3 rounded bg-amber-100 border border-amber-300 inline-block" />{" "}
-          Flagged
+          {t("quiz.legend_flagged", "Flagged")}
         </span>
         <span className="flex items-center gap-1.5">
           <span className="w-3 h-3 rounded bg-cm-slate-100 inline-block" />{" "}
-          Unanswered
+          {t("quiz.legend_unanswered", "Unanswered")}
         </span>
       </div>
     </div>

@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { AlertTriangle, Home, RefreshCw } from "lucide-react";
 import * as Sentry from "@sentry/nextjs";
+import { useT } from "@/i18n/i18n-context";
 
 export default function GlobalError({
   error,
@@ -12,6 +13,8 @@ export default function GlobalError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const { t } = useT();
+
   useEffect(() => {
     console.error("[CitizenMate] Unhandled error:", error);
     Sentry.captureException(error);
@@ -26,12 +29,11 @@ export default function GlobalError({
         </div>
 
         <h1 className="text-2xl sm:text-3xl font-heading font-extrabold text-cm-slate-900 mb-3">
-          Something went wrong
+          {t("errors.something_wrong", "Something went wrong")}
         </h1>
 
         <p className="text-cm-slate-500 text-sm leading-relaxed mb-8">
-          No worries, mate — this is a temporary hiccup. Your study progress is
-          safe. Try refreshing the page, or head back to the dashboard.
+          {t("errors.temp_hiccup", "No worries, mate — this is a temporary hiccup. Your study progress is safe. Try refreshing the page, or head back to the dashboard.")}
         </p>
 
         {/* Actions */}
@@ -41,21 +43,21 @@ export default function GlobalError({
             className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-cm-navy text-white font-heading font-semibold rounded-xl hover:bg-cm-navy-light transition-colors duration-200 cursor-pointer"
           >
             <RefreshCw className="w-4 h-4" />
-            Try Again
+            {t("errors.try_again", "Try Again")}
           </button>
           <Link
             href="/dashboard"
             className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white border border-cm-slate-200 text-cm-slate-700 font-heading font-semibold rounded-xl hover:bg-cm-slate-50 transition-colors duration-200"
           >
             <Home className="w-4 h-4" />
-            Dashboard
+            {t("errors.dashboard", "Dashboard")}
           </Link>
         </div>
 
         {/* Error ID for support */}
         {error.digest && (
           <p className="mt-8 text-xs text-cm-slate-400">
-            Error ID: {error.digest}
+            {t("errors.error_id", "Error ID:")} {error.digest}
           </p>
         )}
       </div>

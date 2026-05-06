@@ -11,6 +11,7 @@ import { QuizProgress } from "@/components/quiz/quiz-progress";
 import { getTestById } from "@/data/tests";
 import { motion } from "framer-motion";
 import { Flag, ChevronLeft, ChevronRight, Send } from "lucide-react";
+import { useT } from "@/i18n/i18n-context";
 
 export default function QuizPage() {
   const params = useParams();
@@ -19,6 +20,7 @@ export default function QuizPage() {
   const { profile, loading } = useAuth();
   const isPremium = profile.isPremium;
   const { openModal } = useUpgradeModal();
+  const { t } = useT();
   const {
     state,
     currentQuestion,
@@ -69,7 +71,7 @@ export default function QuizPage() {
             CM
           </motion.div>
           <p className="text-cm-slate-500 font-medium">
-            Loading your practice test...
+            {t("quiz.loading", "Loading your practice test...")}
           </p>
         </div>
       </div>
@@ -110,7 +112,7 @@ export default function QuizPage() {
                 }`}
               >
                 <ChevronLeft className="w-4 h-4" />
-                Previous
+                {t("quiz.previous", "Previous")}
               </motion.button>
 
               <div className="flex items-center gap-2">
@@ -126,7 +128,7 @@ export default function QuizPage() {
                         ? "bg-amber-100 text-amber-700 border border-amber-300"
                         : "text-cm-slate-500 hover:bg-cm-slate-100"
                     }`}
-                    title={isFlagged ? "Unflag question" : "Flag for review"}
+                    title={isFlagged ? t("quiz.unflag_question", "Unflag question") : t("quiz.flag_for_review", "Flag for review")}
                   >
                     <motion.span
                       animate={isFlagged ? { rotate: [0, -15, 15, 0], scale: [1, 1.2, 1] } : {}}
@@ -135,7 +137,7 @@ export default function QuizPage() {
                       <Flag className="w-4 h-4" />
                     </motion.span>
                     <span className="hidden sm:inline">
-                      {isFlagged ? "Flagged" : "Flag"}
+                      {isFlagged ? t("quiz.flagged", "Flagged") : t("quiz.flag", "Flag")}
                     </span>
                   </motion.button>
                 )}
@@ -150,7 +152,7 @@ export default function QuizPage() {
                     className="inline-flex items-center gap-2 px-6 py-3 bg-cm-teal hover:bg-cm-teal/90 text-white font-heading font-semibold text-sm rounded-[10px] transition-colors duration-200 cursor-pointer"
                   >
                     <Send className="w-4 h-4" />
-                    Submit Test
+                    {t("quiz.submit_test", "Submit Test")}
                   </motion.button>
                 ) : (
                   <motion.button
@@ -160,7 +162,7 @@ export default function QuizPage() {
                     transition={{ type: "spring", stiffness: 400, damping: 17 }}
                     className="inline-flex items-center gap-2 px-6 py-3 bg-cm-teal hover:bg-cm-teal/90 text-white font-heading font-semibold text-sm rounded-[10px] transition-colors duration-200 cursor-pointer"
                   >
-                    Next
+                    {t("quiz.next", "Next")}
                     <ChevronRight className="w-4 h-4" />
                   </motion.button>
                 )}
@@ -179,7 +181,7 @@ export default function QuizPage() {
                   onClick={submitQuiz}
                   className="w-full py-3 bg-cm-teal hover:bg-cm-teal/90 text-white font-heading font-semibold rounded-[10px] transition-all cursor-pointer"
                 >
-                  Submit Test ({answeredCount}/{state.test.questions.length})
+                    {t("quiz.mobile_submit", "Submit Test ({answered}/{total})").replace("{answered}", String(answeredCount)).replace("{total}", String(state.test.questions.length))}
                 </button>
               </div>
             </div>

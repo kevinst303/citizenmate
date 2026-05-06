@@ -21,6 +21,7 @@ import { StudyProgressBar } from "@/components/study/study-progress-bar";
 import type { TopicCategory } from "@/lib/types";
 import { toast } from "@/lib/toast";
 import { usePremium } from "@/lib/auth-context";
+import { useT } from "@/i18n/i18n-context";
 
 const TOPIC_ICONS: Record<TopicCategory, typeof Globe> = {
   "australia-people": Globe,
@@ -37,6 +38,7 @@ export default function TopicStudyPage({
   const { topicId } = use(params);
   const router = useRouter();
   const { isPremium, premiumLoading, upgrade } = usePremium();
+  const { t } = useT();
   const {
     language,
     setLanguage,
@@ -85,7 +87,7 @@ export default function TopicStudyPage({
               href="/study"
               className="hover:text-cm-teal transition-colors cursor-pointer"
             >
-              Study
+              {t("study.hero_breadcrumb_guide", "Study")}
             </Link>
             <ChevronRight className="w-3 h-3" />
             <span className="text-cm-slate-700 font-medium">{topic.title}</span>
@@ -102,7 +104,7 @@ export default function TopicStudyPage({
                   {language === "zh" ? topic.titleZh : topic.title}
                 </h1>
                 <p className="text-xs text-cm-slate-500">
-                  {progress.completed}/{progress.total} sections completed
+                  {t("study.sections_completed", "{completed} of {total} sections completed").replace("{completed}", String(progress.completed)).replace("{total}", String(progress.total))}
                 </p>
               </div>
             </div>
@@ -131,7 +133,7 @@ export default function TopicStudyPage({
           >
             <Heart className="w-4 h-4 text-cm-red flex-shrink-0" />
             <p className="text-sm text-cm-red-dark font-medium">
-              All 5 values questions must be answered correctly to pass the citizenship test. Study this topic carefully.
+              {t("study.values_warning", "All 5 values questions must be answered correctly to pass the citizenship test. Study this topic carefully.")}
             </p>
           </motion.div>
         )}
@@ -151,17 +153,17 @@ export default function TopicStudyPage({
                   const newCompleted = progress.completed + 1;
                   if (newCompleted >= progress.total) {
                     toast.achievement(
-                      `${topic.title} complete! 🌟`,
-                      "You’ve studied every section in this topic. Amazing work!"
+                      t("study.topic_complete", "{topic} complete!").replace("{topic}", topic.title),
+                      t("study.topic_complete_desc", "You\u2019ve studied every section in this topic. Amazing work!")
                     );
                   } else {
                     toast.success(
-                      "Section completed ✅",
-                      `${language === "zh" ? section.titleZh : section.title} — ${newCompleted}/${progress.total} done`
+                      t("study.section_completed", "Section completed"),
+                      t("study.section_done", "{section} \u2014 {completed}/{total} done").replace("{section}", language === "zh" ? section.titleZh : section.title).replace("{completed}", String(newCompleted)).replace("{total}", String(progress.total))
                     );
                   }
                 } else {
-                  toast.info("Section unmarked", "You can revisit it anytime.");
+                  toast.info(t("study.section_unmarked", "Section unmarked"), t("study.section_revisit", "You can revisit it anytime."));
                 }
               }}
               index={idx}
@@ -181,7 +183,7 @@ export default function TopicStudyPage({
             >
               <ArrowLeft className="w-4 h-4 text-cm-slate-400 group-hover:text-cm-teal transition-colors" />
               <div>
-                <div className="text-xs text-cm-slate-400">Previous</div>
+                <div className="text-xs text-cm-slate-400">{t("study.previous", "Previous")}</div>
                 <div className="text-sm font-heading font-semibold text-cm-slate-700 group-hover:text-cm-teal transition-colors">
                   {prevTopic.title}
                 </div>
@@ -197,7 +199,7 @@ export default function TopicStudyPage({
               style={{ boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}
             >
               <div>
-                <div className="text-xs text-cm-slate-400">Next</div>
+                <div className="text-xs text-cm-slate-400">{t("study.next", "Next")}</div>
                 <div className="text-sm font-heading font-semibold text-cm-slate-700 group-hover:text-cm-teal transition-colors">
                   {nextTopic.title}
                 </div>
@@ -209,7 +211,7 @@ export default function TopicStudyPage({
               href="/study"
               className="flex items-center gap-2 px-4 py-3 bg-cm-teal text-white rounded-[15px] hover:opacity-90 transition-all duration-200 cursor-pointer font-heading font-semibold text-sm"
             >
-              Back to Study Guide
+              {t("study.back_to_study_guide", "Back to Study Guide")}
               <ArrowRight className="w-4 h-4" />
             </Link>
           )}

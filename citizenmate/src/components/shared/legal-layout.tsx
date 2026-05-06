@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { SubpageHero } from "@/components/shared/subpage-hero";
+import { useT } from "@/i18n/i18n-context";
 
 interface LegalSection {
   id: string;
@@ -21,17 +22,18 @@ export function LegalLayout({
   sections,
   children,
 }: LegalLayoutProps) {
+  const { t } = useT();
   return (
     <div className="min-h-screen bg-slate-50 pb-24">
       {/* Hero header */}
       <SubpageHero
         title={title}
         breadcrumbs={[
-          { label: "Home", href: "/" },
-          { label: "Legal" },
+          { label: t("legal.breadcrumb_home", "Home"), href: "/" },
+          { label: t("legal.breadcrumb_legal", "Legal") },
           { label: title },
         ]}
-        description={`Last updated: ${lastUpdated}`}
+        description={t("legal.last_updated", "Last updated: {date}").replace("{date}", lastUpdated)}
         bgImage=""
         curveColorClass="text-slate-50"
       />
@@ -48,7 +50,7 @@ export function LegalLayout({
           >
             <nav className="sticky top-24 space-y-1 bg-white p-6 rounded-[10px] shadow-[0_1px_3px_0_rgba(0,0,0,0.1),0_1px_2px_-1px_rgba(0,0,0,0.1)]">
               <p className="text-xs font-semibold uppercase tracking-wider text-conseil-teal mb-4">
-                On this page
+                {t("legal.sidebar_title", "On this page")}
               </p>
               {sections.map((section) => (
                 <a

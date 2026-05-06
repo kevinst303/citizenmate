@@ -1,7 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import { MapPin, Home, BookOpen, ClipboardCheck } from "lucide-react";
+import { useT } from "@/i18n/i18n-context";
 
 export default function NotFound() {
+  const { t } = useT();
+
   return (
     <div className="min-h-screen bg-cm-ice flex items-center justify-center px-4">
       <div className="max-w-md w-full text-center">
@@ -16,12 +21,11 @@ export default function NotFound() {
         </p>
 
         <h1 className="text-2xl sm:text-3xl font-heading font-extrabold text-cm-slate-900 mb-3">
-          Page not found, mate
+          {t("errors.not_found_title", "Page not found, mate")}
         </h1>
 
         <p className="text-cm-slate-500 text-sm leading-relaxed mb-8">
-          Looks like this page has gone walkabout! Don&apos;t worry — your study
-          progress is safe. Let&apos;s get you back on track.
+          {t("errors.not_found_desc", "Looks like this page has gone walkabout! Don't worry — your study progress is safe. Let's get you back on track.")}
         </p>
 
         {/* Quick links */}
@@ -29,19 +33,19 @@ export default function NotFound() {
           {[
             {
               icon: Home,
-              label: "Dashboard",
+              label: t("errors.dashboard", "Dashboard"),
               href: "/dashboard",
               bg: "bg-cm-navy",
             },
             {
               icon: BookOpen,
-              label: "Study Guide",
+              label: t("errors.study_guide", "Study Guide"),
               href: "/study",
               bg: "bg-cm-eucalyptus",
             },
             {
               icon: ClipboardCheck,
-              label: "Practice",
+              label: t("errors.practice", "Practice"),
               href: "/practice",
               bg: "bg-cm-gold",
             },
@@ -64,7 +68,7 @@ export default function NotFound() {
           href="/"
           className="text-sm text-cm-sky hover:underline font-medium"
         >
-          ← Back to home
+          {t("errors.back_home", "← Back to home")}
         </Link>
       </div>
     </div>
