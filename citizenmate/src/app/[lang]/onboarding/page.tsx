@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { posthog } from "@/components/providers/posthog-provider";
 import { useT } from "@/i18n/i18n-context";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import { Calendar, Monitor, Sparkles, ArrowRight, CheckCircle2 } from "lucide-react";
 import { useSettingsStore } from "@/lib/store/useSettingsStore";
 
@@ -57,7 +57,7 @@ export default function OnboardingPage() {
     }
   };
 
-  const slideVariants = {
+  const slideVariants: Variants = {
     hidden: { opacity: 0, x: 20 },
     visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: "easeOut" } },
     exit: { opacity: 0, x: -20, transition: { duration: 0.3, ease: "easeIn" } }
