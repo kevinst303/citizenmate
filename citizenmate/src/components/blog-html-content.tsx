@@ -4,26 +4,11 @@ import parse, { domToReact, Element, type DOMNode, type HTMLReactParserOptions }
 import { QuizCTA } from '@/components/blog/quiz-cta';
 
 function isElement(node: DOMNode): node is Element {
-  return node instanceof Element && (node as Element).type === 'tag';
+  return (node as any).type === 'tag';
 }
 
 function isInternalUrl(href: string): boolean {
   return href.startsWith('/') || href.startsWith('#');
-}
-
-function parseQuizCtaAttributes(content: string): string {
-  let preprocessed = content.replace(
-    /<QuizCTA\s+title\s*=\s*"([^"]*)"\s+text\s*=\s*"((?:[^"]|\\")*?)"\s*(?:\/|><\/QuizCTA)?>/gi,
-    (_match, title, text) =>
-      `<div data-component="quiz-cta" data-title="${escapeAttr(title)}" data-text="${escapeAttr(text.replace(/\\"/g, '"'))}"></div>`
-  );
-
-  preprocessed = preprocessed.replace(
-    /<QuizCTA\s*(?:\/|><\/QuizCTA)?>/gi,
-    () => `<div data-component="quiz-cta"></div>`
-  );
-
-  return preprocessed;
 }
 
 function escapeAttr(value: string): string {
@@ -33,19 +18,16 @@ function escapeAttr(value: string): string {
 const IMAGE_DIMENSIONS = { width: 800, height: 450 };
 
 export function BlogHtmlContent({ content }: { content: string }) {
-  const preprocessed = parseQuizCtaAttributes(content);
-
   const options: HTMLReactParserOptions = {
     replace(domNode) {
       if (!isElement(domNode)) return;
 
       const { name, attribs, children } = domNode;
-
-      if (attribs['data-component'] === 'quiz-cta') {
+      if (name === 'quizcta' || (attribs && attribs['data-component'] === 'quiz-cta')) {
         return (
           <QuizCTA
-            title={attribs['data-title']}
-            text={attribs['data-text']}
+            title={attribs.title || attribs['data-title']}
+            text={attribs.text || attribs['data-text']}
           />
         );
       }
@@ -89,7 +71,7 @@ export function BlogHtmlContent({ content }: { content: string }) {
     <div
       className="prose prose-lg prose-slate max-w-none prose-headings:font-bold prose-headings:text-cm-dark prose-headings:tracking-tight prose-p:text-cm-slate-600 prose-p:leading-relaxed prose-a:text-cm-teal prose-a:no-underline hover:prose-a:text-cm-teal-dark hover:prose-a:underline prose-img:rounded-[24px] prose-img:shadow-card prose-li:text-cm-slate-600 prose-strong:text-cm-slate-800"
     >
-      {parse(preprocessed, options)}
+      {parse(content, options)}
     </div>
   );
 }

@@ -12,6 +12,7 @@ export function UpgradeModal() {
   const { isOpen, closeModal } = useUpgradeModal();
   const { startCheckout } = useAuth();
   const [loadingTier, setLoadingTier] = useState<string | null>(null);
+  const [interval, setInterval] = useState<'month' | 'year'>('month');
   const { t } = useT();
 
   if (!isOpen) return null;
@@ -19,8 +20,7 @@ export function UpgradeModal() {
   const handleUpgrade = async (tier: string) => {
     setLoadingTier(tier);
     try {
-      // Pass the tier to startCheckout
-      const interval = tier.toLowerCase() === 'pro' ? 'month' : 'year';
+      // Pass the chosen interval to startCheckout
       await startCheckout(tier.toLowerCase(), interval);
     } finally {
       setTimeout(() => setLoadingTier(null), 3000);
@@ -30,8 +30,8 @@ export function UpgradeModal() {
   const tiers = [
     {
       name: t("upgrade.pro_name", "Pro"),
-      price: "A$14.99",
-      period: "monthly",
+      price: interval === 'month' ? "A$14.99" : "A$149.90",
+      period: interval === 'month' ? "monthly" : "yearly",
       description: t("upgrade.pro_desc", "Perfect for pacing your study over a few months."),
       features: [
         t("upgrade.pro_feature_1", "All 15 mock tests"),
@@ -44,9 +44,9 @@ export function UpgradeModal() {
     },
     {
       name: t("upgrade.premium_name", "Premium"),
-      price: "A$29.99",
-      period: "60 days",
-      description: t("upgrade.premium_desc", "Everything you need to pass in one go. No subscriptions."),
+      price: interval === 'month' ? "A$29.99" : "A$299.90",
+      period: interval === 'month' ? "monthly" : "yearly",
+      description: t("upgrade.premium_desc", "Everything you need to pass. Get full access to all premium features."),
       features: [
         t("upgrade.premium_feature_1", "All Pro features"),
         t("upgrade.premium_feature_2", "Unlimited AI tutor"),
@@ -78,7 +78,7 @@ export function UpgradeModal() {
           className="relative w-full max-w-4xl bg-white dark:bg-neutral-900 rounded-3xl shadow-2xl overflow-hidden border border-neutral-200 dark:border-neutral-800 flex flex-col max-h-[90vh]"
         >
           {/* Header */}
-          <div className="p-6 pb-0 flex justify-between items-start">
+          <div className="p-6 pb-0 flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
             <div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
                 {t("upgrade.title", "Unlock Your Full Potential")}
@@ -89,10 +89,39 @@ export function UpgradeModal() {
             </div>
             <button
               onClick={closeModal}
-              className="p-2 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 rounded-full transition-colors"
+              className="p-2 self-end sm:self-auto bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 rounded-full transition-colors order-first sm:order-last absolute top-6 right-6 sm:relative sm:top-auto sm:right-auto"
             >
               <X className="w-5 h-5 text-neutral-600 dark:text-neutral-300" />
             </button>
+          </div>
+
+          {/* Billing Toggle */}
+          <div className="px-6 pt-6 flex justify-center">
+            <div className="bg-neutral-100 dark:bg-neutral-800 p-1 rounded-full inline-flex">
+              <button
+                onClick={() => setInterval('month')}
+                className={`px-6 py-2 rounded-full text-sm font-bold transition-all ${
+                  interval === 'month'
+                    ? "bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white shadow-sm"
+                    : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300"
+                }`}
+              >
+                Monthly
+              </button>
+              <button
+                onClick={() => setInterval('year')}
+                className={`px-6 py-2 rounded-full text-sm font-bold transition-all flex items-center gap-2 ${
+                  interval === 'year'
+                    ? "bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white shadow-sm"
+                    : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300"
+                }`}
+              >
+                Yearly
+                <span className="text-[10px] uppercase bg-cm-teal/20 text-cm-teal px-2 py-0.5 rounded-full">
+                  Save 20%
+                </span>
+              </button>
+            </div>
           </div>
 
           {/* Pricing Grid */}
@@ -156,7 +185,7 @@ export function UpgradeModal() {
                   >
                     {loadingTier === tier.name
                       ? t("upgrade.processing", "Processing...")
-                      : tier.name === "Pro" ? t("upgrade.get_pro") : t("upgrade.get_premium")}
+                      : tier.name === "Pro" ? t("upgrade.get_pro", "Get Pro") : t("upgrade.get_premium", "Get Premium")}
                   </Button>
                 </div>
               ))}

@@ -107,15 +107,12 @@ export function Footer() {
                   if (isPdf) {
                     return (
                       <li key={link.label} suppressHydrationWarning>
-                        <a
-                          href={link.href}
-                          className="text-sm text-zinc-500 hover:text-foreground transition-colors duration-200 cursor-pointer"
-                          target="_blank"
-                          rel="noopener noreferrer"
+                        <span
                           suppressHydrationWarning
-                        >
-                          {link.label}
-                        </a>
+                          dangerouslySetInnerHTML={{
+                            __html: `<a href="${link.href}" class="text-sm text-zinc-500 hover:text-foreground transition-colors duration-200 cursor-pointer" target="_blank" rel="noopener noreferrer">${link.label}</a>`
+                          }}
+                        />
                       </li>
                     );
                   }
