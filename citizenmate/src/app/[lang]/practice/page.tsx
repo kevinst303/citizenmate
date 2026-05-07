@@ -7,7 +7,8 @@ import { mockTests } from "@/data/tests";
 import { getAttemptHistory } from "@/lib/quiz-context";
 import { useEffect, useState } from "react";
 import type { QuizResult } from "@/lib/types";
-import { usePremium } from "@/lib/auth-context";
+import { usePremium, useAuth } from "@/lib/auth-context";
+import { useRouter, useParams } from "next/navigation";
 import { PremiumBadge } from "@/components/shared/premium-gate";
 import { SubpageHero } from "@/components/shared/subpage-hero";
 import { useT } from "@/i18n/i18n-context";
@@ -45,10 +46,20 @@ const FREE_TEST_COUNT = 1;
 
 export default function PracticePage() {
   const { isPremium, upgrade } = usePremium();
+  const { user, loading: authLoading } = useAuth();
+  const router = useRouter();
+  const params = useParams<{ lang: string }>();
   const { t } = useT();
   const [attempts, setAttempts] = useState<
     Array<{ testId: string; result: QuizResult; completedAt: string }>
   >([]);
+
+  // Client-side protection for guests
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.replace(`/${params.lang}?auth=required`);
+    }
+  }, [user, authLoading, router, params.lang]);
 
   useEffect(() => {
     setAttempts(getAttemptHistory());

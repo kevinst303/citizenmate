@@ -3,6 +3,7 @@
 import { useMemo, useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import {
   Gauge,
@@ -76,9 +77,17 @@ const item = {
 export default function DashboardPage() {
   const { progress } = useStudy();
   const { daysUntilTest, urgencyLevel, openModal, testDate } = useTestDate();
-  const { profile } = useAuth();
+  const { user, profile, loading: authLoading } = useAuth();
   const { openModal: openUpgradeModal } = useUpgradeModal();
   const { t } = useT();
+  const router = useRouter();
+
+  // Client-side protection for guests
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.replace("/?auth=required");
+    }
+  }, [user, authLoading, router]);
 
   // Defer localStorage reads until after hydration to prevent SSR mismatch
   const [hasMounted, setHasMounted] = useState(false);

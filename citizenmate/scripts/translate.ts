@@ -19,6 +19,7 @@ const DEEPL_TARGETS: Record<string, string> = {
   hi: "HI",
   zh: "ZH",
   ar: "AR",
+  vi: "VI",
 };
 
 const BATCH_SIZE = 50;

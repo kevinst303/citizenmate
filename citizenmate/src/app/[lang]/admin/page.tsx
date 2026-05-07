@@ -3,7 +3,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { Users, TrendingUp, Activity, FileText, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { useAuth } from "@/lib/auth-context";
 import {
   LineChart, Line, AreaChart, Area, BarChart, Bar,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -44,9 +45,19 @@ function formatTrend(value: number): { direction: "up" | "down" | "flat"; value:
 
 export default function AdminInsightsPage() {
   const params = useParams<{ lang: string }>();
+  const router = useRouter();
+  const { user, profile, loading: authLoading } = useAuth();
+
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [period, setPeriod] = useState(30);
+
+  // Client-side protection for guests
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.replace(`/${params.lang}?auth=required`);
+    }
+  }, [user, authLoading, router, params.lang]);
 
   const fetchAnalytics = useCallback(async () => {
     setLoading(true);

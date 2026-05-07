@@ -22,7 +22,8 @@ import type { TopicCategory } from "@/lib/types";
 import { useT } from "@/i18n/i18n-context";
 
 import { SubpageHero } from "@/components/shared/subpage-hero";
-
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 const TOPIC_ICONS: Record<TopicCategory, typeof Globe> = {
   "australia-people": Globe,
   "democratic-beliefs": Scale,
@@ -79,9 +80,18 @@ const FREE_TOPIC_COUNT = 1;
 
 export default function StudyPage() {
   const { getTopicProgress, getOverallProgress } = useStudy();
-  const { isPremium, upgrade } = usePremium();
+  const { user, isPremium, upgrade } = usePremium();
   const overall = getOverallProgress();
   const { t } = useT();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!user) {
+      router.replace("/?auth=required");
+    }
+  }, [user, router]);
+
+  if (!user) return null;
 
   return (
     <div className="min-h-screen bg-white">
