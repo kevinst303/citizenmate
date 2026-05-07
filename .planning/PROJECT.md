@@ -49,6 +49,9 @@ Every page of CitizenMate renders with the Conseil design system. v1.1 ensures t
 - GROW-01: Add 4 new language pairs
 - GROW-02: Build "Help a Mate" referral program
 - GROW-03: Implement email notifications
+- UX-01: Calm UX & Interface Modernization (Progressive disclosure, reduced motion)
+- UX-02: Anxiety-Reduction & Wellbeing (Scaffolded feedback, breathing prompts)
+- UX-03: Adaptive Gamification & XAI (Effort-based rewards, transparent algorithms)
 
 ### Out of Scope
 

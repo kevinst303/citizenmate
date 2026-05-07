@@ -55,3 +55,43 @@ Plans:
 
 Plans:
 - [ ] TBD (run /gsd-plan-phase 9 to break down)
+
+### Phase 10: Calm UX & Interface Modernization
+
+**Goal:** Reduce cognitive load through progressive disclosure, purposeful micro-interactions, and refined dark mode to create a calmer study environment.
+**Requirements**: UX-01
+**Depends on:** Phase 7
+**Plans:** 1 plan
+
+Plans:
+- [ ] 01 — Calm UX & Interface Modernization
+
+### Phase 11: Anxiety-Reduction & Wellbeing Features
+
+**Goal:** Specifically mitigate evaluative stress with scaffolded AI feedback, anxiety-reducing copywriting, and optional wellbeing micro-interventions (e.g. breathing prompts).
+**Requirements**: UX-02
+**Depends on:** Phase 10
+**Plans:** 1 plan
+
+Plans:
+- [ ] 01 — Anxiety-Reduction & Wellbeing Features
+
+### Phase 12: Adaptive Gamification & Trust-building
+
+**Goal:** Increase daily engagement and retention using non-competitive, effort-based gamification, and build trust with Explainable AI (XAI) for the SRS algorithm.
+**Requirements**: UX-03
+**Depends on:** Phase 11
+**Plans:** 1 plan
+
+Plans:
+- [ ] 01 — Adaptive Gamification & Trust-building
+
+### Phase 13: Add Vietnamese (Vi) to supported language of our platform
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 12
+**Plans:** 1/1 plans complete
+
+Plans:
+- [x] TBD (run /gsd-plan-phase 13 to break down) (completed 2026-05-07)
