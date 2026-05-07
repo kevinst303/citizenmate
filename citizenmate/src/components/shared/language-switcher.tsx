@@ -11,6 +11,7 @@ const LANGUAGES: Record<string, { label: string; native: string }> = {
   hi: { label: "Hindi", native: "हिन्दी" },
   zh: { label: "Chinese", native: "中文" },
   ar: { label: "Arabic", native: "العربية" },
+  vi: { label: "Vietnamese", native: "Tiếng Việt" },
 };
 
 export function LanguageSwitcher() {

@@ -1,4 +1,4 @@
-export const locales = ['en', 'es', 'hi', 'zh', 'ar'] as const;
+export const locales = ['en', 'es', 'hi', 'zh', 'ar', 'vi'] as const;
 export type Locale = (typeof locales)[number];
 export const defaultLocale: Locale = 'en';
 
@@ -8,6 +8,7 @@ const dictionaries = {
   hi: () => import("./dictionaries/hi.json").then((module) => module.default),
   zh: () => import("./dictionaries/zh.json").then((module) => module.default),
   ar: () => import("./dictionaries/ar.json").then((module) => module.default),
+  vi: () => import("./dictionaries/vi.json").then((module) => module.default),
 };
 
 export const getDictionary = async (locale: Locale) => {
