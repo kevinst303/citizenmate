@@ -13,6 +13,7 @@ import { UpgradeModal } from "@/components/global/upgrade-modal";
 import { locales, type Locale } from "@/i18n/config";
 import { I18nProvider } from "@/i18n/i18n-context";
 import { PostHogProvider } from "@/components/providers/posthog-provider";
+import { MotionProvider } from "@/components/providers/motion-provider";
 import "../globals.css";
 
 const jsonLd = {
@@ -140,12 +141,14 @@ export default async function RootLayout({
               <StudyProvider>
                 <SRSProvider>
                   <I18nProvider locale={lang as Locale}>
-                    <LayoutShell>{children}</LayoutShell>
-                    <Suspense fallback={null}>
-                      <ReferralTracker />
-                      <AuthRedirectHandler />
-                      <UpgradeModal />
-                    </Suspense>
+                    <MotionProvider>
+                      <LayoutShell>{children}</LayoutShell>
+                      <Suspense fallback={null}>
+                        <ReferralTracker />
+                        <AuthRedirectHandler />
+                        <UpgradeModal />
+                      </Suspense>
+                    </MotionProvider>
                   </I18nProvider>
                 </SRSProvider>
               </StudyProvider>

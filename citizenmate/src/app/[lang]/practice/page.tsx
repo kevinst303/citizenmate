@@ -266,7 +266,7 @@ export default function PracticePage() {
                           }`}
                         >
                           <Award className="w-3 h-3" />
-                          Best: {bestScore}/20
+                          {t("practice.best_score").replace("{score}", bestScore.toString())}
                         </span>
                       )}
                     </div>
@@ -338,7 +338,7 @@ export default function PracticePage() {
               <Lightbulb className="w-4 h-4" />
             </div>
             <h3 className="text-lg font-heading font-bold text-cm-navy">
-              Tips for the Real Test
+              {t("practice.tips_for_real_test")}
             </h3>
           </div>
           <ul className="space-y-3.5 text-sm text-cm-slate-600">

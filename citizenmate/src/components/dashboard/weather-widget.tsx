@@ -8,22 +8,24 @@ import {
   Sun,
   ShieldAlert,
 } from "lucide-react";
+import { useT } from "@/i18n/i18n-context";
 import type { WeatherData } from "@/app/api/australia-insights/route";
 
 interface WeatherWidgetProps {
   data: WeatherData;
 }
 
-function getUVLevel(uv: number): { label: string; color: string; bg: string; tip: string } {
-  if (uv <= 2) return { label: "Low", color: "text-green-600", bg: "bg-green-100", tip: "Enjoy the outdoors safely." };
-  if (uv <= 5) return { label: "Moderate", color: "text-yellow-600", bg: "bg-yellow-100", tip: "Wear sunscreen & a hat." };
-  if (uv <= 7) return { label: "High", color: "text-orange-600", bg: "bg-orange-100", tip: "Slip, Slop, Slap, Seek & Slide!" };
-  if (uv <= 10) return { label: "Very High", color: "text-red-600", bg: "bg-red-100", tip: "Avoid sun 10am–2pm. Cover up!" };
-  return { label: "Extreme", color: "text-purple-700", bg: "bg-purple-100", tip: "Stay indoors if possible!" };
+function getUVLevel(uv: number, t: (key: string) => string): { label: string; color: string; bg: string; tip: string } {
+  if (uv <= 2) return { label: t("dashboard.widgets.weather.uv.low.label"), color: "text-green-600", bg: "bg-green-100", tip: t("dashboard.widgets.weather.uv.low.tip") };
+  if (uv <= 5) return { label: t("dashboard.widgets.weather.uv.moderate.label"), color: "text-yellow-600", bg: "bg-yellow-100", tip: t("dashboard.widgets.weather.uv.moderate.tip") };
+  if (uv <= 7) return { label: t("dashboard.widgets.weather.uv.high.label"), color: "text-orange-600", bg: "bg-orange-100", tip: t("dashboard.widgets.weather.uv.high.tip") };
+  if (uv <= 10) return { label: t("dashboard.widgets.weather.uv.very_high.label"), color: "text-red-600", bg: "bg-red-100", tip: t("dashboard.widgets.weather.uv.very_high.tip") };
+  return { label: t("dashboard.widgets.weather.uv.extreme.label"), color: "text-purple-700", bg: "bg-purple-100", tip: t("dashboard.widgets.weather.uv.extreme.tip") };
 }
 
 export function WeatherWidget({ data }: WeatherWidgetProps) {
-  const uv = getUVLevel(data.current.uvIndex);
+  const { t } = useT();
+  const uv = getUVLevel(data.current.uvIndex, t);
 
   return (
     <div className="bg-white border border-[#E9ECEF] overflow-hidden h-full flex flex-col" style={{ borderRadius: '15px', boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}>
@@ -31,7 +33,7 @@ export function WeatherWidget({ data }: WeatherWidgetProps) {
       <div className="p-5 pb-0">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="font-heading font-bold text-cm-slate-900 text-base">Weather</h3>
+            <h3 className="font-heading font-bold text-cm-slate-900 text-base">{t("dashboard.widgets.weather.title")}</h3>
             <p className="text-xs text-cm-slate-500">{data.location}</p>
           </div>
           <span className="text-3xl">{data.current.icon}</span>
@@ -80,7 +82,7 @@ export function WeatherWidget({ data }: WeatherWidgetProps) {
 
       {/* 7-day forecast */}
       <div className="px-5 pb-5 pt-2 border-t border-cm-slate-100 flex-1">
-        <p className="text-[10px] font-bold uppercase tracking-wider text-cm-slate-400 mb-2">7-Day Forecast</p>
+        <p className="text-[10px] font-bold uppercase tracking-wider text-cm-slate-400 mb-2">{t("dashboard.widgets.weather.forecast_7_day")}</p>
         <div className="grid grid-cols-7 gap-1 text-center">
           {data.daily.map((day) => (
             <div key={day.date} className="flex flex-col items-center gap-0.5">

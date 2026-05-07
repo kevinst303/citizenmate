@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowRightLeft } from "lucide-react";
+import { useT } from "@/i18n/i18n-context";
 import type { CurrencyRate } from "@/app/api/australia-insights/route";
 
 interface CurrencyWidgetProps {
@@ -9,6 +10,7 @@ interface CurrencyWidgetProps {
 }
 
 export function CurrencyWidget({ data }: CurrencyWidgetProps) {
+  const { t } = useT();
   return (
     <div className="bg-white border border-[#E9ECEF] overflow-hidden h-full flex flex-col" style={{ borderRadius: '15px', boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}>
       {/* Header */}
@@ -18,8 +20,8 @@ export function CurrencyWidget({ data }: CurrencyWidgetProps) {
             <ArrowRightLeft className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="font-heading font-bold text-cm-slate-900 text-base">AUD Exchange Rates</h3>
-            <p className="text-[10px] text-cm-slate-400">1 AUD equals</p>
+            <h3 className="font-heading font-bold text-cm-slate-900 text-base">{t("dashboard.widgets.currency.title")}</h3>
+            <p className="text-[10px] text-cm-slate-400">{t("dashboard.widgets.currency.subtitle")}</p>
           </div>
         </div>
       </div>

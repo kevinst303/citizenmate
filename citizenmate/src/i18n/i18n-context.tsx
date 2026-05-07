@@ -3,7 +3,8 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { defaultLocale, getDictionary, type Locale } from './config';
 
-type Dictionary = Record<string, string | Record<string, string>>;
+type DictionaryValue = string | { [key: string]: DictionaryValue };
+type Dictionary = Record<string, DictionaryValue>;
 
 const I18nContext = createContext<{
   locale: Locale;

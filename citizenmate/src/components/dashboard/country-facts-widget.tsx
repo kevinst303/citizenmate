@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Info } from "lucide-react";
+import { useT } from "@/i18n/i18n-context";
 import type { CountryFact } from "@/app/api/australia-insights/route";
 
 interface CountryFactsWidgetProps {
@@ -9,6 +10,7 @@ interface CountryFactsWidgetProps {
 }
 
 export function CountryFactsWidget({ data }: CountryFactsWidgetProps) {
+  const { t } = useT();
   return (
     <div 
       className="bg-white border border-[#E9ECEF] rounded-[15px] overflow-hidden h-full flex flex-col"
@@ -21,8 +23,8 @@ export function CountryFactsWidget({ data }: CountryFactsWidgetProps) {
             <Info className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="font-heading font-bold text-cm-slate-900 text-base">Country Quick Facts</h3>
-            <p className="text-[10px] text-cm-slate-400">Handy for your citizenship test!</p>
+            <h3 className="font-heading font-bold text-cm-slate-900 text-base">{t("dashboard.widgets.country_facts.title")}</h3>
+            <p className="text-[10px] text-cm-slate-400">{t("dashboard.widgets.country_facts.subtitle")}</p>
           </div>
         </div>
       </div>

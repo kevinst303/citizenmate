@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
+import { useT } from "@/i18n/i18n-context";
 
 export function ReadinessRing({ score }: { score: number }) {
+  const { t } = useT();
   const circumference = 2 * Math.PI * 54;
   const filled = (score / 100) * circumference;
 
@@ -93,7 +95,7 @@ export function ReadinessRing({ score }: { score: number }) {
           transition={{ delay: 0.8 }}
           className="text-xs text-cm-slate-500 font-semibold tracking-wide uppercase"
         >
-          Ready
+          {t("dashboard.ready_status")}
         </motion.span>
       </div>
     </div>

@@ -13,6 +13,7 @@ import {
   Cell,
 } from "recharts";
 import { Users, TrendingUp, Map } from "lucide-react";
+import { useT } from "@/i18n/i18n-context";
 import type { PopulationData } from "@/lib/abs-api";
 
 // Fetch action using Server Actions or standard API route.
@@ -35,6 +36,7 @@ const COLORS = [
 ];
 
 export function AbsInsightsWidget() {
+  const { t } = useT();
   const [isClient, setIsClient] = useState(false);
   const [data, setData] = useState<PopulationData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -83,8 +85,8 @@ export function AbsInsightsWidget() {
     return (
       <div className="bg-white border border-[#E9ECEF] flex flex-col items-center justify-center p-12 text-center h-[400px]" style={{ borderRadius: '15px', boxShadow: 'rgba(0,0,0,0.05) 0px 2px 6px 0px, rgba(0,0,0,0.1) 0px 8px 19.2px 0px' }}>
         <Map className="w-12 h-12 text-cm-slate-200 mb-4" />
-        <h3 className="font-heading font-bold text-lg text-cm-slate-900 mb-1">No data available</h3>
-        <p className="text-sm text-cm-slate-500 max-w-sm">We couldn't load the population insights at this time. Please check your connection and try again.</p>
+        <h3 className="font-heading font-bold text-lg text-cm-slate-900 mb-1">{t("dashboard.widgets.abs.no_data")}</h3>
+        <p className="text-sm text-cm-slate-500 max-w-sm">{t("dashboard.widgets.abs.no_data_desc")}</p>
       </div>
     );
   }
@@ -96,14 +98,14 @@ export function AbsInsightsWidget() {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <h2 className="font-heading font-bold text-lg text-cm-slate-900">
-              Discover Australia
+              {t("life_in_australia.title")}
             </h2>
             <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-cm-navy-50 text-cm-navy">
-              ABS Data
+              {t("dashboard.widgets.abs.badge")}
             </span>
           </div>
           <p className="text-sm text-cm-slate-500">
-            Estimated Resident Population by State
+            {t("dashboard.widgets.abs.subtitle")}
           </p>
         </div>
         <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-lg shadow-sm border border-cm-slate-100">
@@ -111,7 +113,7 @@ export function AbsInsightsWidget() {
           <span className="text-sm font-bold text-cm-slate-800">
             {formatMillions(totalPopulation)}
           </span>
-          <span className="text-xs text-cm-slate-500">Total</span>
+          <span className="text-xs text-cm-slate-500">{t("dashboard.widgets.abs.total")}</span>
         </div>
       </div>
 
@@ -121,7 +123,7 @@ export function AbsInsightsWidget() {
           <div className="bg-gradient-to-br from-cm-sky-light to-white p-4 rounded-xl border border-cm-sky/20">
             <div className="flex items-center gap-2 text-cm-sky-dark mb-2">
               <Map className="w-4 h-4" />
-              <h3 className="text-xs font-bold uppercase tracking-wide">Largest State</h3>
+              <h3 className="text-xs font-bold uppercase tracking-wide">{t("dashboard.widgets.abs.largest_state")}</h3>
             </div>
             <p className="text-2xl font-heading font-extrabold text-cm-slate-900">
               {data[0]?.shortName || "NSW"}
@@ -134,10 +136,10 @@ export function AbsInsightsWidget() {
           <div className="bg-gradient-to-br from-cm-gold-light/50 to-white p-4 rounded-xl border border-cm-gold/20">
             <div className="flex items-center gap-2 text-cm-gold-dark mb-2">
               <TrendingUp className="w-4 h-4" />
-              <h3 className="text-xs font-bold uppercase tracking-wide">Growing Fast</h3>
+              <h3 className="text-xs font-bold uppercase tracking-wide">{t("dashboard.widgets.abs.growing_fast")}</h3>
             </div>
             <p className="text-sm text-cm-slate-700 leading-relaxed">
-              Australia's population is highly urbanized, with the majority of growth concentrated in the capital cities of the eastern states.
+              {t("dashboard.widgets.abs.growing_desc")}
             </p>
           </div>
         </div>

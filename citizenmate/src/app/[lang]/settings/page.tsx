@@ -11,11 +11,14 @@ import {
   Settings as SettingsIcon,
   Shield,
   CreditCard,
-  AlertTriangle
+  AlertTriangle,
+  Monitor
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { useTestDate } from "@/lib/test-date-context";
 import { useUpgradeModal } from "@/lib/store/useUpgradeModal";
+import { useSettingsStore } from "@/lib/store/useSettingsStore";
+import { Switch } from "@/components/ui/switch";
 import { SubpageHero } from "@/components/shared/subpage-hero";
 import { useT } from "@/i18n/i18n-context";
 import { useRouter } from "next/navigation";
@@ -39,6 +42,7 @@ export default function SettingsPage() {
   const { openModal: openUpgradeModal } = useUpgradeModal();
   const { t } = useT();
   const router = useRouter();
+  const { reduceMotion, setReduceMotion } = useSettingsStore();
   
   const [imageError, setImageError] = useState(false);
 
@@ -259,6 +263,34 @@ export default function SettingsPage() {
                     {t("settings.plan_free_tier")}
                   </p>
                 )}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Accessibility Settings */}
+          <motion.div variants={item} className="bg-white border border-cm-slate-200/60 p-6 sm:p-8 rounded-2xl shadow-sm">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-cm-teal-light text-cm-teal">
+                <Monitor className="w-5 h-5" />
+              </div>
+              <h2 className="font-heading font-bold text-xl text-cm-slate-900">
+                {t("settings.accessibility_display") || "Accessibility & Display"}
+              </h2>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 bg-cm-slate-50 rounded-xl border border-cm-slate-100 gap-4">
+              <div>
+                <h3 className="font-semibold text-cm-slate-800 mb-1">{t("settings.reduce_animations") || "Reduce Animations"}</h3>
+                <p className="text-sm text-cm-slate-500">
+                  {t("settings.reduce_animations_desc") || "Minimize UI motion and transitions for a calmer experience."}
+                </p>
+              </div>
+              <div className="flex-shrink-0">
+                <Switch 
+                  checked={reduceMotion} 
+                  onCheckedChange={setReduceMotion} 
+                  className="data-[state=checked]:bg-cm-teal"
+                />
               </div>
             </div>
           </motion.div>

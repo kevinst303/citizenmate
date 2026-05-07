@@ -282,7 +282,63 @@
     "topic_australia_people": "澳大利亚及其人民",
     "topic_democratic_beliefs": "民主信念",
     "topic_government_law": "政府与法律",
-    "topic_australian_values": "澳大利亚价值观"
+    "topic_australian_values": "澳大利亚价值观",
+    "ready_status": "准备好了",
+    "widgets": {
+      "abs": {
+        "badge": "ABS数据",
+        "subtitle": "各州估计常住人口",
+        "total": "总计",
+        "largest_state": "面积最大的州",
+        "growing_fast": "发展迅速",
+        "growing_desc": "澳大利亚人口高度城市化……",
+        "no_data": "无数据",
+        "no_data_desc": "目前无法加载人口洞察数据……"
+      },
+      "country_facts": {
+        "title": "国家概况",
+        "subtitle": "公民考试的得力助手！"
+      },
+      "currency": {
+        "title": "汇率",
+        "subtitle": "实时中端市场汇率",
+        "loading": "正在加载货币..."
+      },
+      "holidays": {
+        "title": "即将到来的公共假期",
+        "subtitle": "国家及各州法定节假日",
+        "in_days": "还有 {days} 天",
+        "today": "就在今天！"
+      },
+      "weather": {
+        "title": "澳大利亚天气",
+        "subtitle": "主要城市的当前情况",
+        "uv_index": "紫外线指数",
+        "forecast_7_day": "7天天气预报",
+        "uv": {
+          "low": {
+            "label": "低",
+            "tip": "安全地享受户外活动。"
+          },
+          "moderate": {
+            "label": "中等",
+            "tip": "请涂抹防晒霜并戴上帽子。"
+          },
+          "high": {
+            "label": "高",
+            "tip": "涂防晒霜、戴帽子、穿长袖、找阴凉、多涂防晒霜！"
+          },
+          "very_high": {
+            "label": "极高",
+            "tip": "上午10点至下午2点请避免日晒。请做好防护！"
+          },
+          "extreme": {
+            "label": "极限",
+            "tip": "尽可能待在室内！"
+          }
+        }
+      }
+    }
   },
   "onboarding": {
     "welcome": "欢迎使用 CitizenMate！",
@@ -393,7 +449,9 @@
     "tip_3_full": "45分钟——相当于每道题大约2分钟。请合理分配时间，并在最后复习你标记过的题目。",
     "tip_4_full": "对不确定的题目做个标记，稍后再回来做。别让一道棘手的题目耗费你太多时间。",
     "smart_premium_title": "智能实践",
-    "smart_premium_badge": "高级版"
+    "smart_premium_badge": "高级版",
+    "best_score": "最佳：{score}/20",
+    "tips_for_real_test": "实际考试小贴士"
   },
   "results": {
     "passed_title": "恭喜通过！",

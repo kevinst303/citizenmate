@@ -80,7 +80,52 @@
     "topic_australia_people": "Australia & Its People",
     "topic_democratic_beliefs": "Democratic Beliefs",
     "topic_government_law": "Government & Law",
-    "topic_australian_values": "Australian Values"
+    "topic_australian_values": "Australian Values",
+    "ready_status": "Ready",
+    "widgets": {
+      "abs": {
+        "badge": "ABS Data",
+        "subtitle": "Estimated Resident Population by State",
+        "total": "Total",
+        "largest_state": "Largest State",
+        "growing_fast": "Growing Fast",
+        "growing_desc": "Australia's population is highly urbanized...",
+        "no_data": "No data available",
+        "no_data_desc": "We couldn't load the population insights at this time..."
+      },
+      "country_facts": {
+        "title": "Country Quick Facts",
+        "subtitle": "Handy for your citizenship test!"
+      },
+      "currency": {
+        "title": "Currency Rates",
+        "subtitle": "Live mid-market rates",
+        "loading": "Loading currencies..."
+      },
+      "holidays": {
+        "title": "Upcoming Public Holidays",
+        "subtitle": "National and State observed holidays",
+        "in_days": "In {days} days",
+        "today": "Today!"
+      },
+      "weather": {
+        "title": "Australia Weather",
+        "subtitle": "Current conditions in major cities",
+        "uv_index": "UV Index",
+        "forecast_7_day": "7-Day Forecast",
+        "uv": {
+          "low": { "label": "Low", "tip": "Enjoy the outdoors safely." },
+          "moderate": { "label": "Moderate", "tip": "Wear sunscreen & a hat." },
+          "high": { "label": "High", "tip": "Slip, Slop, Slap, Seek & Slide!" },
+          "very_high": { "label": "Very High", "tip": "Avoid sun 10am–2pm. Cover up!" },
+          "extreme": { "label": "Extreme", "tip": "Stay indoors if possible!" }
+        }
+      }
+    }
+  },
+  "life_in_australia": {
+    "title": "Discover Australia",
+    "subtitle": "Quick facts and daily life info"
   },
   "onboarding": {
     "welcome": "Welcome to CitizenMate!",
@@ -191,7 +236,9 @@
     "tip_3_full": "45 minutes — that's about 2 minutes per question. Pace yourself and review your flagged questions at the end.",
     "tip_4_full": "Flag questions you're unsure about and come back to them. Don't let one tricky question consume your time.",
     "smart_premium_title": "Smart Practice",
-    "smart_premium_badge": "Premium"
+    "smart_premium_badge": "Premium",
+    "best_score": "Best: {score}/20",
+    "tips_for_real_test": "Tips for the Real Test"
   },
   "results": {
     "passed_title": "You passed, mate!",

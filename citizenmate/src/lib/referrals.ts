@@ -145,10 +145,14 @@ async function sendReferrerNotification(
 
   const name = referrer.display_name || 'Mate';
 
+  const templateId = process.env.RESEND_TEMPLATE_REFERRAL_BONUS;
+  if (!templateId) console.warn('[email] Missing RESEND_TEMPLATE_REFERRAL_BONUS env var');
+
   await sendEmail({
     to: referrer.email,
     subject: 'Your mate just qualified — 7 bonus premium days added!',
-    text: `Hi ${name},\n\nYour mate ${refereeName} just qualified. You've received 7 bonus premium days!\n\nEnjoy the extra prep time.\n\n– CitizenMate`,
+    templateId,
+    variables: { userName: name, refereeName },
   });
 }
 
@@ -170,9 +174,13 @@ async function sendRefereeNotification(
 
   const name = displayName || 'there';
 
+  const templateId = process.env.RESEND_TEMPLATE_REFERRAL_WELCOME;
+  if (!templateId) console.warn('[email] Missing RESEND_TEMPLATE_REFERRAL_WELCOME env var');
+
   await sendEmail({
     to: email,
     subject: 'You unlocked 7 bonus premium days — CitizenMate',
-    text: `Hi ${name},\n\nYou've unlocked 7 bonus premium days thanks to a referral!\n\nTime to keep practising.\n\n– CitizenMate`,
+    templateId,
+    variables: { userName: name },
   });
 }

@@ -83,7 +83,63 @@
     "topic_australia_people": "Australia y su gente",
     "topic_democratic_beliefs": "Convicciones democráticas",
     "topic_government_law": "Gobierno y Derecho",
-    "topic_australian_values": "Valores australianos"
+    "topic_australian_values": "Valores australianos",
+    "ready_status": "Listo",
+    "widgets": {
+      "abs": {
+        "badge": "Datos ABS",
+        "subtitle": "Población residente estimada por estado",
+        "total": "Total",
+        "largest_state": "El estado más grande",
+        "growing_fast": "Creciendo rápido",
+        "growing_desc": "La población de Australia está muy urbanizada...",
+        "no_data": "No hay datos disponibles",
+        "no_data_desc": "No hemos podido cargar los datos demográficos en este momento..."
+      },
+      "country_facts": {
+        "title": "Datos básicos sobre el país",
+        "subtitle": "¡Te vendrá muy bien para el examen de ciudadanía!"
+      },
+      "currency": {
+        "title": "Tipos de cambio",
+        "subtitle": "Tipos de interés actuales para el mercado medio",
+        "loading": "Cargando divisas..."
+      },
+      "holidays": {
+        "title": "Próximos días festivos",
+        "subtitle": "Días festivos nacionales y estatales",
+        "in_days": "En {days} días",
+        "today": "¡Hoy!"
+      },
+      "weather": {
+        "title": "El tiempo en Australia",
+        "subtitle": "Situación actual en las principales ciudades",
+        "uv_index": "Índice UV",
+        "forecast_7_day": "Previsión para los próximos 7 días",
+        "uv": {
+          "low": {
+            "label": "Bajo",
+            "tip": "Disfruta del aire libre con precaución."
+          },
+          "moderate": {
+            "label": "Moderado",
+            "tip": "Ponte protector solar y un sombrero."
+          },
+          "high": {
+            "label": "Alto",
+            "tip": "¡Ponte el sombrero, ponte el protector solar, ponte ropa, busca la sombra y deslízate!"
+          },
+          "very_high": {
+            "label": "Muy alto",
+            "tip": "Evita el sol entre las 10:00 y las 14:00. ¡Cúbrete bien!"
+          },
+          "extreme": {
+            "label": "Extremo",
+            "tip": "¡Quédate en casa si puedes!"
+          }
+        }
+      }
+    }
   },
   "onboarding": {
     "welcome": "¡Bienvenido a CitizenMate!",
@@ -194,7 +250,9 @@
     "tip_3_full": "45 minutos: eso son unos 2 minutos por pregunta. Distribuye bien el tiempo y repasa al final las preguntas que hayas marcado.",
     "tip_4_full": "Marca las preguntas que te dejen dudas y vuelve a ellas más tarde. No dejes que una pregunta complicada te quite tiempo.",
     "smart_premium_title": "Práctica inteligente",
-    "smart_premium_badge": "Premium"
+    "smart_premium_badge": "Premium",
+    "best_score": "Lo mejor: {score}/20",
+    "tips_for_real_test": "Consejos para el examen real"
   },
   "results": {
     "passed_title": "¡Aprobaste, amigo!",

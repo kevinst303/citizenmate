@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CalendarDays, ChevronDown } from "lucide-react";
+import { useT } from "@/i18n/i18n-context";
 import type { PublicHoliday } from "@/app/api/australia-insights/route";
 
 interface HolidaysWidgetProps {
@@ -27,6 +28,7 @@ function getCountdownBadge(daysUntil: number) {
 }
 
 export function HolidaysWidget({ data }: HolidaysWidgetProps) {
+  const { t } = useT();
   const [showAll, setShowAll] = useState(false);
 
   const upcomingHolidays = data.filter((h) => !h.isPast);
@@ -42,9 +44,9 @@ export function HolidaysWidget({ data }: HolidaysWidgetProps) {
             <CalendarDays className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="font-heading font-bold text-cm-slate-900 text-base">Public Holidays</h3>
+            <h3 className="font-heading font-bold text-cm-slate-900 text-base">{t("dashboard.widgets.holidays.title")}</h3>
             <p className="text-[10px] text-cm-slate-400">
-              {upcomingHolidays.length} upcoming in {new Date().getFullYear()}
+              {t("dashboard.widgets.holidays.subtitle")}
             </p>
           </div>
         </div>
