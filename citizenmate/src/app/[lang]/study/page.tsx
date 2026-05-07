@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { studyTopics } from "@/data/study-content";
 import { useStudy } from "@/lib/study-context";
-import { usePremium } from "@/lib/auth-context";
+import { usePremium, useAuth } from "@/lib/auth-context";
 import { PremiumBadge } from "@/components/shared/premium-gate";
 import { StudyProgressBar } from "@/components/study/study-progress-bar";
 import type { TopicCategory } from "@/lib/types";
@@ -80,7 +80,8 @@ const FREE_TOPIC_COUNT = 1;
 
 export default function StudyPage() {
   const { getTopicProgress, getOverallProgress } = useStudy();
-  const { user, isPremium, upgrade } = usePremium();
+  const { isPremium, upgrade } = usePremium();
+  const { user } = useAuth();
   const overall = getOverallProgress();
   const { t } = useT();
   const router = useRouter();
