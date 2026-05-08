@@ -15,10 +15,10 @@ function generateNonce(): string {
   return Buffer.from(crypto.randomUUID()).toString('base64');
 }
 
-function getScriptSrc(nonce: string): string {
+function getScriptSrc(): string {
   return [
     `'self'`,
-    `'nonce-${nonce}'`,
+    `'unsafe-inline'`,
     isDev ? "'unsafe-eval'" : "",
     "https://www.googletagmanager.com",
     "https://www.google-analytics.com",
@@ -47,7 +47,7 @@ function getLocale(request: NextRequest): string {
 function getCSP(nonce: string): string {
   return [
     "default-src 'self'",
-    `script-src ${getScriptSrc(nonce)}`,
+    `script-src ${getScriptSrc()}`,
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com",
     "img-src 'self' data: blob: https:",
