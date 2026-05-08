@@ -23,6 +23,7 @@ function getScriptSrc(nonce: string): string {
     "https://www.googletagmanager.com",
     "https://www.google-analytics.com",
     "https://us.i.posthog.com",
+    "https://va.vercel-scripts.com",
   ].filter(Boolean).join(" ");
 }
 
@@ -43,23 +44,27 @@ function getLocale(request: NextRequest): string {
   }
 }
 
-function setCSP(response: NextResponse, nonce: string): void {
-  const csp = [
+function getCSP(nonce: string): string {
+  return [
     "default-src 'self'",
     `script-src ${getScriptSrc(nonce)}`,
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com",
     "img-src 'self' data: blob: https:",
-    "connect-src 'self' https://*.supabase.co https://generativelanguage.googleapis.com https://www.google-analytics.com https://*.abs.gov.au https://api.weatherapi.com https://api.stripe.com https://checkout.stripe.com https://*.sentry.io https://*.upstash.io https://us.i.posthog.com",
+    "connect-src 'self' https://*.supabase.co https://generativelanguage.googleapis.com https://www.google-analytics.com https://*.abs.gov.au https://api.weatherapi.com https://api.stripe.com https://checkout.stripe.com https://*.sentry.io https://*.upstash.io https://us.i.posthog.com https://vitals.vercel-insights.com",
     "frame-src 'self' https://checkout.stripe.com https://js.stripe.com",
     "frame-ancestors 'none'",
   ].join("; ");
-  response.headers.set("Content-Security-Policy", csp);
+}
+
+function setCSP(response: NextResponse, nonce: string): void {
+  response.headers.set("Content-Security-Policy", getCSP(nonce));
 }
 
 export async function middleware(request: NextRequest) {
   const nonce = generateNonce();
   request.headers.set('x-nonce', nonce);
+  request.headers.set('Content-Security-Policy', getCSP(nonce));
 
   let response = NextResponse.next({
     request: { headers: request.headers },
