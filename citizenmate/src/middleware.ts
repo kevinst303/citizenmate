@@ -6,7 +6,7 @@ import { locales, defaultLocale } from '@/i18n/config';
 import { createServerClient } from '@supabase/ssr';
 
 const PROTECTED_ROUTES = ["/dashboard", "/practice", "/study", "/admin"];
-const PROTECTED_API_ROUTES = ["/api/checkout", "/api/chat", "/api/admin"];
+const PROTECTED_API_ROUTES = ["/api/chat", "/api/admin", "/api/checkout"];
 
 let isDev = false;
 try { isDev = process.env.NODE_ENV === 'development'; } catch {}

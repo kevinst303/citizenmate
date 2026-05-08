@@ -377,9 +377,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
+        
+        if (response.status === 401) {
+          console.warn("[Checkout] Session expired or unauthenticated. Opening auth modal.");
+          openAuthModal();
+          return;
+        }
+
         console.error("[Checkout] Server error:", errorData.error || response.statusText);
-        if (errorData.error === "Stripe not configured") {
-          toast.error("Checkout Unavailable", "Stripe is not configured in this environment.");
+        
+        // Show specific error messages for missing Stripe configuration (like Price IDs or API keys)
+        if (errorData.error === "Stripe not configured" || (typeof errorData.error === 'string' && errorData.error.includes("Price ID not configured"))) {
+          toast.error("Checkout Unavailable", errorData.error === "Stripe not configured" ? "Stripe is not configured in this environment." : errorData.error);
         } else {
           toast.error("Checkout Error", "Something went wrong starting checkout. Please try again.");
         }
