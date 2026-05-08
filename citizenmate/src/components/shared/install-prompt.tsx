@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Download, X, Share, Plus } from "lucide-react";
 import { toast } from "@/lib/toast";
 import { useT } from "@/i18n/i18n-context";
+import { useAuth } from "@/lib/auth-context";
 
 // Extend the global window with the beforeinstallprompt event
 interface BeforeInstallPromptEvent extends Event {
@@ -52,6 +53,7 @@ export function InstallPrompt() {
   const [showPrompt, setShowPrompt] = useState(false);
   const [showIOSInstructions, setShowIOSInstructions] = useState(false);
   const { t } = useT();
+  const { isAuthModalOpen } = useAuth();
 
   // Listen for the native install prompt event
   useEffect(() => {
@@ -127,7 +129,7 @@ export function InstallPrompt() {
     localStorage.setItem(DISMISS_KEY, Date.now().toString());
   }, []);
 
-  const visible = showPrompt || showIOSInstructions;
+  const visible = (showPrompt || showIOSInstructions) && !isAuthModalOpen;
 
   return (
     <AnimatePresence>

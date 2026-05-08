@@ -20,6 +20,7 @@ import { posthog } from "@/components/providers/posthog-provider";
 interface ProfileData {
   tier: 'free' | 'pro' | 'premium' | 'sprint_pass';
   isPremium: boolean;
+  isAdmin: boolean;
   expiresAt: Date | null;
   testDate: string | null;
   loading: boolean;
@@ -60,6 +61,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<ProfileData>({
     tier: 'free',
     isPremium: false,
+    isAdmin: false,
     expiresAt: null,
     testDate: null,
     loading: true,
@@ -68,7 +70,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Fetch profile data from Supabase profile
   const fetchProfileData = useCallback(async (userId: string) => {
     if (!isSupabaseConfigured()) {
-      setProfile({ tier: 'free', isPremium: false, expiresAt: null, testDate: null, loading: false });
+      setProfile({ tier: 'free', isPremium: false, isAdmin: false, expiresAt: null, testDate: null, loading: false });
       return;
     }
 
@@ -76,12 +78,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const supabase = getSupabaseBrowserClient();
       const { data, error } = await supabase
         .from("profiles")
-        .select("tier, is_premium, premium_expires_at, test_date")
+        .select("tier, is_premium, premium_expires_at, test_date, is_admin")
         .eq("id", userId)
         .single();
 
       if (error || !data) {
-        setProfile({ tier: 'free', isPremium: false, expiresAt: null, testDate: null, loading: false });
+        setProfile({ tier: 'free', isPremium: false, isAdmin: false, expiresAt: null, testDate: null, loading: false });
         return;
       }
 
@@ -96,6 +98,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setProfile({
         tier: (data.tier as 'free' | 'pro' | 'premium') || 'free',
         isPremium: isActive,
+        isAdmin: data.is_admin === true,
         expiresAt,
         testDate: data.test_date,
         loading: false,
@@ -111,7 +114,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       }
     } catch {
-      setProfile({ tier: 'free', isPremium: false, expiresAt: null, testDate: null, loading: false });
+      setProfile({ tier: 'free', isPremium: false, isAdmin: false, expiresAt: null, testDate: null, loading: false });
     }
   }, []);
 
@@ -150,13 +153,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (currentUser) {
         fetchProfileData(currentUser.id);
       } else {
-        setProfile({ tier: 'free', isPremium: false, expiresAt: null, testDate: null, loading: false });
+        setProfile({ tier: 'free', isPremium: false, isAdmin: false, expiresAt: null, testDate: null, loading: false });
       }
     }).catch((err) => {
       console.error("[AuthProvider] getSession error:", err);
       if (isMounted) {
         setLoading(false);
-        setProfile({ tier: 'free', isPremium: false, expiresAt: null, testDate: null, loading: false });
+        setProfile({ tier: 'free', isPremium: false, isAdmin: false, expiresAt: null, testDate: null, loading: false });
       }
     });
 
@@ -198,7 +201,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       } else {
         if (event === "SIGNED_OUT" || event === "INITIAL_SESSION") {
-          setProfile({ tier: 'free', isPremium: false, expiresAt: null, testDate: null, loading: false });
+          setProfile({ tier: 'free', isPremium: false, isAdmin: false, expiresAt: null, testDate: null, loading: false });
         }
       }
     });
@@ -290,7 +293,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signOut = useCallback(async () => {
     // Clear local state first
     setUser(null);
-    setProfile({ tier: 'free', isPremium: false, expiresAt: null, testDate: null, loading: false });
+    setProfile({ tier: 'free', isPremium: false, isAdmin: false, expiresAt: null, testDate: null, loading: false });
 
     // Attempt to sign out of Supabase if configured
     if (isSupabaseConfigured()) {

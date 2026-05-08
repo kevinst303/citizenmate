@@ -196,6 +196,7 @@
   "user_menu": {
     "sign_in": "Sign In",
     "dashboard": "Dashboard",
+    "admin_dashboard": "Admin Dashboard",
     "upgrade_to_premium": "Upgrade to Premium",
     "profile_settings": "Profile Settings",
     "sign_out": "Sign Out"

@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, LogOut, LayoutDashboard, ChevronDown, Crown } from "lucide-react";
+import { User, LogOut, LayoutDashboard, ChevronDown, Crown, Shield } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
@@ -12,7 +12,7 @@ import { useT } from "@/i18n/i18n-context";
 // Navbar component that shows "Sign In" when logged out, avatar+dropdown when logged in.
 
 export function UserMenu() {
-  const { user, loading, openAuthModal, signOut, startCheckout } = useAuth();
+  const { user, profile, loading, openAuthModal, signOut, startCheckout } = useAuth();
   const { t } = useT();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -122,6 +122,15 @@ export function UserMenu() {
                 <LayoutDashboard className="w-4 h-4 text-cm-slate-400" />
                 {t("user_menu.dashboard")}
               </button>
+              {profile?.isAdmin && (
+                <button
+                  onClick={() => handleNavigation("/admin")}
+                  className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-cm-slate-700 hover:bg-cm-slate-50 transition-colors text-left"
+                >
+                  <Shield className="w-4 h-4 text-cm-slate-400" />
+                  {t("user_menu.admin_dashboard")}
+                </button>
+              )}
               <button
                 onClick={async () => {
                   setIsOpen(false);

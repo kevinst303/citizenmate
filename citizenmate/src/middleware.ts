@@ -6,7 +6,7 @@ import { locales, defaultLocale } from '@/i18n/config';
 import { createServerClient } from '@supabase/ssr';
 
 const PROTECTED_ROUTES = ["/dashboard", "/practice", "/study", "/admin"];
-const PROTECTED_API_ROUTES = ["/api/checkout", "/api/chat"];
+const PROTECTED_API_ROUTES = ["/api/checkout", "/api/chat", "/api/admin"];
 
 function getLocale(request: NextRequest): string {
   const negotiatorHeaders: Record<string, string> = {};
@@ -66,8 +66,9 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith('/_next') ||
     pathname.includes('.')
   ) {
+    const pathnameLower = pathname.toLowerCase();
     const isProtectedAPI = PROTECTED_API_ROUTES.some((route) =>
-      pathname.startsWith(route)
+      pathnameLower.startsWith(route)
     );
     if (isProtectedAPI && !user) {
       return NextResponse.json(
@@ -106,8 +107,9 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  const pathWithoutLocaleLower = pathWithoutLocale.toLowerCase();
   const isProtectedPage = PROTECTED_ROUTES.some((route) =>
-    pathWithoutLocale.startsWith(route)
+    pathWithoutLocaleLower.startsWith(route)
   );
 
   if (isProtectedPage && !user) {

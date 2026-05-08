@@ -1,8 +1,14 @@
 import { NextResponse } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
+import { verifyAdmin } from '@/lib/admin-auth';
 
 export async function GET() {
+  const admin = await verifyAdmin();
+  if (!admin) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+  }
+
   const results: Record<string, unknown> = {};
 
   try {

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useLocalizedPath } from "@/lib/use-localized-path";
 import { useT } from "@/i18n/i18n-context";
+import { useAuth } from "@/lib/auth-context";
 
 const CONSENT_KEY = "cm-cookie-consent";
 
@@ -14,6 +15,7 @@ export function CookieConsent() {
   const [visible, setVisible] = useState(false);
   const { getUrl } = useLocalizedPath();
   const { t } = useT();
+  const { isAuthModalOpen } = useAuth();
 
   useEffect(() => {
     // Small delay so it doesn't block the paint
@@ -39,7 +41,7 @@ export function CookieConsent() {
 
   return (
     <AnimatePresence>
-      {visible && (
+      {visible && !isAuthModalOpen && (
         <motion.div
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -47,7 +49,7 @@ export function CookieConsent() {
           transition={{ type: "spring", stiffness: 120, damping: 18 }}
           className="fixed bottom-0 inset-x-0 z-[100] p-4 sm:p-6"
         >
-          <div className="mx-auto max-w-3xl glass-card rounded-2xl shadow-xl border border-white/30 p-5 sm:p-6">
+          <div className="mx-auto max-w-3xl bg-white/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-cm-slate-200/50 p-5 sm:p-6">
             <div className="flex items-start gap-4">
               <div className="shrink-0 flex items-center justify-center w-10 h-10 rounded-xl bg-cm-navy/10 text-cm-navy">
                 <Shield className="size-5" />
