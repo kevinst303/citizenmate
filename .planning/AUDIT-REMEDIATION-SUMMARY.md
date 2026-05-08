@@ -4,6 +4,13 @@
 **Scope:** Full codebase audit → 35 findings resolved across 10 phases
 **Status:** Complete — all critical, high, and medium findings resolved
 
+## Deployments
+
+| Environment | URL | Status |
+|-------------|-----|--------|
+| **Production** | https://citizenmate-6tflagmml-kevins-projects-c6a4e5b5.vercel.app | Ready |
+| **Preview** | https://citizenmate-pg1qpkoq3-kevins-projects-c6a4e5b5.vercel.app | Ready |
+
 ## Audit Reports
 
 | Report | Location |
