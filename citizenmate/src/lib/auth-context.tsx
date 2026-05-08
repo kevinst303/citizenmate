@@ -319,6 +319,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
     setProfile({ tier: 'free', isPremium: false, isAdmin: false, expiresAt: null, testDate: null, loading: false });
 
+    // Server-side signout to clear HttpOnly cookies
+    try {
+      await fetch('/api/auth/signout', { method: 'POST' });
+    } catch (e) {
+      console.error("Failed to sign out on server:", e);
+    }
+
     // Attempt to sign out of Supabase if configured
     if (isSupabaseConfigured()) {
       try {
