@@ -47,9 +47,24 @@ export async function GET(request: Request) {
     if (inactiveError) throw inactiveError;
 
     if (inactiveUsers && inactiveUsers.length > 0) {
+      const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+      const dedupedIds: string[] = [];
+
       for (const record of inactiveUsers) {
         const user = Array.isArray(record.profiles) ? record.profiles[0] : record.profiles;
         if (!user || !user.email) continue;
+
+        const { data: profile } = await supabaseAdmin
+          .from("profiles")
+          .select("last_inactivity_email_sent")
+          .eq("id", user.id)
+          .single();
+
+        if (profile?.last_inactivity_email_sent &&
+            new Date(profile.last_inactivity_email_sent) > new Date(twentyFourHoursAgo)) {
+          continue;
+        }
+
         batchEmails.push({
           from: "CitizenMate <hello@citizenmate.com.au>",
           to: user.email,
@@ -62,6 +77,14 @@ export async function GET(request: Request) {
             }
           }
         });
+        dedupedIds.push(user.id);
+      }
+
+      if (dedupedIds.length > 0) {
+        await supabaseAdmin
+          .from("profiles")
+          .update({ last_inactivity_email_sent: new Date().toISOString() })
+          .in("id", dedupedIds);
       }
     }
 

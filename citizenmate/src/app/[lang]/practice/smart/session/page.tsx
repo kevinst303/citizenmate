@@ -327,7 +327,7 @@ export default function SmartSessionPage() {
             {/* Actions */}
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
-                href="/practice/smart"
+                href={getUrl("/practice/smart")}
                 className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-heading font-bold rounded-xl hover:shadow-lg transition-all text-center"
               >
                 <RotateCcw className="w-4 h-4" />

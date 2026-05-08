@@ -3,7 +3,7 @@
 import { useMemo, useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import {
   Gauge,
@@ -81,11 +81,13 @@ export default function DashboardPage() {
   const { openModal: openUpgradeModal } = useUpgradeModal();
   const { t } = useT();
   const router = useRouter();
+  const params = useParams();
+  const lang = (params?.lang as string) || "en";
 
   // Client-side protection for guests
   useEffect(() => {
     if (!authLoading && !user) {
-      router.replace("/?auth=required");
+      router.replace(`/${lang}/?auth=required`);
     }
   }, [user, authLoading, router]);
 
@@ -375,7 +377,7 @@ export default function DashboardPage() {
                 </p>
               </div>
               <Link
-                href="/study/australian-values"
+                href={`/${lang}/study/australian-values`}
                 className="flex-shrink-0 px-3 py-1.5 bg-cm-red text-white text-xs font-semibold rounded-lg hover:bg-cm-red/90 transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cm-red focus-visible:ring-offset-2 shadow-sm"
               >
                 {t("dashboard.study_values_now")}

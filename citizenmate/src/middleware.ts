@@ -8,6 +8,24 @@ import { createServerClient } from '@supabase/ssr';
 const PROTECTED_ROUTES = ["/dashboard", "/practice", "/study", "/admin"];
 const PROTECTED_API_ROUTES = ["/api/checkout", "/api/chat", "/api/admin"];
 
+let isDev = false;
+try { isDev = process.env.NODE_ENV === 'development'; } catch {}
+
+function generateNonce(): string {
+  return Buffer.from(crypto.randomUUID()).toString('base64');
+}
+
+function getScriptSrc(nonce: string): string {
+  return [
+    `'self'`,
+    `'nonce-${nonce}'`,
+    isDev ? "'unsafe-eval'" : "",
+    "https://www.googletagmanager.com",
+    "https://www.google-analytics.com",
+    "https://us.i.posthog.com",
+  ].filter(Boolean).join(" ");
+}
+
 function getLocale(request: NextRequest): string {
   const negotiatorHeaders: Record<string, string> = {};
   request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
@@ -25,10 +43,28 @@ function getLocale(request: NextRequest): string {
   }
 }
 
+function setCSP(response: NextResponse, nonce: string): void {
+  const csp = [
+    "default-src 'self'",
+    `script-src ${getScriptSrc(nonce)}`,
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "font-src 'self' https://fonts.gstatic.com",
+    "img-src 'self' data: blob: https:",
+    "connect-src 'self' https://*.supabase.co https://generativelanguage.googleapis.com https://www.google-analytics.com https://*.abs.gov.au https://api.weatherapi.com https://api.stripe.com https://checkout.stripe.com https://*.sentry.io https://*.upstash.io https://us.i.posthog.com",
+    "frame-src 'self' https://checkout.stripe.com https://js.stripe.com",
+    "frame-ancestors 'none'",
+  ].join("; ");
+  response.headers.set("Content-Security-Policy", csp);
+}
+
 export async function middleware(request: NextRequest) {
+  const nonce = generateNonce();
+  request.headers.set('x-nonce', nonce);
+
   let response = NextResponse.next({
     request: { headers: request.headers },
   });
+  setCSP(response, nonce);
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -48,6 +84,7 @@ export async function middleware(request: NextRequest) {
           response = NextResponse.next({
             request: { headers: request.headers },
           });
+          setCSP(response, nonce);
           cookiesToSet.forEach(({ name, value, options }) =>
             response.cookies.set(name, value, options)
           );
@@ -71,10 +108,12 @@ export async function middleware(request: NextRequest) {
       pathnameLower.startsWith(route)
     );
     if (isProtectedAPI && !user) {
-      return NextResponse.json(
+      const res = NextResponse.json(
         { error: 'Authentication required' },
         { status: 401 }
       );
+      setCSP(res, nonce);
+      return res;
     }
     return response;
   }
@@ -92,6 +131,7 @@ export async function middleware(request: NextRequest) {
       request.url
     );
     response = NextResponse.redirect(newUrl);
+    setCSP(response, nonce);
     localePathname = `/${locale}${pathname}`;
   }
 
@@ -107,7 +147,20 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  const pathWithoutLocaleLower = pathWithoutLocale.toLowerCase();
+  let normalizedPath = pathWithoutLocale;
+  try {
+    normalizedPath = decodeURIComponent(pathWithoutLocale);
+    if (normalizedPath.includes('\0') || normalizedPath.includes('\n') || normalizedPath.includes('\r')) {
+      const res = NextResponse.redirect(new URL('/', request.url));
+      setCSP(res, nonce);
+      return res;
+    }
+  } catch {
+    const res = NextResponse.redirect(new URL('/', request.url));
+    setCSP(res, nonce);
+    return res;
+  }
+  const pathWithoutLocaleLower = normalizedPath.toLowerCase();
   const isProtectedPage = PROTECTED_ROUTES.some((route) =>
     pathWithoutLocaleLower.startsWith(route)
   );
@@ -122,7 +175,9 @@ export async function middleware(request: NextRequest) {
       : localePathname.split('/')[1];
     redirectUrl.pathname = `/${localeToUse}`;
 
-    return NextResponse.redirect(redirectUrl);
+    const res = NextResponse.redirect(redirectUrl);
+    setCSP(res, nonce);
+    return res;
   }
 
   const ref = request.nextUrl.searchParams.get('ref');

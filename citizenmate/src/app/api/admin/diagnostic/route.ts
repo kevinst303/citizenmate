@@ -36,10 +36,6 @@ export async function GET() {
       results.getUser_exception = (e as Error).message;
     }
 
-    results.auth_cookies = cookieStore.getAll()
-      .filter((c: { name: string }) => c.name.startsWith('sb-'))
-      .map((c: { name: string }) => c.name);
-
     const uid = results.current_user_id as string | null;
 
     // 2. is_admin RPC

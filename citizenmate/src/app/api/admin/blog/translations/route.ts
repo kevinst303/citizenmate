@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { verifyAdmin } from '@/lib/admin-auth';
 import { createSupabaseServerClient } from '@/lib/supabase-server';
+import { sanitizeSeoTitle, sanitizeSeoDescription, sanitizeSeoKeywords, sanitizeOgImageUrl, sanitizeBlogContent } from '@/lib/sanitize';
 
 export async function GET(req: Request) {
   const admin = await verifyAdmin();
@@ -57,11 +58,11 @@ export async function POST(req: Request) {
           title,
           slug,
           excerpt: body.excerpt || null,
-          content: body.content || null,
-          seo_title: body.seo_title || null,
-          seo_description: body.seo_description || null,
-          seo_keywords: body.seo_keywords || null,
-          og_image_url: body.og_image_url || null,
+          content: sanitizeBlogContent(body.content),
+          seo_title: sanitizeSeoTitle(body.seo_title),
+          seo_description: sanitizeSeoDescription(body.seo_description),
+          seo_keywords: sanitizeSeoKeywords(body.seo_keywords),
+          og_image_url: sanitizeOgImageUrl(body.og_image_url),
           updated_at: new Date().toISOString(),
         },
         { onConflict: 'blog_post_id,locale' }

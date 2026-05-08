@@ -1,6 +1,8 @@
 "use client";
 
 import { syncQuizHistoryToSupabase } from "@/lib/sync";
+import { posthog } from "@/components/providers/posthog-provider";
+import { updatePerformance } from "@/lib/srs-performance";
 
 import {
   createContext,
@@ -250,25 +252,22 @@ function saveAttempt(state: QuizState, result: QuizResult) {
         ? JSON.parse(srsRaw)
         : { performances: {}, lastUpdatedAt: new Date().toISOString() };
 
-      // Dynamically import the SRS engine to avoid circular deps
-      import("@/lib/srs-engine").then(({ updatePerformance }) => {
-        for (const question of state.test!.questions) {
-          const userAnswer = state.answers[question.id];
-          if (userAnswer === undefined) continue; // unanswered
+      for (const question of state.test!.questions) {
+        const userAnswer = state.answers[question.id];
+        if (userAnswer === undefined) continue; // unanswered
 
-          const wasCorrect = userAnswer === question.correctAnswer;
-          const current = srsData.performances[question.id] ?? null;
-          srsData.performances[question.id] = updatePerformance(
-            question.id,
-            question.topic,
-            wasCorrect,
-            current
-          );
-        }
+        const wasCorrect = userAnswer === question.correctAnswer;
+        const current = srsData.performances[question.id] ?? null;
+        srsData.performances[question.id] = updatePerformance(
+          question.id,
+          question.topic,
+          wasCorrect,
+          current
+        );
+      }
 
-        srsData.lastUpdatedAt = new Date().toISOString();
-        localStorage.setItem(SRS_KEY, JSON.stringify(srsData));
-      }).catch(() => {});
+      srsData.lastUpdatedAt = new Date().toISOString();
+      localStorage.setItem(SRS_KEY, JSON.stringify(srsData));
     } catch {
       // SRS update failed — non-critical
     }
@@ -360,6 +359,22 @@ export function QuizProvider({ children }: { children: ReactNode }) {
       dispatch({ type: "TIME_UP" });
     }
   }, [state.timeRemaining, state.status]);
+
+  // Track quiz completion
+  useEffect(() => {
+    if (state.result && (state.status === "completed" || state.status === "timed-out")) {
+      if (typeof window !== "undefined") {
+        posthog.capture("quiz_completed", {
+          test_id: state.test?.id,
+          score: state.result.score,
+          total_questions: state.result.totalQuestions,
+          time_used_seconds: state.result.timeUsed,
+          passed: state.result.passed,
+          timed_out: state.status === "timed-out",
+        });
+      }
+    }
+  }, [state.status, state.result]);
 
   const startQuiz = useCallback((testId: string) => {
     const test = getTestById(testId);

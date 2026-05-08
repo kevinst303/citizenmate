@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useParams } from "next/navigation";
 import { SubpageHero } from "@/components/shared/subpage-hero";
 import { useT } from "@/i18n/i18n-context";
 
@@ -23,13 +24,15 @@ export function LegalLayout({
   children,
 }: LegalLayoutProps) {
   const { t } = useT();
+  const params = useParams();
+  const lang = (params?.lang as string) || "en";
   return (
     <div className="min-h-screen bg-slate-50 pb-24">
       {/* Hero header */}
       <SubpageHero
         title={title}
         breadcrumbs={[
-          { label: t("legal.breadcrumb_home", "Home"), href: "/" },
+          { label: t("legal.breadcrumb_home", "Home"), href: `/${lang}` },
           { label: t("legal.breadcrumb_legal", "Legal") },
           { label: title },
         ]}

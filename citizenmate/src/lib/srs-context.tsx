@@ -5,6 +5,7 @@ import {
   useContext,
   useReducer,
   useCallback,
+  useMemo,
   useEffect,
   type ReactNode,
 } from "react";
@@ -202,18 +203,29 @@ export function SRSProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "RESET" });
   }, []);
 
+  const value = useMemo(
+    () => ({
+      state,
+      recordAnswer,
+      recordBatch,
+      getSmartQuestions,
+      getStats,
+      getTopicWeakness,
+      resetSRS,
+    }),
+    [
+      state,
+      recordAnswer,
+      recordBatch,
+      getSmartQuestions,
+      getStats,
+      getTopicWeakness,
+      resetSRS,
+    ]
+  );
+
   return (
-    <SRSContext.Provider
-      value={{
-        state,
-        recordAnswer,
-        recordBatch,
-        getSmartQuestions,
-        getStats,
-        getTopicWeakness,
-        resetSRS,
-      }}
-    >
+    <SRSContext.Provider value={value}>
       {children}
     </SRSContext.Provider>
   );

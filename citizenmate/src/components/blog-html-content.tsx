@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import parse, { domToReact, Element, type DOMNode, type HTMLReactParserOptions } from 'html-react-parser';
+import sanitizeHtml from 'sanitize-html';
 import { QuizCTA } from '@/components/blog/quiz-cta';
 
 function isElement(node: DOMNode): node is Element {
@@ -17,7 +18,7 @@ function escapeAttr(value: string): string {
 
 const IMAGE_DIMENSIONS = { width: 800, height: 450 };
 
-export function BlogHtmlContent({ content }: { content: string }) {
+export function BlogHtmlContent({ content, lang }: { content: string; lang: string }) {
   const options: HTMLReactParserOptions = {
     replace(domNode) {
       if (!isElement(domNode)) return;
@@ -52,8 +53,9 @@ export function BlogHtmlContent({ content }: { content: string }) {
       if (name === 'a' && attribs.href) {
         const { href, ...rest } = attribs;
         if (isInternalUrl(href)) {
+          const localizedHref = href.startsWith(`/${lang}`) ? href : `/${lang}${href}`;
           return (
-            <Link href={href} {...rest}>
+            <Link href={localizedHref} {...rest}>
               {domToReact(children as unknown as DOMNode[], options)}
             </Link>
           );
@@ -67,11 +69,24 @@ export function BlogHtmlContent({ content }: { content: string }) {
     },
   };
 
+  const sanitized = sanitizeHtml(content, {
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat([
+      'img', 'h1', 'h2', 'h3', 'span', 'quizcta',
+    ]),
+    allowedAttributes: {
+      ...sanitizeHtml.defaults.allowedAttributes,
+      '*': ['class', 'id', 'data-component', 'data-title', 'data-text', 'style'],
+      a: ['href', 'target', 'rel', 'title'],
+      img: ['src', 'alt', 'width', 'height', 'loading'],
+    },
+    allowedSchemes: ['http', 'https', 'mailto'],
+  });
+
   return (
     <div
       className="prose prose-lg prose-slate max-w-none prose-headings:font-bold prose-headings:text-cm-dark prose-headings:tracking-tight prose-p:text-cm-slate-600 prose-p:leading-relaxed prose-a:text-cm-teal prose-a:no-underline hover:prose-a:text-cm-teal-dark hover:prose-a:underline prose-img:rounded-[24px] prose-img:shadow-card prose-li:text-cm-slate-600 prose-strong:text-cm-slate-800"
     >
-      {parse(content, options)}
+      {parse(sanitized, options)}
     </div>
   );
 }

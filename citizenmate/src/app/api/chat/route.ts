@@ -1,12 +1,19 @@
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
-
-const openrouter = createOpenRouter({
-  apiKey: process.env.OPENROUTER_API_KEY,
-});
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { streamText } from "ai";
 import { getChatSystemPrompt } from "@/lib/chat-context";
 import { getRedisClient } from "@/lib/rate-limit";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
+
+function getGoogleModel() {
+  const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+  if (!apiKey) return null;
+  return createGoogleGenerativeAI({ apiKey });
+}
+
+const openrouter = createOpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+});
 
 const WINDOW_MS = 60 * 60 * 1000;
 
@@ -88,7 +95,12 @@ export async function POST(req: Request) {
   const recentMessages = body.messages.slice(-maxHistory);
 
   const maxMessageLength = 500;
-  const sanitizedMessages = recentMessages.map((msg: any) => {
+  interface ChatMessage {
+    role: string;
+    content: unknown;
+    [key: string]: unknown;
+  }
+  const sanitizedMessages = recentMessages.map((msg: ChatMessage) => {
     if (msg.role === "user" && typeof msg.content === "string" && msg.content.length > maxMessageLength) {
       return { ...msg, content: msg.content.slice(0, maxMessageLength) + "..." };
     }
@@ -158,23 +170,41 @@ export async function POST(req: Request) {
     );
   }
 
-  // ── Call AI — only count on success ──
+  // ── Call AI — count request before stream (rate limit is pre-checked above) ──
+  await incrementCounter(counterKey);
+
   let result;
   try {
+    const modelName = process.env.OPENROUTER_CHAT_MODEL || "google/gemini-flash-1.0";
     result = streamText({
       // @ts-expect-error: OpenRouter provider type isn't fully synced with the latest AI SDK types yet
-      model: openrouter("openrouter/free"),
+      model: openrouter(modelName),
       system: getChatSystemPrompt(),
       messages: sanitizedMessages,
     });
-    // Stream created successfully — NOW count this request
-    await incrementCounter(counterKey);
   } catch (err) {
-    console.error("AI stream failed to start:", err);
-    return new Response(
-      JSON.stringify({ error: "AI service unavailable. Please try again." }),
-      { status: 503, headers: { "Content-Type": "application/json" } }
-    );
+    console.error("AI stream failed to start (primary):", err);
+    const google = getGoogleModel();
+    if (google) {
+      try {
+        result = streamText({
+          model: google("gemini-2.0-flash-001"),
+          system: getChatSystemPrompt(),
+          messages: sanitizedMessages,
+        });
+      } catch (fallbackErr) {
+        console.error("AI stream failed (fallback):", fallbackErr);
+        return new Response(
+          JSON.stringify({ error: "AI service unavailable. Please try again." }),
+          { status: 503, headers: { "Content-Type": "application/json" } }
+        );
+      }
+    } else {
+      return new Response(
+        JSON.stringify({ error: "AI service unavailable. Please try again." }),
+        { status: 503, headers: { "Content-Type": "application/json" } }
+      );
+    }
   }
 
   return result!.toUIMessageStreamResponse({

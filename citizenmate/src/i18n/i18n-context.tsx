@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { defaultLocale, getDictionary, type Locale } from './config';
 
 type DictionaryValue = string | { [key: string]: DictionaryValue };
@@ -69,14 +69,16 @@ export function I18nProvider({
   const dict = cachedDicts.get(locale);
   const loading = !dict;
 
-  const t = (key: string, fallback?: string): string => {
+  const t = useCallback((key: string, fallback?: string): string => {
     if (!dict) return fallback ?? key;
     const value = getNestedValue(dict as Record<string, unknown>, key);
     return value || fallback || key;
-  };
+  }, [dict]);
+
+  const value = useMemo(() => ({ locale, t, loading }), [locale, t, loading]);
 
   return (
-    <I18nContext.Provider value={{ locale, t, loading }}>
+    <I18nContext.Provider value={value}>
       {children}
     </I18nContext.Provider>
   );

@@ -1,12 +1,18 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { verifyUnsubscribeToken, generateUnsubscribeToken } from "@/lib/unsubscribe-token";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const userId = searchParams.get("id");
+  const token = searchParams.get("token");
 
   if (!userId) {
     return new NextResponse("Invalid or missing user ID.", { status: 400 });
+  }
+
+  if (!token || !verifyUnsubscribeToken(userId, token)) {
+    return new NextResponse("Invalid or expired unsubscribe link.", { status: 400 });
   }
 
   const supabaseAdmin = createClient(

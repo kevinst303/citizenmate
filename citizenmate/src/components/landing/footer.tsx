@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 import { useT } from "@/i18n/i18n-context";
 
 const columnVariant = {
@@ -21,20 +22,29 @@ const columnVariant = {
 
 export function Footer() {
   const { t } = useT();
+  const params = useParams();
+  const lang = (params?.lang as string) || "en";
+
+  const getUrl = (path: string) => {
+    if (path.startsWith("#")) return path;
+    if (path.startsWith("http")) return path;
+    if (path.startsWith(`/${lang}`)) return path;
+    return `/${lang}${path}`;
+  };
 
   const footerLinks = {
     [t("landing.footer_product", "Product")]: [
       { label: t("landing.footer_features", "Features"), href: "#features" },
       { label: t("landing.footer_pricing", "Pricing"), href: "#pricing" },
-      { label: t("landing.footer_mock_tests", "Mock Tests"), href: "/practice" },
-      { label: t("landing.footer_study_mode", "Study Mode"), href: "/study" },
+      { label: t("landing.footer_mock_tests", "Mock Tests"), href: getUrl("/practice") },
+      { label: t("landing.footer_study_mode", "Study Mode"), href: getUrl("/study") },
     ],
     [t("landing.footer_company", "Company")]: [
       { label: t("landing.footer_faq", "FAQ"), href: "#faq" },
-      { label: t("landing.footer_about", "About & Contact"), href: "/about" },
-      { label: t("landing.footer_blog", "Blog"), href: "/blog" },
-      { label: t("landing.footer_privacy", "Privacy Policy"), href: "/privacy" },
-      { label: t("landing.footer_terms", "Terms of Service"), href: "/terms" },
+      { label: t("landing.footer_about", "About & Contact"), href: getUrl("/about") },
+      { label: t("landing.footer_blog", "Blog"), href: getUrl("/blog") },
+      { label: t("landing.footer_privacy", "Privacy Policy"), href: getUrl("/privacy") },
+      { label: t("landing.footer_terms", "Terms of Service"), href: getUrl("/terms") },
     ],
     [t("landing.footer_australia", "Australia")]: [
       { label: t("landing.footer_home_affairs", "Dept. of Home Affairs"), href: "https://immi.homeaffairs.gov.au" },
@@ -56,7 +66,7 @@ export function Footer() {
             viewport={{ once: true }}
             transition={{ type: "spring", stiffness: 120, damping: 16 }}
           >
-            <Link href="/" className="flex items-center gap-2.5">
+            <Link href={getUrl("/")} className="flex items-center gap-2.5">
               <div className="flex items-center justify-center">
                 <Image src="/logo.svg" alt={t("landing.footer_logo_alt")} width={36} height={36} />
               </div>

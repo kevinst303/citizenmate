@@ -36,6 +36,10 @@ export async function processReferralReward(refereeId: string): Promise<{
 
   const referrerId = referee.referred_by;
 
+  if (referrerId === refereeId) {
+    return { success: false, error: 'Cannot refer yourself' };
+  }
+
   // 2. Check qualification gate: has the referee done anything meaningful?
   const isQualified = await checkQualification(refereeId);
   if (!isQualified) {

@@ -156,32 +156,6 @@ export function QuizHeader() {
                   {t("quiz.submit_test", "Submit Test")}
                 </motion.button>
               </div>
-
-              <div className="flex gap-3">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setShowConfirm(false)}
-                  className="flex-1 px-4 py-3 border-2 border-cm-slate-200 text-cm-slate-700 font-heading font-semibold rounded-xl hover:bg-cm-slate-50 transition-colors duration-200 cursor-pointer"
-                >
-                  {t("quiz.keep_going", "Keep Going")}
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => {
-                    setShowConfirm(false);
-                    submitQuiz();
-                    toast.default(
-                      t("quiz.toast_title"),
-                      t("quiz.toast_desc")
-                    );
-                  }}
-                  className="flex-1 px-4 py-3 bg-cm-teal hover:bg-cm-teal/90 text-white font-heading font-semibold rounded-[10px] transition-colors duration-200 cursor-pointer"
-                >
-                  {t("quiz.submit_test_button")}
-                </motion.button>
-              </div>
             </motion.div>
           </motion.div>
         )}

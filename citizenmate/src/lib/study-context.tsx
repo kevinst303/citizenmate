@@ -7,6 +7,7 @@ import {
   useContext,
   useReducer,
   useCallback,
+  useMemo,
   useEffect,
   type ReactNode,
 } from "react";
@@ -218,19 +219,31 @@ export function StudyProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "RESET_PROGRESS" });
   }, []);
 
+  const value = useMemo(
+    () => ({
+      progress: state.progress,
+      language: state.language,
+      toggleSection,
+      isSectionComplete,
+      getTopicProgress,
+      getOverallProgress,
+      setLanguage,
+      resetProgress,
+    }),
+    [
+      state.progress,
+      state.language,
+      toggleSection,
+      isSectionComplete,
+      getTopicProgress,
+      getOverallProgress,
+      setLanguage,
+      resetProgress,
+    ]
+  );
+
   return (
-    <StudyContext.Provider
-      value={{
-        progress: state.progress,
-        language: state.language,
-        toggleSection,
-        isSectionComplete,
-        getTopicProgress,
-        getOverallProgress,
-        setLanguage,
-        resetProgress,
-      }}
-    >
+    <StudyContext.Provider value={value}>
       {children}
     </StudyContext.Provider>
   );

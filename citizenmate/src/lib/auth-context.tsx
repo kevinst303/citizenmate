@@ -6,6 +6,7 @@ import {
   useState,
   useEffect,
   useCallback,
+  useMemo,
   type ReactNode,
 } from "react";
 import type { User, AuthError } from "@supabase/supabase-js";
@@ -14,6 +15,7 @@ import { syncAllToSupabase, pullFromSupabase } from "@/lib/sync";
 import { useUpgradeModal } from "@/lib/store/useUpgradeModal";
 import { toast } from "@/lib/toast";
 import { posthog } from "@/components/providers/posthog-provider";
+import * as Sentry from "@sentry/nextjs";
 
 // ===== Types =====
 
@@ -175,9 +177,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(false);
 
       if (newUser) {
+        const identifiedProps = {
+          email: newUser.email,
+          provider: newUser.app_metadata?.provider ?? 'email',
+        };
+
         if (typeof window !== 'undefined') {
-          posthog.identify(newUser.id, { email: newUser.email });
+          posthog.identify(newUser.id, identifiedProps);
         }
+
+        Sentry.setUser({
+          id: newUser.id,
+          email: newUser.email,
+          username: newUser.user_metadata?.full_name,
+        });
 
         if (event === "SIGNED_IN" || event === "INITIAL_SESSION") {
           try {
@@ -185,7 +198,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               await syncAllToSupabase(newUser.id);
               await pullFromSupabase(newUser.id);
               if (typeof window !== 'undefined') {
-                posthog.capture('user_signed_in', {
+                const isNewUser = newUser.created_at === newUser.last_sign_in_at;
+                posthog.capture(isNewUser ? 'user_signed_up' : 'user_signed_in', {
                   provider: newUser.app_metadata?.provider ?? 'email',
                 });
               }
@@ -193,6 +207,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             await fetchProfileData(newUser.id);
           } catch (err) {
             console.error(`[AuthProvider] error during ${event}:`, err);
+            Sentry.captureException(err, {
+              extra: { eventType: event, userId: newUser.id },
+            });
             if (typeof window !== 'undefined') {
               posthog.capture('auth_error', { event_type: event, error: String(err) });
             }
@@ -200,6 +217,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           }
         }
       } else {
+        if (event === "SIGNED_OUT") {
+          if (typeof window !== 'undefined') {
+            posthog.capture('user_signed_out');
+            posthog.reset();
+          }
+          Sentry.setUser(null);
+        }
         if (event === "SIGNED_OUT" || event === "INITIAL_SESSION") {
           setProfile({ tier: 'free', isPremium: false, isAdmin: false, expiresAt: null, testDate: null, loading: false });
         }
@@ -302,8 +326,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         await supabase.auth.signOut();
       } catch (e) {
         console.error("Failed to sign out of Supabase:", e);
+        Sentry.captureException(e);
       }
     }
+    
+    // Clear analytics identity
+    if (typeof window !== "undefined") {
+      posthog.capture('user_signed_out');
+      posthog.reset();
+    }
+    Sentry.setUser(null);
     
     // Force a hard redirect to home to clear server-side middleware state
     if (typeof window !== "undefined") {
@@ -359,23 +391,39 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [user, openAuthModal]);
 
+  const value = useMemo(
+    () => ({
+      user,
+      loading,
+      profile,
+      isAuthModalOpen,
+      openAuthModal,
+      closeAuthModal,
+      signIn,
+      signUp,
+      signInWithGoogle,
+      signOut,
+      refreshPremiumStatus,
+      startCheckout,
+    }),
+    [
+      user,
+      loading,
+      profile,
+      isAuthModalOpen,
+      openAuthModal,
+      closeAuthModal,
+      signIn,
+      signUp,
+      signInWithGoogle,
+      signOut,
+      refreshPremiumStatus,
+      startCheckout,
+    ]
+  );
+
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        loading,
-        profile,
-        isAuthModalOpen,
-        openAuthModal,
-        closeAuthModal,
-        signIn,
-        signUp,
-        signInWithGoogle,
-        signOut,
-        refreshPremiumStatus,
-        startCheckout,
-      }}
-    >
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );

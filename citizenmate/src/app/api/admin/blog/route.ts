@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { verifyAdmin } from '@/lib/admin-auth';
 import { createSupabaseServerClient } from '@/lib/supabase-server';
 import { revalidatePath } from 'next/cache';
+import { sanitizeSeoTitle, sanitizeSeoDescription, sanitizeSeoKeywords, sanitizeOgImageUrl, sanitizeBlogContent } from '@/lib/sanitize';
 
 export async function GET() {
   const admin = await verifyAdmin();
@@ -120,11 +121,11 @@ export async function POST(req: Request) {
         title: translation.title,
         slug: translation.slug,
         excerpt: translation.excerpt || null,
-        content: translation.content || null,
-        seo_title: translation.seo_title || null,
-        seo_description: translation.seo_description || null,
-        seo_keywords: translation.seo_keywords || null,
-        og_image_url: translation.og_image_url || null,
+        content: sanitizeBlogContent(translation.content),
+        seo_title: sanitizeSeoTitle(translation.seo_title),
+        seo_description: sanitizeSeoDescription(translation.seo_description),
+        seo_keywords: sanitizeSeoKeywords(translation.seo_keywords),
+        og_image_url: sanitizeOgImageUrl(translation.og_image_url),
       })
       .select()
       .single();
@@ -200,11 +201,11 @@ export async function PUT(req: Request) {
             title: translation.title,
             slug: translation.slug,
             excerpt: translation.excerpt,
-            content: translation.content,
-            seo_title: translation.seo_title,
-            seo_description: translation.seo_description,
-            seo_keywords: translation.seo_keywords,
-            og_image_url: translation.og_image_url,
+            content: sanitizeBlogContent(translation.content),
+            seo_title: sanitizeSeoTitle(translation.seo_title),
+            seo_description: sanitizeSeoDescription(translation.seo_description),
+            seo_keywords: sanitizeSeoKeywords(translation.seo_keywords),
+            og_image_url: sanitizeOgImageUrl(translation.og_image_url),
             updated_at: new Date().toISOString(),
           },
           { onConflict: 'blog_post_id,locale' }

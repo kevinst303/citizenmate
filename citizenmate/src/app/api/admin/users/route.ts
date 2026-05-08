@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { verifyAdmin } from "@/lib/admin-auth";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
+import { createSupabaseAdminClient } from "@/lib/supabase-admin";
 
 export async function GET(req: Request) {
   const admin = await verifyAdmin();
@@ -112,12 +113,12 @@ export async function DELETE(req: Request) {
       return NextResponse.json({ error: "User ID is required" }, { status: 400 });
     }
 
-    const supabase = await createSupabaseServerClient();
+    const adminSupabase = createSupabaseAdminClient();
 
-    const { error } = await supabase.auth.admin.deleteUser(id);
+    const { error } = await adminSupabase.auth.admin.deleteUser(id);
 
     if (error) {
-      const { error: profileError } = await supabase
+      const { error: profileError } = await adminSupabase
         .from("profiles")
         .update({ suspended: true })
         .eq("id", id);

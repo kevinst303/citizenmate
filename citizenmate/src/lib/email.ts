@@ -50,6 +50,7 @@ export async function sendEmail({
   }
 
   try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const payload: any = {
       from: FROM_ADDRESS,
       to,

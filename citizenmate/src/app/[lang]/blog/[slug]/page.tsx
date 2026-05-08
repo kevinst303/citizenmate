@@ -96,7 +96,7 @@ export default async function BlogPostPage({
             )}
           </header>
 
-          <BlogHtmlContent content={post.content} />
+          <BlogHtmlContent content={post.content} lang={lang} />
         </article>
       </div>
     );

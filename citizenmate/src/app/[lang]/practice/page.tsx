@@ -49,6 +49,8 @@ export default function PracticePage() {
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
   const params = useParams<{ lang: string }>();
+  const lang = (params?.lang as string) || "en";
+
   const { t } = useT();
   const [attempts, setAttempts] = useState<
     Array<{ testId: string; result: QuizResult; completedAt: string }>
@@ -57,7 +59,7 @@ export default function PracticePage() {
   // Client-side protection for guests
   useEffect(() => {
     if (!authLoading && !user) {
-      router.replace(`/${params.lang}?auth=required`);
+      router.replace(`/${lang}?auth=required`);
     }
   }, [user, authLoading, router, params.lang]);
 
@@ -134,7 +136,7 @@ export default function PracticePage() {
         >
           {isPremium ? (
             <Link
-              href="/practice/smart"
+              href={`/${lang}/practice/smart`}
               className="group relative block bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 rounded-2xl shadow-lg shadow-purple-500/20 overflow-hidden"
             >
               <div className="absolute inset-0 animate-shimmer" />

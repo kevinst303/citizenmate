@@ -7,6 +7,7 @@ import { AuthProvider } from "@/lib/auth-context";
 import { SRSProvider } from "@/lib/srs-context";
 import { ReferralTracker } from "@/components/shared/referral-tracker";
 import { Suspense } from "react";
+import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import { AuthRedirectHandler } from "@/components/shared/auth-redirect-handler";
 import { UpgradeModal } from "@/components/global/upgrade-modal";
@@ -26,7 +27,7 @@ const jsonLd = {
 
 const poppinsHeading = Poppins({
   variable: "--font-heading-family",
-  subsets: ["latin"],
+  subsets: ["latin", "devanagari"],
   weight: ["400", "500", "600", "700", "800"],
   display: "swap",
 });
@@ -129,10 +130,13 @@ export default async function RootLayout({
     >
       <head>
         <meta name="theme-color" content="#006d77" />
-        <script
+        <Script
+          id="json-ld"
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+          strategy="beforeInteractive"
+        >
+          {JSON.stringify(jsonLd)}
+        </Script>
       </head>
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <PostHogProvider>

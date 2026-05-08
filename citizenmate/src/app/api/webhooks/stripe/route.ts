@@ -107,9 +107,10 @@ async function handleCheckoutCompleted(
   // Send purchase confirmation email
   const customerEmail = session.customer_details?.email || session.customer_email;
   if (customerEmail) {
-    await sendPurchaseConfirmation(customerEmail, expiresAt.toISOString()).catch((err) =>
-      console.error('[Webhook] Failed to send confirmation email:', err)
-    );
+    await sendPurchaseConfirmation(customerEmail, expiresAt.toISOString()).catch((err) => {
+      console.error('[Webhook] Failed to send confirmation email:', err);
+      Sentry.captureException(err, { extra: { email: customerEmail, userId } });
+    });
   }
 
   // ── Process referral rewards ──
@@ -129,6 +130,7 @@ async function handleCheckoutCompleted(
       }
     } catch (err) {
       console.error('[Webhook] Failed to process referral promo code:', err);
+      Sentry.captureException(err, { extra: { referralPromoCodeId, buyerId: userId } });
     }
   }
 
@@ -137,6 +139,7 @@ async function handleCheckoutCompleted(
     await checkAndProcessPendingReward(userId);
   } catch (err) {
     console.error('[Webhook] Failed to check pending referral reward:', err);
+    Sentry.captureException(err, { extra: { userId } });
   }
 }
 
@@ -168,6 +171,9 @@ async function handleSubscriptionCreatedOrUpdated(
 
     if (error) {
       console.error('[Webhook] Failed to update premium access:', error.message);
+      Sentry.captureException(new Error(`Failed to update premium access: ${error.message}`), {
+        extra: { customerId, status },
+      });
     }
   } else if (status === 'canceled' || status === 'unpaid' || status === 'past_due') {
     const { error } = await adminSupabase
@@ -181,6 +187,9 @@ async function handleSubscriptionCreatedOrUpdated(
 
     if (error) {
       console.error('[Webhook] Failed to revoke premium access:', error.message);
+      Sentry.captureException(new Error(`Failed to revoke premium access: ${error.message}`), {
+        extra: { customerId, status },
+      });
     }
   }
 }
@@ -191,6 +200,10 @@ async function handlePaymentFailed(
   const userId = paymentIntent.metadata?.userId;
   console.error(
     `[Webhook] Payment failed | user=${userId || 'unknown'} | pi=${paymentIntent.id} | reason=${paymentIntent.last_payment_error?.message || 'unknown'}`
+  );
+  Sentry.captureException(
+    new Error(`Stripe payment failed: ${paymentIntent.last_payment_error?.message || 'unknown'}`),
+    { extra: { userId, paymentIntentId: paymentIntent.id } }
   );
   // Future: send failure notification email via Resend/Postmark
 }
@@ -234,8 +247,8 @@ async function handleChargeRefunded(
     `[Webhook] Charge refunded | charge=${charge.id} | customer=${customerId} | amount=${charge.amount_refunded}`
   );
 
-  // Full refund → revoke premium
-  if (charge.refunded && customerId) {
+  const isFullRefund = charge.amount_refunded >= charge.amount;
+  if (isFullRefund && customerId) {
     const { error } = await adminSupabase
       .from('profiles')
       .update({
@@ -247,7 +260,14 @@ async function handleChargeRefunded(
 
     if (error) {
       console.error('[Webhook] Failed to revoke premium on refund:', error.message);
+      Sentry.captureException(new Error(`Failed to revoke premium on refund: ${error.message}`), {
+        extra: { customerId, chargeId: charge.id },
+      });
     }
+  } else {
+    console.log(
+      `[Webhook] Partial refund — not revoking premium | charge=${charge.id} | refunded=${charge.amount_refunded}/${charge.amount}`
+    );
   }
 }
 
