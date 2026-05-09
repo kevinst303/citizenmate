@@ -9,7 +9,7 @@ import { createSupabaseAdminClient } from '@/lib/supabase-admin';
 const REFERRAL_COUPON_ID = process.env.STRIPE_REFERRAL_COUPON_ID || 'osa7HMgY';
 
 function createStripeClient(): Stripe {
-  const stripeKey = process.env.STRIPE_SECRET_KEY;
+  const stripeKey = process.env.STRIPE_SECRET_KEY?.replace(/\\n/g, '')?.trim();
   if (!stripeKey) throw new Error('STRIPE_SECRET_KEY not configured');
 
   return new Stripe(stripeKey, {

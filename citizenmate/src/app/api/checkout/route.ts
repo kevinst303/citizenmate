@@ -43,7 +43,7 @@ export async function POST(req: Request) {
       // No body or invalid JSON
     }
 
-    const stripeKey = process.env.STRIPE_SECRET_KEY?.trim();
+    const stripeKey = process.env.STRIPE_SECRET_KEY?.replace(/\\n/g, '')?.trim();
     if (!stripeKey) {
       return NextResponse.json({ error: 'Stripe not configured' }, { status: 500 });
     }
@@ -61,15 +61,15 @@ export async function POST(req: Request) {
 
     if (tier === 'pro') {
       priceId = interval === 'year' 
-        ? process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_YEAR?.trim()
-        : process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_MONTH?.trim();
+        ? process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_YEAR?.replace(/\\n/g, '')?.trim()
+        : process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_MONTH?.replace(/\\n/g, '')?.trim();
     } else if (tier === 'sprint_pass') {
-      priceId = process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_SPRINT_PASS?.trim();
+      priceId = process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_SPRINT_PASS?.replace(/\\n/g, '')?.trim();
     } else {
       // Premium tier
       priceId = interval === 'year'
-        ? process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PREMIUM_YEAR?.trim()
-        : process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PREMIUM_MONTH?.trim();
+        ? process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PREMIUM_YEAR?.replace(/\\n/g, '')?.trim()
+        : process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PREMIUM_MONTH?.replace(/\\n/g, '')?.trim();
     }
 
     if (!priceId) {

@@ -31,7 +31,7 @@ export async function GET() {
 
   // Check Stripe API
   try {
-    const stripeKey = process.env.STRIPE_SECRET_KEY;
+    const stripeKey = process.env.STRIPE_SECRET_KEY?.replace(/\\n/g, '')?.trim();
     if (stripeKey) {
       const res = await fetch('https://api.stripe.com/v1/balance', {
         headers: {

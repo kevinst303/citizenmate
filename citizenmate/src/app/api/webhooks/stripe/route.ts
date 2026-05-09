@@ -14,7 +14,7 @@ import * as Sentry from '@sentry/nextjs';
 const SPRINT_PASS_DAYS = 60;
 
 function createStripeClient(): Stripe {
-  const stripeKey = process.env.STRIPE_SECRET_KEY;
+  const stripeKey = process.env.STRIPE_SECRET_KEY?.replace(/\\n/g, '')?.trim();
   if (!stripeKey) throw new Error('STRIPE_SECRET_KEY not configured');
 
   return new Stripe(stripeKey, {
