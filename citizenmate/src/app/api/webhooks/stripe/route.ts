@@ -274,7 +274,7 @@ async function handleChargeRefunded(
 // ── Main Handler ──
 
 export async function POST(req: Request) {
-  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET?.replace(/\\n/g, '').trim();
 
   if (!webhookSecret) {
     console.error('[Webhook] STRIPE_WEBHOOK_SECRET not configured');

@@ -6,7 +6,7 @@ import * as Sentry from '@sentry/nextjs';
 
 export async function POST(req: Request) {
   try {
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://citizenmate.com.au';
+    const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://citizenmate.com.au').replace(/\\n/g, '').trim();
 
     // ── Extract locale from referer for Stripe redirect URLs ──
     const referer = req.headers.get('referer') || '';
