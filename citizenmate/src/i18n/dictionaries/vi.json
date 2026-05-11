@@ -144,11 +144,18 @@
   },
   "onboarding": {
     "welcome": "Chào mừng cậu đến với CitizenMate!",
+    "welcome_desc": "Chúng tôi rất vui được giúp cậu chuẩn bị cho kỳ thi quốc tịch Úc. Hãy thiết lập hồ sơ học tập của cậu chỉ trong vài bước.",
+    "continue": "Tiếp tục",
     "description": "Hãy bắt đầu bằng việc đặt ngày thi mục tiêu nhé. Điều này sẽ giúp tụi mình thiết kế kế hoạch học tập phù hợp với cậu.",
     "when_test": "Khi nào cậu thi lấy quốc tịch vậy?",
     "set_goal": "Đặt ngày mục tiêu",
     "saving": "Đang lưu...",
-    "dont_know_date": "Tớ vẫn chưa biết ngày thi của mình"
+    "dont_know_date": "Tớ vẫn chưa biết ngày thi của mình",
+    "all_set": "Cậu đã sẵn sàng rồi!",
+    "all_set_desc": "Hồ sơ học tập của cậu đã sẵn sàng. Chúng tôi sẽ cá nhân hóa bảng điều khiển và kế hoạch học tập dựa trên ngày thi của cậu. Cậu có thể điều chỉnh tùy chọn bất cứ lúc nào trong Cài đặt.",
+    "what_next": "Tiếp theo là gì?",
+    "what_next_desc": "Chúng tôi sẽ tạo một kế hoạch học tập phù hợp, theo dõi tiến độ của cậu và giúp cậu tự tin cho ngày thi. Hãy đi từng bước một — chúng tôi luôn ở đây cùng cậu.",
+    "start_learning": "Bắt đầu Học"
   },
   "upgrade": {
     "title": "Khám phá hết tiềm năng của bản thân",

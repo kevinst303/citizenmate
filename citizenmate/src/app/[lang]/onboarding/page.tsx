@@ -5,12 +5,10 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import { getSupabaseBrowserClient } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
 import { posthog } from "@/components/providers/posthog-provider";
 import { useT } from "@/i18n/i18n-context";
 import { motion, AnimatePresence, Variants } from "framer-motion";
-import { Calendar, Monitor, Sparkles, ArrowRight, CheckCircle2 } from "lucide-react";
-import { useSettingsStore } from "@/lib/store/useSettingsStore";
+import { Calendar, Sparkles, ArrowRight, CheckCircle2 } from "lucide-react";
 
 export default function OnboardingPage() {
   const [step, setStep] = useState(1);
@@ -19,7 +17,6 @@ export default function OnboardingPage() {
   const { user, refreshPremiumStatus } = useAuth();
   const router = useRouter();
   const { t } = useT();
-  const { reduceMotion, setReduceMotion } = useSettingsStore();
 
   const handleNext = () => setStep((s) => s + 1);
 
@@ -41,7 +38,6 @@ export default function OnboardingPage() {
         if (typeof window !== "undefined") {
           posthog.capture("onboarding_completed", {
             has_test_date: !!selectedDate,
-            reduce_motion: reduceMotion,
             days_until_test: selectedDate
               ? Math.ceil((new Date(selectedDate).getTime() - Date.now()) / 86400000)
               : null,
@@ -59,8 +55,8 @@ export default function OnboardingPage() {
 
   const slideVariants: Variants = {
     hidden: { opacity: 0, x: 20 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: "easeOut" } },
-    exit: { opacity: 0, x: -20, transition: { duration: 0.3, ease: "easeIn" } }
+    visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1.0] } },
+    exit: { opacity: 0, x: -20, transition: { duration: 0.25, ease: "easeIn" } }
   };
 
   return (
@@ -143,38 +139,38 @@ export default function OnboardingPage() {
 
             {step === 3 && (
               <motion.div key="step3" variants={slideVariants} initial="hidden" animate="visible" exit="exit" className="flex flex-col flex-1">
-                <div className="w-12 h-12 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center mb-6">
-                  <Monitor className="w-6 h-6" />
+                <div className="w-12 h-12 rounded-2xl bg-cm-eucalyptus-light text-cm-eucalyptus flex items-center justify-center mb-6">
+                  <CheckCircle2 className="w-6 h-6" />
                 </div>
                 <h1 className="text-3xl font-heading font-bold text-cm-slate-900 mb-4">
-                  {t("onboarding.preferences", "Study Preferences")}
+                  {t("onboarding.all_set", "You're all set!")}
                 </h1>
-                <p className="text-cm-slate-600 mb-8">
-                  {t("onboarding.preferences_desc", "Customize your interface for a comfortable, distraction-free learning experience.")}
+                <p className="text-cm-slate-600 mb-6">
+                  {t("onboarding.all_set_desc", "Your study profile is ready. We'll personalize your dashboard and study plan based on your test date. You can fine-tune preferences anytime in Settings.")}
                 </p>
                 
                 <div className="flex-1">
-                  <div className="flex items-center justify-between p-5 bg-cm-slate-50 rounded-2xl border border-cm-slate-100">
-                    <div>
-                      <h3 className="font-semibold text-cm-slate-900 mb-1">
-                        {t("settings.reduce_animations", "Reduce Animations")}
-                      </h3>
-                      <p className="text-sm text-cm-slate-500 leading-relaxed max-w-[200px]">
-                        {t("settings.reduce_animations_desc", "Minimize motion for a calmer experience.")}
-                      </p>
+                  <div className="bg-gradient-to-br from-cm-teal-light to-purple-50 rounded-2xl border border-cm-teal/10 p-5">
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center flex-shrink-0 shadow-sm">
+                        <Sparkles className="w-5 h-5 text-cm-teal" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-cm-slate-900 mb-1">
+                          {t("onboarding.what_next", "What happens next?")}
+                        </h3>
+                        <p className="text-sm text-cm-slate-500 leading-relaxed">
+                          {t("onboarding.what_next_desc", "We'll create a tailored study plan, track your progress, and help you feel confident for test day. Take it one step at a time — we're here with you.")}
+                        </p>
+                      </div>
                     </div>
-                    <Switch 
-                      checked={reduceMotion} 
-                      onCheckedChange={setReduceMotion}
-                      className="data-[state=checked]:bg-cm-teal"
-                    />
                   </div>
                 </div>
 
                 <Button
                   onClick={() => handleSave(testDate)}
                   disabled={loading}
-                  className="w-full mt-8 bg-cm-eucalyptus hover:bg-emerald-700 text-white rounded-xl py-6 text-lg font-bold"
+                  className="w-full mt-8 bg-cm-eucalyptus hover:bg-emerald-700 text-white rounded-xl py-6 text-lg font-bold shadow-lg shadow-cm-eucalyptus/20 hover:shadow-xl hover:shadow-cm-eucalyptus/25 transition-all duration-300"
                 >
                   {loading ? (
                     <div className="flex items-center">
@@ -184,7 +180,7 @@ export default function OnboardingPage() {
                   ) : (
                     <div className="flex items-center">
                       <CheckCircle2 className="w-5 h-5 mr-2" />
-                      {t("onboarding.complete_setup", "Complete Setup")}
+                      {t("onboarding.start_learning", "Start Learning")}
                     </div>
                   )}
                 </Button>

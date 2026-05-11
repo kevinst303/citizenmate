@@ -129,11 +129,18 @@
   },
   "onboarding": {
     "welcome": "Welcome to CitizenMate!",
-    "description": "Let's get started by setting your goal test date. This helps us tailor your study plan.",
+    "welcome_desc": "We're excited to help you prepare for your Australian citizenship test. Let's set up your study profile in just a few quick steps.",
+    "continue": "Continue",
+    "description": "Setting a goal date helps us tailor your study plan and keep you on track.",
     "when_test": "When is your citizenship test?",
     "set_goal": "Set Goal Date",
     "saving": "Saving...",
-    "dont_know_date": "I don't know my test date yet"
+    "dont_know_date": "I don't know my test date yet",
+    "all_set": "You're all set!",
+    "all_set_desc": "Your study profile is ready. We'll personalize your dashboard and study plan based on your test date. You can fine-tune preferences anytime in Settings.",
+    "what_next": "What happens next?",
+    "what_next_desc": "We'll create a tailored study plan, track your progress, and help you feel confident for test day. Take it one step at a time — we're here with you.",
+    "start_learning": "Start Learning"
   },
   "upgrade": {
     "title": "Unlock Your Full Potential",

@@ -342,11 +342,18 @@
   },
   "onboarding": {
     "welcome": "欢迎使用 CitizenMate！",
+    "welcome_desc": "我们很高兴帮助您准备澳大利亚公民考试。让我们在几个快速步骤中设置您的学习档案。",
+    "continue": "继续",
     "description": "让我们先设定您的目标考试日期，以便为您定制学习计划。",
     "when_test": "您的公民考试是什么时候？",
     "set_goal": "设定目标日期",
     "saving": "保存中...",
-    "dont_know_date": "我还不知道考试日期"
+    "dont_know_date": "我还不知道考试日期",
+    "all_set": "一切就绪！",
+    "all_set_desc": "您的学习档案已就绪。我们将根据您的考试日期个性化您的仪表板和学习计划。您可以随时在设置中微调偏好。",
+    "what_next": "接下来会怎样？",
+    "what_next_desc": "我们将创建一个量身定制的学习计划，跟踪您的进度，帮助您自信地迎接考试日。一步一步来 —— 我们与您同在。",
+    "start_learning": "开始学习"
   },
   "upgrade": {
     "title": "释放你的全部潜力",

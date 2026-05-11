@@ -173,6 +173,35 @@
   --sidebar-ring: #2dd4bf;
 }
 
+/* ===== Dark Mode Brand Token Overrides (WCAG AA Contrast) ===== */
+.dark {
+  /* Teal family — brightened for ≥4.5:1 contrast on dark bg */
+  --color-cm-teal: #4fd1c5;
+  --color-cm-teal-dark: #2dd4bf;
+  --color-cm-teal-darker: #14b8a6;
+  --color-cm-teal-light: rgba(79, 209, 197, 0.12);
+  --color-cm-teal-50: rgba(79, 209, 197, 0.08);
+  --color-cm-teal-100: rgba(79, 209, 197, 0.15);
+
+  /* Navy aliases — same bright teal values */
+  --color-cm-navy: #4fd1c5;
+  --color-cm-navy-light: #5eead4;
+  --color-cm-navy-lighter: #99f6e4;
+  --color-cm-navy-50: rgba(79, 209, 197, 0.08);
+  --color-cm-navy-100: rgba(79, 209, 197, 0.15);
+
+  /* Purple — brightened for contrast */
+  --color-cm-purple: #a78bfa;
+  --color-cm-purple-bg: rgba(167, 139, 250, 0.15);
+
+  /* Dark text on dark bg — lightened */
+  --color-cm-dark: #F1F5F9;
+  --color-cm-dark-light: #CBD5E1;
+
+  /* Accent foreground override for dark */
+  --accent-foreground: #4fd1c5;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

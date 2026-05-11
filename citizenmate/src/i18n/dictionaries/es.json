@@ -143,11 +143,18 @@
   },
   "onboarding": {
     "welcome": "¡Bienvenido a CitizenMate!",
+    "welcome_desc": "Estamos emocionados de ayudarte a prepararte para tu examen de ciudadanía australiana. Configuremos tu perfil de estudio en solo unos pasos.",
+    "continue": "Continuar",
     "description": "Comencemos estableciendo la fecha objetivo de tu examen. Esto nos ayuda a personalizar tu plan de estudio.",
     "when_test": "¿Cuándo es tu examen de ciudadanía?",
     "set_goal": "Establecer fecha objetivo",
     "saving": "Guardando...",
-    "dont_know_date": "Aún no sé la fecha de mi examen"
+    "dont_know_date": "Aún no sé la fecha de mi examen",
+    "all_set": "¡Todo listo!",
+    "all_set_desc": "Tu perfil de estudio está listo. Personalizaremos tu panel y plan de estudio según la fecha de tu examen. Puedes ajustar las preferencias en cualquier momento en Configuración.",
+    "what_next": "¿Qué sigue?",
+    "what_next_desc": "Crearemos un plan de estudio personalizado, seguiremos tu progreso y te ayudaremos a sentirte seguro para el día del examen. Ve paso a paso — estamos aquí contigo.",
+    "start_learning": "Empezar a Aprender"
   },
   "upgrade": {
     "title": "Desbloquea todo tu potencial",
