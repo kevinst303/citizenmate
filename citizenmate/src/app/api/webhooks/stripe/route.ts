@@ -199,7 +199,7 @@ async function handleInvoicePaid(
   adminSupabase: ReturnType<typeof createSupabaseAdminClient>
 ): Promise<void> {
   const customerId = invoice.customer as string;
-  const subscriptionId = invoice.subscription as string | null;
+  const subscriptionId = (invoice.parent?.subscription_details?.subscription as string) ?? null;
 
   console.log(
     `[Webhook] Invoice paid | invoice=${invoice.id} | customer=${customerId} | amount=${invoice.amount_paid} | subscription=${subscriptionId || 'none'}`
