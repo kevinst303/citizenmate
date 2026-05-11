@@ -351,56 +351,59 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const startCheckout = useCallback(async (tier: string = 'premium', interval: string = 'month') => {
     if (!user) {
       openAuthModal();
-      return;
+      throw new Error("You must be signed in to upgrade.");
     }
 
     if (typeof window !== 'undefined') {
       posthog.capture('checkout_started', { tier, interval });
     }
 
-    try {
-      // Check for referral promo code from cookie
-      let promoCode: string | undefined;
-      if (typeof document !== "undefined") {
-        const match = document.cookie.match(/(^| )citizenmate_promo=([^;]+)/);
-        if (match) promoCode = match[2];
+    // Check for referral promo code from cookie
+    let promoCode: string | undefined;
+    if (typeof document !== "undefined") {
+      const match = document.cookie.match(/(^| )citizenmate_promo=([^;]+)/);
+      if (match) promoCode = match[2];
+    }
+
+    const response = await fetch("/api/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ promoCode, tier, interval }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      
+      if (response.status === 401) {
+        console.warn("[Checkout] Session expired or unauthenticated. Opening auth modal.");
+        openAuthModal();
+        throw new Error("Session expired. Please sign in again.");
       }
 
-      const response = await fetch("/api/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ promoCode, tier, interval }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        
-        if (response.status === 401) {
-          console.warn("[Checkout] Session expired or unauthenticated. Opening auth modal.");
-          openAuthModal();
-          return;
-        }
-
-        console.error("[Checkout] Server error:", errorData.error || response.statusText);
-        
-        // Show specific error messages for missing Stripe configuration (like Price IDs or API keys)
-        if (errorData.error === "Stripe not configured" || (typeof errorData.error === 'string' && errorData.error.includes("Price ID not configured"))) {
-          toast.error("Checkout Unavailable", errorData.error === "Stripe not configured" ? "Stripe is not configured in this environment." : errorData.error);
-        } else {
-          toast.error("Checkout Error", "Something went wrong starting checkout. Please try again.");
-        }
-        return;
+      console.error("[Checkout] Server error:", errorData.error || response.statusText);
+      
+      // Show specific error messages for missing Stripe configuration
+      if (errorData.error === "Stripe not configured" || (typeof errorData.error === 'string' && errorData.error.includes("Price ID not configured"))) {
+        const msg = errorData.error === "Stripe not configured"
+          ? "Stripe is not configured in this environment."
+          : errorData.error;
+        toast.error("Checkout Unavailable", msg);
+        throw new Error(msg);
       }
 
-      const data = await response.json();
+      const fallbackMsg = "Something went wrong starting checkout. Please try again.";
+      toast.error("Checkout Error", fallbackMsg);
+      throw new Error(fallbackMsg);
+    }
 
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        console.error("[Checkout] No URL returned:", data.error);
-      }
-    } catch (err) {
-      console.error("[Checkout] Error:", err);
+    const data = await response.json();
+
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      const msg = "No checkout URL returned. Please try again.";
+      console.error("[Checkout] No URL returned:", data.error);
+      throw new Error(msg);
     }
   }, [user, openAuthModal]);
 

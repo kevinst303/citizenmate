@@ -19,12 +19,18 @@ export function UpgradeModal() {
   if (!isOpen) return null;
 
   const handleUpgrade = async (tier: string) => {
+    setErrorText(null);
     setLoadingTier(tier);
     try {
-      // Pass the chosen interval to startCheckout
       await startCheckout(tier.toLowerCase(), interval);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Something went wrong. Please try again.";
+      setErrorText(message);
+      setLoadingTier(null);
     } finally {
-      setTimeout(() => setLoadingTier(null), 3000);
+      if (!errorText) {
+        setTimeout(() => setLoadingTier(null), 3000);
+      }
     }
   };
 
@@ -87,6 +93,12 @@ export function UpgradeModal() {
               <p className="mt-2 text-neutral-500 dark:text-neutral-400">
                 {t("upgrade.subtitle", "Choose the plan that fits your study timeline.")}
               </p>
+              {errorText && (
+                <div className="mt-3 flex items-start gap-2.5 p-3 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800">
+                  <AlertTriangle className="w-4 h-4 text-red-600 dark:text-red-400 mt-0.5 shrink-0" />
+                  <p className="text-sm text-red-700 dark:text-red-300">{errorText}</p>
+                </div>
+              )}
             </div>
             <button
               onClick={closeModal}

@@ -1,0 +1,272 @@
+// ===== CitizenMate Gamification Engine =====
+// Streak calculation, badge evaluation, and XAI explanation generation.
+
+import type {
+  BadgeDefinition,
+  BadgeEvaluationInput,
+  XAIExplanation,
+} from "@/lib/gamification-types";
+import type { QuestionPerformance, MasteryLevel } from "@/lib/srs-types";
+import { getMasteryLevel } from "@/lib/srs-engine";
+
+// ─── Constants ───────────────────────────────────────────
+
+const BADGE_DEFINITIONS: BadgeDefinition[] = [
+  // Streak
+  { id: "streak-3", name: "Getting Started", description: "You studied 3 days in a row!", icon: "flame", category: "streak", tier: 1, requirement_description: "3-day study streak" },
+  { id: "streak-7", name: "Week Warrior", description: "A full week of daily study — now that's dedication!", icon: "flame", category: "streak", tier: 2, requirement_description: "7-day study streak" },
+  { id: "streak-14", name: "Fortnight Focus", description: "Two weeks of consistent effort. You're building a habit!", icon: "flame", category: "streak", tier: 3, requirement_description: "14-day study streak" },
+  { id: "streak-30", name: "Monthly Master", description: "30 days straight! This is who you are now.", icon: "flame", category: "streak", tier: 4, requirement_description: "30-day study streak" },
+  { id: "streak-60", name: "Unstoppable", description: "60 days without missing a beat. Legendary discipline.", icon: "flame", category: "streak", tier: 5, requirement_description: "60-day study streak" },
+  // Mastery
+  { id: "mastery-25", name: "Quarter Master", description: "You've mastered 25% of all questions!", icon: "star", category: "mastery", tier: 1, requirement_description: "Master 25% of question bank" },
+  { id: "mastery-50", name: "Halfway Hero", description: "50% of the question bank is under your belt.", icon: "star", category: "mastery", tier: 2, requirement_description: "Master 50% of question bank" },
+  { id: "mastery-75", name: "Knowledge Champion", description: "75% mastery — you're getting close to test-ready!", icon: "star", category: "mastery", tier: 3, requirement_description: "Master 75% of question bank" },
+  { id: "mastery-90", name: "Almost There", description: "90% mastered. Just a few more to go!", icon: "star", category: "mastery", tier: 4, requirement_description: "Master 90% of question bank" },
+  { id: "mastery-100", name: "Perfect Score", description: "Every question mastered. You are ready!", icon: "star", category: "mastery", tier: 5, requirement_description: "Master 100% of question bank" },
+  // Effort
+  { id: "effort-10", name: "First Steps", description: "Completed 10 total questions across all sessions.", icon: "dumbbell", category: "effort", tier: 1, requirement_description: "Answer 10 questions total" },
+  { id: "effort-50", name: "Practice Makes Perfect", description: "50 questions answered. Keep that momentum!", icon: "dumbbell", category: "effort", tier: 2, requirement_description: "Answer 50 questions total" },
+  { id: "effort-100", name: "Century Club", description: "100 questions crushed. Serious effort!", icon: "dumbbell", category: "effort", tier: 3, requirement_description: "Answer 100 questions total" },
+  { id: "effort-250", name: "Dedicated Scholar", description: "250 questions — your commitment is showing.", icon: "dumbbell", category: "effort", tier: 4, requirement_description: "Answer 250 questions total" },
+  { id: "effort-500", name: "Iron Will", description: "500 questions. Nothing can stop you now.", icon: "dumbbell", category: "effort", tier: 5, requirement_description: "Answer 500 questions total" },
+  // Milestone
+  { id: "milestone-first-test", name: "First Test Taker", description: "You completed your very first practice test!", icon: "trophy", category: "milestone", tier: 1, requirement_description: "Complete 1 practice test" },
+  { id: "milestone-5-tests", name: "Practice Pro", description: "Five practice tests in the books.", icon: "trophy", category: "milestone", tier: 2, requirement_description: "Complete 5 practice tests" },
+  { id: "milestone-10-tests", name: "Test Machine", description: "10 practice tests — you know the format inside out.", icon: "trophy", category: "milestone", tier: 3, requirement_description: "Complete 10 practice tests" },
+  { id: "milestone-perfect", name: "Flawless Run", description: "Scored 100% on a practice test!", icon: "trophy", category: "milestone", tier: 4, requirement_description: "Score 100% on any practice test" },
+  { id: "milestone-values", name: "Values Guardian", description: "Mastered all Australian Values questions.", icon: "heart", category: "milestone", tier: 3, requirement_description: "Achieve 100% on Australian Values topic" },
+];
+
+const STREAK_THRESHOLDS = [3, 7, 14, 30, 60];
+const MASTERY_THRESHOLDS = [25, 50, 75, 90, 100];
+const EFFORT_THRESHOLDS = [10, 50, 100, 250, 500];
+
+// ─── Streak Calculation ──────────────────────────────────
+
+/**
+ * Calculate the current streak based on last activity date.
+ * Uses the 'Australia/Sydney' timezone assumption for day boundaries.
+ * Gracefully handles edge cases: timezone shifts, missed days, first activity.
+ */
+export function calculateStreak(
+  lastActivityDate: string | null,
+  currentStreak: number
+): { newStreak: number; isIncremented: boolean } {
+  if (!lastActivityDate) {
+    return { newStreak: 1, isIncremented: true };
+  }
+
+  const now = new Date();
+  const lastDate = new Date(lastActivityDate);
+
+  // Normalize to date-only comparison (ignore time)
+  const todayStr = now.toISOString().slice(0, 10);
+  const lastStr = lastDate.toISOString().slice(0, 10);
+
+  if (todayStr === lastStr) {
+    // Already recorded today — no change
+    return { newStreak: currentStreak, isIncremented: false };
+  }
+
+  // Calculate day difference
+  const today = new Date(todayStr);
+  const last = new Date(lastStr);
+  const diffMs = today.getTime() - last.getTime();
+  const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
+
+  if (diffDays === 1) {
+    // Consecutive day — increment streak
+    return { newStreak: currentStreak + 1, isIncremented: true };
+  }
+
+  // Streak broken — reset to 1
+  return { newStreak: 1, isIncremented: true };
+}
+
+// ─── Badge Evaluation ────────────────────────────────────
+
+/**
+ * Evaluate which badges a user should earn based on their current stats.
+ * Returns only newly earned badges (not already claimed).
+ */
+export function evaluateBadges(
+  input: BadgeEvaluationInput,
+  alreadyEarnedBadgeIds: Set<string>
+): BadgeDefinition[] {
+  const newlyEarned: BadgeDefinition[] = [];
+
+  for (const badge of BADGE_DEFINITIONS) {
+    if (alreadyEarnedBadgeIds.has(badge.id)) continue;
+
+    let earned = false;
+
+    switch (badge.category) {
+      case "streak": {
+        const tier = STREAK_THRESHOLDS.indexOf(
+          parseInt(badge.id.split("-")[1])
+        );
+        if (tier >= 0 && input.currentStreak >= STREAK_THRESHOLDS[tier]) {
+          earned = true;
+        }
+        break;
+      }
+      case "mastery": {
+        const tier = MASTERY_THRESHOLDS.indexOf(
+          parseInt(badge.id.split("-")[1])
+        );
+        if (tier >= 0 && input.masteryPercentage >= MASTERY_THRESHOLDS[tier]) {
+          earned = true;
+        }
+        break;
+      }
+      case "effort": {
+        const tier = EFFORT_THRESHOLDS.indexOf(
+          parseInt(badge.id.split("-")[1])
+        );
+        if (tier >= 0 && input.totalQuestionsAnswered >= EFFORT_THRESHOLDS[tier]) {
+          earned = true;
+        }
+        break;
+      }
+      case "milestone": {
+        switch (badge.id) {
+          case "milestone-first-test":
+            earned = input.totalTestsCompleted >= 1;
+            break;
+          case "milestone-5-tests":
+            earned = input.totalTestsCompleted >= 5;
+            break;
+          case "milestone-10-tests":
+            earned = input.totalTestsCompleted >= 10;
+            break;
+          case "milestone-perfect":
+            earned =
+              input.bestTestScore !== null &&
+              input.bestTestScore.score === input.bestTestScore.total;
+            break;
+          case "milestone-values":
+            earned = input.valuesMasteryPercentage >= 100;
+            break;
+        }
+        break;
+      }
+    }
+
+    if (earned) {
+      newlyEarned.push(badge);
+    }
+  }
+
+  return newlyEarned;
+}
+
+// ─── XAI (Explainable AI) ─────────────────────────────────
+
+/**
+ * Generate a human-readable explanation for why a specific question
+ * was selected for review. Makes the SRS algorithm transparent.
+ */
+export function generateXAIExplanation(
+  perf: QuestionPerformance | undefined,
+  now: number
+): XAIExplanation {
+  if (!perf || perf.timesAnswered === 0) {
+    return {
+      primaryReason: "New topic to explore",
+      detail: "You haven't seen this question before. Starting with new material builds a strong foundation across all topics.",
+      metrics: [
+        { label: "Status", value: "New" },
+        { label: "Priority", value: "Foundation building" },
+      ],
+      urgency: "medium",
+    };
+  }
+
+  const accuracy =
+    perf.timesAnswered > 0
+      ? Math.round((perf.timesCorrect / perf.timesAnswered) * 100)
+      : 0;
+
+  const masteryLevel: MasteryLevel = getMasteryLevel(perf);
+  const reviewTime = new Date(perf.nextReviewAt).getTime();
+  const isOverdue = reviewTime <= now;
+
+  if (isOverdue && masteryLevel !== "mastered") {
+    const overdueHours = Math.round((now - reviewTime) / (1000 * 60 * 60));
+    return {
+      primaryReason: "Due for review",
+      detail: `This question was scheduled for review ${
+        overdueHours < 24
+          ? `${overdueHours} hours ago`
+          : `${Math.round(overdueHours / 24)} days ago`
+      }. Reviewing it now strengthens long-term memory before the forgetting curve drops too far.`,
+      metrics: [
+        { label: "Accuracy", value: `${accuracy}%` },
+        { label: "Overdue", value: `${overdueHours < 24 ? overdueHours + "h" : Math.round(overdueHours / 24) + "d"}` },
+        { label: "Interval", value: `${perf.interval}d` },
+      ],
+      urgency: "high",
+    };
+  }
+
+  if (accuracy < 60 && perf.timesAnswered >= 2) {
+    return {
+      primaryReason: "Needs more practice",
+      detail: `Your accuracy on this question is ${accuracy}%. The algorithm detects this as a weak spot — a few more correct attempts will lock it into long-term memory.`,
+      metrics: [
+        { label: "Accuracy", value: `${accuracy}%` },
+        { label: "Attempts", value: `${perf.timesAnswered}` },
+        { label: "Streak", value: `${perf.consecutiveCorrect} correct` },
+      ],
+      urgency: "high",
+    };
+  }
+
+  if (perf.consecutiveCorrect === 0) {
+    return {
+      primaryReason: "Recent mistake — reinforce now",
+      detail: "You got this wrong last time. The algorithm brings it back quickly while the correction is still fresh in your mind, preventing the error from sticking.",
+      metrics: [
+        { label: "Accuracy", value: `${accuracy}%` },
+        { label: "Last result", value: "Incorrect" },
+      ],
+      urgency: "high",
+    };
+  }
+
+  if (masteryLevel === "mastered") {
+    return {
+      primaryReason: "Maintenance review",
+      detail: `You've mastered this question with ${perf.consecutiveCorrect} consecutive correct answers. This gentle review keeps it fresh without taking up too much of your study time.`,
+      metrics: [
+        { label: "Accuracy", value: `${accuracy}%` },
+        { label: "Mastered", value: "✓" },
+        { label: "Interval", value: `${perf.interval}d` },
+      ],
+      urgency: "low",
+    };
+  }
+
+  // General review
+  return {
+    primaryReason: "Optimising your retention",
+    detail: `You're at ${accuracy}% accuracy with a ${perf.interval}-day review interval. The algorithm spaces out reviews to maximise memory retention — each correct answer extends the interval further.`,
+    metrics: [
+      { label: "Accuracy", value: `${accuracy}%` },
+      { label: "Interval", value: `${perf.interval}d` },
+      { label: "Ease", value: `${perf.easeFactor.toFixed(1)}x` },
+    ],
+    urgency: "medium",
+  };
+}
+
+/** Get all badge definitions for reference */
+export function getAllBadgeDefinitions(): BadgeDefinition[] {
+  return BADGE_DEFINITIONS;
+}
+
+/** Get a single badge by ID */
+export function getBadgeById(id: string): BadgeDefinition | undefined {
+  return BADGE_DEFINITIONS.find((b) => b.id === id);
+}
