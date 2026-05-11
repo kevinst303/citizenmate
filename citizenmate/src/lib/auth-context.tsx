@@ -26,6 +26,7 @@ interface ProfileData {
   expiresAt: Date | null;
   testDate: string | null;
   loading: boolean;
+  needsOnboarding: boolean;
 }
 
 interface AuthContextValue {
@@ -67,12 +68,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     expiresAt: null,
     testDate: null,
     loading: true,
+    needsOnboarding: false,
   });
 
   // Fetch profile data from Supabase profile
   const fetchProfileData = useCallback(async (userId: string) => {
     if (!isSupabaseConfigured()) {
-      setProfile({ tier: 'free', isPremium: false, isAdmin: false, expiresAt: null, testDate: null, loading: false });
+      setProfile({ tier: 'free', isPremium: false, isAdmin: false, expiresAt: null, testDate: null, loading: false, needsOnboarding: false });
       return;
     }
 
@@ -85,7 +87,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .single();
 
       if (error || !data) {
-        setProfile({ tier: 'free', isPremium: false, isAdmin: false, expiresAt: null, testDate: null, loading: false });
+        setProfile({ tier: 'free', isPremium: false, isAdmin: false, expiresAt: null, testDate: null, loading: false, needsOnboarding: false });
         return;
       }
 
@@ -97,6 +99,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         data.is_premium === true &&
         (expiresAt === null || expiresAt > new Date());
 
+      // Signal that the user needs onboarding — let the page component handle navigation.
+      // Using router.push avoids a full-page reload that drops all client state.
+      const needsOnboarding = !data.test_date;
+
       setProfile({
         tier: (data.tier as 'free' | 'pro' | 'premium') || 'free',
         isPremium: isActive,
@@ -104,19 +110,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         expiresAt,
         testDate: data.test_date,
         loading: false,
+        needsOnboarding,
       });
-      
-      // Redirect to onboarding if they don't have a test date
-      if (!data.test_date && typeof window !== "undefined") {
-        const path = window.location.pathname;
-        if (!path.includes("/onboarding") && !path.includes("/admin")) {
-          const match = path.match(/^\/([a-z]{2})\//);
-          const langPrefix = match ? `/${match[1]}` : "/en";
-          window.location.href = `${langPrefix}/onboarding`;
-        }
-      }
     } catch {
-      setProfile({ tier: 'free', isPremium: false, isAdmin: false, expiresAt: null, testDate: null, loading: false });
+      setProfile({ tier: 'free', isPremium: false, isAdmin: false, expiresAt: null, testDate: null, loading: false, needsOnboarding: false });
     }
   }, []);
 
@@ -155,13 +152,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (currentUser) {
         fetchProfileData(currentUser.id);
       } else {
-        setProfile({ tier: 'free', isPremium: false, isAdmin: false, expiresAt: null, testDate: null, loading: false });
+        setProfile({ tier: 'free', isPremium: false, isAdmin: false, expiresAt: null, testDate: null, loading: false, needsOnboarding: false });
       }
     }).catch((err) => {
       console.error("[AuthProvider] getSession error:", err);
       if (isMounted) {
         setLoading(false);
-        setProfile({ tier: 'free', isPremium: false, isAdmin: false, expiresAt: null, testDate: null, loading: false });
+        setProfile({ tier: 'free', isPremium: false, isAdmin: false, expiresAt: null, testDate: null, loading: false, needsOnboarding: false });
       }
     });
 
@@ -225,7 +222,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           Sentry.setUser(null);
         }
         if (event === "SIGNED_OUT" || event === "INITIAL_SESSION") {
-          setProfile({ tier: 'free', isPremium: false, isAdmin: false, expiresAt: null, testDate: null, loading: false });
+          setProfile({ tier: 'free', isPremium: false, isAdmin: false, expiresAt: null, testDate: null, loading: false, needsOnboarding: false });
         }
       }
     });
@@ -317,7 +314,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signOut = useCallback(async () => {
     // Clear local state first
     setUser(null);
-    setProfile({ tier: 'free', isPremium: false, isAdmin: false, expiresAt: null, testDate: null, loading: false });
+    setProfile({ tier: 'free', isPremium: false, isAdmin: false, expiresAt: null, testDate: null, loading: false, needsOnboarding: false });
 
     // Server-side signout to clear HttpOnly cookies
     try {

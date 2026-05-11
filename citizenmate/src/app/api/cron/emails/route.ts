@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { Resend } from "resend";
+import { getResendClient, sendPremiumExpiryWarning } from "@/lib/email";
 
 export async function GET(request: Request) {
-  const resend = new Resend(process.env.RESEND_API_KEY || "dummy");
+  const resend = getResendClient();
   
   const supabaseAdmin = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL || "",
@@ -158,19 +158,9 @@ export async function GET(request: Request) {
       for (const user of expiringUsers) {
         if (!user.email) continue;
         const daysLeft = 3;
-        batchEmails.push({
-          from: "CitizenMate <hello@citizenmate.com.au>",
-          to: user.email,
-          subject: `⏰ Your Sprint Pass expires in ${daysLeft} days — CitizenMate`,
-          template: {
-            id: process.env.RESEND_TEMPLATE_EXPIRY_WARNING || '',
-            variables: {
-              daysLeft,
-              userName: user.display_name || "Mate",
-              unsubscribeUrl: `${siteUrl}/api/unsubscribe?id=${user.id}`
-            }
-          }
-        });
+        // Delegate to shared email service (handles graceful degradation)
+        const result = await sendPremiumExpiryWarning(user.email, daysLeft);
+        if (result.success) emailsSent++;
       }
     }
 
@@ -178,12 +168,16 @@ export async function GET(request: Request) {
     const validBatchEmails = batchEmails.filter(e => e.template?.id);
 
     if (validBatchEmails.length > 0) {
-      const { data, error: sendError } = await resend.batch.send(validBatchEmails);
-      if (sendError) {
-        console.error("[Cron Email] Resend error:", sendError);
-        return NextResponse.json({ error: sendError }, { status: 500 });
+      if (!resend) {
+        console.warn("[Cron Email] Resend client unavailable — skipping batch send");
+      } else {
+        const { data, error: sendError } = await resend.batch.send(validBatchEmails);
+        if (sendError) {
+          console.error("[Cron Email] Resend error:", sendError);
+          return NextResponse.json({ error: sendError }, { status: 500 });
+        }
+        emailsSent = validBatchEmails.length;
       }
-      emailsSent = validBatchEmails.length;
     } else if (batchEmails.length > 0) {
        console.warn("[Cron Email] Warning: Template IDs missing. No emails sent.");
     }

@@ -217,6 +217,7 @@
   "user_menu": {
     "sign_in": "साइन इन करें",
     "dashboard": "डैशबोर्ड",
+    "admin_dashboard": "एडमिन डैशबोर्ड",
     "upgrade_to_premium": "प्रीमियम में अपग्रेड करें",
     "profile_settings": "प्रोफ़ाइल सेटिंग्स",
     "sign_out": "साइन आउट करें"
@@ -394,7 +395,35 @@
     "review_all": "सभी प्रश्न और उत्तर देखें",
     "encouragement_pass": "\"गुड डे, दोस्त — आप तैयार हैं! 🇦🇺\"",
     "encouragement_fail": "\"कोई बात नहीं, दोस्त — हर अभ्यास परीक्षण आपको और मज़बूत बनाता है। आप कर लेंगे। 🇦🇺\"",
-    "submit_test_button": "परीक्षा जमा करें"
+    "submit_test_button": "परीक्षा जमा करें",
+    "hint_prompt": "कोई संकेत चाहिए?",
+    "show_hint": "संकेत दिखाएँ",
+    "hint_premium_gate": "Sprint Pass के साथ असीमित संकेत",
+    "hint_unlimited": "असीमित संकेत",
+    "hint_remaining": "{n} संकेत शेष",
+    "hint_revealed": "यहाँ एक संकेत है…",
+    "hint_got_it": "समझ गया, धन्यवाद!",
+    "hint_used": "संकेत उपयोग किया",
+    "dismiss": "खारिज करें"
+  },
+  "wellbeing": {
+    "title": "साँस लें",
+    "subtitle": "4-7-8 श्वास • 3 चक्र • 1 मिनट",
+    "thirty_min_prompt": "आप 15 मिनट से ध्यान केंद्रित कर रहे हैं। एक छोटा साँस का ब्रेक लें।",
+    "fifteen_min_prompt": "बस लगभग पूरा! एक गहरी साँस आपको मज़बूती से खत्म करने में मदद करेगी।",
+    "generic_prompt": "शांति का एक पल आपकी एकाग्रता को तेज़ कर सकता है।",
+    "follow_guide": "वृत्त की लय का पालन करें…",
+    "start_breathing": "श्वास शुरू करें",
+    "skip": "छोड़ें",
+    "stop": "रोकें",
+    "breathe_in": "साँस अंदर",
+    "hold": "रोकें",
+    "breathe_out": "साँस बाहर",
+    "rest": "आराम",
+    "cycle_count": "चक्र {current} / {total}",
+    "done": "हो गया!",
+    "completed": "तरोताज़ा महसूस कर रहे हैं! आपका मन जारी रखने के लिए तैयार है।",
+    "continue_test": "परीक्षा जारी रखें"
   },
   "common": {
     "loading": "लोड हो रहा है...",

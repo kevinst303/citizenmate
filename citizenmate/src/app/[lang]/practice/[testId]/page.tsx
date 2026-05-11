@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useQuiz, getAttemptHistory } from "@/lib/quiz-context";
 import { useAuth } from "@/lib/auth-context";
@@ -8,6 +8,7 @@ import { useUpgradeModal } from "@/lib/store/useUpgradeModal";
 import { QuizHeader } from "@/components/quiz/quiz-header";
 import { QuizCard } from "@/components/quiz/quiz-card";
 import { QuizProgress } from "@/components/quiz/quiz-progress";
+import { WellbeingPrompt } from "@/components/quiz/wellbeing-prompt";
 import { getTestById } from "@/data/tests";
 import { motion } from "framer-motion";
 import { Flag, ChevronLeft, ChevronRight, Send } from "lucide-react";
@@ -31,6 +32,32 @@ export default function QuizPage() {
     submitQuiz,
     answeredCount,
   } = useQuiz();
+
+  // Wellbeing prompt state
+  const [showWellbeing, setShowWellbeing] = useState(false);
+  const [wellbeingReason, setWellbeingReason] = useState<"30min" | "15min" | "manual">("30min");
+  const wellbeingShown30 = useRef(false);
+  const wellbeingShown15 = useRef(false);
+
+  // Trigger wellbeing prompts at 30 min and 15 min remaining
+  useEffect(() => {
+    if (state.status !== "in-progress") return;
+    const time = state.timeRemaining;
+
+    // At ~30 min remaining (15 min elapsed), trigger first wellbeing prompt
+    if (time <= 1800 && time > 1795 && !wellbeingShown30.current) {
+      wellbeingShown30.current = true;
+      setWellbeingReason("30min");
+      setShowWellbeing(true);
+    }
+
+    // At ~15 min remaining (30 min elapsed), trigger second prompt
+    if (time <= 900 && time > 895 && !wellbeingShown15.current) {
+      wellbeingShown15.current = true;
+      setWellbeingReason("15min");
+      setShowWellbeing(true);
+    }
+  }, [state.timeRemaining, state.status]);
 
   // Start quiz on mount
   useEffect(() => {
@@ -95,7 +122,7 @@ export default function QuizPage() {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-6 lg:gap-10">
           {/* Question area */}
           <div>
-            <QuizCard />
+            <QuizCard isPremium={isPremium} />
 
             {/* Navigation buttons */}
             <div className="flex items-center justify-between mt-8 pt-6 border-t border-cm-slate-200">
@@ -188,6 +215,13 @@ export default function QuizPage() {
           </aside>
         </div>
       </div>
+
+      {/* Wellbeing modal — overlaid on quiz */}
+      <WellbeingPrompt
+        visible={showWellbeing}
+        onDismiss={() => setShowWellbeing(false)}
+        triggerReason={wellbeingReason}
+      />
     </div>
   );
 }

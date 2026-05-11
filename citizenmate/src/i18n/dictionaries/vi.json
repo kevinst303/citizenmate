@@ -218,6 +218,7 @@
   "user_menu": {
     "sign_in": "Đăng nhập",
     "dashboard": "Bảng điều khiển",
+    "admin_dashboard": "Bảng điều khiển quản trị",
     "upgrade_to_premium": "Nâng cấp lên gói Premium",
     "profile_settings": "Cài đặt hồ sơ",
     "sign_out": "Đăng xuất"
@@ -395,7 +396,35 @@
     "review_all": "Xem lại tất cả các câu hỏi và câu trả lời",
     "encouragement_pass": "\"Chào anh bạn, sẵn sàng chưa nào! 🇦🇺\"",
     "encouragement_fail": "\"Đừng lo, anh bạn — mỗi lần làm bài thi thử đều giúp cậu vững vàng hơn. Cậu làm được mà. 🇦🇺\"",
-    "submit_test_button": "Gửi bài kiểm tra"
+    "submit_test_button": "Gửi bài kiểm tra",
+    "hint_prompt": "Cần gợi ý không?",
+    "show_hint": "Hiện gợi ý",
+    "hint_premium_gate": "Gợi ý không giới hạn với Sprint Pass",
+    "hint_unlimited": "Gợi ý không giới hạn",
+    "hint_remaining": "Còn {n} gợi ý",
+    "hint_revealed": "Đây là gợi ý…",
+    "hint_got_it": "Hiểu rồi, cảm ơn!",
+    "hint_used": "Đã dùng gợi ý",
+    "dismiss": "Bỏ qua"
+  },
+  "wellbeing": {
+    "title": "Hít thở",
+    "subtitle": "Hít thở 4-7-8 • 3 chu kỳ • 1 phút",
+    "thirty_min_prompt": "Bạn đã tập trung được 15 phút. Hãy nghỉ ngơi một chút để hít thở.",
+    "fifteen_min_prompt": "Gần xong rồi! Hít thở sâu sẽ giúp bạn kết thúc mạnh mẽ.",
+    "generic_prompt": "Một khoảnh khắc bình yên có thể giúp bạn tập trung hơn.",
+    "follow_guide": "Hãy theo nhịp của vòng tròn…",
+    "start_breathing": "Bắt đầu hít thở",
+    "skip": "Bỏ qua",
+    "stop": "Dừng",
+    "breathe_in": "Hít vào",
+    "hold": "Nín thở",
+    "breathe_out": "Thở ra",
+    "rest": "Nghỉ",
+    "cycle_count": "Chu kỳ {current}/{total}",
+    "done": "Xong!",
+    "completed": "Bạn thấy sảng khoái hơn! Tâm trí đã sẵn sàng tiếp tục.",
+    "continue_test": "Tiếp tục bài kiểm tra"
   },
   "study": {
     "hero_title": "Hãy cùng tìm hiểu về sợi dây gắn kết chúng ta",

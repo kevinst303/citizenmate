@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
-import { getSupabaseBrowserClient } from "@/lib/supabase";
+import { useTestDate } from "@/lib/test-date-context";
 import { Button } from "@/components/ui/button";
 import { posthog } from "@/components/providers/posthog-provider";
 import { useT } from "@/i18n/i18n-context";
@@ -12,11 +12,12 @@ import { Calendar, Sparkles, ArrowRight, CheckCircle2 } from "lucide-react";
 
 export default function OnboardingPage() {
   const [step, setStep] = useState(1);
-  const [testDate, setTestDate] = useState("");
+  const [testDate, setLocalTestDate] = useState("");
   const [loading, setLoading] = useState(false);
   const { user, refreshPremiumStatus } = useAuth();
   const router = useRouter();
   const { t } = useT();
+  const { setTestDate } = useTestDate();
 
   const handleNext = () => setStep((s) => s + 1);
 
@@ -25,27 +26,21 @@ export default function OnboardingPage() {
     
     setLoading(true);
     try {
-      const supabase = getSupabaseBrowserClient();
+      // Use TestDateProvider.setTestDate() which writes to localStorage
+      // and background-syncs to Supabase via syncTestDateToSupabase()
       const finalDate = selectedDate || "1970-01-01";
-      const { error } = await supabase
-        .from("profiles")
-        .update({ test_date: finalDate })
-        .eq("id", user.id);
+      setTestDate(finalDate);
 
-      if (error) {
-        console.error("Failed to save onboarding data:", error);
-      } else {
-        if (typeof window !== "undefined") {
-          posthog.capture("onboarding_completed", {
-            has_test_date: !!selectedDate,
-            days_until_test: selectedDate
-              ? Math.ceil((new Date(selectedDate).getTime() - Date.now()) / 86400000)
-              : null,
-          });
-        }
-        await refreshPremiumStatus();
-        router.push("/dashboard");
+      if (typeof window !== "undefined") {
+        posthog.capture("onboarding_completed", {
+          has_test_date: !!selectedDate,
+          days_until_test: selectedDate
+            ? Math.ceil((new Date(selectedDate).getTime() - Date.now()) / 86400000)
+            : null,
+        });
       }
+      await refreshPremiumStatus();
+      router.push("/dashboard");
     } catch (err) {
       console.error(err);
     } finally {
@@ -113,7 +108,7 @@ export default function OnboardingPage() {
                   <input
                     type="date"
                     value={testDate}
-                    onChange={(e) => setTestDate(e.target.value)}
+                    onChange={(e) => setLocalTestDate(e.target.value)}
                     className="w-full bg-cm-slate-50 border border-cm-slate-200 rounded-xl px-5 py-4 text-cm-slate-900 focus:outline-none focus:ring-2 focus:ring-cm-teal transition-all text-lg font-medium"
                     min={new Date().toISOString().split("T")[0]}
                   />

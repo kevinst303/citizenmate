@@ -1,18 +1,74 @@
 "use client";
 
+import { useState, useCallback, useEffect, useRef } from "react";
 import { useQuiz } from "@/lib/quiz-context";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart } from "lucide-react";
 import { useT } from "@/i18n/i18n-context";
+import { QuizHint } from "./quiz-hint";
 
-export function QuizCard() {
+interface QuizCardProps {
+  isPremium: boolean;
+}
+
+export function QuizCard({ isPremium }: QuizCardProps) {
   const { state, currentQuestion, selectAnswer } = useQuiz();
   const { t } = useT();
+
+  // Hint state
+  const [showHintPrompt, setShowHintPrompt] = useState(false);
+  const [hintRevealed, setHintRevealed] = useState(false);
+  const [hintCountUsed, setHintCountUsed] = useState(0);
+  const [currentHintText, setCurrentHintText] = useState("");
+  const hintShownForQuestion = useRef<string | null>(null);
+
+  // Reset hint state when question changes
+  useEffect(() => {
+    if (currentQuestion && hintShownForQuestion.current !== currentQuestion.id) {
+      setShowHintPrompt(false);
+      setHintRevealed(false);
+      setCurrentHintText("");
+      hintShownForQuestion.current = null;
+    }
+  }, [currentQuestion?.id]);
+
+  const handleShowHint = useCallback(() => {
+    if (!currentQuestion) return;
+    setHintCountUsed((prev) => prev + 1);
+    setHintRevealed(true);
+    setCurrentHintText(""); // The QuizHint component will generate one
+    hintShownForQuestion.current = currentQuestion.id;
+  }, [currentQuestion]);
+
+  const handleDismissHint = useCallback(() => {
+    setShowHintPrompt(false);
+    setHintRevealed(false);
+  }, []);
 
   if (!currentQuestion || !state.test) return null;
 
   const selectedAnswer = state.answers[currentQuestion.id];
   const questionNumber = state.currentQuestionIndex + 1;
+
+  const handleSelectAnswer = (questionId: string, answerIndex: number) => {
+    selectAnswer(questionId, answerIndex);
+
+    // If the answer is wrong and we haven't shown a hint for this question yet,
+    // show the hint prompt after a brief delay
+    if (answerIndex !== currentQuestion.correctAnswer) {
+      // Brief delay to let the selection animation play
+      setTimeout(() => {
+        if (hintShownForQuestion.current !== currentQuestion.id) {
+          setShowHintPrompt(true);
+        }
+      }, 400);
+    } else {
+      setShowHintPrompt(false);
+    }
+  };
+
+  // How many free hints left for non-premium users
+  const premiumHintsRemaining = Math.max(0, 1 - hintCountUsed);
 
   return (
     <AnimatePresence mode="wait">
@@ -82,7 +138,7 @@ export function QuizCard() {
                   transition: { type: "spring", stiffness: 400, damping: 25 },
                 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => selectAnswer(currentQuestion.id, index)}
+                onClick={() => handleSelectAnswer(currentQuestion.id, index)}
                 className={`
                   w-full flex items-start gap-4 p-4 sm:p-5 rounded-[10px] border-2 text-left
                   transition-colors duration-200 cursor-pointer group
@@ -123,6 +179,18 @@ export function QuizCard() {
             );
           })}
         </div>
+
+        {/* Hint prompt — shown after wrong answer */}
+        <QuizHint
+          topic={currentQuestion.topic}
+          premiumHintsRemaining={premiumHintsRemaining}
+          isPremium={isPremium}
+          onShowHint={handleShowHint}
+          onDismiss={handleDismissHint}
+          visible={showHintPrompt}
+          hintRevealed={hintRevealed}
+          currentHint={currentHintText}
+        />
       </motion.div>
     </AnimatePresence>
   );

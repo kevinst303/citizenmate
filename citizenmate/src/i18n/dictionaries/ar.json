@@ -416,6 +416,7 @@
   "user_menu": {
     "sign_in": "تسجيل الدخول",
     "dashboard": "لوحة القيادة",
+    "admin_dashboard": "لوحة تحكم المشرف",
     "upgrade_to_premium": "الترقية إلى Premium",
     "profile_settings": "إعدادات الملف الشخصي",
     "sign_out": "تسجيل خروج"
@@ -593,7 +594,35 @@
     "review_all": "مراجعة جميع الأسئلة والإجابات",
     "encouragement_pass": "\"أحسنت يا صديقي، أنت مستعد! 🇦🇺\"",
     "encouragement_fail": "\"لا تقلق يا صديقي — كل اختبار تدريبي يجعلك أقوى. يمكنك فعلها. 🇦🇺\"",
-    "submit_test_button": "إرسال الاختبار"
+    "submit_test_button": "إرسال الاختبار",
+    "hint_prompt": "هل تحتاج إلى تلميح؟",
+    "show_hint": "إظهار التلميح",
+    "hint_premium_gate": "تلميحات غير محدودة مع Sprint Pass",
+    "hint_unlimited": "تلميحات غير محدودة",
+    "hint_remaining": "{n} تلميح متبقي",
+    "hint_revealed": "إليك تلميح…",
+    "hint_got_it": "فهمت، شكراً!",
+    "hint_used": "تم استخدام التلميح",
+    "dismiss": "تجاهل"
+  },
+  "wellbeing": {
+    "title": "خذ نفساً",
+    "subtitle": "تنفس 4-7-8 • 3 دورات • دقيقة واحدة",
+    "thirty_min_prompt": "لقد ركزت لمدة 15 دقيقة. خذ استراحة تنفس سريعة.",
+    "fifteen_min_prompt": "أوشكت على الانتهاء! نفس عميق سيساعدك على الإنهاء بقوة.",
+    "generic_prompt": "لحظة من الهدوء يمكن أن تزيد من تركيزك.",
+    "follow_guide": "اتبع إيقاع الدائرة…",
+    "start_breathing": "ابدأ التنفس",
+    "skip": "تخطي",
+    "stop": "توقف",
+    "breathe_in": "شهيق",
+    "hold": "احبس",
+    "breathe_out": "زفير",
+    "rest": "استرح",
+    "cycle_count": "الدورة {current} من {total}",
+    "done": "تم!",
+    "completed": "تشعر بالانتعاش! عقلك مستعد للمتابعة.",
+    "continue_test": "متابعة الاختبار"
   },
   "study": {
     "hero_title": "ادرس رابطنا المشترك",

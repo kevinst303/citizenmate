@@ -217,6 +217,7 @@
   "user_menu": {
     "sign_in": "Iniciar sesión",
     "dashboard": "Panel de control",
+    "admin_dashboard": "Panel de administración",
     "upgrade_to_premium": "Mejorar a Premium",
     "profile_settings": "Configuración del perfil",
     "sign_out": "Cerrar sesión"
@@ -394,7 +395,35 @@
     "review_all": "Revisar todas las preguntas y respuestas",
     "encouragement_pass": "\"¡Muy bien, amigo, estás listo! 🇦🇺\"",
     "encouragement_fail": "\"No te preocupes, amigo — cada prueba de práctica te hace más fuerte. Tú puedes. 🇦🇺\"",
-    "submit_test_button": "Enviar prueba"
+    "submit_test_button": "Enviar prueba",
+    "hint_prompt": "¿Necesitas una pista?",
+    "show_hint": "Mostrar pista",
+    "hint_premium_gate": "Pistas ilimitadas con Sprint Pass",
+    "hint_unlimited": "Pistas ilimitadas",
+    "hint_remaining": "{n} pista restante",
+    "hint_revealed": "Aquí tienes una pista…",
+    "hint_got_it": "¡Entendido, gracias!",
+    "hint_used": "Pista usada",
+    "dismiss": "Descartar"
+  },
+  "wellbeing": {
+    "title": "Respira",
+    "subtitle": "Respiración 4-7-8 • 3 ciclos • 1 minuto",
+    "thirty_min_prompt": "Has estado concentrado por 15 minutos. Tómate un breve descanso para respirar.",
+    "fifteen_min_prompt": "¡Ya casi! Una respiración profunda te ayudará a terminar fuerte.",
+    "generic_prompt": "Un momento de calma puede agudizar tu concentración.",
+    "follow_guide": "Sigue el ritmo del círculo…",
+    "start_breathing": "Comenzar a respirar",
+    "skip": "Omitir",
+    "stop": "Parar",
+    "breathe_in": "Inhala",
+    "hold": "Sostén",
+    "breathe_out": "Exhala",
+    "rest": "Descansa",
+    "cycle_count": "Ciclo {current} de {total}",
+    "done": "¡Listo!",
+    "completed": "¡Te sientes renovado! Tu mente está lista para continuar.",
+    "continue_test": "Continuar prueba"
   },
   "study": {
     "hero_title": "Estudia Nuestro Vínculo Común",

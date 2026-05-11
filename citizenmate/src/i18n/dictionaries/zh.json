@@ -416,6 +416,7 @@
   "user_menu": {
     "sign_in": "登录",
     "dashboard": "仪表板",
+    "admin_dashboard": "管理员仪表板",
     "upgrade_to_premium": "升级到高级版",
     "profile_settings": "个人设置",
     "sign_out": "退出登录"
@@ -593,7 +594,35 @@
     "review_all": "查看所有题目与答案",
     "encouragement_pass": "\"太棒了，朋友，你已经准备好了！🇦🇺\"",
     "encouragement_fail": "\"别担心，朋友——每次练习都会让你更强大。你一定行的。🇦🇺\"",
-    "submit_test_button": "提交测试"
+    "submit_test_button": "提交测试",
+    "hint_prompt": "需要提示吗？",
+    "show_hint": "显示提示",
+    "hint_premium_gate": "Sprint Pass 享无限提示",
+    "hint_unlimited": "无限提示",
+    "hint_remaining": "剩余 {n} 次提示",
+    "hint_revealed": "给你一个提示…",
+    "hint_got_it": "明白了，谢谢！",
+    "hint_used": "已使用提示",
+    "dismiss": "关闭"
+  },
+  "wellbeing": {
+    "title": "深呼吸",
+    "subtitle": "4-7-8 呼吸法 • 3 轮 • 1 分钟",
+    "thirty_min_prompt": "您已经专注了 15 分钟。稍作休息，调整呼吸。",
+    "fifteen_min_prompt": "快完成了！深呼吸能帮你强势收尾。",
+    "generic_prompt": "片刻的平静能让注意力更加集中。",
+    "follow_guide": "跟随圆圈的节奏…",
+    "start_breathing": "开始呼吸",
+    "skip": "跳过",
+    "stop": "停止",
+    "breathe_in": "吸气",
+    "hold": "屏息",
+    "breathe_out": "呼气",
+    "rest": "休息",
+    "cycle_count": "第 {current}/{total} 轮",
+    "done": "完成！",
+    "completed": "神清气爽！准备好继续前进了。",
+    "continue_test": "继续考试"
   },
   "study": {
     "hero_title": "学习《我们的共同纽带》",

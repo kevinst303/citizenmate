@@ -17,7 +17,14 @@ const openrouter = createOpenRouter({
 
 const WINDOW_MS = 60 * 60 * 1000;
 
-async function getChatCounter(
+/**
+ * Atomic rate limit check: INCR first, then check threshold.
+ * Eliminates the TOCTOU race condition where concurrent requests
+ * could both pass the read check before either increments the counter.
+ * Also fixes the bypass where counter was only incremented after
+ * the AI stream call, allowing unlimited retries on stream failure.
+ */
+async function checkAndIncrementRateLimit(
   key: string,
   maxRequests: number
 ): Promise<{ success: boolean; remaining: number; reset: number }> {
@@ -26,24 +33,26 @@ async function getChatCounter(
     return { success: true, remaining: maxRequests - 1, reset: Date.now() + WINDOW_MS };
   }
 
-  const val = await redis.get<number>(key);
-  const current = val ?? 0;
-
-  if (current >= maxRequests) {
-    const ttl = await redis.ttl(key);
-    return { success: false, remaining: 0, reset: Date.now() + Math.max(ttl, 0) * 1000 };
-  }
-
-  return { success: true, remaining: maxRequests - current - 1, reset: Date.now() + WINDOW_MS };
-}
-
-async function incrementCounter(key: string): Promise<void> {
-  const redis = getRedisClient();
-  if (!redis) return;
-  const val = await redis.incr(key);
-  if (val === 1) {
+  // Atomic: INCR then check — prevents concurrent bypass
+  const current = await redis.incr(key);
+  if (current === 1) {
     await redis.expire(key, Math.ceil(WINDOW_MS / 1000));
   }
+
+  if (current > maxRequests) {
+    const ttl = await redis.ttl(key);
+    return {
+      success: false,
+      remaining: 0,
+      reset: Date.now() + Math.max(ttl, 0) * 1000,
+    };
+  }
+
+  return {
+    success: true,
+    remaining: maxRequests - current,
+    reset: Date.now() + WINDOW_MS,
+  };
 }
 
 function getClientIP(req: Request): string {
@@ -141,14 +150,14 @@ export async function POST(req: Request) {
     }
   }
 
-  // ── Check rate WITHOUT consuming ──
+  // ── Atomic rate limit check: INCR + check in one step ──
   const ip = getClientIP(req);
   const prefix = isPremiumUser ? "premium" : "free";
   const limitKey = isPremiumUser ? userId : ip;
   const maxRequests = isPremiumUser ? 100 : 20;
   const counterKey = `citizenmate:chat:${prefix}:${limitKey}`;
 
-  const { success, remaining, reset } = await getChatCounter(counterKey, maxRequests);
+  const { success, remaining, reset } = await checkAndIncrementRateLimit(counterKey, maxRequests);
 
   if (!success) {
     const retryAfter = Math.ceil((reset - Date.now()) / 1000);
@@ -169,9 +178,6 @@ export async function POST(req: Request) {
       }
     );
   }
-
-  // ── Call AI — count request before stream (rate limit is pre-checked above) ──
-  await incrementCounter(counterKey);
 
   let result;
   try {
