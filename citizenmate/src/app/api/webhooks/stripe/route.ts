@@ -194,6 +194,48 @@ async function handleSubscriptionCreatedOrUpdated(
   }
 }
 
+async function handleInvoicePaid(
+  invoice: Stripe.Invoice,
+  adminSupabase: ReturnType<typeof createSupabaseAdminClient>
+): Promise<void> {
+  const customerId = invoice.customer as string;
+  const subscriptionId = invoice.subscription as string | null;
+
+  console.log(
+    `[Webhook] Invoice paid | invoice=${invoice.id} | customer=${customerId} | amount=${invoice.amount_paid} | subscription=${subscriptionId || 'none'}`
+  );
+
+  // For subscription renewals, customer.subscription.updated handles the expiry extension.
+  // Here we provide canonical confirmation and could trigger renewal-specific logic.
+
+  if (customerId) {
+    // Verify the profile reflects the correct tier/expiry post-payment
+    const { data: profile } = await adminSupabase
+      .from('profiles')
+      .select('id, is_premium, premium_expires_at, tier')
+      .eq('stripe_customer_id', customerId)
+      .single();
+
+    if (profile && !profile.is_premium) {
+      // Edge case: payment succeeded but profile wasn't updated by subscription handler.
+      // This can happen if subscription.created fires before checkout.session.completed.
+      console.log(`[Webhook] Re-granting premium on invoice.paid for customer ${customerId}`);
+      const expiresAt = new Date();
+      expiresAt.setDate(expiresAt.getDate() + 31);
+
+      await adminSupabase
+        .from('profiles')
+        .update({
+          is_premium: true,
+          premium_expires_at: expiresAt.toISOString(),
+        })
+        .eq('id', profile.id);
+    }
+  }
+
+  // Future: send renewal receipt email, update revenue KPIs
+}
+
 async function handlePaymentFailed(
   paymentIntent: Stripe.PaymentIntent
 ): Promise<void> {
@@ -347,6 +389,13 @@ export async function POST(req: Request) {
       case 'charge.refunded':
         await handleChargeRefunded(
           event.data.object as Stripe.Charge,
+          adminSupabase
+        );
+        break;
+
+      case 'invoice.paid':
+        await handleInvoicePaid(
+          event.data.object as Stripe.Invoice,
           adminSupabase
         );
         break;

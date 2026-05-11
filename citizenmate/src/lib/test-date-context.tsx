@@ -61,20 +61,50 @@ export function TestDateProvider({ children }: { children: ReactNode }) {
   const [testDate, setTestDateState] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Hydrate from localStorage on mount
+  // Hydrate from localStorage on mount, fall back to Supabase
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        // Validate it's a future date
-        const d = new Date(saved);
-        if (!isNaN(d.getTime())) {
-          setTestDateState(saved);
+    let cancelled = false;
+
+    async function hydrate() {
+      try {
+        // 1. Try localStorage first (fast path)
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const d = new Date(saved);
+          if (!isNaN(d.getTime())) {
+            if (!cancelled) setTestDateState(saved);
+            return;
+          }
         }
+
+        // 2. localStorage empty → check Supabase (onboarding writes there)
+        const { getSupabaseBrowserClient } = await import("@/lib/supabase");
+        const supabase = getSupabaseBrowserClient();
+        const { data: { session } } = await supabase.auth.getSession();
+
+        if (session?.user && !cancelled) {
+          const { data } = await supabase
+            .from("profiles")
+            .select("test_date")
+            .eq("id", session.user.id)
+            .single();
+
+          if (data?.test_date) {
+            const d = new Date(data.test_date);
+            if (!isNaN(d.getTime())) {
+              // Hydrate state AND backfill localStorage
+              setTestDateState(data.test_date);
+              localStorage.setItem(STORAGE_KEY, data.test_date);
+            }
+          }
+        }
+      } catch {
+        // Ignore hydration errors — localStorage fallback remains
       }
-    } catch {
-      // Ignore storage errors
     }
+
+    hydrate();
+    return () => { cancelled = true; };
   }, []);
 
   // Persist to localStorage
@@ -140,4 +170,15 @@ export function useTestDate(): TestDateContextValue {
     throw new Error("useTestDate must be used within a TestDateProvider");
   }
   return ctx;
+}
+
+// ===== Standalone accessor (for non-component usage) =====
+
+export function getTestDate(): string | null {
+  if (typeof window === "undefined") return null;
+  try {
+    return localStorage.getItem(STORAGE_KEY);
+  } catch {
+    return null;
+  }
 }

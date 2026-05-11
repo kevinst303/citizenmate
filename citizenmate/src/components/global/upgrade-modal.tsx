@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Check, Zap, Star } from "lucide-react";
+import { X, Check, Zap, Star, AlertTriangle } from "lucide-react";
 import { useUpgradeModal } from "@/lib/store/useUpgradeModal";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth-context";
@@ -12,6 +12,7 @@ export function UpgradeModal() {
   const { isOpen, closeModal } = useUpgradeModal();
   const { startCheckout } = useAuth();
   const [loadingTier, setLoadingTier] = useState<string | null>(null);
+  const [errorText, setErrorText] = useState<string | null>(null);
   const [interval, setInterval] = useState<'month' | 'year'>('month');
   const { t } = useT();
 
@@ -75,7 +76,7 @@ export function UpgradeModal() {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           transition={{ type: "spring", duration: 0.5, bounce: 0.3 }}
-          className="relative w-full max-w-4xl bg-white dark:bg-neutral-900 rounded-3xl shadow-2xl overflow-hidden border border-neutral-200 dark:border-neutral-800 flex flex-col max-h-[90vh]"
+          className="relative w-full max-w-4xl bg-white dark:bg-neutral-900 rounded-[15px] shadow-[0_20px_60px_-12px_rgba(0,0,0,0.15),0_4px_12px_-6px_rgba(0,0,0,0.06)] overflow-hidden border border-[#E9ECEF] dark:border-neutral-800 flex flex-col max-h-[90vh]"
         >
           {/* Header */}
           <div className="p-6 pb-0 flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
@@ -133,7 +134,7 @@ export function UpgradeModal() {
                   className={`relative flex flex-col p-6 rounded-2xl border-2 transition-all duration-200 ${
                     tier.popular
                       ? "border-cm-teal bg-cm-teal/5 dark:bg-cm-teal/10"
-                      : "border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700"
+                      : "border-[#E9ECEF] dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700"
                   }`}
                 >
                   {tier.popular && tier.badge && (

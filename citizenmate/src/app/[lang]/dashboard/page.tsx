@@ -54,6 +54,7 @@ import { ReadinessRing } from "@/components/dashboard/readiness-ring";
 import { useAuth } from "@/lib/auth-context";
 import { useUpgradeModal } from "@/lib/store/useUpgradeModal";
 import { useT } from "@/i18n/i18n-context";
+import { useInactivityTrigger } from "@/hooks/use-inactivity-trigger";
 
 
 // ===== Animations =====
@@ -83,6 +84,9 @@ export default function DashboardPage() {
   const router = useRouter();
   const params = useParams();
   const lang = (params?.lang as string) || "en";
+
+  // Detects returning free-tier users after inactivity and prompts upgrade
+  useInactivityTrigger();
 
   // Client-side protection for guests
   useEffect(() => {

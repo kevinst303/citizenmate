@@ -13,6 +13,7 @@ import {
 } from "react";
 import type { StudyProgress, TopicCategory } from "@/lib/types";
 import { studyTopics } from "@/data/study-content";
+import { generateStudyPlan, cachePlan, getCachedPlan, type StudyPlan } from "@/lib/study-plan";
 
 // ===== Constants =====
 
@@ -125,6 +126,7 @@ interface StudyContextValue {
   getOverallProgress: () => TopicProgress;
   setLanguage: (language: StudyLanguage) => void;
   resetProgress: () => void;
+  generatePlan: () => StudyPlan;
 }
 
 const StudyContext = createContext<StudyContextValue | null>(null);
@@ -219,6 +221,12 @@ export function StudyProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "RESET_PROGRESS" });
   }, []);
 
+  const generatePlan = useCallback((): StudyPlan => {
+    const plan = generateStudyPlan(state.progress);
+    cachePlan(plan);
+    return plan;
+  }, [state.progress]);
+
   const value = useMemo(
     () => ({
       progress: state.progress,
@@ -229,6 +237,7 @@ export function StudyProvider({ children }: { children: ReactNode }) {
       getOverallProgress,
       setLanguage,
       resetProgress,
+      generatePlan,
     }),
     [
       state.progress,
@@ -239,6 +248,7 @@ export function StudyProvider({ children }: { children: ReactNode }) {
       getOverallProgress,
       setLanguage,
       resetProgress,
+      generatePlan,
     ]
   );
 
