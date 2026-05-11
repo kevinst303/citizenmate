@@ -48,13 +48,13 @@ Plans:
 
 ### Phase 9: Audit stripe integration and check all CTA
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** Verify Stripe checkout flow works end-to-end for all pricing tiers and intervals.
+**Requirements**: REV-01, REV-02, REV-03
 **Depends on:** Phase 8
-**Plans:** 0 plans
+**Plans:** 1 plan
 
 Plans:
-- [ ] TBD (run /gsd-plan-phase 9 to break down)
+- [x] 01 — Stripe audit & CTA verification (passed 2026-05-11)
 
 ### Phase 10: Calm UX & Interface Modernization
 
@@ -64,7 +64,7 @@ Plans:
 **Plans:** 1 plan
 
 Plans:
-- [ ] 01 — Calm UX & Interface Modernization
+- [x] 01 — Calm UX & Interface Modernization (completed 2026-05-11 — WCAG AA/AAA verified)
 
 ### Phase 11: Anxiety-Reduction & Wellbeing Features
 
@@ -75,6 +75,9 @@ Plans:
 
 Plans:
 - [ ] 01 — Anxiety-Reduction & Wellbeing Features
+  - ✅ Wave 2 (WellbeingPrompt) — built & integrated
+  - ⏳ Wave 1 (AI Hint System) — pending
+  - ⏳ Wave 3 (Copy Audit & Reframe) — pending
 
 ### Phase 12: Adaptive Gamification & Trust-building
 
@@ -84,7 +87,7 @@ Plans:
 **Plans:** 1 plan
 
 Plans:
-- [ ] 01 — Adaptive Gamification & Trust-building
+- [ ] 01 — Adaptive Gamification & Trust-building (not started)
 
 ### Phase 13: Add Vietnamese (Vi) to supported language of our platform
 
