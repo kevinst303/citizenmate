@@ -1,4 +1,5 @@
 import { getSupabaseBrowserClient } from "@/lib/supabase";
+import { updateStreak } from "@/lib/gamification-db";
 
 // ===== Data Sync Layer =====
 // Bidirectional sync between localStorage and Supabase.
@@ -148,6 +149,26 @@ export async function syncLanguageToSupabase(
   }
 }
 
+// ── Sync gamification: update streak + evaluate badges on study activity ──
+
+export async function syncGamificationToSupabase(userId: string): Promise<{
+  streakIncremented: boolean;
+  newBadges: number;
+}> {
+  if (!isSupabaseConfigured()) return { streakIncremented: false, newBadges: 0 };
+
+  try {
+    const result = await updateStreak(userId);
+    return {
+      streakIncremented: result.isIncremented,
+      newBadges: result.newlyEarnedBadges.length,
+    };
+  } catch (err) {
+    console.error("[sync] Failed to sync gamification:", err);
+    return { streakIncremented: false, newBadges: 0 };
+  }
+}
+
 // ── Push ALL local data to Supabase (on first sign-in) ──
 
 export async function syncAllToSupabase(userId: string): Promise<void> {
@@ -166,6 +187,7 @@ export async function syncAllToSupabase(userId: string): Promise<void> {
         ? localStorage.getItem(STUDY_LANG_KEY) ?? "en"
         : "en"
     ),
+    syncGamificationToSupabase(userId),
   ]);
 }
 

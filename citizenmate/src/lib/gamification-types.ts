@@ -45,6 +45,26 @@ export interface BadgeEvaluationInput {
   valuesMasteryPercentage: number; // 0–100
 }
 
+// ─── XP Types ────────────────────────────────────────────
+
+export interface XpEntry {
+  id: string;
+  user_id: string;
+  amount: number;
+  source: XpSource;
+  metadata: Record<string, unknown>;
+  created_at: string;
+}
+
+export type XpSource =
+  | "quiz_complete"
+  | "streak_milestone"
+  | "badge_earned"
+  | "daily_login"
+  | "test_completed"
+  | "referral_bonus"
+  | "admin_award";
+
 // ─── XAI (Explainable AI) Types ──────────────────────────
 
 export interface XAIExplanation {
