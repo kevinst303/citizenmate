@@ -51,3 +51,7 @@ Last activity: 2026-05-12 — Phase 11 (Progression System) delivered (commit `d
 | Date | ID | Description |
 | ---- | -- | ----------- |
 | 2026-05-12 | q20260512 | Fix navbar responsiveness for Spanish and Vietnamese translations |
+
+## Roadmap Evolution
+
+- Phase 14 added: PWA Optimization & Offline Capabilities (2026-05-12)

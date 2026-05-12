@@ -54,3 +54,13 @@
 | 11. Anxiety-Reduction & Wellbeing | v1.1 | 1/1 | Complete | 2026-05-12 |
 | 12. Adaptive Gamification & Trust-building | v1.1 | 1/1 | Complete | 2026-05-12 |
 | 13. Vietnamese Language Support | v1.1 | 1/1 | Complete | 2026-05-07 |
+
+### Phase 14: PWA Optimization & Offline Capabilities
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 13
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd-plan-phase 14 to break down)
