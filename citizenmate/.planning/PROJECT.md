@@ -1,21 +1,22 @@
 # CitizenMate — Launch Readiness
 
-## Current Milestone: v1.1 Launch Readiness
+## Current Milestone: v1.1 Launch Readiness ✅ SHIPPED
 
-**Goal:** Get CitizenMate production-ready with infrastructure hardening, revenue conversion engine, and growth mechanics from the business plan.
+**Status:** ✅ Shipped 2026-05-12
+**Phases:** 4 (Test Automation) — 7 (Growth & Retention)
+**Requirements:** 11/11 satisfied
 
-**Target features:**
-- Infrastructure: Automated tests, Sentry error tracking, Redis rate limiting, dashboard refactor
-- Revenue Engine: Test-date onboarding, 6 upgrade moment triggers, tiered pricing (Pro/Premium), PostHog analytics
-- Growth: 4 new language pairs, "Help a Mate" referral program, email notifications
+**Next Milestone:** v1.2 Adaptive Gamification & Trust-building — start with `/gsd:new-milestone`
+
+---
 
 ## What This Is
 
-CitizenMate is a Next.js 16 civic-education SaaS app (quiz, study, and dashboard flows). The v1.1 milestone focuses on transitioning from an MVP to a revenue-generating SaaS by implementing test automation, robust infrastructure, and business-critical features.
+CitizenMate is a Next.js 16 civic-education SaaS app (quiz, study, and dashboard flows). v1.1 delivered the transition from an MVP to a revenue-generating SaaS with automated testing, production infrastructure, a revenue engine (onboarding → upgrades → Stripe subscriptions), and growth mechanics (i18n, referrals, email). v1.0 shipped the Conseil design system.
 
 ## Core Value
 
-Every page of CitizenMate renders with the Conseil design system. v1.1 ensures the application is reliable, secure, and optimized for user conversion and growth.
+Every page of CitizenMate renders with the Conseil design system. v1.1 ensured the application is reliable, secure, and optimized for user conversion and growth.
 
 ## Requirements
 
@@ -34,21 +35,21 @@ Every page of CitizenMate renders with the Conseil design system. v1.1 ensures t
 - ✓ Quiz flow components styled to Conseil design tokens — v1.0 (03-E)
 - ✓ Study flow components styled to Conseil design tokens — v1.0 (03-F)
 - ✓ Dashboard components styled to Conseil design tokens — v1.0 (03-G)
+- ✓ **INFRA-01**: Automated test framework (Vitest) — v1.1 (Phase 4)
+- ✓ **INFRA-02**: Sentry error tracking — v1.1 (Phase 5)
+- ✓ **INFRA-03**: Redis rate limiting via Upstash — v1.1 (Phase 5)
+- ✓ **INFRA-04**: Dashboard monolithic refactor — v1.1 (Phase 4)
+- ✓ **REV-01**: Test-date-anchored onboarding flow — v1.1 (Phase 6)
+- ✓ **REV-02**: 6 upgrade moment triggers — v1.1 (Phase 6)
+- ✓ **REV-03**: Tiered pricing (Pro/Premium) — v1.1 (Phase 6)
+- ✓ **REV-04**: PostHog analytics — v1.1 (Phase 5)
+- ✓ **GROW-01**: 4+ new language pairs — v1.1 (Phase 7) — exceeded (6 delivered)
+- ✓ **GROW-02**: "Help a Mate" referral program — v1.1 (Phase 7)
+- ✓ **GROW-03**: Email notifications — v1.1 (Phase 7)
 
-### Active
+### Active — Next Milestone (v1.2 Adaptive Gamification & Trust-building)
 
-*(Next milestone requirements — defined via `/gsd:new-milestone`)*
-- INFRA-01: Implement automated test framework (Vitest)
-- INFRA-02: Add Sentry error tracking
-- INFRA-03: Implement Redis rate limiting
-- INFRA-04: Refactor dashboard monolithic structure
-- REV-01: Build test-date onboarding flow
-- REV-02: Implement 6 upgrade moment triggers
-- REV-03: Implement tiered pricing (Pro/Premium)
-- REV-04: Integrate PostHog analytics
-- GROW-01: Add 4 new language pairs
-- GROW-02: Build "Help a Mate" referral program
-- GROW-03: Implement email notifications
+*(Define via `/gsd:new-milestone`)*
 
 ### Out of Scope
 
@@ -59,21 +60,19 @@ Every page of CitizenMate renders with the Conseil design system. v1.1 ensures t
 
 ## Context
 
-- Branch: `feat/conseil-design-overhaul` (v1.0 shipped)
-- Reference: https://conseil.pixfort.com/consulting/
-- Design docs: `citizenmate/docs/research/conseil/` (DESIGN_TOKENS.md, BEHAVIORS.md, PAGE_TOPOLOGY.md, HANDOFF.md)
-- Foundation gate: Passed (see `citizenmate/docs/research/conseil/FOUNDATION_GATE.md`)
-- Key confirmed tokens: Primary #006d77, Secondary #3d348b, Fonts: Poppins + Inter, Cards: 15px radius, 1px #E9ECEF border, dual-layer shadow
-- Container: 1140px max-width
-- Codebase: 24,159 LOC TypeScript/TSX/CSS (post-v1.0)
-- Known tech debt: stat-card CSS class retains backdrop-blur; CountryFactsWidget retains glass-card-premium; quiz-header sticky bar has backdrop-blur-lg
+- **Current version:** v1.1 Launch Readiness ✅ shipped 2026-05-12
+- **Next:** v1.2 Adaptive Gamification & Trust-building
+- **Branch:** `main`
+- **Codebase:** ~147 commits, 468 files changed since v1.0 (+79,494 / −27,947 LOC)
+- **Tech stack:** Next.js 16, Supabase (Postgres + auth), Stripe (subscriptions), Resend (email), Sentry (errors), PostHog (analytics), Upstash Redis (rate limiting), Vitest (tests)
+- **Known tech debt (carried forward):** `stat-card` backdrop-filter, `CountryFactsWidget` glass-card-premium, `quiz-header` backdrop-blur-lg, `auth-modal` bg-cm-navy alias
+- **Reference:** https://conseil.pixfort.com/consulting/
 
 ## Constraints
 
 - **Framework**: Next.js 16 with breaking changes — check `node_modules/next/dist/docs/` before any Next.js API usage
-- **Design fidelity**: Pixel-accurate match to conseil.pixfort.com — token values are locked (FOUNDATION_GATE.md)
-- **Animations**: CitizenMate keeps Framer Motion, but entrance animations softened to match Conseil's subtler motion
 - **Build gate**: `npx tsc --noEmit` + `npm run build` must pass zero errors after every phase
+- **Environment**: 7 `RESEND_TEMPLATE_*` variables required for email functionality
 
 ## Key Decisions
 
@@ -92,7 +91,11 @@ Every page of CitizenMate renders with the Conseil design system. v1.1 ensures t
 | .card-conseil fixed globally (10px → 15px) | All card consumers update automatically | ✓ Good |
 | Modal panels use inline boxShadow | Tailwind shadow-2xl doesn't match Conseil spec | ✓ Good |
 | cm-eucalyptus → cm-teal throughout study flow | cm-eucalyptus not in Conseil palette | ✓ Good |
-| conseil-teal → cm-teal in SubpageHero | conseil-teal was undefined; cm-teal is canonical | ✓ Good — caught in audit |
+| conseil-teal → cm-teal in SubpageHero | conseil-teal was undefined; cm-teal is canonical | ✓ Good |
+| Reuse existing implems (Phases 4, 5 verification-only) | Infrastructure already production-grade | ✓ Good |
+| TestDateProvider hydrates from Supabase | Fix for localStorage-only approach on fresh sessions | ✓ Good |
+| Shared getResendClient() for graceful degradation | Cron resilience when Resend unconfigured | ✓ Good |
+| 6th upgrade trigger as inactivity detection | Completes business plan 6-trigger requirement | ✓ Good |
 
 ## Evolution
 
@@ -112,4 +115,5 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-29 starting v1.1 milestone (Launch Readiness)*
+*Last updated: 2026-05-12 — v1.1 Launch Readiness milestone shipped*
+
