@@ -1,22 +1,27 @@
-# CitizenMate — Launch Readiness
+# CitizenMate — Adaptive Gamification & Trust-building
 
-## Current Milestone: v1.1 Launch Readiness ✅ SHIPPED
+## Current Milestone: v1.2 Adaptive Gamification & Trust-building
 
-**Status:** ✅ Shipped 2026-05-12
-**Phases:** 4 (Test Automation) — 7 (Growth & Retention)
-**Requirements:** 11/11 satisfied
+**Status:** 🚧 Planning
+**Goal:** Increase user engagement and retention through adaptive gamification (streaks, badges, progression) and build trust via explainable AI tooltips that demystify the SRS scheduling algorithm.
 
-**Next Milestone:** v1.2 Adaptive Gamification & Trust-building — start with `/gsd:new-milestone`
+**Target Features:**
+- Daily login streaks with streak-freeze recovery
+- Achievement badges (milestone-based + skill-based)
+- Progression system with visual level indicators
+- XAI tooltips explaining SRS card scheduling rationale
+- Gamification dashboard widget showing stats and progress
+- Accessibility: reduced-motion support for all gamification animations
 
 ---
 
 ## What This Is
 
-CitizenMate is a Next.js 16 civic-education SaaS app (quiz, study, and dashboard flows). v1.1 delivered the transition from an MVP to a revenue-generating SaaS with automated testing, production infrastructure, a revenue engine (onboarding → upgrades → Stripe subscriptions), and growth mechanics (i18n, referrals, email). v1.0 shipped the Conseil design system.
+CitizenMate is a Next.js 16 civic-education SaaS app (quiz, study, and dashboard flows). v1.1 shipped production infrastructure, revenue engine, and growth mechanics. v1.2 focuses on increasing engagement through adaptive gamification (streaks, badges, progression) and building trust via explainable AI tooltips for the SRS algorithm.
 
 ## Core Value
 
-Every page of CitizenMate renders with the Conseil design system. v1.1 ensured the application is reliable, secure, and optimized for user conversion and growth.
+Every page of CitizenMate renders with the Conseil design system. v1.2 deepens user engagement and trust through gamification mechanics and explainable AI.
 
 ## Requirements
 
@@ -47,9 +52,9 @@ Every page of CitizenMate renders with the Conseil design system. v1.1 ensured t
 - ✓ **GROW-02**: "Help a Mate" referral program — v1.1 (Phase 7)
 - ✓ **GROW-03**: Email notifications — v1.1 (Phase 7)
 
-### Active — Next Milestone (v1.2 Adaptive Gamification & Trust-building)
+### Active
 
-*(Define via `/gsd:new-milestone`)*
+*(To be defined — requirements gathered in new-milestone workflow)*
 
 ### Out of Scope
 
@@ -60,10 +65,10 @@ Every page of CitizenMate renders with the Conseil design system. v1.1 ensured t
 
 ## Context
 
-- **Current version:** v1.1 Launch Readiness ✅ shipped 2026-05-12
-- **Next:** v1.2 Adaptive Gamification & Trust-building
+- **Current version:** v1.2 Adaptive Gamification & Trust-building 🚧 Planning
+- **Previous:** v1.1 Launch Readiness ✅ shipped 2026-05-12
 - **Branch:** `main`
-- **Codebase:** ~147 commits, 468 files changed since v1.0 (+79,494 / −27,947 LOC)
+- **Codebase:** ~150 commits, 480+ files changed since v1.0
 - **Tech stack:** Next.js 16, Supabase (Postgres + auth), Stripe (subscriptions), Resend (email), Sentry (errors), PostHog (analytics), Upstash Redis (rate limiting), Vitest (tests)
 - **Known tech debt (carried forward):** `stat-card` backdrop-filter, `CountryFactsWidget` glass-card-premium, `quiz-header` backdrop-blur-lg, `auth-modal` bg-cm-navy alias
 - **Reference:** https://conseil.pixfort.com/consulting/
@@ -72,6 +77,7 @@ Every page of CitizenMate renders with the Conseil design system. v1.1 ensured t
 
 - **Framework**: Next.js 16 with breaking changes — check `node_modules/next/dist/docs/` before any Next.js API usage
 - **Build gate**: `npx tsc --noEmit` + `npm run build` must pass zero errors after every phase
+- **Accessibility gate**: All new gamification animations must support `prefers-reduced-motion`
 - **Environment**: 7 `RESEND_TEMPLATE_*` variables required for email functionality
 
 ## Key Decisions
@@ -115,5 +121,5 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-05-12 — v1.1 Launch Readiness milestone shipped*
+*Last updated: 2026-05-12 — v1.2 Adaptive Gamification & Trust-building milestone started*
 
