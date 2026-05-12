@@ -7,7 +7,7 @@ import { AuthProvider } from "@/lib/auth-context";
 import { SRSProvider } from "@/lib/srs-context";
 import { ReferralTracker } from "@/components/shared/referral-tracker";
 import { Suspense } from "react";
-import Script from "next/script";
+
 import { Analytics } from "@vercel/analytics/react";
 import { AuthRedirectHandler } from "@/components/shared/auth-redirect-handler";
 import { UpgradeModal } from "@/components/global/upgrade-modal";
@@ -130,13 +130,11 @@ export default async function RootLayout({
     >
       <head>
         <meta name="theme-color" content="#006d77" />
-        <Script
+        <script
           id="json-ld"
           type="application/ld+json"
-          strategy="beforeInteractive"
-        >
-          {JSON.stringify(jsonLd)}
-        </Script>
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </head>
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <PostHogProvider>
