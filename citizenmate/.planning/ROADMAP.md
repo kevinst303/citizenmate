@@ -54,7 +54,7 @@ Plans:
 - ✅ Wave 2: Service Layer (gamification-db.ts) — executed
 - ✅ Wave 3: Integration (sync.ts) — executed
 
-### Phase 9: Daily Streaks Engine
+### Phase 9: Daily Streaks Engine — ✅ Complete 2026-05-12
 
 **Goal:** Implement streak tracking with daily check-in logic, streak freeze recovery mechanics, and streak progress UI components.
 
@@ -62,12 +62,12 @@ Plans:
 
 **Depends on:** Phase 8
 
-**Plans:** 0 plans
+**Plans:** 1 plan
 
 Plans:
-- *No plans yet*
+- ✅ Streaks engine (migration + logic + API + UI) — executed commit `af6eb70`
 
-### Phase 10: Achievement Badges
+### Phase 10: Achievement Badges — ✅ Complete 2026-05-12
 
 **Goal:** Define badge catalog, implement earn/unlock logic, and build a badge showcase UI for user profiles.
 
@@ -75,10 +75,10 @@ Plans:
 
 **Depends on:** Phase 9
 
-**Plans:** 0 plans
+**Plans:** 1 plan
 
 Plans:
-- *No plans yet*
+- ✅ Badge showcase (API + UI + hooks + integration) — executed commit `af6eb70`
 
 ### Phase 11: Progression System
 
@@ -115,7 +115,7 @@ Plans:
 | 6. Revenue Engine | v1.1 | 2/2 | ✅ Complete | 2026-05-11 |
 | 7. Growth & Retention | v1.1 | 2/2 | ✅ Complete | 2026-05-11 |
 | 8. Gamification Database & API | v1.2 | 7/7 | ✅ Complete | 2026-05-12 |
-| 9. Daily Streaks Engine | v1.2 | — | 🔲 Not Started | — |
-| 10. Achievement Badges | v1.2 | — | 🔲 Not Started | — |
+| 9. Daily Streaks Engine | v1.2 | 1/1 | ✅ Complete | 2026-05-12 |
+| 10. Achievement Badges | v1.2 | 1/1 | ✅ Complete | 2026-05-12 |
 | 11. Progression System | v1.2 | — | 🔲 Not Started | — |
 | 12. Explainable AI Tooltips | v1.2 | — | 🔲 Not Started | — |
