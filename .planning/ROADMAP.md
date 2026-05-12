@@ -74,10 +74,10 @@ Plans:
 **Plans:** 1 plan
 
 Plans:
-- [ ] 01 — Anxiety-Reduction & Wellbeing Features
+- [x] 01 — Anxiety-Reduction & Wellbeing Features (completed 2026-05-12)
+  - ✅ Wave 1 (AI Hint System) — built & integrated
   - ✅ Wave 2 (WellbeingPrompt) — built & integrated
-  - ⏳ Wave 1 (AI Hint System) — pending
-  - ⏳ Wave 3 (Copy Audit & Reframe) — pending
+  - ✅ Wave 3 (Copy Audit & Reframe) — completed
 
 ### Phase 12: Adaptive Gamification & Trust-building
 

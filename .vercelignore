@@ -1,0 +1,19 @@
+# Ignore large local artifacts not needed for Vercel build
+tmp/
+.next/
+node_modules/
+docs/
+DHA_docs/
+*.tsbuildinfo
+*.ai
+*.gif
+*.svg
+.planning/
+.agent/
+.claude/
+.worktrees/
+.gitnexus/
+.vscode/
+.playwright-mcp/
+design-system/
+scripts/
