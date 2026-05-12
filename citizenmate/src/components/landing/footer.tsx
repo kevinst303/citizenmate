@@ -68,7 +68,7 @@ export function Footer() {
           >
             <Link href={getUrl("/")} className="flex items-center gap-2.5">
               <div className="flex items-center justify-center">
-                <Image src="/logo.svg" alt={t("landing.footer_logo_alt")} width={36} height={36} />
+                <Image src="/logo.svg" alt={t("landing.footer_logo_alt")} width={36} height={36} unoptimized />
               </div>
               <span className="font-heading text-xl font-bold text-foreground">
                 Citizen<span className="text-cm-teal">Mate</span>

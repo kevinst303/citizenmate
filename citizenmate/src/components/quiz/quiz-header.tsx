@@ -43,7 +43,7 @@ export function QuizHeader() {
               }}
             >
               <div className="flex items-center justify-center w-8 h-8">
-                <Image src="/logo.svg" alt={t("quiz.logo_alt", "CitizenMate Logo")} width={32} height={32} />
+                <Image src="/logo.svg" alt={t("quiz.logo_alt", "CitizenMate Logo")} width={32} height={32} unoptimized />
               </div>
               <span className="hidden sm:inline font-heading text-sm font-semibold text-cm-slate-600">
                 {state.test.title}
