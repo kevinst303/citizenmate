@@ -31,7 +31,7 @@ const DesktopMenuItem = ({ label, children }: { label: string; children: React.R
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <button className="flex items-center gap-1 px-3 py-2 text-[0.95rem] font-medium text-muted-foreground hover:text-cm-teal transition-colors">
+      <button className="flex items-center gap-1 px-2 xl:px-3 py-2 text-sm xl:text-[0.95rem] font-medium text-muted-foreground hover:text-cm-teal transition-colors whitespace-nowrap">
         {label}
         <ChevronRight className={cn("size-3.5 transition-transform duration-200", isHovered ? "rotate-90 text-cm-teal" : "")} />
       </button>
@@ -157,7 +157,7 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Nav Links */}
-          <div className="hidden lg:flex items-center gap-2">
+          <div className="hidden lg:flex items-center lg:gap-0 xl:gap-2">
             <DesktopMenuItem label={t("navigation.study_tools", "Study Tools")}>
               <MegaMenuLink 
                 href={getUrl("/dashboard")} icon={LayoutDashboard} 
@@ -188,16 +188,16 @@ export function Navbar() {
               />
             </DesktopMenuItem>
 
-            <Link href={getUrl("/#pricing")} className="px-3 py-2 text-[0.95rem] font-medium text-muted-foreground hover:text-cm-teal transition-colors">
+            <Link href={getUrl("/#pricing")} className="px-2 xl:px-3 py-2 text-sm xl:text-[0.95rem] font-medium text-muted-foreground hover:text-cm-teal transition-colors whitespace-nowrap">
               {t("navigation.pricing", "Pricing")}
             </Link>
-            <Link href={getUrl("/blog")} className="px-3 py-2 text-[0.95rem] font-medium text-muted-foreground hover:text-cm-teal transition-colors">
+            <Link href={getUrl("/blog")} className="px-2 xl:px-3 py-2 text-sm xl:text-[0.95rem] font-medium text-muted-foreground hover:text-cm-teal transition-colors whitespace-nowrap">
               {t("navigation.blog", "Blog")}
             </Link>
           </div>
 
           {/* Desktop CTAs + User Menu */}
-          <div className="hidden lg:flex items-center gap-2 shrink-0">
+          <div className="hidden lg:flex items-center lg:gap-1 xl:gap-2 shrink-0">
             <motion.div
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
@@ -208,7 +208,7 @@ export function Navbar() {
                 render={<Link href={getUrl("/practice")} />}
                 variant="outline"
                 size="sm"
-                className="px-5 font-semibold"
+                className="px-3 xl:px-5 font-semibold whitespace-nowrap"
               >
                 {t("navigation.start_free", "Start Free")}
               </Button>
@@ -221,10 +221,10 @@ export function Navbar() {
               <Button
                 render={<Link href={getUrl("/#pricing")} />}
                 size="sm"
-                className="px-5 font-semibold"
+                className="px-3 xl:px-5 font-semibold whitespace-nowrap"
               >
                 {t("navigation.get_sprint_pass", "Get Sprint Pass")}
-                <ChevronRight className="size-3.5 ml-1" />
+                <ChevronRight className="size-3.5 ml-1 hidden xl:inline-block" />
               </Button>
             </motion.div>
             <div className="ml-2 pl-3 border-l border-border flex items-center relative z-[6060]">

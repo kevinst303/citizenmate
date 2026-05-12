@@ -45,3 +45,9 @@ Last activity: 2026-05-12 — Milestone v1.2 started
 *State initialized: 2026-04-29*
 *Milestone v1.1 shipped: 2026-05-12*
 *Milestone v1.2 started: 2026-05-12*
+
+## Quick Tasks Completed
+
+| Date | ID | Description |
+| ---- | -- | ----------- |
+| 2026-05-12 | q20260512 | Fix navbar responsiveness for Spanish and Vietnamese translations |
