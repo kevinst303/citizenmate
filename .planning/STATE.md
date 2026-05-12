@@ -24,10 +24,10 @@ See: .planning/PROJECT.md (updated 2026-04-29)
 
 ## Current Position
 
-Phase: 11 (Anxiety-Reduction & Wellbeing Features) — COMPLETE
+Phase: 12 (Adaptive Gamification & Trust-building) — COMPLETE
 Plan: 1 of 1
-Status: Completed 2026-05-12 — All 3 waves (Hint System, WellbeingPrompt, Copy Audit) implemented and verified
-Last activity: 2026-05-12 -- Phase 11 complete, advancing to Phase 12
+Status: Completed 2026-05-12 — All 4 steps (Streaks Engine, Badges, GamificationWidget, XAI Tooltips) implemented and verified
+Last activity: 2026-05-12 -- Phase 12 complete, advancing to Phase 13
 
 ## Branch
 
