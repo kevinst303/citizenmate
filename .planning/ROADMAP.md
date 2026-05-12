@@ -1,100 +1,56 @@
 # CitizenMate Roadmap
 
-## Phase 4: Test Automation & Codebase Health
-**Goal:** Establish a testing baseline and reduce monolithic technical debt to ensure future feature development is safe and maintainable.
-**Requirements:** INFRA-01, INFRA-04
-**Success Criteria:**
-- Vitest is configured and running successfully in CI/CD.
-- Unit tests are passing for the SRS engine and Readiness Calculator.
-- `src/app/dashboard/page.tsx` and `src/data/questions.ts` are refactored into smaller, maintainable modules without breaking existing functionality.
+## Milestones
 
-## Phase 5: Production Infrastructure & Monitoring
-**Goal:** Harden the application for production traffic by addressing security vulnerabilities and enabling comprehensive monitoring.
-**Requirements:** INFRA-02, INFRA-03, REV-04
-**Success Criteria:**
-- Sentry is integrated and successfully capturing frontend and backend errors.
-- Upstash Redis rate limiting is active for the AI Tutor and Vercel serverless functions.
-- PostHog analytics is configured and tracking key conversion funnels.
+- ✅ **v1.0 Conseil Design Overhaul** — Phases 1-3 (shipped 2026-04-06)
+- ✅ **v1.1 Launch Readiness** — Phases 4-13 (shipped 2026-05-12)
+- 📋 **v1.2 [Next Milestone]** — (planned)
 
-## Phase 6: Revenue Engine & Monetization
-**Goal:** Implement the core business logic necessary to convert free users into paying subscribers at scale.
-**Requirements:** REV-01, REV-02, REV-03
-**Success Criteria:**
-- Users can complete a test-date-anchored onboarding flow that generates a personalized study plan.
-- Six distinct upgrade triggers are active and successfully prompt users to subscribe.
-- Stripe checkout supports both Pro and Premium tiered subscriptions with recurring and micro-transaction logic.
+## Phases
 
-## Phase 7: Growth & Retention
-**Goal:** Deploy features designed to increase top-of-funnel acquisition and re-engage dormant users.
-**Requirements:** GROW-01, GROW-02, GROW-03
-**Success Criteria:**
-- The application UI and content support 4 new language pairs.
-- Users can generate and share unique referral links via the "Help a Mate" program.
-- Email notifications (via Resend or similar) are successfully triggering based on user inactivity or key milestones.
+<details>
+<summary>✅ v1.0 Conseil Design Overhaul (Phases 1-3) — SHIPPED 2026-04-06</summary>
 
-### Phase 8: Super Admin Dashboard
+- [x] Phase 1: Foundation (2/2 plans) — completed 2026-03-23
+- [x] Phase 2: Authentication (2/2 plans) — completed 2026-03-30
+- [x] Phase 3: Core Features (7/7 plans) — completed 2026-04-06
 
-**Goal:** Provide a full-featured admin dashboard with analytics, user management, blog CMS, and referral program management. All pages use the Conseil design system consistently, with functional CRUD operations, pagination, and responsive layout.
+</details>
 
-**Requirements**: ADMIN-01, ADMIN-02, ADMIN-03
-**Depends on:** Phase 7
-**Plans:** 4 plans
+<details>
+<summary>✅ v1.1 Launch Readiness (Phases 4-13) — SHIPPED 2026-05-12</summary>
 
-Plans:
-- [x] 01 — Schema, auth guard, admin layout shell (executed)
-- [x] 02 — Dashboard insights + users table + blog list (executed)
-- [x] 03 — Referral management dashboard (executed)
-- [x] 04 — UI refinement: analytics hub, user CRUD modals, Conseil alignment, pagination, confirmation dialogs (completed 2026-05-06)
+- [x] Phase 4: Test Automation & Codebase Health (1/1 plan) — completed 2026-05-01
+- [x] Phase 5: Production Infrastructure & Monitoring (1/1 plan) — completed 2026-05-01
+- [x] Phase 6: Revenue Engine & Monetization (3/3 plans) — completed 2026-05-05
+- [x] Phase 7: Growth & Retention (3/3 plans) — completed 2026-05-11
+- [x] Phase 8: Super Admin Dashboard (4/4 plans) — completed 2026-05-06
+- [x] Phase 9: Stripe Audit & CTA Verification (1/1 plan) — completed 2026-05-11
+- [x] Phase 10: Calm UX & Interface Modernization (1/1 plan) — completed 2026-05-11
+- [x] Phase 11: Anxiety-Reduction & Wellbeing (1/1 plan) — completed 2026-05-12
+- [x] Phase 12: Adaptive Gamification & Trust-building (1/1 plan) — completed 2026-05-12
+- [x] Phase 13: Vietnamese Language Support (1/1 plan) — completed 2026-05-07
 
-### Phase 9: Audit stripe integration and check all CTA
+</details>
 
-**Goal:** Verify Stripe checkout flow works end-to-end for all pricing tiers and intervals.
-**Requirements**: REV-01, REV-02, REV-03
-**Depends on:** Phase 8
-**Plans:** 1 plan
+### 🚧 v1.2 [Next Milestone] (Planned)
 
-Plans:
-- [x] 01 — Stripe audit & CTA verification (passed 2026-05-11)
+*(To be defined via `/gsd:new-milestone`)*
 
-### Phase 10: Calm UX & Interface Modernization
+## Progress
 
-**Goal:** Reduce cognitive load through progressive disclosure, purposeful micro-interactions, and refined dark mode to create a calmer study environment.
-**Requirements**: UX-01
-**Depends on:** Phase 7
-**Plans:** 1 plan
-
-Plans:
-- [x] 01 — Calm UX & Interface Modernization (completed 2026-05-11 — WCAG AA/AAA verified)
-
-### Phase 11: Anxiety-Reduction & Wellbeing Features
-
-**Goal:** Specifically mitigate evaluative stress with scaffolded AI feedback, anxiety-reducing copywriting, and optional wellbeing micro-interventions (e.g. breathing prompts).
-**Requirements**: UX-02
-**Depends on:** Phase 10
-**Plans:** 1 plan
-
-Plans:
-- [x] 01 — Anxiety-Reduction & Wellbeing Features (completed 2026-05-12)
-  - ✅ Wave 1 (AI Hint System) — built & integrated
-  - ✅ Wave 2 (WellbeingPrompt) — built & integrated
-  - ✅ Wave 3 (Copy Audit & Reframe) — completed
-
-### Phase 12: Adaptive Gamification & Trust-building
-
-**Goal:** Increase daily engagement and retention using non-competitive, effort-based gamification, and build trust with Explainable AI (XAI) for the SRS algorithm.
-**Requirements**: UX-03
-**Depends on:** Phase 11
-**Plans:** 1 plan
-
-Plans:
-- [x] 01 — Adaptive Gamification & Trust-building (completed 2026-05-12)
-
-### Phase 13: Add Vietnamese (Vi) to supported language of our platform
-
-**Goal:** [To be planned]
-**Requirements**: TBD
-**Depends on:** Phase 12
-**Plans:** 1/1 plans complete
-
-Plans:
-- [x] TBD — Vietnamese language support (completed 2026-05-07, verified)
+| Phase | Milestone | Plans Complete | Status | Completed |
+|-------|-----------|---------------|--------|-----------|
+| 1. Foundation | v1.0 | 2/2 | Complete | 2026-03-23 |
+| 2. Authentication | v1.0 | 2/2 | Complete | 2026-03-30 |
+| 3. Core Features | v1.0 | 7/7 | Complete | 2026-04-06 |
+| 4. Test Automation & Codebase Health | v1.1 | 1/1 | Complete | 2026-05-01 |
+| 5. Production Infrastructure & Monitoring | v1.1 | 1/1 | Complete | 2026-05-01 |
+| 6. Revenue Engine & Monetization | v1.1 | 3/3 | Complete | 2026-05-05 |
+| 7. Growth & Retention | v1.1 | 3/3 | Complete | 2026-05-11 |
+| 8. Super Admin Dashboard | v1.1 | 4/4 | Complete | 2026-05-06 |
+| 9. Stripe Audit & CTA Verification | v1.1 | 1/1 | Complete | 2026-05-11 |
+| 10. Calm UX & Interface Modernization | v1.1 | 1/1 | Complete | 2026-05-11 |
+| 11. Anxiety-Reduction & Wellbeing | v1.1 | 1/1 | Complete | 2026-05-12 |
+| 12. Adaptive Gamification & Trust-building | v1.1 | 1/1 | Complete | 2026-05-12 |
+| 13. Vietnamese Language Support | v1.1 | 1/1 | Complete | 2026-05-07 |

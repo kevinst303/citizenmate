@@ -20,4 +20,39 @@
 **Requirements:** `.planning/milestones/v1.0-REQUIREMENTS.md`
 **Audit:** `.planning/milestones/v1.0-MILESTONE-AUDIT.md` (passed)
 
+## v1.1 Launch Readiness (Shipped: 2026-05-12)
+
+**Phases completed:** 10 phases, 15 plans
+**Timeline:** 2026-05-01 → 2026-05-12 (11 days)
+**Commits:** 97 commits across 10 phases
+**Requirements:** All 11 requirements (INFRA-01–04, REV-01–04, GROW-01–03) — 100% complete
+
+**Key accomplishments:**
+1. Automated test framework (Vitest), SRS engine unit tests, dashboard refactoring — stable testing baseline established
+2. Sentry error tracking, Upstash Redis rate limiting, PostHog analytics — production monitoring fully wired
+3. Test-date onboarding flow, 6 upgrade triggers, tiered Pro/Premium Stripe subscriptions — revenue engine live
+4. 6-language i18n (en/es/hi/zh/ar/vi), "Help a Mate" referral program, Resend email cron — growth mechanics deployed
+5. Super Admin Dashboard with analytics hub, user CRUD, blog CMS, referral management — full admin infrastructure
+6. Calm UX (progressive disclosure, reduced motion, dark mode refinement) — cognitive load reduced
+7. Anxiety-reduction features (AI hint system, wellbeing prompts, copy reframe) — evaluative stress mitigated
+8. Adaptive gamification (daily streaks engine, achievement badges, gamification widget, XAI tooltips) — engagement engine built
+9. Vietnamese language support — 6th locale registered and deployed
+
+**Archive:** `.planning/milestones/v1.1-ROADMAP.md`
+**Requirements:** `.planning/milestones/v1.1-REQUIREMENTS.md`
+
+**Key decisions:**
+- Sentry, PostHog, and Upstash all configured with CSP whitelisting
+- Stripe tiered pricing with monthly/yearly intervals mapped to Supabase profiles
+- 6-language i18n via DeepL pipeline with automatic translation validation
+- Referral system with qualification gating (quiz/purchase) and 7-day premium extensions
+- Streak freeze mechanic (1 freeze per 7 days) to reduce churn from missed days
+- Conseil design system applied to all admin pages including analytics charts
+
+**Known tech debt carried forward:**
+- `stat-card` CSS class retains `backdrop-filter: blur(16px)`
+- `CountryFactsWidget` retains `glass-card-premium` class
+- `quiz-header.tsx` sticky bar uses `backdrop-blur-lg`
+- `auth-modal.tsx` submit button uses legacy `bg-cm-navy` alias
+
 ---
