@@ -6,8 +6,6 @@ docs/
 DHA_docs/
 *.tsbuildinfo
 *.ai
-*.gif
-*.svg
 .planning/
 .agent/
 .claude/
