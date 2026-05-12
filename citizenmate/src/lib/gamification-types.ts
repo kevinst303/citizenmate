@@ -24,6 +24,9 @@ export interface UserStreak {
   longest_streak: number;
   last_activity_date: string | null;
   total_active_days: number;
+  streak_freeze_available?: number;
+  frozen_days?: number;
+  last_freeze_used_date?: string | null;
 }
 
 export interface GamificationState {

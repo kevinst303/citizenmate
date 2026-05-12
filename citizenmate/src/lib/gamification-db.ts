@@ -3,7 +3,7 @@
 // Follows the same patterns as sync.ts (browser client, isSupabaseConfigured guard).
 
 import { getSupabaseBrowserClient } from "@/lib/supabase";
-import { calculateStreak, evaluateBadges, getAllBadgeDefinitions } from "@/lib/gamification-engine";
+import { calculateStreakWithFreeze, evaluateBadges, getAllBadgeDefinitions } from "@/lib/gamification-engine";
 import type { UserStreak, UserBadge, BadgeDefinition, BadgeEvaluationInput, XpEntry, XpSource } from "@/lib/gamification-types";
 
 // ── Guards ────────────────────────────────────────────
@@ -27,7 +27,7 @@ export async function getUserStreak(userId: string): Promise<UserStreak | null> 
   const supabase = getSupabaseBrowserClient();
   const { data, error } = await supabase
     .from("user_streaks")
-    .select("current_streak, longest_streak, last_activity_date, total_active_days")
+    .select("current_streak, longest_streak, last_activity_date, total_active_days, streak_freeze_available, frozen_days, last_freeze_used_date")
     .eq("user_id", userId)
     .single();
 
@@ -37,19 +37,23 @@ export async function getUserStreak(userId: string): Promise<UserStreak | null> 
     longest_streak: data.longest_streak,
     last_activity_date: data.last_activity_date,
     total_active_days: data.total_active_days,
+    streak_freeze_available: data.streak_freeze_available ?? 0,
+    frozen_days: data.frozen_days ?? 0,
+    last_freeze_used_date: data.last_freeze_used_date ?? null,
   };
 }
 
 /**
- * Update the user's streak: calls calculateStreak() from the engine,
- * then persists the result. Automatically increments total_active_days
- * on new activity days.
+ * Update the user's streak: calls calculateStreakWithFreeze() from the engine,
+ * then persists the result. Automatically handles freeze consumption
+ * when a day is missed.
  *
  * Returns the updated streak state and any newly earned badges.
  */
 export async function updateStreak(userId: string): Promise<{
   streak: UserStreak;
   isIncremented: boolean;
+  freezeConsumed: boolean;
   newlyEarnedBadges: BadgeDefinition[];
 }> {
   const supabase = getSupabaseBrowserClient();
@@ -59,22 +63,37 @@ export async function updateStreak(userId: string): Promise<{
   const currentStreak = current?.current_streak ?? 0;
   const lastActivity = current?.last_activity_date ?? null;
   const totalActiveDays = current?.total_active_days ?? 0;
+  const streakFreezeAvailable = current?.streak_freeze_available ?? 0;
+  const frozenDays = current?.frozen_days ?? 0;
+  const lastFreezeUsedDate = current?.last_freeze_used_date ?? null;
 
-  // Calculate new streak
-  const { newStreak, isIncremented } = calculateStreak(lastActivity, currentStreak);
+  // Calculate new streak using freeze-aware logic
+  const result = calculateStreakWithFreeze(
+    lastActivity,
+    currentStreak,
+    streakFreezeAvailable,
+    frozenDays,
+    lastFreezeUsedDate
+  );
 
   // Build updated record
   const now = new Date().toISOString();
-  const newLongestStreak = Math.max(newStreak, current?.longest_streak ?? 0);
-  const newTotalActiveDays = isIncremented ? totalActiveDays + 1 : totalActiveDays;
+  const newLongestStreak = Math.max(result.newStreak, current?.longest_streak ?? 0);
+  const newTotalActiveDays = result.isIncremented ? totalActiveDays + 1 : totalActiveDays;
   const updated: Record<string, unknown> = {
     user_id: userId,
-    current_streak: newStreak,
+    current_streak: result.newStreak,
     longest_streak: newLongestStreak,
     last_activity_date: now,
     total_active_days: newTotalActiveDays,
+    streak_freeze_available: result.remainingFreezes,
+    frozen_days: result.newFrozenDays,
     updated_at: now,
   };
+
+  if (result.freezeConsumed) {
+    updated.last_freeze_used_date = now;
+  }
 
   // Upsert
   const { error } = await supabase
@@ -90,7 +109,7 @@ export async function updateStreak(userId: string): Promise<{
   const allBadges = getAllBadgeDefinitions();
   const earnedIds = new Set((await getEarnedBadges(userId)).map((b) => b.badge_id));
   const input: BadgeEvaluationInput = {
-    currentStreak: newStreak,
+    currentStreak: result.newStreak,
     longestStreak: newLongestStreak,
     totalQuestionsAnswered: 0, // filled by caller
     totalTestsCompleted: 0, // filled by caller
@@ -101,7 +120,7 @@ export async function updateStreak(userId: string): Promise<{
 
   // We only evaluate streak-based badges here; full eval happens elsewhere
   const streakBadges = evaluateBadges(
-    { ...input, currentStreak: newStreak },
+    { ...input, currentStreak: result.newStreak },
     earnedIds
   );
 
@@ -112,12 +131,16 @@ export async function updateStreak(userId: string): Promise<{
 
   return {
     streak: {
-      current_streak: newStreak,
+      current_streak: result.newStreak,
       longest_streak: newLongestStreak,
       last_activity_date: now,
       total_active_days: newTotalActiveDays,
+      streak_freeze_available: result.remainingFreezes,
+      frozen_days: result.newFrozenDays,
+      last_freeze_used_date: result.freezeConsumed ? now : lastFreezeUsedDate,
     },
-    isIncremented,
+    isIncremented: result.isIncremented,
+    freezeConsumed: result.freezeConsumed,
     newlyEarnedBadges: streakBadges,
   };
 }

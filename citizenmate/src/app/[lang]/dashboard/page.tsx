@@ -37,6 +37,8 @@ import {
   getQuizHistory,
   type ReadinessData,
 } from "@/lib/readiness";
+import { StreakCard } from "@/components/dashboard/streak-card";
+import { BadgeShowcase } from "@/components/dashboard/badge-showcase";
 import { StudyProgressBar } from "@/components/study/study-progress-bar";
 import { AbsInsightsWidget } from "@/components/dashboard/abs-insights-widget";
 import { LifeInAustraliaSection } from "@/components/dashboard/life-in-australia-section";
@@ -55,6 +57,7 @@ import { useAuth } from "@/lib/auth-context";
 import { useUpgradeModal } from "@/lib/store/useUpgradeModal";
 import { useT } from "@/i18n/i18n-context";
 import { useInactivityTrigger } from "@/hooks/use-inactivity-trigger";
+
 
 
 // ===== Animations =====
@@ -513,6 +516,16 @@ export default function DashboardPage() {
                 </div>
               )}
             </div>
+          </motion.div>
+
+          {/* Streak Card */}
+          <motion.div variants={item} className="dashboard-section-divider">
+            <StreakCard />
+          </motion.div>
+
+          {/* Badge Showcase */}
+          <motion.div variants={item} className="dashboard-section-divider">
+            <BadgeShowcase />
           </motion.div>
 
           {/* Quick actions */}

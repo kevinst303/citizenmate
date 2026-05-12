@@ -39,7 +39,7 @@
 
 ## 🚧 v1.2 Adaptive Gamification & Trust-building (Phases 8-12)
 
-### Phase 8: Gamification Database & API
+### Phase 8: Gamification Database & API — ✅ Complete 2026-05-12
 
 **Goal:** Build the gamification persistence layer with Supabase tables for streaks, badges, and XP, plus a service layer API for CRUD operations.
 
@@ -47,10 +47,12 @@
 
 **Depends on:** Phase 7
 
-**Plans:** 0 plans
+**Plans:** 1 plan (7 tasks)
 
 Plans:
-- *No plans yet*
+- ✅ Wave 1: Foundation (migrations + types) — executed commit `0fae34b`
+- ✅ Wave 2: Service Layer (gamification-db.ts) — executed
+- ✅ Wave 3: Integration (sync.ts) — executed
 
 ### Phase 9: Daily Streaks Engine
 
@@ -112,7 +114,7 @@ Plans:
 | 5. Production Infrastructure | v1.1 | 1/1 | ✅ Complete | 2026-05-11 |
 | 6. Revenue Engine | v1.1 | 2/2 | ✅ Complete | 2026-05-11 |
 | 7. Growth & Retention | v1.1 | 2/2 | ✅ Complete | 2026-05-11 |
-| 8. Gamification Database & API | v1.2 | — | 🔲 Not Started | — |
+| 8. Gamification Database & API | v1.2 | 7/7 | ✅ Complete | 2026-05-12 |
 | 9. Daily Streaks Engine | v1.2 | — | 🔲 Not Started | — |
 | 10. Achievement Badges | v1.2 | — | 🔲 Not Started | — |
 | 11. Progression System | v1.2 | — | 🔲 Not Started | — |

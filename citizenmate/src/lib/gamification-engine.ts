@@ -4,6 +4,7 @@
 import type {
   BadgeDefinition,
   BadgeEvaluationInput,
+  UserStreak,
   XAIExplanation,
 } from "@/lib/gamification-types";
 import type { QuestionPerformance, MasteryLevel } from "@/lib/srs-types";
@@ -39,8 +40,19 @@ const BADGE_DEFINITIONS: BadgeDefinition[] = [
 ];
 
 const STREAK_THRESHOLDS = [3, 7, 14, 30, 60];
+const FREEZE_MILESTONE_INTERVAL = 7; // 1 freeze per 7 consecutive days
+const MAX_STREAK_FREEZES = 3;
 const MASTERY_THRESHOLDS = [25, 50, 75, 90, 100];
 const EFFORT_THRESHOLDS = [10, 50, 100, 250, 500];
+
+// Streak milestone XP rewards
+const STREAK_MILESTONE_XP: Record<number, number> = {
+  3: 50,
+  7: 100,
+  14: 250,
+  30: 500,
+  60: 1000,
+};
 
 // ─── Streak Calculation ──────────────────────────────────
 
@@ -83,6 +95,108 @@ export function calculateStreak(
   // Streak broken — reset to 1
   return { newStreak: 1, isIncremented: true };
 }
+
+/**
+ * Calculate streak with freeze-aware logic.
+ * If the streak would break and a freeze is available, the freeze is consumed
+ * instead of resetting the streak.
+ */
+export function calculateStreakWithFreeze(
+  lastActivityDate: string | null,
+  currentStreak: number,
+  streakFreezeAvailable: number,
+  frozenDays: number,
+  lastFreezeUsedDate: string | null
+): {
+  newStreak: number;
+  isIncremented: boolean;
+  freezeConsumed: boolean;
+  remainingFreezes: number;
+  newFrozenDays: number;
+} {
+  if (!lastActivityDate) {
+    // First activity ever
+    return {
+      newStreak: 1,
+      isIncremented: true,
+      freezeConsumed: false,
+      remainingFreezes: streakFreezeAvailable,
+      newFrozenDays: frozenDays,
+    };
+  }
+
+  const now = new Date();
+  const lastDate = new Date(lastActivityDate);
+
+  // Normalize to date-only comparison (ignore time)
+  const todayStr = now.toISOString().slice(0, 10);
+  const lastStr = lastDate.toISOString().slice(0, 10);
+
+  if (todayStr === lastStr) {
+    // Already recorded today — no change
+    return {
+      newStreak: currentStreak,
+      isIncremented: false,
+      freezeConsumed: false,
+      remainingFreezes: streakFreezeAvailable,
+      newFrozenDays: frozenDays,
+    };
+  }
+
+  // Calculate day difference
+  const today = new Date(todayStr);
+  const last = new Date(lastStr);
+  const diffMs = today.getTime() - last.getTime();
+  const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
+
+  if (diffDays === 1) {
+    // Consecutive day — increment streak
+    return {
+      newStreak: currentStreak + 1,
+      isIncremented: true,
+      freezeConsumed: false,
+      remainingFreezes: streakFreezeAvailable,
+      newFrozenDays: frozenDays,
+    };
+  }
+
+  // Streak gap detected — check for freeze
+  if (streakFreezeAvailable > 0) {
+    // Prevent double-freeze on same gap
+    if (lastFreezeUsedDate) {
+      const freezeDateStr = new Date(lastFreezeUsedDate).toISOString().slice(0, 10);
+      if (freezeDateStr === lastStr || freezeDateStr === todayStr) {
+        // Freeze already consumed for this gap — reset
+        return {
+          newStreak: 1,
+          isIncremented: true,
+          freezeConsumed: false,
+          remainingFreezes: streakFreezeAvailable,
+          newFrozenDays: frozenDays,
+        };
+      }
+    }
+
+    // Consume freeze: keep streak intact, mark day as frozen
+    return {
+      newStreak: currentStreak, // Streak preserved!
+      isIncremented: true,
+      freezeConsumed: true,
+      remainingFreezes: streakFreezeAvailable - 1,
+      newFrozenDays: frozenDays + 1,
+    };
+  }
+
+  // No freeze available — reset
+  return {
+    newStreak: 1,
+    isIncremented: true,
+    freezeConsumed: false,
+    remainingFreezes: 0,
+    newFrozenDays: frozenDays,
+  };
+}
+
 
 // ─── Badge Evaluation ────────────────────────────────────
 
@@ -270,3 +384,23 @@ export function getAllBadgeDefinitions(): BadgeDefinition[] {
 export function getBadgeById(id: string): BadgeDefinition | undefined {
   return BADGE_DEFINITIONS.find((b) => b.id === id);
 }
+
+/**
+ * Calculate streak milestone XP reward for a given streak value.
+ * Returns 0 if no milestone is reached.
+ */
+export function getStreakMilestoneXp(streak: number): number {
+  return STREAK_MILESTONE_XP[streak] ?? 0;
+}
+
+/**
+ * Calculate how many freezes should be awarded for a given streak value.
+ * 1 freeze per 7 consecutive days, capped at MAX_STREAK_FREEZES.
+ */
+export function getStreakFreezeAward(currentStreak: number): number {
+  const earnedFreezes = Math.floor(currentStreak / FREEZE_MILESTONE_INTERVAL);
+  return Math.min(earnedFreezes, MAX_STREAK_FREEZES);
+}
+
+/** Export freeze constants for use in other modules */
+export { FREEZE_MILESTONE_INTERVAL, MAX_STREAK_FREEZES };
