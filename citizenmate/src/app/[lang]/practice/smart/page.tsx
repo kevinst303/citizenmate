@@ -25,6 +25,7 @@ import {
 import { usePremium } from "@/lib/auth-context";
 import { useT } from "@/i18n/i18n-context";
 import { useLocalizedPath } from "@/lib/use-localized-path";
+import { XaiTooltip } from "@/components/shared/xai-tooltip";
 
 const RATE_KEY = "citizenmate-srs-usage";
 const MAX_DAILY_SESSIONS = 1;
@@ -463,6 +464,11 @@ export default function SmartPracticePage() {
                 <h3 className="text-lg font-heading font-bold text-cm-slate-900">
                   {t("smart_practice.how_title", "How Smart Practice Works")}
                 </h3>
+                <XaiTooltip
+                  explanation={t("xai.how_srs_works", "CitizenMate uses a scientifically proven spaced repetition algorithm (SM-2) to schedule each question's review at the optimal moment for memory retention. Questions you struggle with appear more often, while mastered questions appear less frequently.")}
+                  side="right"
+                  size="sm"
+                />
               </div>
               <div className="grid gap-4 sm:grid-cols-3">
                 {[

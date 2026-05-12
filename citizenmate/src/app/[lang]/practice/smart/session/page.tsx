@@ -27,6 +27,8 @@ import {
 } from "lucide-react";
 import { posthog } from "@/components/providers/posthog-provider";
 import { useLocalizedPath } from "@/lib/use-localized-path";
+import { useT } from "@/i18n/i18n-context";
+import { XaiTooltip } from "@/components/shared/xai-tooltip";
 
 const TOPIC_ICONS: Record<TopicCategory, typeof Globe> = {
   "australia-people": Globe,
@@ -45,6 +47,7 @@ export default function SmartSessionPage() {
   const router = useRouter();
   const { recordAnswer, getSmartQuestions } = useSRS();
   const { getUrl } = useLocalizedPath();
+  const { t } = useT();
 
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -518,6 +521,11 @@ export default function SmartSessionPage() {
                     <div className="mt-3 flex items-center gap-1.5 text-xs text-cm-slate-400">
                       <BookOpen className="w-3 h-3" />
                       {currentQuestion.bookReference}
+                      <XaiTooltip
+                        explanation={t("xai.how_srs_works", "CitizenMate uses a scientifically proven spaced repetition algorithm (SM-2) to schedule each question's review at the optimal moment for memory retention. Questions you struggle with appear more often, while mastered questions appear less frequently.")}
+                        side="top"
+                        size="sm"
+                      />
                     </div>
                   </div>
 
@@ -568,6 +576,11 @@ export default function SmartSessionPage() {
           <span className="flex items-center gap-1">
             <Brain className="w-3 h-3 text-purple-500" />
             SRS active
+            <XaiTooltip
+              explanation={t("xai.how_srs_works", "CitizenMate uses a scientifically proven spaced repetition algorithm (SM-2) to schedule each question's review at the optimal moment for memory retention. Questions you struggle with appear more often, while mastered questions appear less frequently.")}
+              side="top"
+              size="sm"
+            />
           </span>
         </div>
       </footer>

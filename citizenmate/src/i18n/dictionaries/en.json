@@ -1125,5 +1125,12 @@
     "test_ready": "You're looking test-ready! Take one more mock test to lock in your confidence before the real thing.",
     "trending_up": "Your scores are trending up! Keep the momentum going with consistent practice and study.",
     "build_knowledge": "Build your knowledge first — study the guide, then take practice tests to track your progress."
+  },
+  "xai": {
+    "interval_explanation": "The next review time is calculated based on your performance history. Correct answers increase the gap between reviews, while incorrect answers bring the question back sooner. This spacing helps move knowledge into long-term memory.",
+    "confidence_explanation": "Your confidence level is determined by how consistently you answer correctly. Higher confidence means longer intervals between reviews. Each correct answer in a row strengthens your confidence score.",
+    "early_review": "Reviewing a question before its scheduled time may not improve retention as effectively as waiting for the optimal review window. The SRS algorithm schedules each review at the ideal moment for memory consolidation.",
+    "late_review": "If you miss a scheduled review, the question becomes overdue and will be prioritised in your next session. While occasional late reviews are fine, consistent on-time reviewing builds the strongest long-term memory.",
+    "how_srs_works": "CitizenMate uses a scientifically proven spaced repetition algorithm (SM-2) to schedule each question's review at the optimal moment for memory retention. Questions you struggle with appear more often, while mastered questions appear less frequently."
   }
 }

@@ -1132,5 +1132,12 @@
     "test_ready": "Trông cậu đã sẵn sàng thi rồi đấy! Hãy làm thêm một bài thi thử nữa để củng cố sự tự tin trước khi bước vào kỳ thi thật nhé.",
     "trending_up": "Điểm số của cậu đang có xu hướng tăng lên đấy! Hãy duy trì đà này bằng cách luyện tập và học tập đều đặn nhé.",
     "build_knowledge": "Hãy trau dồi kiến thức trước đã — đọc kỹ hướng dẫn, sau đó làm các bài kiểm tra thử để theo dõi tiến độ của mình nhé."
+  },
+  "xai": {
+    "interval_explanation": "Thời gian ôn tập tiếp theo được tính dựa trên lịch sử trả lời của bạn. Câu trả lời đúng làm tăng khoảng cách giữa các lần ôn tập, trong khi câu trả lời sai sẽ đưa câu hỏi trở lại sớm hơn. Khoảng cách này giúp chuyển kiến thức vào trí nhớ dài hạn.",
+    "confidence_explanation": "Mức độ tự tin của bạn được xác định bằng cách bạn trả lời đúng liên tục bao nhiêu lần. Sự tự tin cao hơn đồng nghĩa với khoảng thời gian ôn tập dài hơn giữa các lần. Mỗi câu trả lời đúng liên tiếp sẽ củng cố điểm số tự tin của bạn.",
+    "early_review": "Ôn tập một câu hỏi trước thời gian dự kiến có thể không cải thiện khả năng ghi nhớ hiệu quả bằng việc chờ đúng khung thời gian ôn tập tối ưu. Thuật toán SRS lên lịch mỗi lần ôn tập vào thời điểm lý tưởng để củng cố trí nhớ.",
+    "late_review": "Nếu bạn bỏ lỡ một lần ôn tập theo lịch, câu hỏi sẽ trở nên quá hạn và sẽ được ưu tiên trong buổi học tiếp theo. Mặc dù thỉnh thoảng ôn tập muộn không sao, nhưng ôn tập đúng giờ liên tục sẽ xây dựng trí nhớ dài hạn mạnh nhất.",
+    "how_srs_works": "CitizenMate sử dụng thuật toán lặp lại ngắt quãng đã được khoa học chứng minh (SM-2) để lên lịch ôn tập mỗi câu hỏi vào thời điểm tối ưu cho việc ghi nhớ. Các câu hỏi bạn trả lời sai sẽ xuất hiện thường xuyên hơn, trong khi các câu hỏi đã thành thạo xuất hiện ít hơn."
   }
 }

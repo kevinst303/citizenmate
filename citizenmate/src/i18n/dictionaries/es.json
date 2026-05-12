@@ -1135,5 +1135,12 @@
     "test_ready": "¡Pareces estar listo para el examen! Haz un simulacro más para reforzar tu confianza antes del examen de verdad.",
     "trending_up": "¡Tus notas están mejorando! Mantén este ritmo con práctica y estudio constantes.",
     "build_knowledge": "Empieza por ampliar tus conocimientos: lee la guía y luego haz los exámenes de prueba para ver cómo vas avanzando."
+  },
+  "xai": {
+    "interval_explanation": "El tiempo hasta la próxima revisión se calcula en función de tu historial de respuestas. Las respuestas correctas aumentan el intervalo entre revisiones, mientras que las incorrectas hacen que la pregunta vuelva antes. Este espaciado ayuda a transferir el conocimiento a la memoria a largo plazo.",
+    "confidence_explanation": "Tu nivel de confianza se determina por cuántas veces seguidas has respondido correctamente. Una mayor confianza significa intervalos de revisión más largos. Cada respuesta correcta consecutiva refuerza tu puntuación de confianza.",
+    "early_review": "Revisar una pregunta antes de su fecha prevista puede no mejorar la retención tan eficazmente como esperar al momento óptimo de revisión. El algoritmo SRS programa cada revisión en el momento ideal para reforzar la memoria.",
+    "late_review": "Si te saltas una revisión programada, la pregunta se retrasa y tendrá prioridad en tu próxima sesión de estudio. Aunque de vez en cuando no pasa nada, las revisiones puntuales y constantes son las que construyen la memoria a largo plazo más sólida.",
+    "how_srs_works": "CitizenMate utiliza el algoritmo de repetición espaciada SM-2, con respaldo científico, para programar cada pregunta en el momento óptimo para su retención. Las preguntas que fallas aparecen con más frecuencia, mientras que las que dominas aparecen con menos."
   }
 }
