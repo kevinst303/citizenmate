@@ -27,7 +27,8 @@ See: .planning/PROJECT.md (updated 2026-04-29)
 Phase: 12 (Adaptive Gamification & Trust-building) — COMPLETE
 Plan: 1 of 1
 Status: Completed 2026-05-12 — All 4 steps (Streaks Engine, Badges, GamificationWidget, XAI Tooltips) implemented and verified
-Last activity: 2026-05-12 -- Phase 12 complete, advancing to Phase 13
+Phase 13 (Vietnamese language support) — Completed 2026-05-07, verified
+Last activity: 2026-05-12 -- Phases 12 and 13 complete. All roadmap phases in v1.1 milestone complete.
 
 ## Branch
 

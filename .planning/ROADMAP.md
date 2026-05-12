@@ -97,4 +97,4 @@ Plans:
 **Plans:** 1/1 plans complete
 
 Plans:
-- [x] TBD (run /gsd-plan-phase 13 to break down) (completed 2026-05-07)
+- [x] TBD — Vietnamese language support (completed 2026-05-07, verified)
