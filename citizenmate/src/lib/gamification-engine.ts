@@ -404,3 +404,73 @@ export function getStreakFreezeAward(currentStreak: number): number {
 
 /** Export freeze constants for use in other modules */
 export { FREEZE_MILESTONE_INTERVAL, MAX_STREAK_FREEZES };
+
+// ─── Progression (Level) System ─────────────────────────
+
+/** XP required per level. Index 0 = Level 1 base (0 XP). */
+const LEVEL_XP_THRESHOLDS = [
+  0,      // Level 1 (0–99 XP)
+  100,    // Level 2 (100–249 XP)
+  250,    // Level 3 (250–499 XP)
+  500,    // Level 4 (500–999 XP)
+  1000,   // Level 5 (1,000–1,999 XP)
+  2000,   // Level 6 (2,000–3,499 XP)
+  3500,   // Level 7 (3,500–5,999 XP)
+  6000,   // Level 8 (6,000–9,999 XP)
+  10000,  // Level 9 (10,000–15,999 XP)
+  16000,  // Level 10 (16,000+ XP — after this, level 10 is max)
+];
+
+const MAX_LEVEL = LEVEL_XP_THRESHOLDS.length;
+
+/**
+ * Calculate which level a user is at based on total XP.
+ * Returns the level (1-indexed) and progress toward the next level.
+ */
+export function calculateLevel(totalXp: number): {
+  level: number;
+  currentLevelXp: number;
+  nextLevelXp: number;
+  progress: number; // 0–1 fraction
+  isMaxLevel: boolean;
+} {
+  let level = 1;
+  for (let i = LEVEL_XP_THRESHOLDS.length - 1; i >= 0; i--) {
+    if (totalXp >= LEVEL_XP_THRESHOLDS[i]) {
+      level = i + 1;
+      break;
+    }
+  }
+
+  const isMaxLevel = level >= MAX_LEVEL;
+  const currentLevelXp = LEVEL_XP_THRESHOLDS[level - 1];
+  const nextLevelXp = isMaxLevel
+    ? currentLevelXp
+    : LEVEL_XP_THRESHOLDS[level];
+
+  const xpInLevel = totalXp - currentLevelXp;
+  const xpForNext = nextLevelXp - currentLevelXp;
+  const progress = xpForNext > 0 ? Math.min(xpInLevel / xpForNext, 1) : 1;
+
+  return { level, currentLevelXp, nextLevelXp, progress, isMaxLevel };
+}
+
+/**
+ * Get the title string for a given level.
+ */
+export function getLevelTitle(level: number): string {
+  const titles = [
+    "Newcomer",         // L1
+    "Apprentice",       // L2
+    "Scholar",          // L3
+    "Practitioner",     // L4
+    "Expert",           // L5
+    "Guardian",         // L6
+    "Champion",         // L7
+    "Virtuoso",         // L8
+    "Legend",           // L9
+    "Grand Master",     // L10
+  ];
+  return titles[Math.min(level - 1, titles.length - 1)] ?? "Grand Master";
+}
+

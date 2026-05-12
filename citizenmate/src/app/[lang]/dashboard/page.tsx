@@ -39,6 +39,7 @@ import {
 } from "@/lib/readiness";
 import { StreakCard } from "@/components/dashboard/streak-card";
 import { BadgeShowcase } from "@/components/dashboard/badge-showcase";
+import { ProgressionCard } from "@/components/dashboard/progression-card";
 import { StudyProgressBar } from "@/components/study/study-progress-bar";
 import { AbsInsightsWidget } from "@/components/dashboard/abs-insights-widget";
 import { LifeInAustraliaSection } from "@/components/dashboard/life-in-australia-section";
@@ -526,6 +527,11 @@ export default function DashboardPage() {
           {/* Badge Showcase */}
           <motion.div variants={item} className="dashboard-section-divider">
             <BadgeShowcase />
+          </motion.div>
+
+          {/* Progression Card */}
+          <motion.div variants={item} className="dashboard-section-divider">
+            <ProgressionCard />
           </motion.div>
 
           {/* Quick actions */}
