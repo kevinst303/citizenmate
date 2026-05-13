@@ -186,10 +186,10 @@ export async function POST(req: Request) {
   //     Reasoning-only models (nemotron-3-super, nemotron-nano, minimax, ring, etc.)
   //     produce zero text output — the AI SDK rejects empty streams as errors.
   const FREE_MODELS = [
-    "google/gemma-4-31b-it:free",               // primary: Google AI Studio, confirmed text streaming
-    "z-ai/glm-4.5-air:free",                    // fallback 1: Z.AI, may emit text when not rate-limited
-    "nvidia/nemotron-3-super-120b-a12b:free",   // fallback 2: ⚠️ slow, may emit content on retry
-    "qwen/qwen-2.5-7b-instruct:free",           // fallback 3: Qwen, may recover from 429
+    "google/gemma-4-31b-it:free",           // primary: Google AI Studio, confirmed text streaming
+    "google/gemma-4-26b-a4b-it:free",       // fallback 1: smaller Gemma 4 variant, confirmed working
+    "nvidia/nemotron-3-super-120b-a12b:free", // fallback 2: confirmed text streaming
+    "qwen/qwen3-next-80b-a3b-instruct:free", // fallback 3: Qwen3 Next, confirmed free model
   ];
 
   let selectedModel: string | null = null;
