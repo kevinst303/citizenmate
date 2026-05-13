@@ -112,28 +112,44 @@ export function ChatWidget() {
 
   const isLimitReached = !isPremium && dailyUsage.count >= MAX_DAILY_QUESTIONS;
 
+  const lastAssistantHadContentRef = useRef(false);
+
   const {
     messages,
     sendMessage,
     status,
     setMessages,
+    error,
   } = useChat({
-    onFinish: () => {
-      const newUsage = incrementUsage();
-      setDailyUsage(newUsage);
-      if (newUsage.count >= MAX_DAILY_QUESTIONS) {
-        toast.warning(
-          t("chat.daily_limit_title"),
-          t("chat.daily_limit_desc"),
-          { timing: { displayDuration: 5000 } }
-        );
-        setTimeout(() => upgrade(), 1200);
-      } else if (newUsage.count === MAX_DAILY_QUESTIONS - 1) {
-        toast.info(
-          t("chat.last_question_title"),
-          t("chat.last_question_desc")
-        );
+    onFinish: (message) => {
+      // Only count as usage if the AI actually responded with content
+      const hasContent = typeof message.content === "string" && message.content.length > 0;
+      lastAssistantHadContentRef.current = hasContent;
+      if (hasContent) {
+        const newUsage = incrementUsage();
+        setDailyUsage(newUsage);
+        if (newUsage.count >= MAX_DAILY_QUESTIONS) {
+          toast.warning(
+            t("chat.daily_limit_title"),
+            t("chat.daily_limit_desc"),
+            { timing: { displayDuration: 5000 } }
+          );
+          setTimeout(() => upgrade(), 1200);
+        } else if (newUsage.count === MAX_DAILY_QUESTIONS - 1) {
+          toast.info(
+            t("chat.last_question_title"),
+            t("chat.last_question_desc")
+          );
+        }
       }
+    },
+    onError: (err) => {
+      console.error("Chat stream error:", err);
+      toast.error(
+        t("chat.error_title"),
+        t("chat.error_desc"),
+        { timing: { displayDuration: 6000 } }
+      );
     },
   });
 
@@ -383,8 +399,26 @@ export function ChatWidget() {
                 </motion.div>
               )}
 
+              {/* Error display */}
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mx-4 px-4 py-3 bg-red-50 border border-red-200 rounded-xl text-center"
+                >
+                  <p className="text-sm text-red-700 font-medium">{t("chat.error_title")}</p>
+                  <p className="text-xs text-red-500 mt-1">{t("chat.error_desc")}</p>
+                  <button
+                    onClick={() => { setMessages(messages.slice(0, -1)); }}
+                    className="mt-2 text-xs text-red-600 underline hover:text-red-800 cursor-pointer"
+                  >
+                    {t("chat.try_again")}
+                  </button>
+                </motion.div>
+              )}
+
               {/* Follow-up suggestion chips after AI responds */}
-              {lastMessageIsAssistant && !isLimitReached && (
+              {lastMessageIsAssistant && !isLimitReached && !error && (
                 <motion.div
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}

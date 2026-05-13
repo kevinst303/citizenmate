@@ -1029,6 +1029,9 @@
     "placeholder_limit": "已达到每日限额……",
     "placeholder_default": "请咨询有关入籍考试的事宜……",
     "send_message": "发送消息",
+    "error_title": "哎呀！出了点问题",
+    "error_desc": "AI 导师无法回应。请再试一次。",
+    "try_again": "再试一次",
     "questions_remaining": "今天还有多少个问题",
     "questions_remaining_singular": "今天仍未解决的问题"
   },

@@ -1023,6 +1023,9 @@
     "placeholder_limit": "Đã đạt giới hạn hàng ngày...",
     "placeholder_default": "Hỏi thử về bài thi nhập tịch xem sao...",
     "send_message": "Gửi tin nhắn",
+    "error_title": "Ối! Có lỗi gì đó rồi",
+    "error_desc": "Gia sư AI không thể trả lời cậu rồi. Cậu thử lại xem sao.",
+    "try_again": "Thử lại",
     "questions_remaining": "còn bao nhiêu câu hỏi hôm nay",
     "questions_remaining_singular": "câu hỏi còn lại đến hôm nay"
   },

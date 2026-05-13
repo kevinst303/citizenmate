@@ -1029,6 +1029,9 @@
     "placeholder_limit": "Se ha alcanzado el límite diario...",
     "placeholder_default": "Pregunta por el examen de ciudadanía...",
     "send_message": "Enviar mensaje",
+    "error_title": "¡Uy! Algo salió mal",
+    "error_desc": "El tutor de IA no pudo responder. Por favor, inténtalo de nuevo.",
+    "try_again": "Intentar de nuevo",
     "questions_remaining": "preguntas que quedan por resolver hoy",
     "questions_remaining_singular": "la pregunta que queda hoy"
   },

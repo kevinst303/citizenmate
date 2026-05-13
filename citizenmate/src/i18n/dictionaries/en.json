@@ -1026,6 +1026,9 @@
     "placeholder_limit": "Daily limit reached...",
     "placeholder_default": "Ask about the citizenship test...",
     "send_message": "Send message",
+    "error_title": "Oops! Something went wrong",
+    "error_desc": "The AI tutor couldn't respond. Please try again.",
+    "try_again": "Try again",
     "questions_remaining": "question(s) remaining today",
     "questions_remaining_singular": "question remaining today"
   },

@@ -1,16 +1,8 @@
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { streamText } from "ai";
 import { getChatSystemPrompt } from "@/lib/chat-context";
 import { getRedisClient } from "@/lib/rate-limit";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
-
-function getGoogleModel() {
-  const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
-  if (!apiKey) return null;
-  return createGoogleGenerativeAI({ apiKey });
-}
-
 const openrouter = createOpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY,
 });
@@ -179,44 +171,221 @@ export async function POST(req: Request) {
     );
   }
 
-  let result;
-  try {
-    const modelName = process.env.OPENROUTER_CHAT_MODEL || "google/gemini-flash-1.0";
-    result = streamText({
-      // @ts-expect-error: OpenRouter provider type isn't fully synced with the latest AI SDK types yet
-      model: openrouter(modelName),
-      system: getChatSystemPrompt(),
-      messages: sanitizedMessages,
-    });
-  } catch (err) {
-    console.error("AI stream failed to start (primary):", err);
-    const google = getGoogleModel();
-    if (google) {
-      try {
-        result = streamText({
-          model: google("gemini-2.0-flash-001"),
-          system: getChatSystemPrompt(),
-          messages: sanitizedMessages,
-        });
-      } catch (fallbackErr) {
-        console.error("AI stream failed (fallback):", fallbackErr);
-        return new Response(
-          JSON.stringify({ error: "AI service unavailable. Please try again." }),
-          { status: 503, headers: { "Content-Type": "application/json" } }
-        );
-      }
-    } else {
-      return new Response(
-        JSON.stringify({ error: "AI service unavailable. Please try again." }),
-        { status: 503, headers: { "Content-Type": "application/json" } }
-      );
+  // Refund the Redis counter if the AI stream fails — the user shouldn't lose a request
+  async function refundRateLimit() {
+    const redis = getRedisClient();
+    if (redis) {
+      await redis.decr(counterKey).catch(() => {});
     }
   }
 
-  return result!.toUIMessageStreamResponse({
+  // ── Prioritised free models for OpenRouter (verified 13 May 2026) ──
+  // Non-streaming preflight catches 429/503 before we attempt streaming.
+  //
+  // ⚠️  ONLY models that actually emit delta.content in streaming mode are listed.
+  //     Reasoning-only models (nemotron-3-super, nemotron-nano, minimax, ring, etc.)
+  //     produce zero text output — the AI SDK rejects empty streams as errors.
+  const FREE_MODELS = [
+    "google/gemma-4-31b-it:free",               // primary: Google AI Studio, confirmed text streaming
+    "z-ai/glm-4.5-air:free",                    // fallback 1: Z.AI, may emit text when not rate-limited
+    "nvidia/nemotron-3-super-120b-a12b:free",   // fallback 2: ⚠️ slow, may emit content on retry
+    "qwen/qwen-2.5-7b-instruct:free",           // fallback 3: Qwen, may recover from 429
+  ];
+
+  let selectedModel: string | null = null;
+
+  for (const model of FREE_MODELS) {
+    try {
+      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model,
+          messages: [{ role: "user", content: "." }],
+          max_tokens: 1,
+          stream: false,
+        }),
+        signal: AbortSignal.timeout(5000),
+      });
+
+      if (response.ok) {
+        selectedModel = model;
+        console.log(`Preflight OK → using ${model}`);
+        break;
+      }
+
+      const errorText = await response.text().catch(() => "");
+      console.warn(`Preflight: ${model} returned ${response.status}: ${errorText.substring(0, 200)}`);
+    } catch (err) {
+      console.warn(`Preflight: ${model} failed:`, (err as Error).message);
+    }
+  }
+
+  if (!selectedModel) {
+    await refundRateLimit();
+    return new Response(
+      JSON.stringify({
+        error: "All AI providers are temporarily rate-limited. Please try again in a moment.",
+      }),
+      { status: 503, headers: { "Content-Type": "application/json" } }
+    );
+  }
+
+  let streamErrorOccurred = false;
+
+  const result = streamText({
+    // @ts-expect-error: OpenRouter provider type isn't fully synced with the latest AI SDK types yet
+    model: openrouter(selectedModel),
+    system: getChatSystemPrompt(),
+    messages: sanitizedMessages,
+  });
+
+  const rawResponse = result.toUIMessageStreamResponse({
     headers: {
       "X-RateLimit-Remaining": String(remaining),
     },
+    onError: async ({ error }) => {
+      console.error("AI stream error:", error);
+      streamErrorOccurred = true;
+      await refundRateLimit();
+    },
+  });
+
+  // ── Transform stream: detects provider errors and sanitizes invalid payloads ──
+  // The AI SDK v4 stream protocol uses SSE-like lines prefixed with type codes:
+  //   0: text content     3: error/tool data     e: end-of-stream
+  //   d: finish step      f: finish message
+  // When an OpenRouter provider returns a non-stream HTTP error (429, 401, etc.),
+  // the error may appear inline in the SSE stream as a malformed JSON payload,
+  // OR the stream may be empty (no chunks at all).
+  const fallbackErrorText =
+    "AI service is temporarily unavailable. Please try again in a moment.";
+  let buffer = "";
+  let totalChunks = 0;
+  let textChunks = 0;
+  const { readable, writable } = new TransformStream<Uint8Array, Uint8Array>({
+    transform(chunk, controller) {
+      const decoder = new TextDecoder();
+      const encoder = new TextEncoder();
+      buffer += decoder.decode(chunk);
+      totalChunks++;
+
+      // Process complete lines only
+      const lines = buffer.split("\n");
+      buffer = lines.pop() ?? "";
+
+      for (const line of lines) {
+        // Track meaningful text content via data: SSE format from toUIMessageStreamResponse()
+        // The UI stream wraps text-delta in data: lines like:
+        //   data: {"type":"text-delta","id":"...","delta":"actual content"}
+        if (line.includes('"type":"text-delta"')) textChunks++;
+
+        // ═══ CRITICAL: Intercept AI SDK error events and convert to visible text ═══
+        // When a model produces empty output (reasoning-only or aborted stream),
+        // the AI SDK injects: data: {"type":"error","errorText":"..."}
+        // This error type is NOT displayed as visible text by the client — the user
+        // just sees a stuck loading indicator. We must convert it to text-delta.
+        // The fallbackErrorText sanitizer below also fixes empty errorText values
+        // that would fail client-side Zod validation with AI_TypeValidationError.
+        if (line.includes('"type":"error"') && line.includes('"errorText"')) {
+          console.error("AI SDK error event intercepted:", line.substring(0, 300));
+          streamErrorOccurred = true;
+          // Extract the error message or use fallback
+          let errorMsg = fallbackErrorText;
+          try {
+            const dataStart = line.indexOf('data:');
+            if (dataStart >= 0) {
+              const jsonStr = line.substring(dataStart + 5).trim();
+              const parsed = JSON.parse(jsonStr);
+              if (parsed.errorText && typeof parsed.errorText === "string" && parsed.errorText.length > 0) {
+                errorMsg = parsed.errorText;
+              }
+            }
+          } catch { /* use fallback */ }
+          // Replace the invisible error event with a visible text-delta.
+          // CRITICAL: The AI SDK UI stream protocol requires a "text-start" chunk
+          // before any "text-delta" chunks with the same ID. Without it, the
+          // client throws AI_UIMessageStreamError.
+          const textStart = JSON.stringify({
+            type: "text-start",
+            id: "error-recovery",
+          });
+          controller.enqueue(encoder.encode(`data: ${textStart}\n\n`));
+          const textDelta = JSON.stringify({
+            type: "text-delta",
+            id: "error-recovery",
+            delta: errorMsg,
+          });
+          controller.enqueue(encoder.encode(`data: ${textDelta}\n\n`));
+          const textEnd = JSON.stringify({
+            type: "text-end",
+            id: "error-recovery",
+          });
+          controller.enqueue(encoder.encode(`data: ${textEnd}\n\n`));
+          textChunks++; // mark that we provided visible content
+          continue; // skip writing the original error line
+        }
+
+        // Sanitize invalid errorText values that would fail client-side type validation
+        let sanitized = line.replace(
+          /"errorText":\s*(null|undefined|\[\]|\{\})/g,
+          `"errorText":${JSON.stringify(fallbackErrorText)}`
+        );
+
+        // Detect provider error chunks embedded in the stream
+        // e.g. {"error":{"message":"Provider returned error","code":429,...}}
+        if (sanitized.includes('"error":{"message"') || sanitized.includes('"error":{"code"')) {
+          console.error("Provider error detected in stream chunk:", sanitized.substring(0, 300));
+          streamErrorOccurred = true;
+        }
+
+        controller.enqueue(encoder.encode(sanitized + "\n"));
+      }
+    },
+    flush(controller) {
+      // Process any remaining buffered content
+      if (buffer.length > 0) {
+        const encoder = new TextEncoder();
+        const sanitized = buffer.replace(
+          /"errorText":\s*(null|undefined|\[\]|\{\})/g,
+          `"errorText":${JSON.stringify(fallbackErrorText)}`
+        );
+        controller.enqueue(encoder.encode(sanitized));
+      }
+
+      // If the stream produced no text content, and no error was intercepted,
+      // inject a friendly visible message as a last resort.
+      // (The primary error handling is the type:error → text-delta interception above)
+      if (textChunks === 0 && !streamErrorOccurred) {
+        const encoder = new TextEncoder();
+        console.error(
+          `Chat stream produced zero text chunks (total=${totalChunks}). Injecting fallback.`
+        );
+        const msgObj = JSON.stringify({
+          type: "text-delta",
+          id: "fallback",
+          delta: fallbackErrorText,
+        });
+        const finishObj = JSON.stringify({
+          type: "finish",
+          finishReason: "stop",
+        });
+        controller.enqueue(encoder.encode(`data: ${msgObj}\n\n`));
+        controller.enqueue(encoder.encode(`data: ${finishObj}\n\n`));
+      }
+    },
+  });
+
+  rawResponse.body?.pipeTo(writable).catch((err) => {
+    console.error("Stream pipe error:", err);
+  });
+
+  return new Response(readable, {
+    status: rawResponse.status,
+    statusText: rawResponse.statusText,
+    headers: rawResponse.headers,
   });
 }
-

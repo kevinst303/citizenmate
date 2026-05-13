@@ -43,11 +43,11 @@ function getLevelColor(level: number): string {
 }
 
 function getLevelBadgeColor(level: number): string {
-  if (level >= 9) return "bg-amber-500/20 text-amber-300 border-amber-500/30";
-  if (level >= 7) return "bg-purple-500/20 text-purple-300 border-purple-500/30";
-  if (level >= 5) return "bg-blue-500/20 text-blue-300 border-blue-500/30";
-  if (level >= 3) return "bg-teal-500/20 text-teal-300 border-teal-500/30";
-  return "bg-slate-500/20 text-slate-300 border-slate-500/30";
+  if (level >= 9) return "bg-amber-100/80 text-amber-700 border-amber-200/60";
+  if (level >= 7) return "bg-purple-100/80 text-purple-700 border-purple-200/60";
+  if (level >= 5) return "bg-blue-100/80 text-blue-700 border-blue-200/60";
+  if (level >= 3) return "bg-teal-100/80 text-teal-700 border-teal-200/60";
+  return "bg-slate-100 text-slate-600 border-slate-200/60";
 }
 
 function getLevelIcon(level: number): string {
@@ -100,16 +100,16 @@ function SourceLabel({ source }: { source: string }) {
 
 function ProgressionSkeleton() {
   return (
-    <div className="glass-card-premium rounded-2xl p-5 animate-pulse">
+    <div className="bg-white border border-cm-slate-200/60 p-6 rounded-2xl shadow-sm animate-pulse">
       <div className="flex items-center gap-3 mb-4">
-        <div className="w-12 h-12 rounded-xl bg-white/10" />
+        <div className="w-12 h-12 rounded-xl bg-cm-slate-100" />
         <div className="flex-1 space-y-2">
-          <div className="h-4 w-24 bg-white/10 rounded" />
-          <div className="h-3 w-32 bg-white/10 rounded" />
+          <div className="h-4 w-24 bg-cm-slate-100 rounded" />
+          <div className="h-3 w-32 bg-cm-slate-100 rounded" />
         </div>
       </div>
-      <div className="h-3 bg-white/10 rounded-full mb-3" />
-      <div className="h-3 w-28 bg-white/10 rounded" />
+      <div className="h-3 bg-cm-slate-100 rounded-full mb-3" />
+      <div className="h-3 w-28 bg-cm-slate-100 rounded" />
     </div>
   );
 }
@@ -139,20 +139,20 @@ function XpProgressBar({ data }: { data: ProgressionData }) {
 
   return (
     <motion.div variants={fadeItem} className="space-y-1.5">
-      <div className="flex items-center justify-between text-xs text-white/60">
+      <div className="flex items-center justify-between text-xs text-cm-slate-500">
         <span>
           XP Progress
           {!isMaxLevel && (
-            <span className="ml-1 text-white/40">
+            <span className="ml-1 text-cm-slate-400">
               ({totalXp.toLocaleString()} / {nextLevelXp.toLocaleString()})
             </span>
           )}
         </span>
-        <span className="font-medium text-white/80">
+        <span className="font-medium text-cm-slate-700">
           {isMaxLevel ? "MAX LEVEL" : `${Math.round(progress * 100)}%`}
         </span>
       </div>
-      <div className="h-2.5 bg-white/10 rounded-full overflow-hidden">
+      <div className="h-2.5 bg-cm-slate-100 rounded-full overflow-hidden">
         <motion.div
           custom={progress}
           variants={progressBar}
@@ -175,8 +175,8 @@ function XpSourceBreakdown({ xpBySource }: { xpBySource: Record<string, number> 
   const sorted = Object.entries(xpBySource).sort(([, a], [, b]) => b - a);
 
   return (
-    <motion.div variants={fadeItem} className="space-y-2 pt-2 border-t border-white/10">
-      <h4 className="text-xs font-semibold text-white/50 uppercase tracking-wider">
+    <motion.div variants={fadeItem} className="space-y-2 pt-2 border-t border-cm-slate-100">
+      <h4 className="text-xs font-semibold text-cm-slate-500 uppercase tracking-wider">
         XP Breakdown
       </h4>
       <div className="space-y-1.5">
@@ -184,16 +184,16 @@ function XpSourceBreakdown({ xpBySource }: { xpBySource: Record<string, number> 
           const pct = Math.round((amount / total) * 100);
           return (
             <div key={source} className="flex items-center gap-2 text-xs">
-              <span className="flex-shrink-0 w-4 text-white/40">
+              <span className="flex-shrink-0 w-4 text-cm-slate-400">
                 {getSourceIcon(source)}
               </span>
-              <span className="flex-1 text-white/70 truncate">
+              <span className="flex-1 text-cm-slate-600 truncate">
                 <SourceLabel source={source} />
               </span>
-              <span className="font-medium text-white/90">
+              <span className="font-medium text-cm-slate-800">
                 {amount.toLocaleString()} XP
               </span>
-              <span className="text-white/40 w-8 text-right">{pct}%</span>
+              <span className="text-cm-slate-400 w-8 text-right">{pct}%</span>
             </div>
           );
         })}
@@ -208,8 +208,8 @@ function RecentActivity({ activities }: { activities: ProgressionData["recentAct
   if (activities.length === 0) return null;
 
   return (
-    <motion.div variants={fadeItem} className="space-y-2 pt-2 border-t border-white/10">
-      <h4 className="text-xs font-semibold text-white/50 uppercase tracking-wider">
+    <motion.div variants={fadeItem} className="space-y-2 pt-2 border-t border-cm-slate-100">
+      <h4 className="text-xs font-semibold text-cm-slate-500 uppercase tracking-wider">
         Recent XP
       </h4>
       <div className="space-y-1 max-h-28 overflow-y-auto scrollbar-thin">
@@ -218,11 +218,11 @@ function RecentActivity({ activities }: { activities: ProgressionData["recentAct
             key={`${act.createdAt}-${i}`}
             className="flex items-center gap-2 text-xs"
           >
-            <span className="text-emerald-400 font-medium">+{act.amount}</span>
-            <span className="text-white/50">
+            <span className="text-emerald-600 font-medium">+{act.amount}</span>
+            <span className="text-cm-slate-500">
               <SourceLabel source={act.source} />
             </span>
-            <span className="ml-auto text-white/30">
+            <span className="ml-auto text-cm-slate-400">
               {formatRelativeTime(act.createdAt)}
             </span>
           </div>
@@ -251,8 +251,8 @@ export function ProgressionCard() {
 
   if (error) {
     return (
-      <div className="glass-card-premium rounded-2xl p-5">
-        <p className="text-xs text-red-400/80">Could not load progression data.</p>
+      <div className="bg-white border border-cm-slate-200/60 p-6 rounded-2xl shadow-sm">
+        <p className="text-xs text-red-500/80">Could not load progression data.</p>
       </div>
     );
   }
@@ -264,10 +264,20 @@ export function ProgressionCard() {
       variants={container}
       initial="hidden"
       animate="show"
-      className="glass-card-premium rounded-2xl p-5 space-y-4"
+      className="bg-white border border-cm-slate-200/60 p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow"
     >
-      {/* Header: Level + Title */}
-      <motion.div variants={fadeItem} className="flex items-center justify-between">
+      {/* Header: Section Title */}
+      <motion.div variants={fadeItem} className="flex items-center gap-2.5 mb-4">
+        <div className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-purple-400 to-pink-300 text-white">
+          <TrendingUp className="w-4.5 h-4.5" />
+        </div>
+        <h2 className="font-heading font-bold text-cm-slate-900 text-lg">
+          Your Progression
+        </h2>
+      </motion.div>
+
+      {/* Level + Title row */}
+      <motion.div variants={fadeItem} className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
           <div
             className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl bg-gradient-to-br ${getLevelColor(data.level)} bg-opacity-20`}
@@ -276,17 +286,17 @@ export function ProgressionCard() {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-lg font-bold text-white">
+              <h3 className="text-lg font-bold text-cm-slate-900">
                 Level {data.level}
               </h3>
               <LevelBadge level={data.level} levelTitle={data.levelTitle} />
             </div>
-            <p className="text-xs text-white/50 mt-0.5">
+            <p className="text-xs text-cm-slate-500 mt-0.5">
               {data.totalXp.toLocaleString()} Total XP
             </p>
           </div>
         </div>
-        <Sparkles className="w-5 h-5 text-white/20" />
+        <Sparkles className="w-5 h-5 text-cm-slate-200" />
       </motion.div>
 
       {/* XP Progress Bar */}

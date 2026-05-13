@@ -1029,6 +1029,9 @@
     "placeholder_limit": "दैनिक सीमा समाप्त हो गई...",
     "placeholder_default": "नागरिकता परीक्षा के बारे में पूछें...",
     "send_message": "संदेश भेजें",
+    "error_title": "अरे! कुछ गलत हो गया",
+    "error_desc": "AI ट्यूटर जवाब नहीं दे पाया। कृपया फिर से कोशिश करें।",
+    "try_again": "पुनः प्रयास करें",
     "questions_remaining": "आज भी बचे हुए प्रश्न",
     "questions_remaining_singular": "आज भी सवाल बना हुआ है"
   },

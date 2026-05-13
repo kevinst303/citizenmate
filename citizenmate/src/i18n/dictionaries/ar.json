@@ -1029,6 +1029,9 @@
     "placeholder_limit": "تم الوصول إلى الحد اليومي...",
     "placeholder_default": "اسأل عن اختبار الجنسية...",
     "send_message": "إرسال رسالة",
+    "error_title": "عذرًا! حدث خطأ ما",
+    "error_desc": "لم يتمكن مدرس الذكاء الاصطناعي من الرد. يرجى المحاولة مرة أخرى.",
+    "try_again": "حاول مرة أخرى",
     "questions_remaining": "الأسئلة المتبقية اليوم",
     "questions_remaining_singular": "السؤال الذي لا يزال مطروحاً اليوم"
   },
