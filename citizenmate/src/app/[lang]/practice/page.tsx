@@ -64,7 +64,7 @@ export default function PracticePage() {
   }, [user, authLoading, router, params.lang]);
 
   useEffect(() => {
-    setAttempts(getAttemptHistory());
+    getAttemptHistory().then(setAttempts);
   }, []);
 
   const getTestAttempts = (testId: string) =>

@@ -57,9 +57,9 @@ const WEAK_TOPIC_THRESHOLD = 75;
  * and study progress. Prioritizes weak topics first, then distributes
  * remaining sections evenly across available days.
  */
-export function generateStudyPlan(progress?: StudyProgress): StudyPlan {
+export async function generateStudyPlan(progress?: StudyProgress): Promise<StudyPlan> {
   const testDate = getTestDate();
-  const quizHistory = getQuizHistory();
+  const quizHistory = await getQuizHistory();
   const daysUntilTest = testDate ? getDaysUntilTest(testDate) : null;
   const urgencyLevel = getUrgencyLevel(daysUntilTest);
 
@@ -136,7 +136,7 @@ function getStudyProgressStandalone(): StudyProgress {
 
 function buildAllSections(
   progress: StudyProgress,
-  quizHistory: ReturnType<typeof getQuizHistory>,
+  quizHistory: Awaited<ReturnType<typeof getQuizHistory>>,
 ): StudyPlanSection[] {
   const sections: StudyPlanSection[] = [];
 
@@ -161,7 +161,7 @@ function buildAllSections(
 }
 
 function identifyWeakTopics(
-  quizHistory: ReturnType<typeof getQuizHistory>,
+  quizHistory: Awaited<ReturnType<typeof getQuizHistory>>,
   progress: StudyProgress,
 ): TopicCategory[] {
   const topicIds: TopicCategory[] = [

@@ -36,6 +36,7 @@ import {
   calculateReadiness,
   getQuizHistory,
   type ReadinessData,
+  type QuizResult,
 } from "@/lib/readiness";
 import { StreakCard } from "@/components/dashboard/streak-card";
 import { BadgeShowcase } from "@/components/dashboard/badge-showcase";
@@ -99,18 +100,18 @@ export default function DashboardPage() {
     }
   }, [user, authLoading, router]);
 
-  // Defer localStorage reads until after hydration to prevent SSR mismatch
   const [hasMounted, setHasMounted] = useState(false);
   const [showBanner, setShowBanner] = useState(true);
+  const [quizHistory, setQuizHistory] = useState<QuizResult[]>([]);
   
   useEffect(() => {
     setHasMounted(true);
+    getQuizHistory().then(setQuizHistory);
   }, []);
 
   const readiness: ReadinessData = useMemo(() => {
-    const quizHistory = hasMounted ? getQuizHistory() : [];
     return calculateReadiness(quizHistory, progress);
-  }, [progress, hasMounted]);
+  }, [progress, quizHistory]);
 
   const aiInsight = useMemo(() => getAIInsight(readiness), [readiness]);
 

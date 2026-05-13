@@ -198,17 +198,20 @@ function calculateResult(state: QuizState): QuizResult {
   };
 }
 
-// ─── localStorage persistence ────────────────────────────
+// ─── IndexedDB persistence ────────────────────────────
+
+import { get, set } from 'idb-keyval';
 
 const STORAGE_KEY = "citizenmate_attempts";
+const QUIZ_HISTORY_KEY = "citizenmate-quiz-history";
+const SRS_KEY = "citizenmate-srs-data";
 
-function saveAttempt(state: QuizState, result: QuizResult) {
+async function saveAttempt(state: QuizState, result: QuizResult) {
   if (typeof window === "undefined" || !state.test) return;
 
   try {
-    const existing = JSON.parse(
-      localStorage.getItem(STORAGE_KEY) || "[]"
-    ) as Array<Record<string, unknown>>;
+    const rawAttempts = await get(STORAGE_KEY);
+    const existing = (rawAttempts ? JSON.parse(rawAttempts) : []) as Array<Record<string, unknown>>;
 
     existing.push({
       id: `${state.test.id}-${Date.now()}`,
@@ -221,11 +224,10 @@ function saveAttempt(state: QuizState, result: QuizResult) {
       result,
     });
 
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(existing));
+    await set(STORAGE_KEY, JSON.stringify(existing));
 
     // Also save to readiness quiz history (used by dashboard)
-    const QUIZ_HISTORY_KEY = "citizenmate-quiz-history";
-    const historyRaw = localStorage.getItem(QUIZ_HISTORY_KEY);
+    const historyRaw = await get(QUIZ_HISTORY_KEY);
     const history = historyRaw ? JSON.parse(historyRaw) as Array<Record<string, unknown>> : [];
     const topicBreakdown: Record<string, { correct: number; total: number }> = {};
     for (const b of result.topicBreakdown) {
@@ -241,12 +243,11 @@ function saveAttempt(state: QuizState, result: QuizResult) {
       topicBreakdown,
       completedAt: result.completedAt,
     });
-    localStorage.setItem(QUIZ_HISTORY_KEY, JSON.stringify(history));
+    await set(QUIZ_HISTORY_KEY, JSON.stringify(history));
 
     // Update SRS performance data for each question
     try {
-      const SRS_KEY = "citizenmate-srs-data";
-      const srsRaw = localStorage.getItem(SRS_KEY);
+      const srsRaw = await get(SRS_KEY);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const srsData: { performances: Record<string, any>; lastUpdatedAt: string } = srsRaw
         ? JSON.parse(srsRaw)
@@ -267,12 +268,12 @@ function saveAttempt(state: QuizState, result: QuizResult) {
       }
 
       srsData.lastUpdatedAt = new Date().toISOString();
-      localStorage.setItem(SRS_KEY, JSON.stringify(srsData));
+      await set(SRS_KEY, JSON.stringify(srsData));
     } catch {
       // SRS update failed — non-critical
     }
   } catch {
-    // Silent fail for localStorage quota/errors
+    // Silent fail for idb-keyval quota/errors
   }
 
   // Background sync to Supabase (non-blocking)
@@ -293,17 +294,15 @@ function saveAttempt(state: QuizState, result: QuizResult) {
   }
 }
 
-export function getAttemptHistory(): Array<{
+export async function getAttemptHistory(): Promise<Array<{
   testId: string;
   result: QuizResult;
   completedAt: string;
-}> {
+}>> {
   if (typeof window === "undefined") return [];
   try {
-    const data = JSON.parse(
-      localStorage.getItem(STORAGE_KEY) || "[]"
-    ) as Array<{ testId: string; result: QuizResult; completedAt: string }>;
-    return data;
+    const raw = await get(STORAGE_KEY);
+    return raw ? JSON.parse(raw) as Array<{ testId: string; result: QuizResult; completedAt: string }> : [];
   } catch {
     return [];
   }

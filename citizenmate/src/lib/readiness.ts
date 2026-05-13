@@ -37,30 +37,32 @@ export interface ReadinessData {
   totalQuizzesTaken: number;
 }
 
+import { get, set } from "idb-keyval";
+
 // ===== Constants =====
 
 const QUIZ_WEIGHT = 0.6;
 const STUDY_WEIGHT = 0.4;
 const QUIZ_HISTORY_KEY = "citizenmate-quiz-history";
 
-// ===== Quiz History (localStorage) =====
+// ===== Quiz History (idb-keyval) =====
 
-export function getQuizHistory(): QuizResult[] {
+export async function getQuizHistory(): Promise<QuizResult[]> {
   if (typeof window === "undefined") return [];
   try {
-    const saved = localStorage.getItem(QUIZ_HISTORY_KEY);
-    return saved ? (JSON.parse(saved) as QuizResult[]) : [];
+    const saved = await get<QuizResult[]>(QUIZ_HISTORY_KEY);
+    return saved || [];
   } catch {
     return [];
   }
 }
 
-export function saveQuizResult(result: QuizResult): void {
+export async function saveQuizResult(result: QuizResult): Promise<void> {
   if (typeof window === "undefined") return;
   try {
-    const history = getQuizHistory();
+    const history = await getQuizHistory();
     history.push(result);
-    localStorage.setItem(QUIZ_HISTORY_KEY, JSON.stringify(history));
+    await set(QUIZ_HISTORY_KEY, history);
   } catch {
     // Storage error
   }

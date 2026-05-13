@@ -64,18 +64,19 @@ export default function QuizPage() {
     if (loading) return; // Wait for profile to load
     
     // Protection: allow 1 free test completion total across any test
-    const attempts = getAttemptHistory();
-    if (!isPremium && (testId !== "mock-1" || attempts.length > 0)) {
-      // User is not premium and trying to take a test they shouldn't
-      router.push("/practice");
-      openModal("quiz_limit");
-      return;
-    }
+    getAttemptHistory().then((attempts) => {
+      if (!isPremium && (testId !== "mock-1" || attempts.length > 0)) {
+        // User is not premium and trying to take a test they shouldn't
+        router.push("/practice");
+        openModal("quiz_limit");
+        return;
+      }
 
-    const test = getTestById(testId);
-    if (test && state.status === "idle") {
-      startQuiz(testId);
-    }
+      const test = getTestById(testId);
+      if (test && state.status === "idle") {
+        startQuiz(testId);
+      }
+    });
   }, [testId, state.status, startQuiz, isPremium, loading, router, openModal]);
 
   // Redirect to results when completed

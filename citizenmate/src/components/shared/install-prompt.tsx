@@ -2,10 +2,20 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Download, X, Share, Plus } from "lucide-react";
+import {
+  Download,
+  X,
+  Share,
+  Plus,
+  WifiOff,
+  Bell,
+  Zap,
+  Smartphone,
+} from "lucide-react";
 import { toast } from "@/lib/toast";
 import { useT } from "@/i18n/i18n-context";
 import { useAuth } from "@/lib/auth-context";
+import { usePwaStore } from "@/lib/store/usePwaStore";
 
 // Extend the global window with the beforeinstallprompt event
 interface BeforeInstallPromptEvent extends Event {
@@ -13,7 +23,6 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 }
 
-const DISMISS_KEY = "citizenmate-install-dismissed";
 const DISMISS_DURATION_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 const ENGAGEMENT_DELAY_MS = 30 * 1000; // 30 seconds
 
@@ -35,42 +44,73 @@ function isStandalone(): boolean {
   );
 }
 
-function isDismissed(): boolean {
-  if (typeof window === "undefined") return false;
-  const dismissed = localStorage.getItem(DISMISS_KEY);
-  if (!dismissed) return false;
-  const dismissedAt = parseInt(dismissed, 10);
-  if (Date.now() - dismissedAt > DISMISS_DURATION_MS) {
-    localStorage.removeItem(DISMISS_KEY);
-    return false;
-  }
-  return true;
-}
+const valueProps = [
+  {
+    icon: WifiOff,
+    key: "offline",
+    color: "text-cm-teal",
+    bgColor: "bg-cm-teal/10",
+  },
+  {
+    icon: Bell,
+    key: "notifications",
+    color: "text-cm-sky",
+    bgColor: "bg-cm-sky/10",
+  },
+  {
+    icon: Zap,
+    key: "quick_launch",
+    color: "text-cm-eucalyptus",
+    bgColor: "bg-cm-eucalyptus/10",
+  },
+];
 
 export function InstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] =
     useState<BeforeInstallPromptEvent | null>(null);
   const [showPrompt, setShowPrompt] = useState(false);
   const [showIOSInstructions, setShowIOSInstructions] = useState(false);
+
   const { t } = useT();
   const { isAuthModalOpen } = useAuth();
+  const {
+    isInstallable,
+    hasDismissedModal,
+    setInstallable,
+    setInstalled,
+    dismissModal,
+  } = usePwaStore();
 
-  // Listen for the native install prompt event
+  // Listen for the native install prompt event — syncs with Zustand store
   useEffect(() => {
-    if (isStandalone() || isDismissed()) return;
+    if (isStandalone()) return;
 
     const handler = (e: Event) => {
       e.preventDefault();
-      setDeferredPrompt(e as BeforeInstallPromptEvent);
+      const promptEvent = e as BeforeInstallPromptEvent;
+      setDeferredPrompt(promptEvent);
+      setInstallable(true, promptEvent);
+    };
+
+    const handleInstalled = () => {
+      setInstalled(true);
+      toast.success(
+        t("install.installed_toast"),
+        t("install.installed_desc")
+      );
     };
 
     window.addEventListener("beforeinstallprompt", handler);
-    return () => window.removeEventListener("beforeinstallprompt", handler);
+    window.addEventListener("appinstalled", handleInstalled);
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handler);
+      window.removeEventListener("appinstalled", handleInstalled);
+    };
   }, []);
 
   // Show prompt after engagement delay
   useEffect(() => {
-    if (isStandalone() || isDismissed()) return;
+    if (isStandalone() || hasDismissedModal) return;
 
     let timer: NodeJS.Timeout;
     let waitingForConsent = false;
@@ -85,7 +125,6 @@ export function InstallPrompt() {
 
     const handleConsent = () => {
       waitingForConsent = false;
-      // Add a small delay after dismissing cookie banner before showing install prompt
       setTimeout(showAppropriatePrompt, 500);
     };
 
@@ -93,7 +132,9 @@ export function InstallPrompt() {
       // Don't overlap with cookie consent
       if (!localStorage.getItem("cm-cookie-consent")) {
         waitingForConsent = true;
-        window.addEventListener("cm-consent-update", handleConsent, { once: true });
+        window.addEventListener("cm-consent-update", handleConsent, {
+          once: true,
+        });
         return;
       }
       showAppropriatePrompt();
@@ -107,7 +148,7 @@ export function InstallPrompt() {
         window.removeEventListener("cm-consent-update", handleConsent);
       }
     };
-  }, [deferredPrompt]);
+  }, [deferredPrompt, hasDismissedModal]);
 
   const handleInstall = useCallback(async () => {
     if (!deferredPrompt) return;
@@ -115,6 +156,7 @@ export function InstallPrompt() {
     const { outcome } = await deferredPrompt.userChoice;
     if (outcome === "accepted") {
       setShowPrompt(false);
+      setInstalled(true);
       toast.success(
         t("install.installed_toast"),
         t("install.installed_desc")
@@ -126,8 +168,8 @@ export function InstallPrompt() {
   const handleDismiss = useCallback(() => {
     setShowPrompt(false);
     setShowIOSInstructions(false);
-    localStorage.setItem(DISMISS_KEY, Date.now().toString());
-  }, []);
+    dismissModal();
+  }, [dismissModal]);
 
   const visible = (showPrompt || showIOSInstructions) && !isAuthModalOpen;
 
@@ -135,90 +177,156 @@ export function InstallPrompt() {
     <AnimatePresence>
       {visible && (
         <motion.div
-          initial={{ y: 100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 100, opacity: 0 }}
-          transition={{ type: "spring", damping: 25, stiffness: 300 }}
-          className="fixed bottom-0 inset-x-0 z-50 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 pb-[max(1rem,env(safe-area-inset-bottom))]"
         >
-          <div className="mx-auto max-w-lg bg-white rounded-2xl shadow-2xl border border-cm-slate-200 overflow-hidden">
-            {/* Header gradient */}
-            <div className="bg-gradient-to-r from-cm-navy via-cm-navy-light to-cm-navy-lighter px-5 py-4">
-              <div className="flex items-center justify-between">
+          {/* Backdrop with glassmorphism overlay */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 bg-black/30 backdrop-blur-sm"
+            onClick={handleDismiss}
+          />
+
+          {/* Modal */}
+          <motion.div
+            initial={{ y: 50, opacity: 0, scale: 0.95 }}
+            animate={{ y: 0, opacity: 1, scale: 1 }}
+            exit={{ y: 50, opacity: 0, scale: 0.95 }}
+            transition={{ type: "spring", damping: 28, stiffness: 320 }}
+            className="relative w-full max-w-sm overflow-hidden rounded-2xl border border-white/20 bg-white/95 shadow-2xl shadow-cm-teal/10 backdrop-blur-xl"
+          >
+            {/* Gradient decoration */}
+            <div className="absolute -top-20 -right-20 h-40 w-40 rounded-full bg-gradient-to-br from-cm-teal/20 to-cm-eucalyptus/10 blur-3xl" />
+            <div className="absolute -bottom-16 -left-16 h-32 w-32 rounded-full bg-gradient-to-tr from-cm-sky/15 to-cm-navy/10 blur-3xl" />
+
+            {/* Header */}
+            <div className="relative px-5 pt-5 pb-3">
+              <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
-                  {/* App icon */}
-                  <div className="w-11 h-11 rounded-xl bg-white/15 flex items-center justify-center border border-white/20">
-                    <span className="text-2xl">🇦🇺</span>
+                  {/* App icon with glassmorphism */}
+                  <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-cm-teal to-cm-eucalyptus shadow-lg shadow-cm-teal/25">
+                    <div className="absolute inset-0 rounded-2xl bg-white/20" />
+                    <Smartphone className="relative h-7 w-7 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-white font-heading font-bold text-base">
+                    <h3 className="font-heading text-lg font-bold text-cm-navy">
                       {t("install.title")}
                     </h3>
-                    <p className="text-white/70 text-xs">
+                    <p className="text-xs font-medium text-cm-slate-500">
                       {t("install.subtitle")}
                     </p>
                   </div>
                 </div>
                 <button
                   onClick={handleDismiss}
-                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors cursor-pointer"
+                  className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full bg-cm-slate-100 text-cm-slate-400 transition-colors hover:bg-cm-slate-200 hover:text-cm-slate-600"
                   aria-label={t("install.dismiss")}
                 >
-                  <X className="w-4 h-4 text-white/80" />
+                  <X className="h-4 w-4" />
                 </button>
               </div>
             </div>
 
             {/* Body */}
-            <div className="px-5 py-4">
+            <div className="relative px-5 pb-5">
               {showIOSInstructions ? (
                 /* iOS-specific instructions */
                 <div>
-                  <p className="text-sm text-cm-slate-600 mb-4">
+                  <p className="mb-4 text-sm leading-relaxed text-cm-slate-600">
                     {t("install.desc_1")}
                   </p>
                   <div className="space-y-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-cm-sky-light flex items-center justify-center shrink-0">
-                        <Share className="w-4 h-4 text-cm-sky" />
+                    <div className="flex items-center gap-3 rounded-xl bg-cm-sky-light/50 p-3">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-cm-sky/10">
+                        <Share className="h-4 w-4 text-cm-sky" />
                       </div>
-                      <p className="text-sm text-cm-slate-700">
+                      <p className="text-sm font-medium text-cm-slate-700">
                         {t("install.step_1")}
                       </p>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-cm-eucalyptus-light flex items-center justify-center shrink-0">
-                        <Plus className="w-4 h-4 text-cm-eucalyptus" />
+                    <div className="flex items-center gap-3 rounded-xl bg-cm-eucalyptus-light/50 p-3">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-cm-eucalyptus/10">
+                        <Plus className="h-4 w-4 text-cm-eucalyptus" />
                       </div>
-                      <p className="text-sm text-cm-slate-700">
+                      <p className="text-sm font-medium text-cm-slate-700">
                         {t("install.step_2")}
                       </p>
                     </div>
                   </div>
                   <button
                     onClick={handleDismiss}
-                    className="mt-4 w-full py-2.5 text-sm font-heading font-semibold text-cm-slate-500 hover:text-cm-navy transition-colors cursor-pointer"
+                    className="mt-4 w-full cursor-pointer rounded-xl bg-gradient-to-r from-cm-teal to-cm-eucalyptus py-3 text-sm font-heading font-semibold text-white shadow-md shadow-cm-teal/20 transition-all hover:shadow-lg hover:shadow-cm-teal/30 active:scale-[0.98]"
                   >
                     {t("install.got_it")}
                   </button>
                 </div>
               ) : (
-                /* Standard install prompt */
+                /* Standard install prompt with value props */
                 <div>
-                  <p className="text-sm text-cm-slate-600 mb-4">
+                  <p className="mb-4 text-sm leading-relaxed text-cm-slate-600">
                     {t("install.desc_2")}
                   </p>
+
+                  {/* Value propositions */}
+                  <div className="mb-5 space-y-2">
+                    <div className="flex items-center gap-3 rounded-xl bg-gradient-to-r from-cm-teal/[0.06] to-transparent p-3">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-cm-teal/10">
+                        <WifiOff className="h-4 w-4 text-cm-teal" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-cm-navy">
+                          Study offline
+                        </p>
+                        <p className="text-xs text-cm-slate-500">
+                          Take quizzes without internet
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3 rounded-xl bg-gradient-to-r from-cm-sky/[0.06] to-transparent p-3">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-cm-sky/10">
+                        <Bell className="h-4 w-4 text-cm-sky" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-cm-navy">
+                          Streak reminders
+                        </p>
+                        <p className="text-xs text-cm-slate-500">
+                          Never miss a study day
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3 rounded-xl bg-gradient-to-r from-cm-eucalyptus/[0.06] to-transparent p-3">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-cm-eucalyptus/10">
+                        <Zap className="h-4 w-4 text-cm-eucalyptus" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-cm-navy">
+                          Quick launch
+                        </p>
+                        <p className="text-xs text-cm-slate-500">
+                          One tap from your home screen
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Action buttons */}
                   <div className="flex gap-3">
                     <button
                       onClick={handleInstall}
-                      className="flex-1 inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-cm-navy text-white font-heading font-semibold text-sm hover:bg-cm-navy-light transition-colors shadow-md cursor-pointer"
+                      className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cm-teal to-cm-eucalyptus py-3 text-sm font-heading font-semibold text-white shadow-md shadow-cm-teal/20 transition-all hover:shadow-lg hover:shadow-cm-teal/30 active:scale-[0.98]"
                     >
-                      <Download className="w-4 h-4" />
+                      <Download className="h-4 w-4" />
                       {t("install.install_button")}
                     </button>
                     <button
                       onClick={handleDismiss}
-                      className="px-5 py-3 rounded-xl bg-cm-slate-50 text-cm-slate-600 font-heading font-semibold text-sm hover:bg-cm-slate-100 transition-colors cursor-pointer"
+                      className="cursor-pointer rounded-xl border border-cm-slate-200 bg-white px-5 py-3 text-sm font-heading font-semibold text-cm-slate-600 shadow-sm transition-all hover:bg-cm-slate-50 hover:text-cm-navy active:scale-[0.98]"
                     >
                       {t("install.not_now")}
                     </button>
@@ -226,7 +334,7 @@ export function InstallPrompt() {
                 </div>
               )}
             </div>
-          </div>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>

@@ -7,6 +7,7 @@ import {
   useCallback,
   useMemo,
   useEffect,
+  useState,
   type ReactNode,
 } from "react";
 import type { TopicCategory, QuizQuestion } from "@/lib/types";
@@ -135,29 +136,37 @@ const SRSContext = createContext<SRSContextValue | null>(null);
 export function SRSProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(srsReducer, initialState);
 
-  // Load from localStorage on mount
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Load from idb-keyval on mount
   useEffect(() => {
     if (typeof window === "undefined") return;
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved) as SRSState;
-        dispatch({ type: "LOAD_STATE", state: parsed });
-      }
-    } catch {
-      // Silent fail — start fresh
-    }
+    import("idb-keyval").then(({ get }) => {
+      get<SRSState>(STORAGE_KEY)
+        .then((saved) => {
+          if (saved) {
+            dispatch({ type: "LOAD_STATE", state: saved });
+          }
+        })
+        .catch(() => {
+          // Silent fail — start fresh
+        })
+        .finally(() => {
+          setIsLoaded(true);
+        });
+    });
   }, []);
 
-  // Persist to localStorage on every state change
+  // Persist to idb-keyval on every state change, but ONLY after initial load
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    } catch {
-      // Storage quota exceeded — silent fail
-    }
-  }, [state]);
+    if (typeof window === "undefined" || !isLoaded) return;
+    
+    import("idb-keyval").then(({ set }) => {
+      set(STORAGE_KEY, state).catch(() => {
+        // Storage quota exceeded — silent fail
+      });
+    });
+  }, [state, isLoaded]);
 
   const recordAnswer = useCallback(
     (questionId: string, topic: TopicCategory, wasCorrect: boolean) => {

@@ -1026,6 +1026,12 @@
     "questions_remaining": "còn bao nhiêu câu hỏi hôm nay",
     "questions_remaining_singular": "câu hỏi còn lại đến hôm nay"
   },
+  "connectivity": {
+    "offline": "Mất kết nối 📡",
+    "offline_desc": "Tiến trình của bạn được lưu ngoại tuyến và sẽ đồng bộ khi có kết nối lại.",
+    "online": "Đã kết nối lại! ✅",
+    "online_desc": "Dữ liệu bài kiểm tra của bạn đang được đồng bộ trong nền."
+  },
   "cookie_consent": {
     "title": "Tớ tôn trọng quyền riêng tư của cậu",
     "description": "Tớ dùng các cookie cần thiết để CitizenMate hoạt động bình thường. Với sự đồng ý của cậu, tớ cũng dùng các cookie phân tích để hiểu cách cậu sử dụng dịch vụ của tớ.",

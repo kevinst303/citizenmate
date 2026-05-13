@@ -1,5 +1,6 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import { idbStorage } from '../storage/idb-storage';
 
 interface SettingsState {
   reduceMotion: boolean;
@@ -14,6 +15,7 @@ export const useSettingsStore = create<SettingsState>()(
     }),
     {
       name: 'citizenmate-settings', // unique name for local storage
+      storage: createJSONStorage(() => idbStorage),
     }
   )
 );

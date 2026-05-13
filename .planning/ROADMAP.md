@@ -4,7 +4,7 @@
 
 - ✅ **v1.0 Conseil Design Overhaul** — Phases 1-3 (shipped 2026-04-06)
 - ✅ **v1.1 Launch Readiness** — Phases 4-13 (shipped 2026-05-12)
-- 📋 **v1.2 [Next Milestone]** — (planned)
+- ✅ **v1.2 PWA Optimization & Mobile** — Phase 14 (shipped 2026-05-13)
 
 ## Phases
 
@@ -33,9 +33,17 @@
 
 </details>
 
-### 🚧 v1.2 [Next Milestone] (Planned)
+### ✅ v1.2 PWA Optimization & Mobile — SHIPPED 2026-05-13
 
-*(To be defined via `/gsd:new-milestone`)*
+<details>
+<summary>✅ v1.2 PWA Optimization & Mobile (Phases 14) — SHIPPED 2026-05-13</summary>
+
+- [x] Phase 14: PWA Optimization & Offline Capabilities (3/3 plans) — completed 2026-05-13
+  - [x] Plan 14-1: Setup IndexedDB Storage
+  - [x] Plan 14-2: Configure Serwist
+  - [x] Plan 14-3: Implement Background Sync
+
+</details>
 
 ## Progress
 
@@ -54,13 +62,5 @@
 | 11. Anxiety-Reduction & Wellbeing | v1.1 | 1/1 | Complete | 2026-05-12 |
 | 12. Adaptive Gamification & Trust-building | v1.1 | 1/1 | Complete | 2026-05-12 |
 | 13. Vietnamese Language Support | v1.1 | 1/1 | Complete | 2026-05-07 |
+| 14. PWA Optimization & Offline Capabilities | v1.2 | 3/3 | Complete | 2026-05-13 |
 
-### Phase 14: PWA Optimization & Offline Capabilities
-
-**Goal:** [To be planned]
-**Requirements**: TBD
-**Depends on:** Phase 13
-**Plans:** 0 plans
-
-Plans:
-- [ ] TBD (run /gsd-plan-phase 14 to break down)

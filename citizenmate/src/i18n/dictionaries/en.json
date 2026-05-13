@@ -1015,6 +1015,12 @@
     "questions_remaining": "question(s) remaining today",
     "questions_remaining_singular": "question remaining today"
   },
+  "connectivity": {
+    "offline": "You're offline 📡",
+    "offline_desc": "Your progress is saved locally and will sync when you reconnect.",
+    "online": "Back online! ✅",
+    "online_desc": "Your quiz data is now syncing in the background."
+  },
   "cookie_consent": {
     "title": "We respect your privacy",
     "description": "We use essential cookies to make CitizenMate work. With your consent, we also use analytics cookies to understand how you use our service.",

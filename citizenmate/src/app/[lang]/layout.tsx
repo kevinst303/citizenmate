@@ -15,6 +15,10 @@ import { locales, type Locale } from "@/i18n/config";
 import { I18nProvider } from "@/i18n/i18n-context";
 import { PostHogProvider } from "@/components/providers/posthog-provider";
 import { MotionProvider } from "@/components/providers/motion-provider";
+import { PwaInstallProvider } from "@/components/providers/pwa-install-provider";
+import { InstallPrompt } from "@/components/shared/install-prompt";
+import { ConnectivityStatus } from "@/components/shared/connectivity-status";
+import { OnlineStatusIndicator } from "@/components/shared/online-status-indicator";
 import "../globals.css";
 
 const jsonLd = {
@@ -137,27 +141,32 @@ export default async function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
-        <PostHogProvider>
-          <AuthProvider>
-            <TestDateProvider>
-              <StudyProvider>
-                <SRSProvider>
-                  <I18nProvider locale={lang as Locale}>
-                    <MotionProvider>
-                      <LayoutShell>{children}</LayoutShell>
-                      <Suspense fallback={null}>
-                        <ReferralTracker />
-                        <AuthRedirectHandler />
-                        <UpgradeModal />
-                      </Suspense>
-                    </MotionProvider>
-                  </I18nProvider>
-                </SRSProvider>
-              </StudyProvider>
-            </TestDateProvider>
-          </AuthProvider>
-          <Analytics />
-        </PostHogProvider>
+        <PwaInstallProvider>
+          <PostHogProvider>
+            <AuthProvider>
+              <TestDateProvider>
+                <StudyProvider>
+                  <SRSProvider>
+                    <I18nProvider locale={lang as Locale}>
+                      <MotionProvider>
+                        <LayoutShell>{children}</LayoutShell>
+                        <Suspense fallback={null}>
+                          <ReferralTracker />
+                          <AuthRedirectHandler />
+                          <UpgradeModal />
+                          <InstallPrompt />
+                          <ConnectivityStatus />
+                          <OnlineStatusIndicator />
+                        </Suspense>
+                      </MotionProvider>
+                    </I18nProvider>
+                  </SRSProvider>
+                </StudyProvider>
+              </TestDateProvider>
+            </AuthProvider>
+            <Analytics />
+          </PostHogProvider>
+        </PwaInstallProvider>
       </body>
     </html>
   );

@@ -126,7 +126,7 @@ interface StudyContextValue {
   getOverallProgress: () => TopicProgress;
   setLanguage: (language: StudyLanguage) => void;
   resetProgress: () => void;
-  generatePlan: () => StudyPlan;
+  generatePlan: () => Promise<StudyPlan>;
 }
 
 const StudyContext = createContext<StudyContextValue | null>(null);
@@ -221,8 +221,8 @@ export function StudyProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "RESET_PROGRESS" });
   }, []);
 
-  const generatePlan = useCallback((): StudyPlan => {
-    const plan = generateStudyPlan(state.progress);
+  const generatePlan = useCallback(async (): Promise<StudyPlan> => {
+    const plan = await generateStudyPlan(state.progress);
     cachePlan(plan);
     return plan;
   }, [state.progress]);

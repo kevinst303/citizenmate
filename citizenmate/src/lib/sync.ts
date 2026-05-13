@@ -1,5 +1,6 @@
 import { getSupabaseBrowserClient } from "@/lib/supabase";
 import { updateStreak } from "@/lib/gamification-db";
+import { set } from "idb-keyval";
 
 // ===== Data Sync Layer =====
 // Bidirectional sync between localStorage and Supabase.
@@ -53,26 +54,17 @@ export async function syncStudyProgressToSupabase(userId: string): Promise<void>
   }
 }
 
-// ── Sync quiz history: localStorage → Supabase ──
+import { getQuizHistory } from "@/lib/readiness";
+
+// ── Sync quiz history: idb-keyval → Supabase ──
 
 export async function syncQuizHistoryToSupabase(userId: string): Promise<void> {
   if (!isSupabaseConfigured()) return;
   if (typeof window === "undefined") return;
 
   try {
-    const saved = localStorage.getItem(QUIZ_HISTORY_KEY);
-    if (!saved) return;
-
-    const history = JSON.parse(saved) as Array<{
-      testId: string;
-      score: number;
-      total: number;
-      valuesCorrect: number;
-      valuesTotal: number;
-      passed: boolean;
-      topicBreakdown?: Record<string, { correct: number; total: number }>;
-      completedAt: string;
-    }>;
+    const history = await getQuizHistory();
+    if (history.length === 0) return;
 
     if (history.length === 0) return;
 
@@ -255,12 +247,7 @@ export async function pullFromSupabase(userId: string): Promise<void> {
 
     if (quizData && quizData.length > 0) {
       // Merge with local history (deduplicate by completed_at)
-      const localHistorySaved = localStorage.getItem(QUIZ_HISTORY_KEY);
-      const localHistory = localHistorySaved
-        ? (JSON.parse(localHistorySaved) as Array<{
-            completedAt: string;
-          }>)
-        : [];
+      const localHistory = await getQuizHistory();
 
       const localDates = new Set(localHistory.map((h) => h.completedAt));
 
@@ -295,7 +282,7 @@ export async function pullFromSupabase(userId: string): Promise<void> {
           new Date(a.completedAt).getTime() - new Date(b.completedAt).getTime()
       );
 
-      localStorage.setItem(QUIZ_HISTORY_KEY, JSON.stringify(merged));
+      await set(QUIZ_HISTORY_KEY, merged);
     }
   } catch (err) {
     console.error("[sync] Failed to pull from Supabase:", err);

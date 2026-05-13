@@ -1032,6 +1032,12 @@
     "questions_remaining": "preguntas que quedan por resolver hoy",
     "questions_remaining_singular": "la pregunta que queda hoy"
   },
+  "connectivity": {
+    "offline": "Sin conexión 📡",
+    "offline_desc": "Tu progreso se guarda localmente y se sincronizará cuando te reconectes.",
+    "online": "¡De vuelta en línea! ✅",
+    "online_desc": "Los datos de tu prueba se están sincronizando en segundo plano."
+  },
   "cookie_consent": {
     "title": "Respetamos tu privacidad",
     "description": "Utilizamos cookies esenciales para que CitizenMate funcione. Con tu consentimiento, también utilizamos cookies de análisis para saber cómo utilizas nuestro servicio.",
