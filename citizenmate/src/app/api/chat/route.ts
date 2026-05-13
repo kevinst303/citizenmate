@@ -182,14 +182,17 @@ export async function POST(req: Request) {
   // ── Prioritised free models for OpenRouter (verified 13 May 2026) ──
   // Non-streaming preflight catches 429/503 before we attempt streaming.
   //
-  // ⚠️  ONLY models that actually emit delta.content in streaming mode are listed.
-  //     Reasoning-only models (nemotron-3-super, nemotron-nano, minimax, ring, etc.)
-  //     produce zero text output — the AI SDK rejects empty streams as errors.
+  // Expanded to 8 models to maximize availability since free-tier models
+  // are frequently rate-limited or cold-start slowly.
   const FREE_MODELS = [
-    "google/gemma-4-31b-it:free",           // primary: Google AI Studio, confirmed text streaming
-    "google/gemma-4-26b-a4b-it:free",       // fallback 1: smaller Gemma 4 variant, confirmed working
-    "nvidia/nemotron-3-super-120b-a12b:free", // fallback 2: confirmed text streaming
-    "qwen/qwen3-next-80b-a3b-instruct:free", // fallback 3: Qwen3 Next, confirmed free model
+    "google/gemma-4-31b-it:free",                   // primary: Google AI Studio, confirmed text streaming
+    "nvidia/nemotron-3-super-120b-a12b:free",       // fallback 1: NVIDIA, confirmed text streaming
+    "google/gemma-4-26b-a4b-it:free",               // fallback 2: smaller Gemma 4, confirmed HTTP 200
+    "liquid/lfm-2.5-1.2b-instruct:free",            // fallback 3: Liquid AI, lightweight & fast
+    "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free", // fallback 4: NVIDIA Nano Omni, confirmed HTTP 200
+    "inclusionai/ring-2.6-1t:free",                 // fallback 5: inclusionAI, confirmed HTTP 200
+    "poolside/laguna-xs.2:free",                     // fallback 6: Poolside, confirmed HTTP 200
+    "qwen/qwen3-next-80b-a3b-instruct:free",        // fallback 7: Qwen3 Next, confirmed free model
   ];
 
   let selectedModel: string | null = null;
@@ -208,7 +211,7 @@ export async function POST(req: Request) {
           max_tokens: 1,
           stream: false,
         }),
-        signal: AbortSignal.timeout(5000),
+        signal: AbortSignal.timeout(8000),
       });
 
       if (response.ok) {
