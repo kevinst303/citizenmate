@@ -23,7 +23,6 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 }
 
-const DISMISS_DURATION_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 const ENGAGEMENT_DELAY_MS = 30 * 1000; // 30 seconds
 
 function isIOSSafari(): boolean {
@@ -44,27 +43,6 @@ function isStandalone(): boolean {
   );
 }
 
-const valueProps = [
-  {
-    icon: WifiOff,
-    key: "offline",
-    color: "text-cm-teal",
-    bgColor: "bg-cm-teal/10",
-  },
-  {
-    icon: Bell,
-    key: "notifications",
-    color: "text-cm-sky",
-    bgColor: "bg-cm-sky/10",
-  },
-  {
-    icon: Zap,
-    key: "quick_launch",
-    color: "text-cm-eucalyptus",
-    bgColor: "bg-cm-eucalyptus/10",
-  },
-];
-
 export function InstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] =
     useState<BeforeInstallPromptEvent | null>(null);
@@ -75,10 +53,11 @@ export function InstallPrompt() {
   const { isAuthModalOpen } = useAuth();
   const {
     isInstallable,
-    hasDismissedModal,
+    dismissedAt,
     setInstallable,
     setInstalled,
     dismissModal,
+    shouldShowModal,
   } = usePwaStore();
 
   // Listen for the native install prompt event — syncs with Zustand store
@@ -110,7 +89,7 @@ export function InstallPrompt() {
 
   // Show prompt after engagement delay
   useEffect(() => {
-    if (isStandalone() || hasDismissedModal) return;
+    if (isStandalone() || !shouldShowModal()) return;
 
     let timer: NodeJS.Timeout;
     let waitingForConsent = false;
@@ -148,7 +127,7 @@ export function InstallPrompt() {
         window.removeEventListener("cm-consent-update", handleConsent);
       }
     };
-  }, [deferredPrompt, hasDismissedModal]);
+  }, [deferredPrompt, shouldShowModal]);
 
   const handleInstall = useCallback(async () => {
     if (!deferredPrompt) return;
@@ -280,10 +259,10 @@ export function InstallPrompt() {
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-cm-navy">
-                          Study offline
+                          {t("install.value_offline_title")}
                         </p>
                         <p className="text-xs text-cm-slate-500">
-                          Take quizzes without internet
+                          {t("install.value_offline_desc")}
                         </p>
                       </div>
                     </div>
@@ -293,10 +272,10 @@ export function InstallPrompt() {
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-cm-navy">
-                          Streak reminders
+                          {t("install.value_notif_title")}
                         </p>
                         <p className="text-xs text-cm-slate-500">
-                          Never miss a study day
+                          {t("install.value_notif_desc")}
                         </p>
                       </div>
                     </div>
@@ -306,10 +285,10 @@ export function InstallPrompt() {
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-cm-navy">
-                          Quick launch
+                          {t("install.value_launch_title")}
                         </p>
                         <p className="text-xs text-cm-slate-500">
-                          One tap from your home screen
+                          {t("install.value_launch_desc")}
                         </p>
                       </div>
                     </div>

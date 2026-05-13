@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import type { QuizResult } from "@/lib/types";
 import { TOPIC_LABELS } from "@/lib/types";
 import type { TopicCategory } from "@/lib/types";
+import { XaiTooltip } from "@/components/shared/xai-tooltip";
 import {
   Trophy,
   Heart,
@@ -264,8 +265,9 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
           <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-sky-50 text-cm-sky mb-3">
             <Clock className="w-5 h-5" />
           </div>
-          <div className="text-sm font-medium text-cm-slate-500 mb-2">
+          <div className="text-sm font-medium text-cm-slate-500 mb-2 flex items-center justify-center gap-1">
             {t("results.time_used", "Time Used")}
+            <XaiTooltip explanation={t("xai.interval_explanation")} />
           </div>
           <div className="text-4xl font-heading font-extrabold text-cm-teal">
             {timeMinutes}
@@ -399,6 +401,7 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
               <span className="text-[10px] font-bold text-cm-gold uppercase tracking-wider">
                 {t("results.ai_recommendation", "AI Recommendation")}
               </span>
+              <XaiTooltip explanation={t("xai.how_srs_works")} size="sm" />
             </div>
             <h4 className="text-base font-heading font-bold text-cm-slate-900 mb-1">
               {recommendation.emoji} {recommendation.title}

@@ -166,9 +166,9 @@ export function AiAssistant({
   };
 
   const btnClass =
-    'w-full flex items-center gap-2 px-3 py-2 text-xs font-medium rounded-lg border border-[#E9ECEF] bg-white hover:bg-[#006d77]/5 hover:border-[#006d77] text-slate-700 transition-colors';
+    'w-full flex items-center gap-2 px-3 py-2 text-xs font-medium rounded-lg border border-cm-slate-100 bg-white hover:bg-cm-navy/5 hover:border-cm-navy text-slate-700 transition-colors';
   const activeBtnClass =
-    'w-full flex items-center gap-2 px-3 py-2 text-xs font-medium rounded-lg border border-[#006d77] bg-[#006d77]/5 text-[#006d77] transition-colors';
+    'w-full flex items-center gap-2 px-3 py-2 text-xs font-medium rounded-lg border border-cm-navy bg-cm-navy/5 text-cm-navy transition-colors';
 
   return (
     <>
@@ -177,8 +177,8 @@ export function AiAssistant({
         onClick={() => setIsOpen(!isOpen)}
         className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
           isOpen
-            ? 'bg-[#006d77] text-white'
-            : 'border border-[#E9ECEF] bg-white text-slate-600 hover:bg-[#006d77]/5'
+            ? 'bg-cm-navy text-white'
+            : 'border border-cm-slate-100 bg-white text-slate-600 hover:bg-cm-navy/5'
         }`}
       >
         <Sparkles size={14} />
@@ -186,7 +186,7 @@ export function AiAssistant({
       </button>
 
       {isOpen && (
-        <div className="rounded-[10px] border border-[#E9ECEF] bg-white p-4 space-y-3">
+        <div className="rounded-[10px] border border-cm-slate-100 bg-white p-4 space-y-3">
           <div className="flex items-center justify-between">
             <h4 className="text-sm font-semibold text-slate-800">AI Assistant</h4>
             <button
@@ -208,7 +208,7 @@ export function AiAssistant({
               value={topic}
               onChange={(e) => setTopic(e.target.value)}
               placeholder="Enter a topic (e.g. 'How to prepare for the citizenship test')"
-              className="w-full px-3 py-2 text-xs border border-[#E9ECEF] rounded-lg resize-none focus:outline-none focus:ring-1 focus:ring-[#006d77]"
+              className="w-full px-3 py-2 text-xs border border-cm-slate-100 rounded-lg resize-none focus:outline-none focus:ring-1 focus:ring-cm-navy"
               rows={2}
             />
             <button
@@ -245,7 +245,7 @@ export function AiAssistant({
                     type="button"
                     onClick={() => handleTranslate(locale)}
                     disabled={loading === 'translate' || !currentContent}
-                    className="px-2 py-1 text-xs rounded-md border border-[#E9ECEF] bg-white hover:bg-[#006d77]/5 hover:border-[#006d77] text-slate-600 transition-colors disabled:opacity-50"
+                    className="px-2 py-1 text-xs rounded-md border border-cm-slate-100 bg-white hover:bg-cm-navy/5 hover:border-cm-navy text-slate-600 transition-colors disabled:opacity-50"
                   >
                     <Languages size={12} className="inline mr-1" />
                     {LOCALE_LABELS[locale] || locale}
@@ -278,7 +278,7 @@ export function AiAssistant({
 
           {/* Results */}
           {result && (
-            <div className="rounded-lg border border-[#E9ECEF] bg-slate-50 p-3 space-y-2">
+            <div className="rounded-lg border border-cm-slate-100 bg-slate-50 p-3 space-y-2">
               <div className="text-xs text-slate-500 max-h-48 overflow-y-auto">
                 <div dangerouslySetInnerHTML={{ __html: result }} />
               </div>
@@ -288,7 +288,7 @@ export function AiAssistant({
                   onInsertContent(result);
                   setResult(null);
                 }}
-                className="w-full px-3 py-1.5 text-xs font-medium rounded-md bg-[#006d77] text-white hover:bg-[#005a63] transition-colors"
+                className="w-full px-3 py-1.5 text-xs font-medium rounded-md bg-cm-navy text-white hover:bg-cm-teal-dark transition-colors"
               >
                 Insert into Editor
               </button>
@@ -296,12 +296,12 @@ export function AiAssistant({
           )}
 
           {tagResults && (
-            <div className="rounded-lg border border-[#E9ECEF] bg-slate-50 p-3 space-y-2">
+            <div className="rounded-lg border border-cm-slate-100 bg-slate-50 p-3 space-y-2">
               <div className="flex flex-wrap gap-1">
                 {tagResults.map((tag) => (
                   <span
                     key={tag}
-                    className="px-2 py-0.5 text-xs rounded-full bg-[#006d77]/10 text-[#006d77]"
+                    className="px-2 py-0.5 text-xs rounded-full bg-cm-navy/10 text-cm-navy"
                   >
                     {tag}
                   </span>
@@ -313,7 +313,7 @@ export function AiAssistant({
                   onSuggestTags(tagResults);
                   setTagResults(null);
                 }}
-                className="w-full px-3 py-1.5 text-xs font-medium rounded-md bg-[#006d77] text-white hover:bg-[#005a63] transition-colors"
+                className="w-full px-3 py-1.5 text-xs font-medium rounded-md bg-cm-navy text-white hover:bg-cm-teal-dark transition-colors"
               >
                 Add These Tags
               </button>
@@ -321,7 +321,7 @@ export function AiAssistant({
           )}
 
           {seoResults && (
-            <div className="rounded-lg border border-[#E9ECEF] bg-slate-50 p-3 space-y-2">
+            <div className="rounded-lg border border-cm-slate-100 bg-slate-50 p-3 space-y-2">
               <div className="text-xs space-y-1">
                 <p><strong>Title:</strong> {seoResults.title}</p>
                 <p><strong>Description:</strong> {seoResults.description}</p>
@@ -333,7 +333,7 @@ export function AiAssistant({
                   onSuggestSeo(seoResults);
                   setSeoResults(null);
                 }}
-                className="w-full px-3 py-1.5 text-xs font-medium rounded-md bg-[#006d77] text-white hover:bg-[#005a63] transition-colors"
+                className="w-full px-3 py-1.5 text-xs font-medium rounded-md bg-cm-navy text-white hover:bg-cm-teal-dark transition-colors"
               >
                 Apply SEO Fields
               </button>

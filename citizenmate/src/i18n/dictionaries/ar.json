@@ -1052,7 +1052,13 @@
     "step_2": "إضافة إلى الشاشة الرئيسية",
     "got_it": "فهمت",
     "install_button": "تثبيت",
-    "not_now": "ليس الآن"
+    "not_now": "ليس الآن",
+    "value_offline_title": "ادرس دون اتصال",
+    "value_offline_desc": "أجرِ الاختبارات دون إنترنت",
+    "value_notif_title": "تذكير الاستمرارية",
+    "value_notif_desc": "لا تفوّت أي يوم دراسي",
+    "value_launch_title": "تشغيل سريع",
+    "value_launch_desc": "نقرة واحدة من شاشتك الرئيسية"
   },
   "test_date": {
     "today": "اليوم!",

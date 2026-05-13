@@ -436,7 +436,7 @@ export default function AdminBlogPage() {
             <button
               onClick={handleSave}
               disabled={saving}
-              className="px-5 py-2 bg-[#006d77] hover:bg-[#005a63] text-white font-semibold rounded-xl text-sm transition-colors disabled:opacity-50"
+              className="px-5 py-2 bg-cm-navy hover:bg-cm-teal-dark text-white font-semibold rounded-xl text-sm transition-colors disabled:opacity-50"
             >
               {saving ? 'Saving...' : 'Save Post'}
             </button>
@@ -464,13 +464,13 @@ export default function AdminBlogPage() {
         )}
 
         {/* Status row */}
-        <div className="flex items-center gap-4 bg-white rounded-xl border border-[#E9ECEF] px-4 py-3">
+        <div className="flex items-center gap-4 bg-white rounded-xl border border-cm-slate-100 px-4 py-3">
           <div className="flex items-center gap-2">
             <span className="text-xs text-slate-500">Status:</span>
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value as BlogPostStatus)}
-              className="text-sm border border-[#E9ECEF] rounded-lg px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-[#006d77]"
+              className="text-sm border border-cm-slate-100 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-cm-navy"
             >
               <option value="draft">Draft</option>
               <option value="published">Published</option>
@@ -481,7 +481,7 @@ export default function AdminBlogPage() {
               type="checkbox"
               checked={isFeatured}
               onChange={(e) => setIsFeatured(e.target.checked)}
-              className="rounded accent-[#006d77]"
+              className="rounded accent-cm-navy"
             />
             <Star
               size={14}
@@ -494,7 +494,7 @@ export default function AdminBlogPage() {
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-lg border border-[#E9ECEF] bg-white hover:bg-slate-50 text-slate-600 transition-colors"
+            className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-lg border border-cm-slate-100 bg-white hover:bg-slate-50 text-slate-600 transition-colors"
           >
             <Upload size={12} />
             Feature Image
@@ -509,7 +509,7 @@ export default function AdminBlogPage() {
         </div>
 
         {/* Locale Tabs */}
-        <div className="flex gap-1 border-b border-[#E9ECEF]">
+        <div className="flex gap-1 border-b border-cm-slate-100">
           {LOCALES.map((locale) => {
             const hasContent = translations[locale]?.title?.trim().length > 0;
             return (
@@ -518,13 +518,13 @@ export default function AdminBlogPage() {
                 onClick={() => setActiveLocale(locale)}
                 className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
                   activeLocale === locale
-                    ? 'border-[#006d77] text-[#006d77]'
+                    ? 'border-cm-navy text-cm-navy'
                     : 'border-transparent text-slate-500 hover:text-slate-700'
                 }`}
               >
                 {LOCALE_LABELS[locale]}
                 {hasContent && (
-                  <span className="ml-1 inline-block w-1.5 h-1.5 rounded-full bg-[#006d77]" />
+                  <span className="ml-1 inline-block w-1.5 h-1.5 rounded-full bg-cm-navy" />
                 )}
               </button>
             );
@@ -538,7 +538,7 @@ export default function AdminBlogPage() {
             placeholder={`Title (${LOCALE_LABELS[activeLocale]})`}
             value={activeTrans.title}
             onChange={(e) => handleTitleChange(e.target.value)}
-            className="w-full px-4 py-3 text-lg font-semibold border border-[#E9ECEF] rounded-xl focus:outline-none focus:ring-1 focus:ring-[#006d77]"
+            className="w-full px-4 py-3 text-lg font-semibold border border-cm-slate-100 rounded-xl focus:outline-none focus:ring-1 focus:ring-cm-navy"
           />
         </div>
 
@@ -550,7 +550,7 @@ export default function AdminBlogPage() {
             placeholder="post-url-slug"
             value={activeTrans.slug}
             onChange={(e) => handleSlugChange(e.target.value)}
-            className="w-full px-4 py-2 text-sm border border-[#E9ECEF] rounded-lg font-mono focus:outline-none focus:ring-1 focus:ring-[#006d77]"
+            className="w-full px-4 py-2 text-sm border border-cm-slate-100 rounded-lg font-mono focus:outline-none focus:ring-1 focus:ring-cm-navy"
           />
         </div>
 
@@ -567,7 +567,7 @@ export default function AdminBlogPage() {
               }))
             }
             rows={2}
-            className="w-full px-4 py-2 text-sm border border-[#E9ECEF] rounded-lg resize-none focus:outline-none focus:ring-1 focus:ring-[#006d77]"
+            className="w-full px-4 py-2 text-sm border border-cm-slate-100 rounded-lg resize-none focus:outline-none focus:ring-1 focus:ring-cm-navy"
           />
         </div>
 
@@ -590,13 +590,13 @@ export default function AdminBlogPage() {
         </div>
 
         {/* Tags */}
-        <div className="bg-white rounded-xl border border-[#E9ECEF] p-4 space-y-2">
+        <div className="bg-white rounded-xl border border-cm-slate-100 p-4 space-y-2">
           <h3 className="text-sm font-semibold text-slate-700">Tags</h3>
           <div className="flex flex-wrap gap-1 mb-2">
             {selectedTags.map((tag) => (
               <span
                 key={tag.id}
-                className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-full bg-[#006d77]/10 text-[#006d77]"
+                className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-full bg-cm-navy/10 text-cm-navy"
               >
                 {tag.name}
                 <button
@@ -625,16 +625,16 @@ export default function AdminBlogPage() {
                   else createTag();
                 }
               }}
-              className="w-full px-3 py-2 text-sm border border-[#E9ECEF] rounded-lg focus:outline-none focus:ring-1 focus:ring-[#006d77]"
+              className="w-full px-3 py-2 text-sm border border-cm-slate-100 rounded-lg focus:outline-none focus:ring-1 focus:ring-cm-navy"
             />
             {tagInput && filteredTags.length > 0 && (
-              <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-[#E9ECEF] rounded-lg shadow-lg z-20 max-h-40 overflow-y-auto">
+              <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-cm-slate-100 rounded-lg shadow-lg z-20 max-h-40 overflow-y-auto">
                 {filteredTags.map((tag) => (
                   <button
                     key={tag.id}
                     type="button"
                     onClick={() => addTag(tag)}
-                    className="w-full text-left px-3 py-2 text-sm hover:bg-[#006d77]/5 text-slate-700"
+                    className="w-full text-left px-3 py-2 text-sm hover:bg-cm-navy/5 text-slate-700"
                   >
                     {tag.name}
                   </button>
@@ -642,11 +642,11 @@ export default function AdminBlogPage() {
               </div>
             )}
             {tagInput && filteredTags.length === 0 && (
-              <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-[#E9ECEF] rounded-lg shadow-lg z-20">
+              <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-cm-slate-100 rounded-lg shadow-lg z-20">
                 <button
                   type="button"
                   onClick={createTag}
-                  className="w-full text-left px-3 py-2 text-sm text-[#006d77] hover:bg-[#006d77]/5"
+                  className="w-full text-left px-3 py-2 text-sm text-cm-navy hover:bg-cm-navy/5"
                 >
                   Create &ldquo;{tagInput.trim()}&rdquo;
                 </button>
@@ -656,7 +656,7 @@ export default function AdminBlogPage() {
         </div>
 
         {/* SEO Panel */}
-        <div className="bg-white rounded-xl border border-[#E9ECEF] overflow-hidden">
+        <div className="bg-white rounded-xl border border-cm-slate-100 overflow-hidden">
           <button
             type="button"
             onClick={() => setSeoOpen(!seoOpen)}
@@ -669,7 +669,7 @@ export default function AdminBlogPage() {
             {seoOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
           </button>
           {seoOpen && (
-            <div className="px-4 pb-4 space-y-3 border-t border-[#E9ECEF] pt-3">
+            <div className="px-4 pb-4 space-y-3 border-t border-cm-slate-100 pt-3">
               <div>
                 <label className="flex items-center justify-between text-xs text-slate-500 mb-1">
                   <span>SEO Title</span>
@@ -687,7 +687,7 @@ export default function AdminBlogPage() {
                       [activeLocale]: { ...prev[activeLocale], seo_title: e.target.value },
                     }))
                   }
-                  className="w-full px-3 py-2 text-sm border border-[#E9ECEF] rounded-lg focus:outline-none focus:ring-1 focus:ring-[#006d77]"
+                  className="w-full px-3 py-2 text-sm border border-cm-slate-100 rounded-lg focus:outline-none focus:ring-1 focus:ring-cm-navy"
                 />
               </div>
               <div>
@@ -714,7 +714,7 @@ export default function AdminBlogPage() {
                     }))
                   }
                   rows={2}
-                  className="w-full px-3 py-2 text-sm border border-[#E9ECEF] rounded-lg resize-none focus:outline-none focus:ring-1 focus:ring-[#006d77]"
+                  className="w-full px-3 py-2 text-sm border border-cm-slate-100 rounded-lg resize-none focus:outline-none focus:ring-1 focus:ring-cm-navy"
                 />
               </div>
               <div>
@@ -729,7 +729,7 @@ export default function AdminBlogPage() {
                       [activeLocale]: { ...prev[activeLocale], seo_keywords: e.target.value },
                     }))
                   }
-                  className="w-full px-3 py-2 text-sm border border-[#E9ECEF] rounded-lg focus:outline-none focus:ring-1 focus:ring-[#006d77]"
+                  className="w-full px-3 py-2 text-sm border border-cm-slate-100 rounded-lg focus:outline-none focus:ring-1 focus:ring-cm-navy"
                 />
               </div>
               <div>
@@ -747,7 +747,7 @@ export default function AdminBlogPage() {
                       },
                     }))
                   }
-                  className="w-full px-3 py-2 text-sm border border-[#E9ECEF] rounded-lg focus:outline-none focus:ring-1 focus:ring-[#006d77]"
+                  className="w-full px-3 py-2 text-sm border border-cm-slate-100 rounded-lg focus:outline-none focus:ring-1 focus:ring-cm-navy"
                 />
               </div>
             </div>
@@ -767,7 +767,7 @@ export default function AdminBlogPage() {
         </div>
         <button
           onClick={handleCreate}
-          className="flex items-center gap-2 px-5 py-2.5 bg-[#006d77] hover:bg-[#005a63] text-white font-semibold rounded-xl shadow-sm transition-colors text-sm"
+          className="flex items-center gap-2 px-5 py-2.5 bg-cm-navy hover:bg-cm-teal-dark text-white font-semibold rounded-xl shadow-sm transition-colors text-sm"
         >
           <Plus size={16} />
           Create Post
@@ -828,7 +828,7 @@ export default function AdminBlogPage() {
                         {(post.tags || []).slice(0, 2).map((tag) => (
                           <span
                             key={tag.id}
-                            className="px-2 py-0.5 text-xs rounded-full bg-[#006d77]/10 text-[#006d77]"
+                            className="px-2 py-0.5 text-xs rounded-full bg-cm-navy/10 text-cm-navy"
                           >
                             {tag.name}
                           </span>
@@ -862,7 +862,7 @@ export default function AdminBlogPage() {
                     <td className="px-6 py-4 text-right space-x-3">
                       <button
                         onClick={() => loadPostForEdit(post)}
-                        className="text-[#006d77] hover:text-[#004d55] font-medium text-sm transition-colors"
+                        className="text-cm-navy hover:text-cm-teal-darker font-medium text-sm transition-colors"
                       >
                         Edit
                       </button>

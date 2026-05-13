@@ -26,17 +26,17 @@ export function EditorBubbleMenu({ editor }: EditorBubbleMenuProps) {
   if (!editor) return null;
 
   const btnClass =
-    'p-1.5 rounded text-slate-600 hover:bg-[#006d77]/10 hover:text-[#006d77] transition-colors';
+    'p-1.5 rounded text-slate-600 hover:bg-cm-navy/10 hover:text-cm-navy transition-colors';
 
   return (
     <BubbleMenu
       editor={editor}
-      className="flex items-center gap-0.5 rounded-[10px] bg-white border border-[#E9ECEF] shadow-lg px-1 py-1"
+      className="flex items-center gap-0.5 rounded-[10px] bg-white border border-cm-slate-100 shadow-lg px-1 py-1"
     >
       <button
         type="button"
         onClick={() => editor.chain().focus().toggleBold().run()}
-        className={`${btnClass} ${editor.isActive('bold') ? 'text-[#006d77] bg-[#006d77]/10' : ''}`}
+        className={`${btnClass} ${editor.isActive('bold') ? 'text-cm-navy bg-cm-navy/10' : ''}`}
         title="Bold"
       >
         <Bold size={14} />
@@ -44,7 +44,7 @@ export function EditorBubbleMenu({ editor }: EditorBubbleMenuProps) {
       <button
         type="button"
         onClick={() => editor.chain().focus().toggleItalic().run()}
-        className={`${btnClass} ${editor.isActive('italic') ? 'text-[#006d77] bg-[#006d77]/10' : ''}`}
+        className={`${btnClass} ${editor.isActive('italic') ? 'text-cm-navy bg-cm-navy/10' : ''}`}
         title="Italic"
       >
         <Italic size={14} />
@@ -52,16 +52,16 @@ export function EditorBubbleMenu({ editor }: EditorBubbleMenuProps) {
       <button
         type="button"
         onClick={() => editor.chain().focus().toggleUnderline().run()}
-        className={`${btnClass} ${editor.isActive('underline') ? 'text-[#006d77] bg-[#006d77]/10' : ''}`}
+        className={`${btnClass} ${editor.isActive('underline') ? 'text-cm-navy bg-cm-navy/10' : ''}`}
         title="Underline"
       >
         <UnderlineIcon size={14} />
       </button>
-      <div className="w-px h-4 bg-[#E9ECEF] mx-0.5" />
+      <div className="w-px h-4 bg-cm-slate-100 mx-0.5" />
       <button
         type="button"
         onClick={addLink}
-        className={`${btnClass} ${editor.isActive('link') ? 'text-[#006d77] bg-[#006d77]/10' : ''}`}
+        className={`${btnClass} ${editor.isActive('link') ? 'text-cm-navy bg-cm-navy/10' : ''}`}
         title="Add Link"
       >
         <LinkIcon size={14} />

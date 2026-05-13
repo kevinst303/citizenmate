@@ -1058,7 +1058,13 @@
     "step_2": "Añadir a la pantalla de inicio",
     "got_it": "Entendido",
     "install_button": "Instalar",
-    "not_now": "Ahora no"
+    "not_now": "Ahora no",
+    "value_offline_title": "Estudiar sin conexión",
+    "value_offline_desc": "Haz exámenes sin internet",
+    "value_notif_title": "Récord de rachas",
+    "value_notif_desc": "No te pierdas ningún día de estudio",
+    "value_launch_title": "Inicio rápido",
+    "value_launch_desc": "Un toque desde tu pantalla de inicio"
   },
   "test_date": {
     "today": "¡Hoy!",

@@ -120,7 +120,7 @@ export function ReferralCodes() {
                   <th className="px-5 py-3.5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#E9ECEF]">
+              <tbody className="divide-y divide-cm-slate-100">
                 {filtered.length === 0 ? (
                   <tr>
                     <td

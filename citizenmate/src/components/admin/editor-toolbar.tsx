@@ -64,9 +64,9 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
   if (!editor) return null;
 
   const btnBase =
-    'p-2 rounded-md text-slate-600 hover:bg-[#006d77]/10 hover:text-[#006d77] transition-colors';
+    'p-2 rounded-md text-slate-600 hover:bg-cm-navy/10 hover:text-cm-navy transition-colors';
   const btnActive =
-    'p-2 rounded-md text-white bg-[#006d77] hover:bg-[#005a63] transition-colors';
+    'p-2 rounded-md text-white bg-cm-navy hover:bg-cm-teal-dark transition-colors';
 
   const ToolBtn = ({
     onClick,
@@ -89,11 +89,11 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
     </button>
   );
 
-  const Divider = () => <div className="w-px h-6 bg-[#E9ECEF] mx-1" />;
+  const Divider = () => <div className="w-px h-6 bg-cm-slate-100 mx-1" />;
 
   return (
     <div
-      className="flex flex-wrap items-center gap-0.5 px-3 py-2 border-b border-[#E9ECEF] bg-slate-50/50 sticky top-0 z-10"
+      className="flex flex-wrap items-center gap-0.5 px-3 py-2 border-b border-cm-slate-100 bg-slate-50/50 sticky top-0 z-10"
       style={{ fontFamily: 'Poppins, Inter, sans-serif' }}
     >
       <ToolBtn

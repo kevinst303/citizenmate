@@ -1052,7 +1052,13 @@
     "step_2": "Thêm vào Màn hình chính",
     "got_it": "Hiểu rồi",
     "install_button": "Cài đặt",
-    "not_now": "Không phải bây giờ"
+    "not_now": "Không phải bây giờ",
+    "value_offline_title": "Học ngoại tuyến",
+    "value_offline_desc": "Làm bài kiểm tra không cần internet",
+    "value_notif_title": "Nhắc nhở chuỗi ngày",
+    "value_notif_desc": "Không bao giờ bỏ lỡ một ngày học",
+    "value_launch_title": "Khởi động nhanh",
+    "value_launch_desc": "Một chạm từ màn hình chính"
   },
   "test_date": {
     "today": "Hôm nay!",

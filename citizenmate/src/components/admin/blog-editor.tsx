@@ -73,7 +73,7 @@ export function BlogEditor({ content, onChange, postId }: BlogEditorProps) {
         linkOnPaste: true,
         HTMLAttributes: {
           class:
-            'text-[#006d77] underline decoration-[#006d77]/30 hover:decoration-[#006d77]',
+            'text-cm-navy underline decoration-cm-navy/30 hover:decoration-cm-navy',
           rel: 'noopener noreferrer nofollow',
           target: '_blank',
         },
@@ -134,14 +134,14 @@ export function BlogEditor({ content, onChange, postId }: BlogEditorProps) {
 
   if (!isMounted) {
     return (
-      <div className="min-h-[400px] rounded-[10px] border border-[#E9ECEF] bg-white px-6 py-4 text-slate-400">
+      <div className="min-h-[400px] rounded-[10px] border border-cm-slate-100 bg-white px-6 py-4 text-slate-400">
         Loading editor...
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-0 rounded-[10px] border border-[#E9ECEF] bg-white overflow-hidden">
+    <div className="flex flex-col gap-0 rounded-[10px] border border-cm-slate-100 bg-white overflow-hidden">
       <EditorToolbar editor={editor} />
       <EditorBubbleMenu editor={editor} />
       <EditorContent editor={editor} />

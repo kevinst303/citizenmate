@@ -1052,7 +1052,13 @@
     "step_2": "添加到主屏幕",
     "got_it": "明白了",
     "install_button": "安装",
-    "not_now": "现在不行"
+    "not_now": "现在不行",
+    "value_offline_title": "离线学习",
+    "value_offline_desc": "无需网络即可进行测验",
+    "value_notif_title": "连续提醒",
+    "value_notif_desc": "不错过任何学习日",
+    "value_launch_title": "快速启动",
+    "value_launch_desc": "从主屏幕一键打开"
   },
   "test_date": {
     "today": "就在今天！",

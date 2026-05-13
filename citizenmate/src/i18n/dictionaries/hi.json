@@ -1052,7 +1052,13 @@
     "step_2": "होम स्क्रीन पर जोड़ें",
     "got_it": "समझ गया",
     "install_button": "स्थापित करें",
-    "not_now": "अभी नहीं"
+    "not_now": "अभी नहीं",
+    "value_offline_title": "ऑफ़लाइन पढ़ाई करें",
+    "value_offline_desc": "इंटरनेट के बिना क्विज़ लें",
+    "value_notif_title": "स्ट्रीक रिमाइंडर",
+    "value_notif_desc": "कभी भी पढ़ाई का दिन न चूकें",
+    "value_launch_title": "त्वरित लॉन्च",
+    "value_launch_desc": "होम स्क्रीन से एक टैप"
   },
   "test_date": {
     "today": "आज!",

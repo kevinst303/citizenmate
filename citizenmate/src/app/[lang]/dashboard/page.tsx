@@ -207,6 +207,9 @@ export default function DashboardPage() {
             </motion.div>
           )}
 
+          {/* Quick actions */}
+          <QuickActions recommendedAction={aiInsight.recommendedAction} />
+
           {/* Topic mastery */}
           <TopicMasteryGrid
             readiness={readiness}
@@ -228,9 +231,6 @@ export default function DashboardPage() {
           <motion.div variants={item} className="dashboard-section-divider">
             <ProgressionCard />
           </motion.div>
-
-          {/* Quick actions */}
-          <QuickActions recommendedAction={aiInsight.recommendedAction} />
 
           {/* Stats summary */}
           <StatsSummary readiness={readiness} />

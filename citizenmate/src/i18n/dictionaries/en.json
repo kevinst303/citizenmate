@@ -60,7 +60,6 @@
     "values_not_ready": "Australian Values — Not Yet Ready",
     "values_not_ready_desc": "All 5 values questions must be answered correctly to pass the citizenship test. Study this topic carefully.",
     "study_values_now": "Study Now",
-    "topic_mastery": "Topic Mastery",
     "quiz_label": "Quiz",
     "study_label": "Study",
     "analytics_locked": "Detailed Analytics Locked",
@@ -118,18 +117,33 @@
         "uv_index": "UV Index",
         "forecast_7_day": "7-Day Forecast",
         "uv": {
-          "low": { "label": "Low", "tip": "Enjoy the outdoors safely." },
-          "moderate": { "label": "Moderate", "tip": "Wear sunscreen & a hat." },
-          "high": { "label": "High", "tip": "Slip, Slop, Slap, Seek & Slide!" },
-          "very_high": { "label": "Very High", "tip": "Avoid sun 10am–2pm. Cover up!" },
-          "extreme": { "label": "Extreme", "tip": "Stay indoors if possible!" }
+          "low": {
+            "label": "Low",
+            "tip": "Enjoy the outdoors safely."
+          },
+          "moderate": {
+            "label": "Moderate",
+            "tip": "Wear sunscreen & a hat."
+          },
+          "high": {
+            "label": "High",
+            "tip": "Slip, Slop, Slap, Seek & Slide!"
+          },
+          "very_high": {
+            "label": "Very High",
+            "tip": "Avoid sun 10am–2pm. Cover up!"
+          },
+          "extreme": {
+            "label": "Extreme",
+            "tip": "Stay indoors if possible!"
+          }
         }
       }
     }
   },
   "life_in_australia": {
-    "title": "Discover Australia",
-    "subtitle": "Quick facts and daily life info"
+    "title": "Life in Australia",
+    "subtitle": "Live data to help you settle into your new home"
   },
   "onboarding": {
     "welcome": "Welcome to CitizenMate!",
@@ -1041,7 +1055,13 @@
     "step_2": "Add to Home Screen",
     "got_it": "Got it",
     "install_button": "Install",
-    "not_now": "Not now"
+    "not_now": "Not now",
+    "value_offline_title": "Study offline",
+    "value_offline_desc": "Take quizzes without internet",
+    "value_notif_title": "Streak reminders",
+    "value_notif_desc": "Never miss a study day",
+    "value_launch_title": "Quick launch",
+    "value_launch_desc": "One tap from your home screen"
   },
   "test_date": {
     "today": "Today!",
@@ -1111,10 +1131,6 @@
     "explanation": "Explanation",
     "reference": "Reference:",
     "unanswered": "You didn't answer this question"
-  },
-  "life_in_australia": {
-    "title": "Life in Australia",
-    "subtitle": "Live data to help you settle into your new home"
   },
   "readiness": {
     "no_activity": "Start studying or take a mock test to see your readiness, mate.",

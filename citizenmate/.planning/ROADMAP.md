@@ -94,7 +94,7 @@ Plans:
 - ✅ Engine (level calculation + XP thresholds + level titles) — executed
 - ✅ Integration (API + hook + UI widget + dashboard insertion) — executed commit `d2491dc`
 
-### Phase 12: Explainable AI (XAI) Tooltips
+### Phase 12: Explainable AI (XAI) Tooltips — ✅ Complete 2026-05-13
 
 **Goal:** Add SRS algorithm explanation tooltips and trust-building UI to help users understand why the AI recommends specific study intervals.
 
@@ -119,4 +119,4 @@ Plans:
 | 9. Daily Streaks Engine | v1.2 | 1/1 | ✅ Complete | 2026-05-12 |
 | 10. Achievement Badges | v1.2 | 1/1 | ✅ Complete | 2026-05-12 |
 | 11. Progression System | v1.2 | 2/2 | ✅ Complete | 2026-05-12 |
-| 12. Explainable AI Tooltips | v1.2 | — | 🔲 Not Started | — |
+| 12. Explainable AI Tooltips | v1.2 | — | ✅ Complete | 2026-05-13 |

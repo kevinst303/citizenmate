@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import type { QuizQuestion } from "@/lib/types";
 import { useT } from "@/i18n/i18n-context";
+import { XaiTooltip } from "@/components/shared/xai-tooltip";
 import {
   CheckCircle2,
   XCircle,
@@ -125,8 +126,9 @@ export function QuestionReview({
         <p className="text-sm text-cm-slate-700 leading-relaxed">
           {question.rationale}
         </p>
-        <p className="text-xs text-cm-slate-400 mt-2 italic">
-          {t("question_review.reference")}: {question.bookReference}
+        <p className="text-xs text-cm-slate-400 mt-2 italic flex items-center gap-1">
+          <span>{t("question_review.reference")}: {question.bookReference}</span>
+          <XaiTooltip explanation={t("xai.confidence_explanation")} />
         </p>
       </div>
 
