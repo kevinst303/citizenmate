@@ -1,37 +1,31 @@
-# Milestone v1.1 Requirements
+# v1.3 Requirements
 
-## Infrastructure
-- [ ] **INFRA-01**: Implement automated test framework (Vitest). Specifically, unit tests for SRS engine and Readiness Calculator.
-- [ ] **INFRA-02**: Add Sentry error tracking for production visibility.
-- [ ] **INFRA-03**: Implement Redis rate limiting via Upstash to replace the ineffective in-memory rate limiter for the AI Tutor.
-- [ ] **INFRA-04**: Refactor the dashboard monolithic structure (`src/app/dashboard/page.tsx` and `src/data/questions.ts`) to improve maintainability and bundle size.
+## DASH — Dashboard Refactor
 
-## Revenue Engine
-- [ ] **REV-01**: Build test-date-anchored onboarding flow to trigger personalized study plans.
-- [ ] **REV-02**: Implement 6 upgrade moment triggers throughout the user journey as defined in the business plan.
-- [ ] **REV-03**: Implement tiered subscription pricing logic (Pro/Premium) in Stripe checkout to support recurring and micro-transactions.
-- [ ] **REV-04**: Integrate PostHog analytics to track conversion funnels and user engagement.
+- [ ] **DASH-01**: Extract dashboard page.tsx monolith into modular components (ReadinessPanel, TopicMasteryGrid, QuickActions, StatsSummary, TestDateCard)
+- [ ] **DASH-02**: All extracted components use Conseil design tokens with proper TypeScript types
+- [ ] **DASH-03**: Dashboard page loads and renders identically to pre-refactor state
 
-## Growth
-- [ ] **GROW-01**: Add 4 new language pairs to expand the addressable market.
-- [ ] **GROW-02**: Build the "Help a Mate" referral program to establish growth loops.
-- [ ] **GROW-03**: Implement email notifications to drive re-engagement.
+## PWA — PWA Install Modal
 
-## Future Requirements (Deferred)
-- (None defined yet)
+- [ ] **PWA-01**: Implement custom Conseil-styled PWA install modal with animations
+- [ ] **PWA-02**: Add Zustand store for install modal dismissal tracking with localStorage persistence
+- [ ] **PWA-03**: Add i18n support (en/vi/es/hi/zh/ar) for install modal copy
 
-## Out of Scope
-- Major UI/UX redesigns (already completed in v1.0).
+## BLOG — Admin Blog Cleanup
+
+- [ ] **BLOG-01**: Replace all hardcoded hex values in Admin/Blog with Conseil CSS variables
+- [ ] **BLOG-02**: Verify visual consistency — all blog admin pages render identically post-migration
 
 ## Traceability
-- **INFRA-01**: Phase 4
-- **INFRA-02**: Phase 5
-- **INFRA-03**: Phase 5
-- **INFRA-04**: Phase 4
-- **REV-01**: Phase 6
-- **REV-02**: Phase 6
-- **REV-03**: Phase 6
-- **REV-04**: Phase 5
-- **GROW-01**: Phase 7
-- **GROW-02**: Phase 7
-- **GROW-03**: Phase 7
+
+| REQ-ID | Phase | Status |
+|--------|-------|--------|
+| DASH-01 | 15. Dashboard Refactor | Not Started |
+| DASH-02 | 15. Dashboard Refactor | Not Started |
+| DASH-03 | 15. Dashboard Refactor | Not Started |
+| PWA-01 | 16. PWA Install Modal | Not Started |
+| PWA-02 | 16. PWA Install Modal | Not Started |
+| PWA-03 | 16. PWA Install Modal | Not Started |
+| BLOG-01 | 17. Admin Blog Cleanup | Not Started |
+| BLOG-02 | 17. Admin Blog Cleanup | Not Started |

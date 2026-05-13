@@ -1,21 +1,21 @@
-# CitizenMate — Launch Readiness
+# CitizenMate — Codebase Polish & UX Refinements
 
-## Current Milestone: v1.1 Launch Readiness
+## Current Milestone: v1.3 Codebase Polish & UX Refinements
 
-**Goal:** Get CitizenMate production-ready with infrastructure hardening, revenue conversion engine, and growth mechanics from the business plan.
+**Goal:** Improve codebase maintainability through dashboard modularization, enhance UX with a custom PWA install modal, and clean up legacy design tokens.
 
 **Target features:**
-- Infrastructure: Automated tests, Sentry error tracking, Redis rate limiting, dashboard refactor
-- Revenue Engine: Test-date onboarding, 6 upgrade moment triggers, tiered pricing (Pro/Premium), PostHog analytics
-- Growth: 4 new language pairs, "Help a Mate" referral program, email notifications
+- Dashboard Refactor: Extract monolithic `dashboard/page.tsx` (~712 LOC) into modular components (ReadinessPanel, TopicMasteryGrid, QuickActions, StatsSummary, TestDateCard)
+- PWA Install Modal: Custom Conseil-styled "Add to Home Screen" modal with Zustand state for dismissal tracking + i18n support
+- Admin Blog Cleanup: Replace hardcoded hex values with Conseil CSS variables in Admin/Blog section
 
 ## What This Is
 
-CitizenMate is a Next.js 16 civic-education SaaS app (quiz, study, and dashboard flows). The v1.1 milestone focuses on transitioning from an MVP to a revenue-generating SaaS by implementing test automation, robust infrastructure, and business-critical features.
+CitizenMate is a Next.js 16 civic-education SaaS app (quiz, study, and dashboard flows). The v1.3 milestone focuses on code quality, UX polish, and design consistency — extracting monoliths, building polished UI components, and standardizing design tokens.
 
 ## Core Value
 
-Every page of CitizenMate renders with the Conseil design system. v1.1 ensures the application is reliable, secure, and optimized for user conversion and growth.
+Every page of CitizenMate renders with the Conseil design system. v1.3 ensures the codebase is maintainable (modular dashboard), the PWA experience is premium (custom install modal), and all admin pages use canonical Conseil design tokens consistently.
 
 ## Requirements
 
@@ -37,21 +37,15 @@ Every page of CitizenMate renders with the Conseil design system. v1.1 ensures t
 
 ### Active
 
-*(Next milestone requirements — defined via `/gsd:new-milestone`)*
-- INFRA-01: Implement automated test framework (Vitest)
-- INFRA-02: Add Sentry error tracking
-- INFRA-03: Implement Redis rate limiting
-- INFRA-04: Refactor dashboard monolithic structure
-- REV-01: Build test-date onboarding flow
-- REV-02: Implement 6 upgrade moment triggers
-- REV-03: Implement tiered pricing (Pro/Premium)
-- REV-04: Integrate PostHog analytics
-- GROW-01: Add 4 new language pairs
-- GROW-02: Build "Help a Mate" referral program
-- GROW-03: Implement email notifications
-- UX-01: Calm UX & Interface Modernization (Progressive disclosure, reduced motion)
-- UX-02: Anxiety-Reduction & Wellbeing (Scaffolded feedback, breathing prompts)
-- UX-03: Adaptive Gamification & XAI (Effort-based rewards, transparent algorithms)
+*(v1.3 requirements — defined via `/gsd:new-milestone`)*
+- DASH-01: Extract dashboard page.tsx monolith into modular components (ReadinessPanel, TopicMasteryGrid, QuickActions, StatsSummary, TestDateCard)
+- DASH-02: All extracted components use Conseil design tokens with proper TypeScript types
+- DASH-03: Dashboard page loads and renders identically to pre-refactor state
+- PWA-01: Implement custom Conseil-styled PWA install modal with animations
+- PWA-02: Add Zustand store for install modal dismissal tracking with localStorage persistence
+- PWA-03: Add i18n support (en/vi/es/hi/zh/ar) for install modal copy
+- BLOG-01: Replace all hardcoded hex values in Admin/Blog with Conseil CSS variables
+- BLOG-02: Verify visual consistency — all blog admin pages render identically post-migration
 
 ### Out of Scope
 
@@ -62,14 +56,14 @@ Every page of CitizenMate renders with the Conseil design system. v1.1 ensures t
 
 ## Context
 
-- Branch: `feat/conseil-design-overhaul` (v1.0 shipped)
+- Branch: `main` (v1.2 shipped 2026-05-13)
 - Reference: https://conseil.pixfort.com/consulting/
 - Design docs: `citizenmate/docs/research/conseil/` (DESIGN_TOKENS.md, BEHAVIORS.md, PAGE_TOPOLOGY.md, HANDOFF.md)
 - Foundation gate: Passed (see `citizenmate/docs/research/conseil/FOUNDATION_GATE.md`)
 - Key confirmed tokens: Primary #006d77, Secondary #3d348b, Fonts: Poppins + Inter, Cards: 15px radius, 1px #E9ECEF border, dual-layer shadow
 - Container: 1140px max-width
 - Codebase: 24,159 LOC TypeScript/TSX/CSS (post-v1.0)
-- Known tech debt: stat-card CSS class retains backdrop-blur; CountryFactsWidget retains glass-card-premium; quiz-header sticky bar has backdrop-blur-lg
+- Known tech debt: stat-card CSS class retains backdrop-blur; CountryFactsWidget retains glass-card-premium; quiz-header sticky bar has backdrop-blur-lg; auth-modal uses legacy bg-cm-navy alias
 
 ## Constraints
 
@@ -115,4 +109,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-29 starting v1.1 milestone (Launch Readiness)*
+*Last updated: 2026-05-13 starting v1.3 milestone (Codebase Polish & UX Refinements)*
