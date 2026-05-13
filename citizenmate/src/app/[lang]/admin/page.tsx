@@ -154,11 +154,11 @@ export default function AdminInsightsPage() {
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={data.charts.userGrowth}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#E9ECEF" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--color-cm-slate-100)" />
                     <XAxis dataKey="date" tick={{ fontSize: 11 }} tickLine={false} axisLine={false} />
                     <YAxis tick={{ fontSize: 11 }} tickLine={false} axisLine={false} />
                     <Tooltip />
-                    <Line type="monotone" dataKey="count" stroke="#006769" strokeWidth={2} dot={false} />
+                    <Line type="monotone" dataKey="count" stroke="var(--color-cm-teal)" strokeWidth={2} dot={false} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -170,11 +170,11 @@ export default function AdminInsightsPage() {
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={data.charts.quizCompletions}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#E9ECEF" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--color-cm-slate-100)" />
                     <XAxis dataKey="date" tick={{ fontSize: 11 }} tickLine={false} axisLine={false} />
                     <YAxis tick={{ fontSize: 11 }} tickLine={false} axisLine={false} />
                     <Tooltip />
-                    <Area type="monotone" dataKey="count" stroke="#3d348b" fill="#3d348b" fillOpacity={0.1} strokeWidth={2} />
+                    <Area type="monotone" dataKey="count" stroke="var(--color-cm-purple)" fill="var(--color-cm-purple)" fillOpacity={0.1} strokeWidth={2} />
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
@@ -187,11 +187,11 @@ export default function AdminInsightsPage() {
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={data.charts.revenue}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#E9ECEF" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="var(--color-cm-slate-100)" />
                   <XAxis dataKey="date" tick={{ fontSize: 11 }} tickLine={false} axisLine={false} />
                   <YAxis tick={{ fontSize: 11 }} tickLine={false} axisLine={false} />
                   <Tooltip />
-                  <Bar dataKey="value" fill="#059669" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="value" fill="var(--color-cm-eucalyptus)" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
