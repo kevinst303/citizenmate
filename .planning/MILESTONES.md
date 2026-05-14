@@ -56,3 +56,30 @@
 - `auth-modal.tsx` submit button uses legacy `bg-cm-navy` alias
 
 ---
+
+## v1.3 Codebase Polish & UX Refinements (Shipped: 2026-05-14)
+
+**Phases completed:** 3 phases, 3 plans
+**Timeline:** 2026-05-13 → 2026-05-14 (2 days)
+**Files changed:** 37 files (+1,942 / -1,040 lines)
+**Requirements:** 8/8 complete — all Nyquist compliant
+
+**Key accomplishments:**
+1. Extracted 712 LOC dashboard monolith into 5 modular, type-safe components (ReadinessPanel, TopicMasteryGrid, QuickActions, StatsSummary, TestDateCard)
+2. Built Conseil-styled PWA install modal with Zustand + IndexedDB persistence and 6-locale i18n
+3. Verified zero hardcoded hex values across all admin/blog directories (no-op — pre-migrated)
+4. Closed all Nyquist paperwork gaps — VALIDATION.md created retroactively for all 3 phases
+
+**Archive:** `.planning/milestones/v1.3-ROADMAP.md`
+**Requirements:** `.planning/milestones/v1.3-REQUIREMENTS.md`
+**Audit:** `.planning/milestones/v1.3-MILESTONE-AUDIT.md` (gaps_resolved)
+
+**Key decisions:**
+- Phase 17 declared no-op after grep audit confirmed zero hardcoded hex values
+- Retroactive VALIDATION.md creation for phases 15-17 to satisfy GSD Nyquist compliance
+
+**Known tech debt carried forward:**
+- `stat-card` backdrop-filter: blur(16px) — dashboard stats grid
+- `CountryFactsWidget` glass-card-premium class
+- `quiz-header.tsx` sticky bar backdrop-blur-lg
+- `auth-modal.tsx` legacy bg-cm-navy alias

@@ -1,17 +1,12 @@
-# CitizenMate — Codebase Polish & UX Refinements
+# CitizenMate — Shipped v1.3
 
-## Current Milestone: v1.3 Codebase Polish & UX Refinements
+## Current State: Post v1.3 (Codebase Polish & UX Refinements)
 
-**Goal:** Improve codebase maintainability through dashboard modularization, enhance UX with a custom PWA install modal, and clean up legacy design tokens.
-
-**Target features:**
-- Dashboard Refactor: Extract monolithic `dashboard/page.tsx` (~712 LOC) into modular components (ReadinessPanel, TopicMasteryGrid, QuickActions, StatsSummary, TestDateCard)
-- PWA Install Modal: Custom Conseil-styled "Add to Home Screen" modal with Zustand state for dismissal tracking + i18n support
-- Admin Blog Cleanup: Replace hardcoded hex values with Conseil CSS variables in Admin/Blog section
+**Status:** ✅ Shipped 2026-05-14 · **Next:** Planning Phase 18
 
 ## What This Is
 
-CitizenMate is a Next.js 16 civic-education SaaS app (quiz, study, and dashboard flows). The v1.3 milestone focuses on code quality, UX polish, and design consistency — extracting monoliths, building polished UI components, and standardizing design tokens.
+CitizenMate is a Next.js 16 civic-education SaaS app (quiz, study, and dashboard flows). v1.3 shipped code quality improvements, UX polish, and design consistency — extracting the dashboard monolith into 5 modular components, building a premium Conseil-styled PWA install modal, and verifying design token standardization across all admin/blog pages.
 
 ## Core Value
 
@@ -34,18 +29,18 @@ Every page of CitizenMate renders with the Conseil design system. v1.3 ensures t
 - ✓ Quiz flow components styled to Conseil design tokens — v1.0 (03-E)
 - ✓ Study flow components styled to Conseil design tokens — v1.0 (03-F)
 - ✓ Dashboard components styled to Conseil design tokens — v1.0 (03-G)
+- ✓ Dashboard page.tsx extracted into 5 modular components — v1.3 (Phase 15)
+- ✓ All extracted components use Conseil tokens with TypeScript types — v1.3 (Phase 15)
+- ✓ Dashboard renders identically to pre-refactor state — v1.3 (Phase 15)
+- ✓ Conseil-styled PWA install modal with animations — v1.3 (Phase 16)
+- ✓ Zustand store + localStorage for install modal dismissal — v1.3 (Phase 16)
+- ✓ PWA modal i18n (en/vi/es/hi/zh/ar) — v1.3 (Phase 16)
+- ✓ Zero hardcoded hex values in Admin/Blog — v1.3 (Phase 17, no-op)
+- ✓ Visual consistency verified across all blog admin pages — v1.3 (Phase 17, no-op)
 
 ### Active
 
-*(v1.3 requirements — defined via `/gsd:new-milestone`)*
-- DASH-01: Extract dashboard page.tsx monolith into modular components (ReadinessPanel, TopicMasteryGrid, QuickActions, StatsSummary, TestDateCard)
-- DASH-02: All extracted components use Conseil design tokens with proper TypeScript types
-- DASH-03: Dashboard page loads and renders identically to pre-refactor state
-- PWA-01: Implement custom Conseil-styled PWA install modal with animations
-- PWA-02: Add Zustand store for install modal dismissal tracking with localStorage persistence
-- PWA-03: Add i18n support (en/vi/es/hi/zh/ar) for install modal copy
-- BLOG-01: Replace all hardcoded hex values in Admin/Blog with Conseil CSS variables
-- BLOG-02: Verify visual consistency — all blog admin pages render identically post-migration
+*(No active requirements — v1.3 is shipped. Next milestone to define new requirements.)*
 
 ### Out of Scope
 
@@ -56,14 +51,14 @@ Every page of CitizenMate renders with the Conseil design system. v1.3 ensures t
 
 ## Context
 
-- Branch: `main` (v1.2 shipped 2026-05-13)
+- Branch: `main` (v1.3 shipped 2026-05-14)
 - Reference: https://conseil.pixfort.com/consulting/
 - Design docs: `citizenmate/docs/research/conseil/` (DESIGN_TOKENS.md, BEHAVIORS.md, PAGE_TOPOLOGY.md, HANDOFF.md)
 - Foundation gate: Passed (see `citizenmate/docs/research/conseil/FOUNDATION_GATE.md`)
 - Key confirmed tokens: Primary #006d77, Secondary #3d348b, Fonts: Poppins + Inter, Cards: 15px radius, 1px #E9ECEF border, dual-layer shadow
 - Container: 1140px max-width
 - Codebase: 24,159 LOC TypeScript/TSX/CSS (post-v1.0)
-- Known tech debt: stat-card CSS class retains backdrop-blur; CountryFactsWidget retains glass-card-premium; quiz-header sticky bar has backdrop-blur-lg; auth-modal uses legacy bg-cm-navy alias
+- Known tech debt (4 items): stat-card backdrop-blur, CountryFactsWidget glass-card-premium, quiz-header backdrop-blur-lg, auth-modal bg-cm-navy
 
 ## Constraints
 
@@ -90,6 +85,10 @@ Every page of CitizenMate renders with the Conseil design system. v1.3 ensures t
 | Modal panels use inline boxShadow | Tailwind shadow-2xl doesn't match Conseil spec | ✓ Good |
 | cm-eucalyptus → cm-teal throughout study flow | cm-eucalyptus not in Conseil palette | ✓ Good |
 | conseil-teal → cm-teal in SubpageHero | conseil-teal was undefined; cm-teal is canonical | ✓ Good — caught in audit |
+| Dashboard page.tsx split into 5 modular components | Monolith hard to maintain; each component now owns one responsibility | ✓ Good — page.tsx from 712→150 LOC |
+| Zustand + IndexedDB for PWA dismissal | localStorage alone isn't durable enough; IndexedDB provides structured persistence | ✓ Good — 7-day cooldown works across reloads |
+| Phase 17 declared no-op | Grep audit confirmed all components already on Conseil tokens from prior phases | ✓ Good — zero hex values found |
+| Retroactive VALIDATION.md for phases 15-17 | GSD Nyquist compliance requires validation files even for completed phases | ✓ Good — 3/3 Nyquist compliant |
 
 ## Evolution
 
@@ -109,4 +108,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-05-13 starting v1.3 milestone (Codebase Polish & UX Refinements)*
+*Last updated: 2026-05-14 after v1.3 milestone (Codebase Polish & UX Refinements)*
