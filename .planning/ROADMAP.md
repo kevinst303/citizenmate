@@ -12,7 +12,7 @@
 |---|-------|------|--------------|------------------|
 | 15 | Dashboard Refactor ✅ | Extract monolithic dashboard/page.tsx (~712 LOC) into modular, typed components | DASH-01, DASH-02, DASH-03 | 4 |
 | 16 | PWA Install Modal ✅ | Implement custom Conseil-styled install modal with state management and i18n | PWA-01, PWA-02, PWA-03 | 4 |
-| 17 | Admin Blog Cleanup | Replace hardcoded hex values with Conseil CSS variables | BLOG-01, BLOG-02 | 3 |
+| 17 | Admin Blog Cleanup ✅ | Replace hardcoded hex values with Conseil CSS variables | BLOG-01, BLOG-02 | 3 |
 
 ### Phase 15: Dashboard Refactor
 
@@ -108,4 +108,4 @@
 | 14. PWA Optimization & Offline Capabilities | v1.2 | 3/3 | Complete | 2026-05-13 |
 | 15. Dashboard Refactor | v1.3 | 1/1 | Complete | 2026-05-13 |
 | 16. PWA Install Modal | v1.3 | 1/1 | Complete | 2026-05-13 |
-| 17. Admin Blog Cleanup | v1.3 | 0/0 | Not Started | — |
+| 17. Admin Blog Cleanup | v1.3 | 0/0 | Complete (No-Op) | 2026-05-14 |
