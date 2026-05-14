@@ -6,6 +6,7 @@
 - ✅ **v1.1 Launch Readiness** — Phases 4-13 (shipped 2026-05-12)
 - ✅ **v1.2 PWA Optimization & Mobile** — Phase 14 (shipped 2026-05-13)
 - ✅ **v1.3 Codebase Polish & UX Refinements** — Phases 15-17 (shipped 2026-05-14)
+- 🏗 **v1.4 Tech Debt Cleanup** — Phases 18-19 (in progress)
 
 ## Phases
 
@@ -53,6 +54,25 @@
 
 </details>
 
+### v1.4 Tech Debt Cleanup
+
+#### Phase 18: Glassmorphism Removal
+**Goal:** Remove all glassmorphism effects from dashboard and quiz components, replacing with solid Conseil-compliant styling.
+**Requirements:** TECH-01, TECH-02, TECH-03
+**Success criteria:**
+1. `stat-card` renders with solid `.card-conseil` styling (no `backdrop-filter: blur()`)
+2. `CountryFactsWidget` uses `.card-conseil` or equivalent canonical class (not `glass-card-premium`)
+3. `quiz-header.tsx` sticky bar uses solid `bg-white` (no `backdrop-blur-lg`)
+4. `npx tsc --noEmit` and `npm run build` pass with zero errors
+
+#### Phase 19: Color Alias Migration
+**Goal:** Replace legacy `bg-cm-navy` alias with canonical `cm-teal` in auth-modal.tsx.
+**Requirements:** TECH-04
+**Success criteria:**
+1. `auth-modal.tsx` uses `cm-teal` (not `bg-cm-navy`)
+2. Visual rendering is identical (both map to same hex value)
+3. Grep audit confirms zero remaining instances of all 4 anti-patterns
+
 ## Progress
 
 | Phase | Milestone | Plans Complete | Status | Completed |
@@ -74,3 +94,5 @@
 | 15. Dashboard Refactor | v1.3 | 1/1 | Complete | 2026-05-13 |
 | 16. PWA Install Modal | v1.3 | 1/1 | Complete | 2026-05-13 |
 | 17. Admin Blog Cleanup | v1.3 | 0/0 | Complete (No-Op) | 2026-05-14 |
+| 18. Glassmorphism Removal | v1.4 | 0/1 | Not Started | — |
+| 19. Color Alias Migration | v1.4 | 0/1 | Not Started | — |

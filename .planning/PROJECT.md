@@ -1,16 +1,24 @@
-# CitizenMate — Shipped v1.3
+# CitizenMate — Building v1.4
 
-## Current State: Post v1.3 (Codebase Polish & UX Refinements)
+## Current Milestone: v1.4 Tech Debt Cleanup
 
-**Status:** ✅ Shipped 2026-05-14 · **Next:** Planning Phase 18
+**Goal:** Eliminate all 4 known tech debt items carried through v1.1→v1.3 — glassmorphism remnants, legacy CSS classes, and deprecated color aliases — bringing the codebase to full Conseil design compliance.
+
+**Target features:**
+- `stat-card` backdrop-blur(16px) → solid Conseil-compliant styling
+- `CountryFactsWidget` glass-card-premium → canonical card class
+- `quiz-header.tsx` backdrop-blur-lg → solid bg
+- `auth-modal.tsx` bg-cm-navy → cm-teal
+
+**Status:** 🏗 Defining requirements · Next: Roadmap planning
 
 ## What This Is
 
-CitizenMate is a Next.js 16 civic-education SaaS app (quiz, study, and dashboard flows). v1.3 shipped code quality improvements, UX polish, and design consistency — extracting the dashboard monolith into 5 modular components, building a premium Conseil-styled PWA install modal, and verifying design token standardization across all admin/blog pages.
+CitizenMate is a Next.js 16 civic-education SaaS app (quiz, study, and dashboard flows). v1.3 shipped code quality improvements, UX polish, and design consistency. v1.4 targets the final 4 tech debt items — no behavioral changes, pure CSS/token migration for full Conseil compliance.
 
 ## Core Value
 
-Every page of CitizenMate renders with the Conseil design system. v1.3 ensures the codebase is maintainable (modular dashboard), the PWA experience is premium (custom install modal), and all admin pages use canonical Conseil design tokens consistently.
+Every page of CitizenMate renders with the Conseil design system. v1.4 ensures the codebase is fully Conseil-compliant — eliminating all glassmorphism remnants, legacy CSS classes, and deprecated color aliases carried from earlier milestones.
 
 ## Requirements
 
@@ -40,7 +48,12 @@ Every page of CitizenMate renders with the Conseil design system. v1.3 ensures t
 
 ### Active
 
-*(No active requirements — v1.3 is shipped. Next milestone to define new requirements.)*
+- [ ] **TECH-01**: stat-card — replace backdrop-filter: blur(16px) with solid Conseil-compliant styling
+- [ ] **TECH-02**: CountryFactsWidget — migrate off glass-card-premium class
+- [ ] **TECH-03**: quiz-header.tsx — remove backdrop-blur-lg from sticky bar
+- [ ] **TECH-04**: auth-modal.tsx — replace legacy bg-cm-navy with cm-teal
+
+### Validated
 
 ### Out of Scope
 
@@ -51,7 +64,7 @@ Every page of CitizenMate renders with the Conseil design system. v1.3 ensures t
 
 ## Context
 
-- Branch: `main` (v1.3 shipped 2026-05-14)
+- Branch: `main` (v1.3 shipped 2026-05-14, v1.4 started 2026-05-14)
 - Reference: https://conseil.pixfort.com/consulting/
 - Design docs: `citizenmate/docs/research/conseil/` (DESIGN_TOKENS.md, BEHAVIORS.md, PAGE_TOPOLOGY.md, HANDOFF.md)
 - Foundation gate: Passed (see `citizenmate/docs/research/conseil/FOUNDATION_GATE.md`)
@@ -108,4 +121,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-05-14 after v1.3 milestone (Codebase Polish & UX Refinements)*
+*Last updated: 2026-05-14 — v1.4 milestone started (Tech Debt Cleanup)*
