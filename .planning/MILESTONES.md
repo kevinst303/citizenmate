@@ -1,5 +1,33 @@
 # Milestones
 
+## v1.4 Tech Debt Cleanup (Shipped: 2026-05-14)
+
+**Phases completed:** 2 phases, 2 plans (both no-ops, pre-verified clean)
+**Timeline:** 2026-05-14 (~24 minutes)
+**Files changed:** 13 files (+375 / -184)
+**Requirements:** 4/4 TECH-XX complete — all pre-resolved from prior milestones
+
+**Key accomplishments:**
+
+1. Glassmorphism elimination verified — grep audit confirmed zero `backdrop-filter`, `backdrop-blur`, or `glass-card-premium` in entire codebase. 3/3 TECH items already clean from v1.0-v1.3.
+2. Color alias migration verified — all targeted files (`auth-modal.tsx`, `quiz-header.tsx`, `sheet.tsx`) already use canonical `cm-teal` tokens. Broader `bg-cm-navy` usage across 30+ files confirmed as legitimate design token consumption.
+3. Pre-close artifact audit resolved — 2 stale TODOs closed (dashboard refactor, install modal), 1 deferred to v1.5 backlog (Upstash Redis rate-limiter).
+4. Milestone audit formalized — v1.4-MILESTONE-AUDIT.md documents 4/4 requirements satisfied, 2/2 phases verified, zero critical blockers.
+
+**Archive:** `.planning/milestones/v1.4-ROADMAP.md`
+**Requirements:** `.planning/milestones/v1.4-REQUIREMENTS.md`
+**Audit:** `.planning/milestones/v1.4-MILESTONE-AUDIT.md` (passed)
+
+**Key decisions:**
+
+- Both phases declared no-ops — grep audits confirmed all 4 TECH items were pre-resolved in v1.0-v1.3
+- `bg-cm-navy` retained as canonical Conseil design token (not legacy alias); scope limited to targeted files per ROADMAP requirement
+- `fix-rate-limiter` reclassified as new feature (Upstash Redis) and deferred to v1.5; no in-memory rate limiter exists today
+
+**Deferred items:**
+
+- `fix-rate-limiter` — Upstash Redis integration (new feature, not tech debt) → v1.5 backlog
+
 ## v1.0 Conseil Design Overhaul (Shipped: 2026-04-06)
 
 **Phases completed:** 3 phases, 7 plans, 15 tasks
@@ -8,6 +36,7 @@
 **Codebase:** 24,159 LOC TypeScript/TSX/CSS
 
 **Key accomplishments:**
+
 1. Solid white 66px navbar with exact Conseil cubic-bezier scroll transition — no glassmorphism
 2. Hero section with bg image, star badge, avatar group, white pill CTA, and marquee logo strip; footer rebuilt as 4-column max-w-[1140px] layout
 3. Wave SVG divider, Features Popular badge data-driven, How It Works Conseil split-card with asymmetric 15px radii
@@ -28,6 +57,7 @@
 **Requirements:** All 11 requirements (INFRA-01–04, REV-01–04, GROW-01–03) — 100% complete
 
 **Key accomplishments:**
+
 1. Automated test framework (Vitest), SRS engine unit tests, dashboard refactoring — stable testing baseline established
 2. Sentry error tracking, Upstash Redis rate limiting, PostHog analytics — production monitoring fully wired
 3. Test-date onboarding flow, 6 upgrade triggers, tiered Pro/Premium Stripe subscriptions — revenue engine live
@@ -42,6 +72,7 @@
 **Requirements:** `.planning/milestones/v1.1-REQUIREMENTS.md`
 
 **Key decisions:**
+
 - Sentry, PostHog, and Upstash all configured with CSP whitelisting
 - Stripe tiered pricing with monthly/yearly intervals mapped to Supabase profiles
 - 6-language i18n via DeepL pipeline with automatic translation validation
@@ -50,6 +81,7 @@
 - Conseil design system applied to all admin pages including analytics charts
 
 **Known tech debt carried forward:**
+
 - `stat-card` CSS class retains `backdrop-filter: blur(16px)`
 - `CountryFactsWidget` retains `glass-card-premium` class
 - `quiz-header.tsx` sticky bar uses `backdrop-blur-lg`
@@ -65,6 +97,7 @@
 **Requirements:** 8/8 complete — all Nyquist compliant
 
 **Key accomplishments:**
+
 1. Extracted 712 LOC dashboard monolith into 5 modular, type-safe components (ReadinessPanel, TopicMasteryGrid, QuickActions, StatsSummary, TestDateCard)
 2. Built Conseil-styled PWA install modal with Zustand + IndexedDB persistence and 6-locale i18n
 3. Verified zero hardcoded hex values across all admin/blog directories (no-op — pre-migrated)
@@ -75,10 +108,12 @@
 **Audit:** `.planning/milestones/v1.3-MILESTONE-AUDIT.md` (gaps_resolved)
 
 **Key decisions:**
+
 - Phase 17 declared no-op after grep audit confirmed zero hardcoded hex values
 - Retroactive VALIDATION.md creation for phases 15-17 to satisfy GSD Nyquist compliance
 
 **Known tech debt carried forward:**
+
 - `stat-card` backdrop-filter: blur(16px) — dashboard stats grid
 - `CountryFactsWidget` glass-card-premium class
 - `quiz-header.tsx` sticky bar backdrop-blur-lg

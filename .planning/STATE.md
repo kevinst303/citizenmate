@@ -1,7 +1,22 @@
+---
 gsd_state_version: 1.0
 milestone: v1.4
 milestone_name: Tech Debt Cleanup
-status: complete
+status: completed
+last_updated: "2026-05-14T05:59:07.184Z"
+last_activity: 2026-05-14 — Milestone v1.4 completed and archived
+progress:
+  total_phases: 2
+  completed_phases: 2
+  total_plans: 2
+  completed_plans: 2
+  percent: 100
+---
+
+gsd_state_version: 1.0
+milestone: v1.4
+milestone_name: Tech Debt Cleanup
+status: v1.4 milestone complete
 last_updated: "2026-05-14T05:30:00.000Z"
 last_activity: 2026-05-14
 progress:
@@ -24,10 +39,10 @@ See: .planning/PROJECT.md (updated 2026-05-14 for v1.4 milestone)
 
 ## Current Position
 
-Phase: 18-19 — Complete
-Plan: Verified no-ops
-Status: Both phases complete (pre-verified clean)
-Last activity: 2026-05-14 — Build gates passed, all audits clean
+Phase: Milestone v1.4 complete
+Plan: —
+Status: Awaiting next milestone
+Last activity: 2026-05-14 — Milestone v1.4 completed and archived
 
 ## Branch
 
@@ -50,6 +65,16 @@ Verification: 5/5 must-haves passed
 Result: No-op — all targeted files already use canonical tokens
 Verification: 5/5 must-haves passed
 
+## Pre-Close Artifact Audit Resolution
+
+- **TODO-refactor-dashboard-monolith.md** — ✅ Resolved (already completed in Phase 15). Removed.
+- **TODO-design-install-modal.md** — ✅ Resolved (already completed in Phase 16). Removed.
+- **fix-rate-limiter.md** — ⏭ Deferred to v1.5. No `src/lib/rate-limit.ts` exists in the codebase; this is a new feature (Upstash Redis integration), not a fix. Moved to backlog.
+
 ---
 
 *State last updated: 2026-05-14 — v1.4 milestone complete (Tech Debt Cleanup)*
+
+## Operator Next Steps
+
+- Start the next milestone with /gsd-new-milestone
