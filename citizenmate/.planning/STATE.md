@@ -57,3 +57,4 @@ Last activity: 2026-05-12 — Phase 11 (Progression System) delivered (commit `d
 - Phase 14 added: PWA Optimization & Offline Capabilities (2026-05-12)
 | 2026-05-14 | fast | Update revoked OpenRouter API key to new valid key | ✅ |
 | 2026-05-14 | fast | Update FREE_MODELS list with currently working OpenRouter free models | ✅ |
+| 2026-05-14 | fast | Expand free model pool to 8 and increase preflight timeout to 8s | ✅ |

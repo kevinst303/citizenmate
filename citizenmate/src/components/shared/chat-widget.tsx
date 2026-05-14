@@ -121,9 +121,10 @@ export function ChatWidget() {
     setMessages,
     error,
   } = useChat({
-    onFinish: (message) => {
+    onFinish: ({ message }) => {
       // Only count as usage if the AI actually responded with content
-      const hasContent = typeof message.content === "string" && message.content.length > 0;
+      const content = (message as any)?.content;
+      const hasContent = typeof content === "string" && content.length > 0;
       lastAssistantHadContentRef.current = hasContent;
       if (hasContent) {
         const newUsage = incrementUsage();

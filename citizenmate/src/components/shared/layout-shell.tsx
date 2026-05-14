@@ -62,7 +62,8 @@ export function LayoutShell({ children }: { children: React.ReactNode }) {
       </Suspense>
       <GooeyToaster />
       {!hideShellUI && <InstallPrompt />}
-      {showChat && <ChatWidget />}
+      {/* ChatWidget temporarily disabled — uncomment to re-enable */}
+      {/* {showChat && <ChatWidget />} */}
       <CookieConsent />
       <Analytics />
     </>
