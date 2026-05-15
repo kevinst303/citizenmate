@@ -61,7 +61,7 @@ function setCSP(response: NextResponse, nonce: string): void {
   response.headers.set("Content-Security-Policy", getCSP(nonce));
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const nonce = generateNonce();
   request.headers.set('x-nonce', nonce);
   request.headers.set('Content-Security-Policy', getCSP(nonce));
