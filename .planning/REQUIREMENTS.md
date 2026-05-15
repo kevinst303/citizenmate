@@ -48,16 +48,18 @@ None — all audit findings are scoped into this milestone.
 
 | REQ-ID | Phase | Status |
 |--------|-------|--------|
-| PROD-01 | TBD | Active |
-| PROD-02 | TBD | Active |
-| PROD-03 | TBD | Active |
-| PROD-04 | TBD | Active |
-| FW-01 | TBD | Active |
-| FW-02 | TBD | Active |
-| UX-01 | TBD | Active |
-| UX-02 | TBD | Active |
-| QUAL-01 | TBD | Active |
-| QUAL-02 | TBD | Active |
+| PROD-01 | 20. Sentry Instrumentation | Active |
+| PROD-02 | 20. Sentry Instrumentation | Active |
+| PROD-03 | 21. Build Warnings Resolution | Active |
+| PROD-04 | 21. Build Warnings Resolution | Active |
+| FW-01 | 22. Middleware Migration | Active |
+| FW-02 | 21. Build Warnings Resolution | Active |
+| UX-01 | 23. Auth Route Fix | Active |
+| UX-02 | 24. Free Sample Test | Active |
+| QUAL-01 | 25. i18n Drift Correction | Active |
+| QUAL-02 | 26. Rate Limiter | Active |
+
+10/10 requirements mapped to phases ✓
 
 ---
 
