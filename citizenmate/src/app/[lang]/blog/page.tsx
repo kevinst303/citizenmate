@@ -5,6 +5,7 @@ import { getDictionary } from '@/i18n/config';
 import type { Locale } from '@/i18n/config';
 
 export const metadata = {
+  metadataBase: new URL("https://citizenmate.com.au"),
   title: 'CitizenMate Blog - Australian Citizenship Test Tips & Guides',
   description: 'Read the latest guides, tips, and strategies for passing the Australian citizenship test.',
 };

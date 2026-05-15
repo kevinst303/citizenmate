@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://citizenmate.com.au"),
   title: "Practice Tests",
   description:
     "Take a full-length mock Australian citizenship test. 20 questions, 45 minutes, just like the real thing. Track your progress and know when you're ready.",
