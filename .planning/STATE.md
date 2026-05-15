@@ -7,10 +7,10 @@ last_updated: "2026-05-15T05:03:00.000Z"
 last_activity: 2026-05-15 — Roadmap created (7 phases)
 progress:
   total_phases: 7
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 7
-  completed_plans: 0
-  percent: 0
+  completed_plans: 1
+  percent: 14
 ---
 
 # Project State: CitizenMate Production Hardening
@@ -25,10 +25,10 @@ See: .planning/PROJECT.md (updated 2026-05-15 for v1.5 milestone)
 
 ## Current Position
 
-Phase: Not started (defining requirements)
-Plan: —
-Status: Defining requirements
-Last activity: 2026-05-15 — Milestone v1.5 started
+Phase: 21 — Framework Migration (proxy.ts)
+Plan: 21-PLAN.md
+Status: Phase 20 complete — executing Phase 21
+Last activity: 2026-05-15 — Sentry instrumentation created & build verified
 
 ## Branch
 
@@ -59,4 +59,5 @@ None.
 
 ## Operator Next Steps
 
-- Define requirements via /gsd:discuss-phase or /gsd:autonomous
+- Phase 20 ✅ Complete — Sentry instrumentation.ts + global-error.tsx created, build passes
+- Phase 21 🔄 Next — Migrate middleware.ts → proxy.ts conventions
