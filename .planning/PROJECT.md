@@ -1,8 +1,20 @@
-# CitizenMate — Post-v1.4
+# CitizenMate — v1.5 Production Hardening
 
 ## What This Is
 
 CitizenMate is a Next.js 16 civic-education SaaS app (quiz, study, and dashboard flows). As of v1.4, the codebase is 100% Conseil design system compliant — zero glassmorphism remnants, zero legacy CSS classes, zero deprecated color aliases. All 4 known tech debt items carried from v1.1→v1.3 have been verified clean.
+
+## Current Milestone: v1.5 Production Hardening & v2 Foundation
+
+**Goal:** Close remaining production monitoring gaps and launch-quality polish items before scaling to feature work.
+
+**Target features:**
+- Sentry instrumentation (`instrumentation.ts` + `global-error.tsx`) — runtime errors are currently unmonitored in production
+- Next.js deprecation fixes (metadataBase on 6 pages, Sentry config migration, middleware→proxy convention)
+- Auth route fix (`/auth/login` returns 404 — users can't reach login via direct URL)
+- i18n drift correction (hi/zh/ar translations at 0.8% drift)
+- Deferred Upstash Redis rate-limiter from v1.4 backlog
+- One free sample practice test for conversion funnel (all 15 currently gated behind paywall)
 
 ## Core Value
 
@@ -48,9 +60,20 @@ Every page of CitizenMate renders with the Conseil design system. v1.4 confirmed
 - Conseil's blog section — CitizenMate has its own blog; structure not changed
 - Mobile-only design changes — responsive updates only where Conseil spec differs significantly
 
+### Active (v1.5)
+
+- [ ] **PROD-01**: Sentry instrumentation.ts + global-error.tsx for runtime error monitoring
+- [ ] **PROD-02**: Fix metadataBase warnings across 6 page layouts
+- [ ] **PROD-03**: Migrate Sentry config to current SDK conventions (disableLogger, automaticVercelMonitors, reactComponentAnnotation)
+- [ ] **PROD-04**: Migrate middleware.ts → proxy.ts per Next.js 16 convention
+- [ ] **PROD-05**: Fix /auth/login 404 — add dedicated login route or redirect
+- [ ] **PROD-06**: Correct i18n drift in hi/zh/ar translation files (0.8% each)
+- [ ] **PROD-07**: Implement Upstash Redis rate-limiter (deferred from v1.4)
+- [ ] **PROD-08**: Add one free sample practice test to conversion funnel
+
 ## Context
 
-- Branch: `main` (v1.3 shipped 2026-05-14, v1.4 started 2026-05-14)
+- Branch: `main` (v1.4 archived 2026-05-14, v1.5 started 2026-05-15)
 - Reference: https://conseil.pixfort.com/consulting/
 - Design docs: `citizenmate/docs/research/conseil/` (DESIGN_TOKENS.md, BEHAVIORS.md, PAGE_TOPOLOGY.md, HANDOFF.md)
 - Foundation gate: Passed (see `citizenmate/docs/research/conseil/FOUNDATION_GATE.md`)
@@ -58,8 +81,8 @@ Every page of CitizenMate renders with the Conseil design system. v1.4 confirmed
 - Container: 1140px max-width
 - Codebase: 24,159 LOC TypeScript/TSX/CSS
 - v1.4 verified: zero glassmorphism, zero legacy CSS, 100% Conseil compliance
-- 1 deferred tech debt item → v1.5 backlog: Upstash Redis rate-limiter
-- Branch: `main` (v1.4 archived 2026-05-14)
+- 1 deferred tech debt item → v1.5 active: Upstash Redis rate-limiter
+- Production audit (2026-05-15): build clean, all routes live, CSP nonce-based security, 6 warnings identified (all non-blocking)
 
 ## Constraints
 
@@ -91,7 +114,7 @@ Every page of CitizenMate renders with the Conseil design system. v1.4 confirmed
 | Phase 17 declared no-op | Grep audit confirmed all components already on Conseil tokens from prior phases | ✓ Good — zero hex values found |
 | Retroactive VALIDATION.md for phases 15-17 | GSD Nyquist compliance requires validation files even for completed phases | ✓ Good — 3/3 Nyquist compliant |
 | v1.4 both phases declared no-ops | Grep audits confirmed zero glassmorphism, zero bg-cm-navy in targeted files; pre-resolved in v1.0-v1.3 | ✓ Good — 4/4 TECH requirements verified clean |
-| fix-rate-limiter deferred to v1.5 | No in-memory rate limiter exists in codebase today; this is a new feature (Upstash Redis), not a bug fix | ✓ Good — backlogged for v1.5 |
+| fix-rate-limiter deferred to v1.5 | No in-memory rate limiter exists in codebase today; this is a new feature (Upstash Redis), not a bug fix | ✓ Good — backlogged for v1.5; now active in v1.5 PROD-07 |
 
 ## Evolution
 

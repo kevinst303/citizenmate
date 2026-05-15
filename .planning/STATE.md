@@ -1,80 +1,62 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.4
-milestone_name: Tech Debt Cleanup
-status: completed
-last_updated: "2026-05-14T05:59:07.184Z"
-last_activity: 2026-05-14 — Milestone v1.4 completed and archived
+milestone: v1.5
+milestone_name: Production Hardening & v2 Foundation
+status: planning
+last_updated: "2026-05-15T04:55:00.000Z"
+last_activity: 2026-05-15 — Milestone v1.5 started
 progress:
-  total_phases: 2
-  completed_phases: 2
-  total_plans: 2
-  completed_plans: 2
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
-gsd_state_version: 1.0
-milestone: v1.4
-milestone_name: Tech Debt Cleanup
-status: v1.4 milestone complete
-last_updated: "2026-05-14T05:30:00.000Z"
-last_activity: 2026-05-14
-progress:
-  total_phases: 2
-  completed_phases: 2
-  total_plans: 2
-  completed_plans: 2
-  percent: 100
----
-
-# Project State: CitizenMate Tech Debt Cleanup
+# Project State: CitizenMate Production Hardening
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-05-14 for v1.4 milestone)
+See: .planning/PROJECT.md (updated 2026-05-15 for v1.5 milestone)
 
-**Core value:** Every page of CitizenMate renders with the Conseil design system. v1.3 shipped with modular dashboard, PWA install modal, and admin/blog token verification. v1.4 eliminates the final 4 tech debt items — bringing the codebase to full Conseil compliance.
+**Core value:** Every page of CitizenMate renders with the Conseil design system. v1.4 eliminated the final 4 tech debt items — the codebase is 100% Conseil compliant. v1.5 closes remaining production monitoring gaps and launch-quality polish items identified in the 2026-05-15 production readiness audit.
 
-**Current status:** Milestone v1.4 COMPLETE ✅ — Both phases verified as pre-resolved (no-ops).
+**Current status:** Milestone v1.5 INITIATED — Defining requirements.
 
 ## Current Position
 
-Phase: Milestone v1.4 complete
+Phase: Not started (defining requirements)
 Plan: —
-Status: Awaiting next milestone
-Last activity: 2026-05-14 — Milestone v1.4 completed and archived
+Status: Defining requirements
+Last activity: 2026-05-15 — Milestone v1.5 started
 
 ## Branch
 
 `main`
 
-## Known Tech Debt (resolved this milestone)
+## Target Features
 
-- ✅ `stat-card` CSS — zero glassmorphism remnants found
-- ✅ `CountryFactsWidget` — zero `glass-card-premium` found
-- ✅ `quiz-header.tsx` — zero `backdrop-blur` found
-- ✅ `auth-modal.tsx` — zero `bg-cm-navy` found
+- PROD-01: Sentry instrumentation.ts + global-error.tsx
+- PROD-02: Fix metadataBase warnings across 6 page layouts
+- PROD-03: Migrate Sentry config to current SDK conventions
+- PROD-04: Migrate middleware.ts → proxy.ts per Next.js 16
+- PROD-05: Fix /auth/login 404
+- PROD-06: Correct i18n drift (hi/zh/ar)
+- PROD-07: Implement Upstash Redis rate-limiter (deferred from v1.4)
+- PROD-08: Add free sample practice test
 
-## Phase 18: Glassmorphism Removal ✅
+## Pending Todos
 
-Result: No-op — all glassmorphism was removed in prior milestones
-Verification: 5/5 must-haves passed
+- `fix-rate-limiter` (from v1.4 backlog) — now PROD-07
 
-## Phase 19: Color Alias Migration ✅
+## Blockers/Concerns
 
-Result: No-op — all targeted files already use canonical tokens
-Verification: 5/5 must-haves passed
-
-## Pre-Close Artifact Audit Resolution
-
-- **TODO-refactor-dashboard-monolith.md** — ✅ Resolved (already completed in Phase 15). Removed.
-- **TODO-design-install-modal.md** — ✅ Resolved (already completed in Phase 16). Removed.
-- **fix-rate-limiter.md** — ⏭ Deferred to v1.5. No `src/lib/rate-limit.ts` exists in the codebase; this is a new feature (Upstash Redis integration), not a fix. Moved to backlog.
+None.
 
 ---
 
-*State last updated: 2026-05-14 — v1.4 milestone complete (Tech Debt Cleanup)*
+*State last updated: 2026-05-15 — v1.5 milestone initiated (Production Hardening & v2 Foundation)*
 
 ## Operator Next Steps
 
-- Start the next milestone with /gsd-new-milestone
+- Define requirements via /gsd:discuss-phase or /gsd:autonomous
