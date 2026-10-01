@@ -18,6 +18,7 @@ import { useAuth } from "@/lib/auth-context";
 import { useTestDate } from "@/lib/test-date-context";
 import { useUpgradeModal } from "@/lib/store/useUpgradeModal";
 import { useSettingsStore } from "@/lib/store/useSettingsStore";
+import { useLocalizedPath } from "@/lib/use-localized-path";
 import { Switch } from "@/components/ui/switch";
 import { SubpageHero } from "@/components/shared/subpage-hero";
 import { useT } from "@/i18n/i18n-context";
@@ -42,7 +43,32 @@ export default function SettingsPage() {
   const { openModal: openUpgradeModal } = useUpgradeModal();
   const { t } = useT();
   const router = useRouter();
+  const { getUrl } = useLocalizedPath();
   const { reduceMotion, setReduceMotion } = useSettingsStore();
+  const [portalLoading, setPortalLoading] = useState(false);
+
+  // Self-service billing: cancel, change plan, or update card via Stripe.
+  const openBillingPortal = async () => {
+    setPortalLoading(true);
+    try {
+      const locale = getUrl("/settings").split("/")[1] || "en";
+      const res = await fetch("/api/billing-portal", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ locale }),
+      });
+      const data = await res.json();
+      if (res.ok && data.url) {
+        window.location.href = data.url;
+      } else {
+        alert(data.error || t("settings.billing_portal_error", "Couldn't open the billing portal. Please try again."));
+      }
+    } catch {
+      alert(t("settings.billing_portal_error", "Couldn't open the billing portal. Please try again."));
+    } finally {
+      setPortalLoading(false);
+    }
+  };
   
   const [imageError, setImageError] = useState(false);
 
@@ -257,6 +283,16 @@ export default function SettingsPage() {
                         {t("settings.plan_expires_on")} {new Date(profile.expiresAt).toLocaleDateString("en-AU")}
                       </p>
                     )}
+                    <button
+                      onClick={openBillingPortal}
+                      disabled={portalLoading}
+                      className="mt-3 inline-flex items-center gap-2 px-4 py-2 bg-white border border-cm-slate-200 text-cm-slate-700 font-semibold text-sm rounded-xl hover:bg-cm-slate-50 transition-colors disabled:opacity-60"
+                    >
+                      <CreditCard className="w-4 h-4" />
+                      {portalLoading
+                        ? t("settings.billing_portal_loading", "Opening…")
+                        : t("settings.billing_portal", "Manage subscription")}
+                    </button>
                   </>
                 ) : (
                   <p className="text-sm font-medium text-cm-slate-600">

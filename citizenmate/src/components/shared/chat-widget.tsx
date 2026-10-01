@@ -23,8 +23,10 @@ import { useT } from "@/i18n/i18n-context";
 
 // ─── Rate Limiting ───────────────────────────────────────────
 
+// Client-side mirror of the server's free-tier limit (api/chat allows 20/day
+// for free users). Keep in sync with the marketing copy and the API.
 const RATE_KEY = "citizenmate-chat-usage";
-const MAX_DAILY_QUESTIONS = 3;
+const MAX_DAILY_QUESTIONS = 20;
 
 interface DailyUsage {
   date: string;

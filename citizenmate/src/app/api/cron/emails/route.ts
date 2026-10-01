@@ -148,7 +148,7 @@ export async function GET(request: Request) {
 
     const { data: expiringUsers, error: expiringError } = await supabaseAdmin
       .from("profiles")
-      .select("id, email, display_name, premium_expires_at, unsubscribed_from_emails")
+      .select("id, email, display_name, tier, premium_expires_at, unsubscribed_from_emails")
       .eq("is_premium", true)
       .eq("unsubscribed_from_emails", false)
       .gte("premium_expires_at", threeDaysFromNow.toISOString())
@@ -159,7 +159,7 @@ export async function GET(request: Request) {
         if (!user.email) continue;
         const daysLeft = 3;
         // Delegate to shared email service (handles graceful degradation)
-        const result = await sendPremiumExpiryWarning(user.email, daysLeft);
+        const result = await sendPremiumExpiryWarning(user.email, daysLeft, user.tier);
         if (result.success) emailsSent++;
       }
     }
@@ -176,7 +176,7 @@ export async function GET(request: Request) {
           console.error("[Cron Email] Resend error:", sendError);
           return NextResponse.json({ error: sendError }, { status: 500 });
         }
-        emailsSent = validBatchEmails.length;
+        emailsSent += validBatchEmails.length;
       }
     } else if (batchEmails.length > 0) {
        console.warn("[Cron Email] Warning: Template IDs missing. No emails sent.");

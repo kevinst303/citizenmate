@@ -234,19 +234,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, [fetchProfileData]);
 
-  // Check for checkout success on mount (user returning from Stripe)
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("checkout") === "success" && user) {
-      // Delay to let the webhook fire and process
-      const timer = setTimeout(() => {
-        refreshPremiumStatus();
-      }, 2000);
-      return () => clearTimeout(timer);
-    }
-  }, [user, refreshPremiumStatus]);
-
   const openAuthModal = useCallback(() => setIsAuthModalOpen(true), []);
   const closeAuthModal = useCallback(() => setIsAuthModalOpen(false), []);
 

@@ -80,31 +80,44 @@ export async function sendEmail({
 
 // ── Pre-built Templates ──
 
-export async function sendPurchaseConfirmation(email: string, expiresAt: string) {
+// ── Tier labels for member-facing copy ──
+
+export function tierLabel(tier: string | null | undefined): string {
+  switch (tier) {
+    case 'sprint_pass': return 'Exam Sprint Pass';
+    case 'pro': return 'Pro';
+    case 'premium': return 'Premium';
+    default: return 'Exam Sprint Pass';
+  }
+}
+
+export async function sendPurchaseConfirmation(email: string, expiresAt: string, tier?: string | null) {
   const expiryDate = new Date(expiresAt).toLocaleDateString('en-AU', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   });
 
+  const label = tierLabel(tier);
   const templateId = process.env.RESEND_TEMPLATE_PURCHASE;
   if (!templateId) console.warn('[email] Missing RESEND_TEMPLATE_PURCHASE env var');
 
   return sendEmail({
     to: email,
-    subject: '🎉 Your Exam Sprint Pass is Active — CitizenMate',
+    subject: `🎉 Your ${label} is Active — CitizenMate`,
     templateId,
     variables: { expiryDate },
   });
 }
 
-export async function sendPremiumExpiryWarning(email: string, daysLeft: number) {
+export async function sendPremiumExpiryWarning(email: string, daysLeft: number, tier?: string | null) {
+  const label = tierLabel(tier);
   const templateId = process.env.RESEND_TEMPLATE_EXPIRY_WARNING;
   if (!templateId) console.warn('[email] Missing RESEND_TEMPLATE_EXPIRY_WARNING env var');
 
   return sendEmail({
     to: email,
-    subject: `⏰ Your Sprint Pass expires in ${daysLeft} day${daysLeft === 1 ? '' : 's'} — CitizenMate`,
+    subject: `⏰ Your ${label} expires in ${daysLeft} day${daysLeft === 1 ? '' : 's'} — CitizenMate`,
     templateId,
     variables: { daysLeft },
   });

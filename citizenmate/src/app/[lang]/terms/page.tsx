@@ -104,7 +104,7 @@ export default function TermsPage() {
       </p>
       <h3>{t("legal.terms_payments_billing_heading", "Billing")}</h3>
       <ul>
-        <li>{t("legal.terms_payments_billing_li1", "All prices are listed in Australian Dollars (AUD) and include GST.")}</li>
+        <li>{t("legal.terms_payments_billing_li1", "All prices are listed in Australian Dollars (AUD). GST is not currently applied; it will be added in line with Australian law once the business is registered for GST.")}</li>
         <li>{t("legal.terms_payments_billing_li2", "Payment is processed securely through our payment provider.")}</li>
         <li>{t("legal.terms_payments_billing_li3", "Subscription plans renew automatically unless cancelled before the renewal date.")}</li>
       </ul>

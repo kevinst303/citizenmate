@@ -27,7 +27,7 @@ export function PricingPreview() {
       features: [
         { text: t("landing.pricing_free_f1", "1 full mock test + results"), included: true },
         { text: t("landing.pricing_free_f2", "Basic study content (1 chapter)"), included: true },
-        { text: t("landing.pricing_free_f3", "3 AI tutor questions per day"), included: true },
+        { text: t("landing.pricing_free_f3", "20 AI tutor questions per day"), included: true },
         { text: t("landing.pricing_free_f4", "20 practice questions"), included: true },
         { text: t("landing.pricing_free_f5", "All 15 mock tests"), included: false },
         { text: t("landing.pricing_free_f6", "Full bilingual study mode"), included: false },

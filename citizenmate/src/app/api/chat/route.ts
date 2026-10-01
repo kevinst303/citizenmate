@@ -186,7 +186,10 @@ export async function POST(req: Request) {
   }
 
   // ═══════════════════════════════════════════════════════════════
-  //  Streaming Pipeline — DeepSeek primary, OpenRouter fallback
+  //  Streaming Pipeline — model choice follows the member's tier:
+  //  premium → DeepSeek (paid, reliable), free → OpenRouter free pool.
+  //  This keeps the free tier at zero API cost and reserves the paid
+  //  model for the people paying for it.
   // ═══════════════════════════════════════════════════════════════
 
   /**
@@ -206,9 +209,11 @@ export async function POST(req: Request) {
     }
   }
 
-  // ── Tier 1: DeepSeek (paid API, highly reliable) ──
-  const deepseekReady = await deepseekKeyIsValid();
-  if (deepseekReady) {
+  // ── Tier 1: DeepSeek (paid API, highly reliable) — premium members only ──
+  const deepseekReady = isPremiumUser && (await deepseekKeyIsValid());
+  if (!isPremiumUser) {
+    console.log("→ Free tier: skipping DeepSeek (paid), using OpenRouter free pool");
+  } else if (deepseekReady) {
     try {
       const result = streamText({
         model: deepseek("deepseek-chat"),
