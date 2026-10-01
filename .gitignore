@@ -68,3 +68,7 @@ coverage/
 .gitnexus
 .worktrees/
 .env*.local
+
+testsprite_tests/tmp/config.json
+
+testsprite_tests/

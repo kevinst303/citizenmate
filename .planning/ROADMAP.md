@@ -7,7 +7,8 @@
 - ✅ **v1.2 PWA Optimization & Mobile** — Phase 14 (shipped 2026-05-13)
 - ✅ **v1.3 Codebase Polish & UX Refinements** — Phases 15-17 (shipped 2026-05-14)
 - ✅ **v1.4 Tech Debt Cleanup** — Phases 18-19 (shipped 2026-05-14)
-- 🔵 **v1.5 Production Hardening & v2 Foundation** — Phases 20-26 (in progress)
+- ✅ **v1.5 Production Hardening & v2 Foundation** — Phases 20-26 (shipped 2026-05-15)
+- ✅ **v1.6 Payment Trust & Production Readiness** — Phase 27 (shipped 2026-10-01)
 
 ## Phases
 
@@ -64,7 +65,7 @@
 </details>
 
 <details>
-<summary>🔵 v1.5 Production Hardening & v2 Foundation (Phases 20-26) — IN PROGRESS</summary>
+<summary>✅ v1.5 Production Hardening & v2 Foundation (Phases 20-26) — SHIPPED 2026-05-15</summary>
 
 - [ ] **Phase 20: Sentry Instrumentation** — Create `instrumentation.ts` and `global-error.tsx` for runtime error monitoring
   - Requirements: PROD-01, PROD-02
@@ -143,10 +144,11 @@
 | 17. Admin Blog Cleanup | v1.3 | 0/0 | Complete (No-Op) | 2026-05-14 |
 | 18. Glassmorphism Removal | v1.4 | 1/1 | Complete (No-Op) | 2026-05-14 |
 | 19. Color Alias Migration | v1.4 | 1/1 | Complete (No-Op) | 2026-05-14 |
-| **20. Sentry Instrumentation** | **v1.5** | **0/1** | **Not Started** | — |
-| **21. Build Warnings Resolution** | **v1.5** | **0/1** | **Not Started** | — |
-| **22. Middleware Migration** | **v1.5** | **0/1** | **Not Started** | — |
-| **23. Auth Route Fix** | **v1.5** | **0/1** | **Not Started** | — |
-| **24. Free Sample Test** | **v1.5** | **0/1** | **Not Started** | — |
-| **25. i18n Drift Correction** | **v1.5** | **0/1** | **Not Started** | — |
-| **26. Rate Limiter** | **v1.5** | **0/1** | **Not Started** | — |
+| 20. Sentry Instrumentation | v1.5 | 1/1 | Complete | 2026-05-15 |
+| 21. Build Warnings Resolution | v1.5 | 1/1 | Complete | 2026-05-15 |
+| 22. Middleware Migration | v1.5 | 1/1 | Complete | 2026-05-15 |
+| 23. Auth Route Fix | v1.5 | 1/1 | Complete | 2026-05-15 |
+| 24. Free Sample Test | v1.5 | 1/1 | Complete | 2026-05-15 |
+| 25. i18n Drift Correction | v1.5 | 1/1 | Complete | 2026-05-15 |
+| 26. Rate Limiter | v1.5 | 1/1 | Complete | 2026-05-15 |
+| 27. Payment Trust & Production Readiness | v1.6 | 1/1 | Complete | 2026-10-01 |
