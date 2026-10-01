@@ -11,7 +11,7 @@ import { Suspense } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import { AuthRedirectHandler } from "@/components/shared/auth-redirect-handler";
 import { UpgradeModal } from "@/components/global/upgrade-modal";
-import { locales, type Locale } from "@/i18n/config";
+import { locales, defaultLocale, getDictionary, type Locale } from "@/i18n/config";
 import { I18nProvider } from "@/i18n/i18n-context";
 import { PostHogProvider } from "@/components/providers/posthog-provider";
 import { MotionProvider } from "@/components/providers/motion-provider";
@@ -124,10 +124,15 @@ export default async function RootLayout({
 }>) {
   const { lang } = await params;
 
+  // Load the dictionary server-side and hand it to the provider so SSR HTML
+  // ships fully translated text (SEO + no flash of raw keys on hydration).
+  const locale = locales.includes(lang as Locale) ? (lang as Locale) : defaultLocale;
+  const dictionary = await getDictionary(locale);
+
   return (
     <html
-      lang={lang}
-      dir={lang === 'ar' ? 'rtl' : 'ltr'}
+      lang={locale}
+      dir={locale === 'ar' ? 'rtl' : 'ltr'}
       suppressHydrationWarning
       data-scroll-behavior="smooth"
       className={`${poppinsHeading.variable} ${interBody.variable} h-full antialiased`}
@@ -147,7 +152,7 @@ export default async function RootLayout({
               <TestDateProvider>
                 <StudyProvider>
                   <SRSProvider>
-                    <I18nProvider locale={lang as Locale}>
+                    <I18nProvider locale={locale} initialDictionary={dictionary}>
                       <MotionProvider>
                         <LayoutShell>{children}</LayoutShell>
                         <Suspense fallback={null}>

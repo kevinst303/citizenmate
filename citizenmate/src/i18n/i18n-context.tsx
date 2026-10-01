@@ -3,8 +3,8 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { defaultLocale, getDictionary, type Locale } from './config';
 
-type DictionaryValue = string | { [key: string]: DictionaryValue };
-type Dictionary = Record<string, DictionaryValue>;
+export type DictionaryValue = string | { [key: string]: DictionaryValue };
+export type Dictionary = Record<string, DictionaryValue>;
 
 const I18nContext = createContext<{
   locale: Locale;
@@ -27,13 +27,25 @@ function getNestedValue(obj: Record<string, unknown>, path: string): string {
 export function I18nProvider({
   locale,
   children,
+  initialDictionary,
 }: {
   locale: Locale;
   children: ReactNode;
+  initialDictionary?: Dictionary;
 }) {
   const [, forceUpdate] = useState(0);
 
+  // Seed the shared cache synchronously so the first render (SSR HTML and
+  // client hydration) already has real translations — no post-mount flash of
+  // raw dictionary keys. Idempotent, so double renders are harmless.
+  if (initialDictionary && !cachedDicts.has(locale)) {
+    cachedDicts.set(locale, initialDictionary);
+  }
+
   useEffect(() => {
+    // Already seeded via initialDictionary — skip the dynamic import entirely.
+    if (cachedDicts.has(locale)) return;
+
     let cancelled = false;
 
     async function loadDict() {
