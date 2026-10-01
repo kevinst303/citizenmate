@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createSupabaseAdminClient } from '@/lib/supabase-admin';
-import { sendPurchaseConfirmation } from '@/lib/email';
+import { sendPurchaseConfirmation, sendPaymentFailedEmail } from '@/lib/email';
 import { checkAndProcessPendingReward } from '@/lib/referrals';
 import { findReferrerByPromoCode } from '@/lib/referral-codes';
 import * as Sentry from '@sentry/nextjs';
@@ -12,6 +12,11 @@ import * as Sentry from '@sentry/nextjs';
 // to prevent double-fulfillment on Stripe retries.
 
 const SPRINT_PASS_DAYS = 60;
+// Grace days added on top of a subscription's current_period_end so access
+// survives short webhook/processing delays and past_due retry windows.
+const SUBSCRIPTION_GRACE_DAYS = 3;
+// Days of continued access after a payment failure before revocation.
+const PAST_DUE_GRACE_DAYS = 3;
 
 function createStripeClient(): Stripe {
   const stripeKey = process.env.STRIPE_SECRET_KEY?.replace(/\\n/g, '')?.trim();
@@ -43,11 +48,17 @@ async function markEventProcessed(
   eventId: string,
   eventType: string
 ): Promise<void> {
-  await adminSupabase.from('processed_webhook_events').insert({
-    event_id: eventId,
-    event_type: eventType,
-    processed_at: new Date().toISOString(),
-  });
+  // Upsert (not insert): on concurrent duplicate delivery the loser of the
+  // race is silently ignored instead of failing the whole webhook with a
+  // primary-key violation and triggering needless Stripe retries.
+  await adminSupabase.from('processed_webhook_events').upsert(
+    {
+      event_id: eventId,
+      event_type: eventType,
+      processed_at: new Date().toISOString(),
+    },
+    { onConflict: 'event_id', ignoreDuplicates: true }
+  );
 }
 
 // ── Event Handlers ──
@@ -64,16 +75,58 @@ async function handleCheckoutCompleted(
     return;
   }
 
-  // Calculate premium expiry
-  const expiresAt = new Date();
   const tier = session.metadata?.product || 'premium';
-  
+  const stripe = createStripeClient();
+
+  // Current expiry, so repeat purchases stack and nothing ever shortens.
+  const { data: profile } = await adminSupabase
+    .from('profiles')
+    .select('premium_expires_at')
+    .eq('id', userId)
+    .single();
+  const currentExpiry = profile?.premium_expires_at
+    ? new Date(profile.premium_expires_at)
+    : null;
+
+  // Calculate premium expiry
+  let expiresAt: Date;
+
   if (session.mode === 'subscription') {
-    // Initial grant; webhooks will keep this updated
-    expiresAt.setDate(expiresAt.getDate() + 31);
+    // Anchor the initial grant to the subscription's real current_period_end
+    // (+ grace) rather than a hardcoded 31 days — a yearly plan must not
+    // lapse at day 31 if customer.subscription.* events lost the ordering
+    // race against this one.
+    let periodEndMs: number | null = null;
+    if (typeof session.subscription === 'string') {
+      try {
+        const sub = await stripe.subscriptions.retrieve(session.subscription);
+        const periodEnd = sub.items.data[0]?.current_period_end;
+        periodEndMs = periodEnd ? periodEnd * 1000 : null;
+      } catch (err) {
+        console.error('[Webhook] Failed to retrieve subscription for period end:', err);
+      }
+    }
+
+    if (periodEndMs) {
+      expiresAt = new Date(periodEndMs);
+    } else {
+      // Fallback: monthly-length grant, corrected by invoice.paid /
+      // customer.subscription.updated as soon as they arrive.
+      expiresAt = new Date();
+      expiresAt.setDate(expiresAt.getDate() + 31);
+    }
+    expiresAt.setDate(expiresAt.getDate() + SUBSCRIPTION_GRACE_DAYS);
   } else {
-    // Sprint pass
+    // Sprint pass: 60 days from the later of now or any existing expiry, so
+    // repeat purchases stack instead of resetting.
+    const now = new Date();
+    const base = currentExpiry && currentExpiry > now ? currentExpiry : now;
+    expiresAt = new Date(base.getTime());
     expiresAt.setDate(expiresAt.getDate() + SPRINT_PASS_DAYS);
+  }
+
+  if (currentExpiry && currentExpiry > expiresAt) {
+    expiresAt = currentExpiry;
   }
 
   console.log(
@@ -114,8 +167,24 @@ async function handleCheckoutCompleted(
   }
 
   // ── Process referral rewards ──
-  // 1. If this checkout used a referral promo code, credit the referrer
-  const referralPromoCodeId = session.metadata?.referral_promo_code_id;
+  // 1. A code applied via the app's cookie flow arrives in session metadata…
+  let referralPromoCodeId = session.metadata?.referral_promo_code_id;
+
+  // 2. …but a code the buyer typed into Stripe's own promo box only appears
+  //    in the session's discount breakdown, so expand and attribute it too.
+  if (!referralPromoCodeId) {
+    try {
+      const expanded = await stripe.checkout.sessions.retrieve(session.id, {
+        expand: ['total_details.breakdown'],
+      });
+      const discounts = expanded.total_details?.breakdown?.discounts ?? [];
+      const promoCode = discounts.map((d) => d.discount.promotion_code).find(Boolean);
+      referralPromoCodeId = typeof promoCode === 'string' ? promoCode : promoCode?.id;
+    } catch (err) {
+      console.error('[Webhook] Failed to expand checkout discounts for referral attribution:', err);
+    }
+  }
+
   if (referralPromoCodeId) {
     try {
       const referrerId = await findReferrerByPromoCode(referralPromoCodeId);
@@ -150,32 +219,94 @@ async function handleSubscriptionCreatedOrUpdated(
   const customerId = subscription.customer as string;
   const status = subscription.status;
   const tier = subscription.metadata?.product || 'premium';
+  // checkout puts the buyer's user id on the subscription's metadata; rely on
+  // it as a second match key because customer.subscription.created can arrive
+  // BEFORE checkout.session.completed saved stripe_customer_id on the profile.
+  const metadataUserId = subscription.metadata?.userId;
 
-  console.log(`[Webhook] Subscription ${status} | customer=${customerId} | tier=${tier}`);
+  console.log(`[Webhook] Subscription ${status} | customer=${customerId} | tier=${tier} | user=${metadataUserId || 'unknown'}`);
 
   if (status === 'active' || status === 'trialing') {
     // Current period end is in seconds, convert to milliseconds
     const currentPeriodEnd = subscription.items.data[0]?.current_period_end ?? Math.floor(Date.now() / 1000);
     const expiresAt = new Date(currentPeriodEnd * 1000);
     // Add 3 days grace period
-    expiresAt.setDate(expiresAt.getDate() + 3);
+    expiresAt.setDate(expiresAt.getDate() + SUBSCRIPTION_GRACE_DAYS);
 
-    const { error } = await adminSupabase
+    // Match by customer id OR by metadata user id (ordering-race safety), and
+    // never shorten an existing later expiry (e.g. stacked sprint-pass days).
+    let query = adminSupabase
       .from('profiles')
-      .update({
-        is_premium: true,
-        premium_expires_at: expiresAt.toISOString(),
-        tier: tier,
-      })
-      .eq('stripe_customer_id', customerId);
+      .select('id, premium_expires_at');
 
-    if (error) {
-      console.error('[Webhook] Failed to update premium access:', error.message);
-      Sentry.captureException(new Error(`Failed to update premium access: ${error.message}`), {
+    if (metadataUserId) {
+      query = query.or(`stripe_customer_id.eq.${customerId},id.eq.${metadataUserId}`);
+    } else {
+      query = query.eq('stripe_customer_id', customerId);
+    }
+
+    const { data: profiles, error: fetchError } = await query;
+
+    if (fetchError) {
+      console.error('[Webhook] Failed to fetch profiles for subscription update:', fetchError.message);
+      Sentry.captureException(new Error(`Failed to fetch profiles for subscription update: ${fetchError.message}`), {
         extra: { customerId, status },
       });
+      return;
     }
-  } else if (status === 'canceled' || status === 'unpaid' || status === 'past_due') {
+
+    if (!profiles || profiles.length === 0) {
+      // No match at all — nothing we can do beyond surfacing it.
+      console.error(`[Webhook] Subscription update matched no profile | customer=${customerId} | user=${metadataUserId || 'unknown'}`);
+      Sentry.captureException(new Error('Subscription webhook matched no profile'), {
+        extra: { customerId, status, metadataUserId },
+      });
+      return;
+    }
+
+    for (const profile of profiles) {
+      const existingExpiry = profile.premium_expires_at ? new Date(profile.premium_expires_at) : null;
+      const finalExpiry = existingExpiry && existingExpiry > expiresAt ? existingExpiry : expiresAt;
+
+      const { error } = await adminSupabase
+        .from('profiles')
+        .update({
+          is_premium: true,
+          premium_expires_at: finalExpiry.toISOString(),
+          tier: tier,
+          stripe_customer_id: customerId,
+        })
+        .eq('id', profile.id);
+
+      if (error) {
+        console.error('[Webhook] Failed to update premium access:', error.message);
+        Sentry.captureException(new Error(`Failed to update premium access: ${error.message}`), {
+          extra: { customerId, status, profileId: profile.id },
+        });
+      }
+    }
+  } else if (status === 'past_due') {
+    // Payment failed but Stripe is retrying — keep access for a grace window
+    // instead of cutting the member off on the first failure.
+    const graceExpiry = new Date();
+    graceExpiry.setDate(graceExpiry.getDate() + PAST_DUE_GRACE_DAYS);
+
+    const { data: profiles } = await adminSupabase
+      .from('profiles')
+      .select('id, premium_expires_at')
+      .eq('stripe_customer_id', customerId);
+
+    for (const profile of profiles ?? []) {
+      const existingExpiry = profile.premium_expires_at ? new Date(profile.premium_expires_at) : null;
+      const finalExpiry = existingExpiry && existingExpiry > graceExpiry ? existingExpiry : graceExpiry;
+
+      await adminSupabase
+        .from('profiles')
+        .update({ premium_expires_at: finalExpiry.toISOString() })
+        .eq('id', profile.id);
+    }
+    console.log(`[Webhook] past_due grace applied | customer=${customerId} | until≈${graceExpiry.toISOString()}`);
+  } else if (status === 'canceled' || status === 'unpaid') {
     const { error } = await adminSupabase
       .from('profiles')
       .update({
@@ -220,8 +351,26 @@ async function handleInvoicePaid(
       // Edge case: payment succeeded but profile wasn't updated by subscription handler.
       // This can happen if subscription.created fires before checkout.session.completed.
       console.log(`[Webhook] Re-granting premium on invoice.paid for customer ${customerId}`);
-      const expiresAt = new Date();
-      expiresAt.setDate(expiresAt.getDate() + 31);
+
+      // Anchor to the subscription's real period end, not a hardcoded guess.
+      let expiresAt: Date | null = null;
+      if (subscriptionId) {
+        try {
+          const stripe = createStripeClient();
+          const sub = await stripe.subscriptions.retrieve(subscriptionId);
+          const periodEnd = sub.items.data[0]?.current_period_end;
+          if (periodEnd) {
+            expiresAt = new Date(periodEnd * 1000);
+            expiresAt.setDate(expiresAt.getDate() + SUBSCRIPTION_GRACE_DAYS);
+          }
+        } catch (err) {
+          console.error('[Webhook] Failed to retrieve subscription on invoice.paid:', err);
+        }
+      }
+      if (!expiresAt) {
+        expiresAt = new Date();
+        expiresAt.setDate(expiresAt.getDate() + 31);
+      }
 
       await adminSupabase
         .from('profiles')
@@ -234,6 +383,33 @@ async function handleInvoicePaid(
   }
 
   // Future: send renewal receipt email, update revenue KPIs
+}
+
+async function handleInvoicePaymentFailed(
+  invoice: Stripe.Invoice,
+  adminSupabase: ReturnType<typeof createSupabaseAdminClient>
+): Promise<void> {
+  const customerId = invoice.customer as string;
+  console.error(
+    `[Webhook] Invoice payment failed | invoice=${invoice.id} | customer=${customerId} | attempt=${invoice.attempt_count}`
+  );
+
+  // Dunning email so the member knows to update their card — access itself
+  // persists through the past_due grace window (see subscription handler).
+  try {
+    const { data: profile } = await adminSupabase
+      .from('profiles')
+      .select('email, tier')
+      .eq('stripe_customer_id', customerId)
+      .single();
+
+    if (profile?.email) {
+      await sendPaymentFailedEmail(profile.email, profile.tier || 'premium');
+    }
+  } catch (err) {
+    console.error('[Webhook] Failed to send payment-failed email:', err);
+    Sentry.captureException(err, { extra: { customerId, invoiceId: invoice.id } });
+  }
 }
 
 async function handlePaymentFailed(
@@ -291,6 +467,30 @@ async function handleChargeRefunded(
 
   const isFullRefund = charge.amount_refunded >= charge.amount;
   if (isFullRefund && customerId) {
+    // Only revoke if the customer has no OTHER active subscription — a Sprint
+    // Pass refund must not also wipe a running subscription (and vice versa).
+    try {
+      const stripe = createStripeClient();
+      const activeSubs = await stripe.subscriptions.list({
+        customer: customerId,
+        status: 'active',
+        limit: 1,
+      });
+
+      if (activeSubs.data.length > 0) {
+        console.log(
+          `[Webhook] Refund skipped revocation — active subscription remains | charge=${charge.id} | customer=${customerId}`
+        );
+        return;
+      }
+    } catch (err) {
+      console.error('[Webhook] Failed to check active subscriptions before refund revoke:', err);
+      Sentry.captureException(err, { extra: { customerId, chargeId: charge.id } });
+      // Fail open: don't revoke if we can't verify — over-revoking a paying
+      // member is worse than a delayed revoke.
+      return;
+    }
+
     const { error } = await adminSupabase
       .from('profiles')
       .update({
@@ -377,6 +577,13 @@ export async function POST(req: Request) {
 
       case 'payment_intent.payment_failed':
         await handlePaymentFailed(event.data.object as Stripe.PaymentIntent);
+        break;
+
+      case 'invoice.payment_failed':
+        await handleInvoicePaymentFailed(
+          event.data.object as Stripe.Invoice,
+          adminSupabase
+        );
         break;
 
       case 'charge.dispute.created':

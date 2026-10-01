@@ -104,7 +104,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const needsOnboarding = !data.test_date;
 
       setProfile({
-        tier: (data.tier as 'free' | 'pro' | 'premium') || 'free',
+        tier: (data.tier as ProfileData['tier']) || 'free',
         isPremium: isActive,
         isAdmin: data.is_admin === true,
         expiresAt,

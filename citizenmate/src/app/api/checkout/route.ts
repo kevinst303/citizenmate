@@ -2,15 +2,26 @@ import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createSupabaseServerClient } from '@/lib/supabase-server';
 import { checkoutLimiter } from '@/lib/rate-limit';
+import { locales, defaultLocale, type Locale } from '@/i18n/config';
 import * as Sentry from '@sentry/nextjs';
+
+// ── Extract locale from referer for Stripe redirect URLs ──
+// Validate the segment against the real locale list: a naive 2-letter regex
+// would read the "th" of "/auth/confirm" as Thai.
+function localeFromReferer(referer: string): Locale {
+  try {
+    const segment = new URL(referer).pathname.split('/')[1];
+    return locales.includes(segment as Locale) ? (segment as Locale) : defaultLocale;
+  } catch {
+    return defaultLocale;
+  }
+}
 
 export async function POST(req: Request) {
   try {
     const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://citizenmate.com.au').replace(/\\n/g, '').trim();
 
-    // ── Extract locale from referer for Stripe redirect URLs ──
-    const referer = req.headers.get('referer') || '';
-    const locale = referer.match(/\/([a-z]{2})(?:\/|$)/)?.[1] || 'en';
+    const locale = localeFromReferer(req.headers.get('referer') || '');
 
     // ── Apply Rate Limiting ──
     // In serverless environments, x-forwarded-for is typically populated by the load balancer/CDN
@@ -122,7 +133,9 @@ export async function POST(req: Request) {
       // NOTE: No GST/tax applied — business is not yet GST-registered.
       // When registering, add automatic_tax: { enabled: true } and
       // set tax_behavior='inclusive' on the Stripe Price object.
-      success_url: `${siteUrl}/${locale}/checkout/success`,
+      // Session id lets the success page verify the payment server-side
+      // instead of trusting the redirect.
+      success_url: `${siteUrl}/${locale}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${siteUrl}/${locale}/checkout/cancel`,
       client_reference_id: user.id,
       customer_email: user.email,

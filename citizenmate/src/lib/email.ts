@@ -121,3 +121,18 @@ export async function sendWelcomeEmail(email: string, name?: string) {
     variables: { userName: name || 'there' },
   });
 }
+
+export async function sendPaymentFailedEmail(email: string, tier: string) {
+  const tierLabel = tier === 'sprint_pass' ? 'Exam Sprint Pass' : tier === 'pro' ? 'Pro' : 'Premium';
+
+  return sendEmail({
+    to: email,
+    subject: `⚠️ Action needed: your ${tierLabel} payment failed — CitizenMate`,
+    html: `<p>Hi there,</p>
+<p>Your latest payment for the CitizenMate <strong>${tierLabel}</strong> didn't go through, so your premium access will pause in a few days if it isn't fixed.</p>
+<p>To keep your streak, progress and premium features, please update your payment method in your CitizenMate account settings.</p>
+<p>No worries, mate — it only takes a minute.</p>
+<p>— The CitizenMate Team</p>`,
+    text: `Your latest payment for the CitizenMate ${tierLabel} didn't go through. Your premium access will pause in a few days if it isn't fixed. Please update your payment method in your account settings to keep your premium features. — The CitizenMate Team`,
+  });
+}
