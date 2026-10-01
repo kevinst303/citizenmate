@@ -105,13 +105,18 @@ CREATE POLICY "Users can read own profile"
   ON profiles FOR SELECT
   USING (auth.uid() = id);
 
-CREATE POLICY "Users can update own profile"
+-- Entitlement columns (is_premium, tier, premium_expires_at, stripe_customer_id,
+-- referred_by, referral_promo_code, is_admin, suspended) are service-role only:
+-- see migration 20261001000000_lock_entitlement_columns.sql for the column-level
+-- GRANT/REVOKE setup. Never broaden this back to an unrestricted UPDATE.
+CREATE POLICY "Users can update own profile (non-entitlement columns)"
   ON profiles FOR UPDATE
-  USING (auth.uid() = id);
-
-CREATE POLICY "Users can insert own profile"
-  ON profiles FOR INSERT
+  USING (auth.uid() = id)
   WITH CHECK (auth.uid() = id);
+
+REVOKE UPDATE ON profiles FROM authenticated;
+GRANT UPDATE (test_date, study_language, xp, level) ON profiles TO authenticated;
+REVOKE INSERT ON profiles FROM authenticated;
 
 -- Study progress
 CREATE POLICY "Users can read own study progress"

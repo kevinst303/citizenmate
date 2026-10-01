@@ -73,7 +73,10 @@ export async function PATCH(req: Request) {
       return NextResponse.json({ error: "User ID is required" }, { status: 400 });
     }
 
-    const supabase = await createSupabaseServerClient();
+    // Service role: this patch writes entitlement columns (tier, is_premium,
+    // premium_expires_at) that RLS blocks for the authenticated role.
+    // verifyAdmin() has already gated the caller.
+    const supabase = createSupabaseAdminClient();
     const updateData: Record<string, unknown> = {};
 
     if (is_admin !== undefined) updateData.is_admin = is_admin;
