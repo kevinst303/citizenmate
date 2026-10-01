@@ -25,3 +25,12 @@ export async function register() {
     });
   }
 }
+
+// Required by the Sentry Next.js SDK: captures errors thrown inside nested
+// React Server Component renders and server actions for every request.
+export async function onRequestError(
+  ...args: Parameters<typeof import("@sentry/nextjs").captureRequestError>
+) {
+  const Sentry = await import("@sentry/nextjs");
+  Sentry.captureRequestError(...args);
+}
